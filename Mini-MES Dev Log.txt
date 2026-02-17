@@ -1,0 +1,116 @@
+Mini-MES Dev Log
+
+Date: 2026-02-15
+
+Phase: Risk Engine V1
+
+Today Done:
+- Added Risk Engine calculation
+- Added NPI / HOLD / Material logic
+- Verified CRITICAL escalation
+- Swagger test passed
+
+System Status:
+- API stable
+- DB stable
+- Risk Engine working
+
+Next Step:
+- Add PATCH /work-order
+
+
+-----------------------------------------
+2026-02-16
+
+你现在已经完成：
+
+1.产品主数据结构
+2.产线主数据结构
+3.Work Order 外键完整
+4.Risk Engine V2
+5.PATCH 更新逻辑
+6.动态风险重算
+
+这已经是一个真正的 Mini-MES 雏形。
+
+------------------------------------------
+
+
+🎯 正确套餐分层建议
+🟢 Basic Plan（核心卖点）
+Delivery Dashboard
+Capacity Engine
+Queue
+Material Ready / Not Ready
+Role 权限
+👉 交期控制神器
+
+
+
+🟡 Pro Plan
+Simulation Mode
+Advanced Queue Control
+Delay Analytics
+Confidence Scoring
+
+
+
+
+🔴 Advanced Plan
+Waiver Workflow
+Role-based Approval
+Risk Audit Trail
+Financial Visibility Layer
+👉 适合 80–150 人结构化工厂
+
+
+------------------------------------------
+
+🧱 MVP 最终范围（再次锁定）
+1️⃣ 核心数据
+SalesOrder
+WorkOrder
+ProductionLine
+
+2️⃣ 三个引擎
+Capacity Engine
+Queue Engine
+Delivery Engine
+
+3️⃣ Material Gate（简化版）
+状态：
+READY
+NOT READY
+WAIVER
+（MOQ / CASHFLOW 先隐藏为未来版本）
+
+4️⃣ 手机首页
+订单列表
+Est Ship
+Delay ±days
+Shipment Status
+简要原因
+
+5️⃣ PMC Simulation（仅 OT 模拟）
+只支持：
++X hours OT
+不做转线
+不做复杂场景
+
+❌ 明确延后
+
+高级 Waiver 流程
+多层审批
+财务金额显示
+复杂库存引擎
+多工厂
+成本计算
+AI 优化
+全部冻结。
+
+🎯 90天目标只有一个
+
+系统预测交期误差 ≤ ±1天
+如果达成，
+你已经有可卖基础。
+
