@@ -1,3 +1,8 @@
+from models import InventoryTransaction
+from models import MaterialTransaction, RawMaterialInventory
+from models import BOM
+from schemas import BOMCreate, BOMResponse
+print(">>> USING THIS MAIN FILE <<<")
 from models import Inventory
 from schemas import InventoryCreate, InventoryResponse
 from datetime import datetime
@@ -27,6 +32,8 @@ from schemas import (
     WorkOrderResponse,
     ProductionEventCreate,
     ProductionEventResponse,
+    RawMaterialCreate,
+    RawMaterialResponse,
 )
 
 # ==========================
@@ -70,10 +77,19 @@ def get_products(db: Session = Depends(get_db)):
 
 @app.post("/sales-orders", response_model=SalesOrderResponse)
 def create_sales_order(order: SalesOrderCreate, db: Session = Depends(get_db)):
-    db_order = SalesOrder(**order.model_dump())
+
+    db_order = SalesOrder(
+        order_no=order.order_no,
+        customer_name=order.customer_name,
+        order_date=order.order_date,
+        shipment_date=order.shipment_date,
+        status="OPEN"   # ✅ 强制写入
+    )
+
     db.add(db_order)
     db.commit()
     db.refresh(db_order)
+
     return db_order
 
 
@@ -244,16 +260,11 @@ def log_production(log: ProductionLogCreate, db: Session = Depends(get_db)):
     # ==========================
     # 基础检查
     # ==========================
-
     if log.produced_hours <= 0:
         raise HTTPException(status_code=400, detail="Produced hours must be positive")
 
     if log.log_date > datetime.utcnow().date():
         raise HTTPException(status_code=400, detail="Log date cannot be in the future")
-
-    # ==========================
-    # 查找工单
-    # ==========================
 
     work_order = db.query(WorkOrder).filter(
         WorkOrder.id == log.work_order_id
@@ -262,59 +273,139 @@ def log_production(log: ProductionLogCreate, db: Session = Depends(get_db)):
     if not work_order:
         raise HTTPException(status_code=404, detail="Work order not found")
 
-    # ==========================
-    # 状态保护
-    # ==========================
-
     if work_order.status in ["DONE", "BLOCKED", "BLOCKED_MATERIAL"]:
         raise HTTPException(status_code=400, detail="Work order not executable")
 
-    # 禁止跨产线回报
     if work_order.production_line_id != log.production_line_id:
         raise HTTPException(status_code=400, detail="Production line mismatch")
 
-    # ==========================
-    # 过量保护
-    # ==========================
 
     produced_hours = log.produced_hours
 
     if produced_hours > work_order.remaining_hours:
         produced_hours = work_order.remaining_hours
 
-    # ==========================
-    # 执行扣减
-    # ==========================
+
+    # ==========================================================
+    # 1️⃣ 扣原料 (SAP 261)
+    # ==========================================================
+
+    bom_items = db.query(BOM).filter(
+        BOM.product_id == work_order.product_id
+    ).all()
+
+    if not bom_items:
+        raise HTTPException(status_code=400, detail="No BOM defined")
+
+    for item in bom_items:
+
+        consumption_hours = produced_hours + log.scrap_hours
+
+        if log.rework_consumes_material:
+            consumption_hours += log.rework_hours
+
+        required_qty = consumption_hours * item.quantity_required
+
+        material_inventory = db.query(RawMaterialInventory).filter(
+            RawMaterialInventory.raw_material_id == item.raw_material_id
+        ).first()
+
+        if not material_inventory:
+            raise HTTPException(status_code=400, detail="Raw material inventory missing")
+
+        if material_inventory.quantity_on_hand < required_qty:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Insufficient raw material ID {item.raw_material_id}"
+            )
+
+        material_inventory.quantity_on_hand -= required_qty
+
+        db.add(MaterialTransaction(
+            raw_material_id=item.raw_material_id,
+            work_order_id=work_order.id,
+            quantity=required_qty,
+            transaction_type="CONSUME"
+        ))
+
+        db.add(InventoryTransaction(
+            item_type="RAW",
+            item_id=item.raw_material_id,
+            transaction_type="CONSUME",
+            quantity=required_qty,
+            reference_id=work_order.id
+        ))
+
+
+    # ==========================================================
+    # 2️⃣ 更新工单工时
+    # ==========================================================
 
     work_order.remaining_hours -= produced_hours
     work_order.actual_hours += produced_hours
 
-    # 首次执行
     if work_order.status == "OPEN":
         work_order.status = "RUNNING"
         work_order.started_at = datetime.utcnow()
 
-    # 自动完工
+
+    # ==========================================================
+    # 3️⃣ 如果完工 → 成品入库 (SAP 101)
+    # ==========================================================
+
     if work_order.remaining_hours <= 0:
+
         work_order.remaining_hours = 0
         work_order.status = "DONE"
         work_order.completed_at = datetime.utcnow()
 
-    # ==========================
-    # 写入日志（事务保护）
-    # ==========================
+        inventory = db.query(Inventory).filter(
+            Inventory.product_id == work_order.product_id
+        ).first()
 
-    db_log = ProductionLog(
+        if not inventory:
+
+            inventory = Inventory(
+                product_id=work_order.product_id,
+                quantity_on_hand=0
+            )
+
+            db.add(inventory)
+            db.flush()
+
+        receive_qty = 1
+
+        inventory.quantity_on_hand += receive_qty
+
+        db.add(InventoryTransaction(
+            item_type="FINISHED",
+            item_id=work_order.product_id,
+            transaction_type="RECEIVE",
+            quantity=receive_qty,
+            reference_id=work_order.id
+        ))
+
+
+    # ==========================================================
+    # 4️⃣ 写生产日志
+    # ==========================================================
+
+    db.add(ProductionLog(
         production_line_id=log.production_line_id,
         work_order_id=log.work_order_id,
         produced_hours=produced_hours,
         scrap_hours=log.scrap_hours,
         rework_hours=log.rework_hours,
+        rework_consumes_material=log.rework_consumes_material,
         log_date=log.log_date
-    )
+    ))
+
+
+    # ==========================================================
+    # 5️⃣ Commit
+    # ==========================================================
 
     try:
-        db.add(db_log)
         db.commit()
         db.refresh(work_order)
     except:
@@ -322,6 +413,10 @@ def log_production(log: ProductionLogCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=500, detail="Production log failed")
 
     return work_order
+
+
+
+
 
 
 
@@ -408,5 +503,184 @@ def create_inventory(record: InventoryCreate, db: Session = Depends(get_db)):
 @app.get("/inventory", response_model=list[InventoryResponse])
 def get_inventory(db: Session = Depends(get_db)):
     return db.query(Inventory).all()
+
+
+
+# ==========================================================
+# Shipment API
+# ==========================================================
+
+@app.post("/ship/{sales_order_id}")
+def ship_order(sales_order_id: int, db: Session = Depends(get_db)):
+
+    sales_order = db.query(SalesOrder).filter(
+        SalesOrder.id == sales_order_id
+    ).first()
+
+    if not sales_order:
+        raise HTTPException(status_code=404, detail="Sales order not found")
+
+    if sales_order.status == "SHIPPED":
+        raise HTTPException(status_code=400, detail="Already shipped")
+
+    # 找该订单的工单
+    work_orders = db.query(WorkOrder).filter(
+        WorkOrder.sales_order_id == sales_order_id
+    ).all()
+
+    if not work_orders:
+        raise HTTPException(status_code=400, detail="No work orders found")
+
+    # 检查是否全部 DONE
+    for wo in work_orders:
+        if wo.status != "DONE":
+            raise HTTPException(
+                status_code=400,
+                detail=f"Work order {wo.work_order_no} not completed"
+            )
+
+    # 扣库存
+    for wo in work_orders:
+
+        inventory = db.query(Inventory).filter(
+            Inventory.product_id == wo.product_id
+        ).first()
+
+        if not inventory:
+            raise HTTPException(
+                status_code=400,
+                detail="Inventory not found"
+            )
+
+        if inventory.quantity_on_hand < 1:
+            raise HTTPException(
+                status_code=400,
+                detail="Insufficient inventory"
+            )
+
+        inventory.quantity_on_hand -= 1
+
+    sales_order.status = "SHIPPED"
+    sales_order.shipment_date = datetime.utcnow().date()
+
+    db.commit()
+
+    return {
+        "message": "Order shipped successfully",
+        "sales_order_id": sales_order.id
+    }
+
+
+
+
+# ==========================================================
+# Raw Material API
+# ==========================================================
+
+from models import RawMaterial, RawMaterialInventory, BOM
+from schemas import (
+    RawMaterialCreate,
+    RawMaterialResponse,
+    BOMCreate,
+    BOMResponse,
+)
+
+
+@app.post("/raw-materials", response_model=RawMaterialResponse)
+def create_raw_material(material: RawMaterialCreate, db: Session = Depends(get_db)):
+
+    # 防重复 material_code
+    existing = db.query(RawMaterial).filter(
+        RawMaterial.material_code == material.material_code
+    ).first()
+
+    if existing:
+        raise HTTPException(status_code=400, detail="Material code already exists")
+
+    # 创建原料
+    db_material = RawMaterial(
+        material_code=material.material_code,
+        material_name=material.material_name,
+        unit=material.unit
+    )
+
+    db.add(db_material)
+    db.commit()
+    db.refresh(db_material)
+
+    # 自动创建库存记录
+    inventory = RawMaterialInventory(
+        raw_material_id=db_material.id,
+        quantity_on_hand=0
+    )
+
+    db.add(inventory)
+    db.commit()
+
+    return db_material
+
+
+@app.get("/raw-materials", response_model=list[RawMaterialResponse])
+def get_raw_materials(db: Session = Depends(get_db)):
+    return db.query(RawMaterial).all()
+
+
+# ==========================================================
+# BOM API
+# ==========================================================
+
+@app.post("/boms", response_model=BOMResponse)
+def create_bom(bom: BOMCreate, db: Session = Depends(get_db)):
+
+    # 检查 product 是否存在
+    product = db.query(Product).filter(
+        Product.id == bom.product_id
+    ).first()
+
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+
+    # 检查 raw material 是否存在
+    material = db.query(RawMaterial).filter(
+        RawMaterial.id == bom.raw_material_id
+    ).first()
+
+    if not material:
+        raise HTTPException(status_code=404, detail="Raw material not found")
+
+    # 创建 BOM
+    db_bom = BOM(
+        product_id=bom.product_id,
+        raw_material_id=bom.raw_material_id,
+        quantity_required=bom.quantity_required
+    )
+
+    db.add(db_bom)
+    db.commit()
+    db.refresh(db_bom)
+
+    return db_bom
+
+
+@app.get("/boms", response_model=list[BOMResponse])
+def get_boms(db: Session = Depends(get_db)):
+    return db.query(BOM).all()
+
+
+# ==========================================================
+# Inventory Transaction API (SAP Movement History)
+# ==========================================================
+
+from models import InventoryTransaction
+
+
+@app.get("/inventory-transactions")
+def get_inventory_transactions(db: Session = Depends(get_db)):
+
+    return db.query(InventoryTransaction).order_by(
+        InventoryTransaction.created_at.desc()
+    ).all()
+
+
 
 

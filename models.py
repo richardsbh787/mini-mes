@@ -30,6 +30,8 @@ class SalesOrder(Base):
     customer_name = Column(String, nullable=False)
     order_date = Column(Date, nullable=False)
     shipment_date = Column(Date)
+    status = Column(String, nullable=False, default="OPEN")   # ✅ 新增
+
 
 # ==========================
 # Production Line (小时模型)
@@ -128,6 +130,9 @@ class ProductionLog(Base):
     produced_hours = Column(Float, default=0)   # 实际完成工时
     scrap_hours = Column(Float, default=0)      # 报废损耗
     rework_hours = Column(Float, default=0)     # 返工工时
+    rework_consumes_material = Column(Boolean, nullable=False, default=False)
+
+    
 
     log_date = Column(Date, nullable=False)
     created_datetime = Column(DateTime, default=datetime.utcnow)
@@ -203,6 +208,112 @@ class Inventory(Base):
     last_updated = Column(DateTime, nullable=False, default=datetime.utcnow)
 
     product = relationship("Product")
+
+
+# ==========================================================
+# BOM (Bill of Material)
+# ==========================================================
+
+class BOM(Base):
+    __tablename__ = "boms"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    product_id = Column(Integer, ForeignKey("products.id"), nullable=False)
+    raw_material_id = Column(Integer, ForeignKey("raw_materials.id"), nullable=False)
+
+    quantity_required = Column(Float, nullable=False)
+    scrap_rate = Column(Float, nullable=False, default=0)
+
+    product = relationship("Product")
+    raw_material = relationship("RawMaterial")
+
+
+# ==========================================================
+# Raw Material Inventory
+# ==========================================================
+
+class RawMaterialInventory(Base):
+    __tablename__ = "raw_material_inventories"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    raw_material_id = Column(
+        Integer,
+        ForeignKey("raw_materials.id"),
+        nullable=False,
+        unique=True
+    )
+
+    quantity_on_hand = Column(Float, nullable=False, default=0)
+
+    raw_material = relationship("RawMaterial")
+
+
+
+# ==========================================================
+# Raw Material
+# ==========================================================
+
+class RawMaterial(Base):
+    __tablename__ = "raw_materials"
+
+    id = Column(Integer, primary_key=True, index=True)
+    material_code = Column(String, unique=True, nullable=False)
+    material_name = Column(String, nullable=False)
+    unit = Column(String, nullable=False)
+
+
+# ==========================================================
+# Material Transaction（自动扣料记录）
+# ==========================================================
+
+class MaterialTransaction(Base):
+    __tablename__ = "material_transactions"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    raw_material_id = Column(
+        Integer,
+        ForeignKey("raw_materials.id"),
+        nullable=False
+    )
+
+    work_order_id = Column(
+        Integer,
+        ForeignKey("work_orders.id"),
+        nullable=False
+    )
+
+    quantity = Column(Float, nullable=False)
+
+    transaction_type = Column(String, nullable=False, default="CONSUME")
+
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+
+    raw_material = relationship("RawMaterial")
+    work_order = relationship("WorkOrder")
+
+
+class InventoryTransaction(Base):
+    __tablename__ = "inventory_transactions"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    item_type = Column(String, nullable=False)
+    # RAW 或 FINISHED
+
+    item_id = Column(Integer, nullable=False)
+
+    transaction_type = Column(String, nullable=False)
+    # RECEIVE / CONSUME / SHIP / RETURN / ADJUST
+
+    quantity = Column(Float, nullable=False)
+
+    reference_id = Column(Integer, nullable=True)
+    # 工单ID 或 销售订单ID
+
+    created_at = Column(DateTime, default=datetime.utcnow)
 
 
 

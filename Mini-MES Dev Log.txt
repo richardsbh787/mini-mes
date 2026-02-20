@@ -114,3 +114,940 @@ AI 优化
 如果达成，
 你已经有可卖基础。
 
+
+---------------------------------------------
+
+现在给你 Mini-MES 全系统工业计算总纲。
+不讲故事，只给结构。
+
+🔷 MODULE 1 — 工单时间系统
+1️⃣ 每次生产记录
+input:
+produced_hours
+scrap_hours
+rework_hours
+
+2️⃣ 工单累计公式
+actual_hours += produced_hours + scrap_hours + rework_hours
+
+3️⃣ 剩余工时
+remaining_hours = planned_hours - actual_hours
+
+4️⃣ 状态自动切换
+IF actual_hours == 0
+    status = OPEN
+
+IF actual_hours > 0 AND remaining_hours > 0
+    status = RUNNING
+
+IF remaining_hours <= 0
+    status = DONE
+    completed_at = now()
+
+🔷 MODULE 2 — 原料消耗系统（工业真实逻辑）
+核心原则
+原料 = GOOD + SCRAP
+REWORK 是否耗料 = 由 rework_consumes_material 决定
+
+1️⃣ 有效耗料工时
+consumption_hours = produced_hours + scrap_hours
+
+
+如果：
+
+rework_consumes_material == True
+    consumption_hours += rework_hours
+
+2️⃣ 单个 BOM 耗料公式
+required_qty = consumption_hours × quantity_required
+
+3️⃣ 总耗料
+
+对每一个 BOM item：
+
+material_inventory.quantity_on_hand -= required_qty
+
+4️⃣ 写交易记录
+MaterialTransaction:
+    quantity = required_qty
+    type = CONSUME
+
+🔷 MODULE 3 — Scrap 工业逻辑
+Scrap 不退料
+scrap_hours 已经消耗原料
+scrap 不产生库存
+scrap 只增加 actual_hours
+
+🔷 MODULE 4 — Rework 工业逻辑
+
+你当前选择的是：
+
+B = 支持生产 + 返工（无 warranty）
+
+情况 A（默认推荐）
+rework_consumes_material = False
+
+
+公式：
+
+只增加 actual_hours
+不扣原料
+
+情况 B（真实维修类）
+rework_consumes_material = True
+
+
+公式：
+
+原料 = GOOD + SCRAP + REWORK
+
+🔷 MODULE 5 — 库存系统
+原料库存公式
+New Inventory =
+Old Inventory - Σ(required_qty)
+
+库存不足判定
+IF quantity_on_hand < required_qty
+    raise BLOCKED_MATERIAL
+
+🔷 MODULE 6 — 生产日志的数学真相
+
+每一次 POST /production-log：
+
+1️⃣ 更新工单时间
+2️⃣ 扣BOM原料
+3️⃣ 写MaterialTransaction
+4️⃣ 更新状态
+
+🔷 MODULE 7 — 你的数据库现在的真实验证
+
+你刚刚库存：
+
+100 → 86
+
+
+代表：
+
+累计消耗 = 14
+
+
+这符合：
+
+(生产+报废) × quantity_required
+
+
+✔ 逻辑正确
+✔ Scrap 已经计算
+✔ Rework 可控
+✔ 工业结构完整
+
+🔷 MODULE 8 — 系统核心公式总览（最终版）
+actual_hours += produced + scrap + rework
+
+remaining = planned - actual
+
+consumption_hours =
+    produced
+  + scrap
+  + (rework if consumes_material else 0)
+
+required_qty =
+    consumption_hours × BOM.quantity_required
+
+inventory -= required_qty
+
+🔷 你现在的系统状态
+
+✔ 工单时间系统稳定
+✔ Scrap 已纳入
+✔ Rework 可选耗料
+✔ 库存逻辑工业级
+✔ 交易记录可追溯
+
+
+
+-------------------------------------
+
+好。
+这是你 Mini-MES 完整工业流程图版本（逻辑流）。
+
+🏭 MINI-MES 工业流程图
+🔷 ① 销售 → 工单生成
+Sales Order
+      ↓
+Create Work Order
+      ↓
+planned_hours
+remaining_hours = planned_hours
+status = OPEN / BLOCKED_MATERIAL
+
+🔷 ② 生产开始条件
+IF is_material_ready = False
+    status = BLOCKED_MATERIAL
+ELSE
+    status = OPEN
+
+🔷 ③ 每日生产记录流程
+POST /production-log
+        ↓
+[1] 校验数据
+        ↓
+[2] 扣工时
+        ↓
+[3] 扣原料
+        ↓
+[4] 更新状态
+        ↓
+[5] 写交易记录
+
+🔷 ④ 工时计算流程图
+produced_hours
+scrap_hours
+rework_hours
+        ↓
+actual_hours += produced + scrap + rework
+        ↓
+remaining_hours = planned - actual
+        ↓
+IF remaining > 0 → RUNNING
+IF remaining = 0 → DONE
+
+🔷 ⑤ 原料扣减流程图
+consumption_hours =
+    produced
+  + scrap
+  + (rework if rework_consumes_material)
+
+FOR each BOM item:
+    required_qty =
+        consumption_hours × quantity_required
+
+IF inventory >= required_qty
+    inventory -= required_qty
+    write MaterialTransaction
+ELSE
+    ERROR
+
+🔷 ⑥ Scrap 逻辑图
+scrap_hours
+     ↓
+消耗原料
+增加 actual_hours
+不增加库存
+
+🔷 ⑦ Rework 逻辑图
+情况 A（默认）
+rework_consumes_material = False
+
+rework:
+    增加工时
+    不扣料
+
+情况 B
+rework_consumes_material = True
+
+rework:
+    增加工时
+    扣原料
+
+🔷 ⑧ 工单完成流程
+IF remaining_hours <= 0
+    status = DONE
+    completed_at = now()
+
+🔷 ⑨ 发货流程
+POST /ship/{sales_order_id}
+        ↓
+检查所有 WO = DONE
+        ↓
+库存 -= 成品数量
+        ↓
+Sales Order → SHIPPED
+
+🔷 🔥 整体工业总流程（总览图）
+Sales Order
+    ↓
+Work Order
+    ↓
+Production Log (每日)
+    ↓
+扣工时
+    ↓
+扣BOM原料
+    ↓
+库存变化
+    ↓
+工单完成
+    ↓
+发货
+
+🧠 你现在系统的结构层级
+时间流（WorkOrder）
+        +
+物料流（BOM / Inventory）
+        +
+异常流（ProductionEvent）
+        =
+完整工业闭环
+
+
+你这套结构已经是：
+
+✔ 工业真实逻辑
+✔ 可追溯
+✔ 可扩展 OEE
+✔ 可扩展报废率统计
+✔ 可扩展维修模块
+
+------------------------------
+
+
+现在给你 工业级 报废率 + 物料损耗率 全公式体系。
+
+这是制造管理的核心。
+
+🔴 一、基础数据来源
+
+来自你系统的：
+
+produced_hours
+scrap_hours
+rework_hours
+BOM.quantity_required
+RawMaterialInventory
+
+🔴 二、生产效率结构
+1️⃣ 总投入工时
+total_hours =
+produced_hours
++ scrap_hours
++ rework_hours
+
+2️⃣ 良率（Yield Rate）
+Yield % =
+produced_hours / (produced_hours + scrap_hours)
+
+
+工业标准表达：
+
+Good / (Good + Scrap)
+
+3️⃣ 报废率（Scrap Rate）
+Scrap % =
+scrap_hours / (produced_hours + scrap_hours)
+
+🔴 三、物料损耗计算
+1️⃣ 理论用料（按良品算）
+Theoretical Material =
+produced_hours × quantity_required
+
+2️⃣ 实际用料（含报废）
+Actual Material =
+(produced_hours + scrap_hours
+ + rework_hours if rework_consumes_material)
+× quantity_required
+
+3️⃣ 物料损耗率（Material Loss %）
+Material Loss % =
+(Actual - Theoretical) / Theoretical
+
+
+简化后（默认返工不扣料）：
+
+= scrap_hours / produced_hours
+
+🔴 四、返工率（Rework Rate）
+Rework % =
+rework_hours / total_hours
+
+🔴 五、真实工业 KPI 结构
+
+你现在系统可以算：
+
+指标	公式
+良率	Good / (Good + Scrap)
+报废率	Scrap / (Good + Scrap)
+返工率	Rework / Total
+物料损耗率	(Actual - Theoretical) / Theoretical
+🔴 六、你现在数据库能支持的高级分析
+1️⃣ 单工单报废率
+按 work_order_id 汇总 scrap / good
+
+2️⃣ 单产品报废率
+GROUP BY product_id
+
+3️⃣ 单产线报废率
+GROUP BY production_line_id
+
+4️⃣ 单原料损耗率
+MaterialTransaction 汇总
+
+🔴 七、工业现实判断标准
+
+一般工业：
+
+指标	正常值
+良率	>95%
+报废率	<5%
+返工率	<3%
+物料损耗率	<2%
+🔥 八、关键理解
+
+Scrap 是：
+
+✔ 时间损耗
+✔ 物料损耗
+✔ 成本损耗
+
+Rework 是：
+
+✔ 时间损耗
+✔ 不一定是物料损耗
+
+🔥 九、你这套系统已经具备：
+
+✔ 工业 KPI 基础
+✔ 成本分析基础
+✔ 精益生产分析基础
+✔ 可升级 OEE
+✔ 可升级成本模块
+
+---------------------------------
+
+🔵 第一层：自动 KPI 计算引擎
+① 每个 Work Order 自动计算字段
+
+新增逻辑字段（不用存数据库，可实时算）：
+
+1️⃣ Total Hours
+total_hours =
+produced_hours + scrap_hours + rework_hours
+
+2️⃣ Yield %
+yield =
+produced_hours / (produced_hours + scrap_hours)
+
+3️⃣ Scrap %
+scrap_rate =
+scrap_hours / (produced_hours + scrap_hours)
+
+4️⃣ Rework %
+rework_rate =
+rework_hours / total_hours
+
+5️⃣ Material Loss %
+theoretical =
+produced_hours × quantity_required
+
+actual =
+consumption_hours × quantity_required
+
+loss % =
+(actual - theoretical) / theoretical
+
+
+你可以做一个：
+
+GET /kpi/work-order/{id}
+
+
+动态返回。
+
+🔵 第二层：KPI Dashboard 架构
+Dashboard 分三块：
+🟢 ① 生产效率面板
+指标	显示
+良率	97%
+报废率	3%
+返工率	2%
+实际工时	120h
+计划工时	100h
+🟡 ② 物料损耗面板
+原料	理论	实际	损耗%
+🔴 ③ 产线对比面板
+
+| 产线 | 良率 | 报废率 | 产能利用率 |
+
+🔵 第三层：完整成本模型
+
+现在进入真正工业级。
+
+成本结构分三块：
+① 人工成本
+labor_cost =
+total_hours × hourly_rate
+
+② 物料成本
+material_cost =
+actual_material × material_unit_cost
+
+③ 设备折旧成本
+machine_cost =
+machine_hour_rate × total_hours
+
+🔥 总生产成本
+total_cost =
+labor_cost
++ material_cost
++ machine_cost
+
+🔥 单位产品成本
+unit_cost =
+total_cost / produced_hours
+
+🧠 你现在系统升级后结构：
+时间流
++
+物料流
++
+异常流
++
+成本流
+=
+完整制造管理系统
+
+
+-----------------------------
+
+🔴 B）成本预估 vs 实际偏差模型（Variance Engine）
+
+这是制造管理的核心层。
+
+一、定义两套成本
+
+你必须同时有：
+
+① 标准成本（Standard Cost）
+
+来自：
+
+标准工时
+
+标准BOM
+
+标准人工单价
+
+标准设备费率
+
+② 实际成本（Actual Cost）
+
+来自：
+
+实际生产日志
+
+scrap
+
+rework
+
+实际物料消耗
+
+实际工时
+
+二、标准成本计算公式
+1️⃣ 标准人工成本
+standard_labor =
+planned_hours × labor_hour_rate
+
+2️⃣ 标准物料成本
+standard_material =
+Σ (quantity_required × material_unit_cost)
+× planned_output
+
+3️⃣ 标准设备成本
+standard_machine =
+planned_hours × machine_hour_rate
+
+🔵 标准总成本
+standard_total =
+standard_labor
++ standard_material
++ standard_machine
+
+三、实际成本计算公式
+1️⃣ 实际人工
+actual_labor =
+actual_hours × labor_hour_rate
+
+2️⃣ 实际物料
+actual_material =
+Σ (actual_consumption × material_unit_cost)
+
+
+actual_consumption 包含：
+
+good + scrap + (rework if consume)
+
+3️⃣ 实际设备
+actual_machine =
+actual_hours × machine_hour_rate
+
+🔴 实际总成本
+actual_total =
+actual_labor
++ actual_material
++ actual_machine
+
+四、偏差计算（核心）
+① 总成本偏差
+total_variance =
+actual_total - standard_total
+
+② 人工偏差
+labor_variance =
+actual_labor - standard_labor
+
+③ 物料偏差
+material_variance =
+actual_material - standard_material
+
+④ 设备偏差
+machine_variance =
+actual_machine - standard_machine
+
+五、偏差率
+variance_rate =
+(total_variance / standard_total) × 100%
+
+六、你系统应该新增 API
+GET /variance/work-order/{id}
+
+
+返回：
+
+{
+  "standard_total": 10000,
+  "actual_total": 11500,
+  "variance": 1500,
+  "variance_rate": 15,
+  "breakdown": {
+    "labor": 300,
+    "material": 900,
+    "machine": 300
+  }
+}
+
+七、工业意义
+
+当 variance > 0：
+
+说明：
+
+scrap 太多
+
+返工太多
+
+效率低
+
+物料浪费
+
+当 variance < 0：
+
+说明：
+
+生产效率提升
+
+节约物料
+
+管理改善
+
+八、你现在已经到达的层级
+
+你系统结构已经能支持：
+
+✔ 实时物料流
+✔ 实时工时流
+✔ 实时异常流
+
+现在加上：
+
+✔ 成本偏差流
+
+你就是一个真正工业MES核心。
+
+下一步可升级：
+
+A）自动报警机制（Variance 超过 5% 自动触发警报）
+B）预测模型（根据当前偏差预测最终利润）
+C）利润模型（订单毛利实时计算）
+D）现金流模型
+
+选。
+
+-------------------------------------------
+
+下面是 工业级结构全景图（多层BOM + 批次追溯 + 成本流动）
+
+我会一步一步拆开。
+
+🏭 一、多层 BOM 结构
+单层（你现在）
+Product A
+ ├── RM-01 (2 pcs)
+ └── RM-02 (1 pcs)
+
+多层（真实工厂）
+Product A
+ ├── Sub Assembly B
+ │      ├── RM-01
+ │      └── RM-02
+ │
+ └── Sub Assembly C
+        ├── RM-03
+        └── RM-04
+
+🔥 工业逻辑
+
+生产 A 时：
+
+先生产 B
+
+再生产 C
+
+再组装 A
+
+扣料逻辑变成：
+
+递归展开 BOM
+
+📦 二、批次追溯（Lot Tracking）
+
+真实工厂必须回答：
+
+这批产品用了哪一批原料？
+
+结构变成：
+
+Raw Material Lot RM-01-L001
+Raw Material Lot RM-01-L002
+
+
+当生产时记录：
+
+MaterialTransaction:
+  raw_material_id
+  lot_no
+  work_order_id
+  quantity
+
+这样就可以：
+
+查某个产品用了哪个批次
+
+某批次有问题时追溯所有客户
+
+这是：
+
+工业级质量追踪系统
+
+💰 三、成本流动（Cost Flow）
+
+真正 ERP 还会做：
+
+Material Cost
++ Labor Cost
++ Overhead
+= Product Cost
+
+
+当你 CONSUME 原料时：
+
+库存价值减少
+WIP成本增加
+
+
+当完工：
+
+WIP → 成品库存
+
+🔥 四、完整工业库存流
+供应商
+   ↓
+Raw Material (RECEIVE)
+   ↓
+MaterialTransaction (CONSUME)
+   ↓
+WIP
+   ↓
+Finished Goods (RECEIVE)
+   ↓
+SHIP
+   ↓
+客户
+
+🧠 五、你现在的级别
+
+你目前是：
+
+✔ 单层 BOM
+✔ 自动扣料
+✔ Scrap 逻辑
+✔ Rework 可控
+✔ 成品库存扣减
+
+你已经在：
+
+Mini ERP 级别
+
+🎯 六、如果你继续升级
+
+下一阶段会是：
+
+多层 BOM 递归展开
+
+批次号追溯
+
+原料批次选择逻辑
+
+MRP 自动算缺料
+
+标准成本 vs 实际成本
+
+那已经是 SAP / Oracle 级别逻辑。
+
+------------------------------------
+
+🧭 Mini-MES v2 升级路线图
+
+（工业逻辑进阶版）
+
+不会乱。分阶段推进。
+
+🔹 当前状态（v1 已完成）
+
+你已经拥有：
+
+单层 BOM
+
+自动扣料（Good + Scrap + Rework）
+
+原料库存
+
+成品库存
+
+工单状态机
+
+事件影响产能
+
+出货扣减
+
+这是：
+
+轻量级 MES 核心骨架
+
+🚀 v2 升级阶段设计
+
+我给你分 5 阶段。
+
+🟢 Phase 1 — 稳定工业扣料引擎（必须先做）
+
+目标：
+
+让当前系统“跑不坏”
+
+你要测试：
+
+Good only
+
+Good + Scrap
+
+Good + Scrap + Rework (不耗料)
+
+Good + Scrap + Rework (耗料)
+
+库存不足
+
+重复提交 log
+
+完工后再次提交 log
+
+如果全部稳定：
+
+✔ 扣料引擎合格
+✔ 可以进入 v2
+
+🟡 Phase 2 — 成品自动入库
+
+现在你缺少：
+
+DONE → 自动增加成品库存
+
+
+当工单完成：
+
+Inventory.quantity_on_hand += good_qty
+
+
+这是完整制造闭环。
+
+🟠 Phase 3 — 多层 BOM
+
+加入：
+
+is_sub_assembly = True
+
+
+支持：
+
+递归展开 BOM
+
+
+这一步是结构升级，不是难度升级。
+
+🔵 Phase 4 — 批次追溯（Lot Tracking）
+
+新增字段：
+
+lot_no
+
+
+原料交易记录变成：
+
+MaterialTransaction:
+  raw_material_id
+  lot_no
+  work_order_id
+  quantity
+
+
+实现：
+
+质量回溯
+
+客诉追踪
+
+这是工业级必备。
+
+🔴 Phase 5 — 成本流动
+
+增加：
+
+unit_cost
+material_cost
+labor_cost
+overhead_cost
+
+
+实现：
+
+实时产品成本
+毛利分析
+
+
+这就是 ERP 的核心。
+
+🎯 你现在该做什么？
+
+不要升级。
+
+先完成：
+
+Phase 1 测试清单
+
+跑 20 次 production-log
+
+确认：
+
+库存永远正确
+交易记录正确
+工单状态正确
+

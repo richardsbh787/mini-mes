@@ -47,6 +47,7 @@ class SalesOrderCreate(BaseModel):
 
 class SalesOrderResponse(SalesOrderCreate):
     id: int
+    status: str    
 
     class Config:
         from_attributes = True
@@ -130,6 +131,7 @@ class ProductionLogCreate(BaseModel):
     produced_hours: float
     scrap_hours: float = 0
     rework_hours: float = 0
+    rework_consumes_material: bool = False   # ✅ 加这一行
     log_date: date
 
 
@@ -180,6 +182,59 @@ class InventoryResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+# ==========================================================
+# Raw Material Schema
+# ==========================================================
+
+class RawMaterialCreate(BaseModel):
+    material_code: str
+    material_name: str
+    unit: str
+
+
+class RawMaterialResponse(RawMaterialCreate):
+    id: int
+
+    class Config:
+        from_attributes = True
+
+
+# ==========================================================
+# Raw Material Schema
+# ==========================================================
+
+class RawMaterialCreate(BaseModel):
+    material_code: str
+    material_name: str
+    unit: str
+
+
+class RawMaterialResponse(RawMaterialCreate):
+    id: int
+
+    class Config:
+        from_attributes = True
+
+
+# ==========================================================
+# BOM Schema
+# ==========================================================
+
+class BOMCreate(BaseModel):
+    product_id: int
+    raw_material_id: int
+    quantity_required: float
+
+
+class BOMResponse(BOMCreate):
+    id: int
+
+    class Config:
+        from_attributes = True
+
+
 
 
 
