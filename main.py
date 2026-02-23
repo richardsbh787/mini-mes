@@ -1,3 +1,4 @@
+from consumption_engine import ConsumptionRequest, build_ledger_entry
 from models import InventoryTransaction
 from models import MaterialTransaction, RawMaterialInventory
 from models import BOM
