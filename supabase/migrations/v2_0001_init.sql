@@ -128,3 +128,14 @@ create table if not exists production_plan_line (
 );
 
 
+create table if not exists bom (
+  id uuid primary key default gen_random_uuid(),
+  org_id uuid not null references org(id) on delete cascade,
+  parent_item_id uuid not null references item(id),
+  version int not null default 1,
+  status text not null default 'ACTIVE', -- ACTIVE | INACTIVE
+  created_at timestamptz not null default now(),
+  unique (org_id, parent_item_id, version)
+);
+
+
