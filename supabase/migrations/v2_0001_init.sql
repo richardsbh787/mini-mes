@@ -51,3 +51,21 @@ create table if not exists item (
   unique (org_id, sku)
 );
 
+
+create table if not exists stock_ledger (
+  id uuid primary key default gen_random_uuid(),
+  org_id uuid not null references org(id) on delete cascade,
+  item_id uuid not null references item(id),
+  location_id uuid references warehouse_location(id),
+  txn_type text not null, -- 'RECEIPT' | 'ISSUE' | 'ADJ_701' | 'ADJ_702'
+  qty numeric(18,6) not null,
+  uom text not null default 'PCS',
+  ref_type text,
+  ref_id uuid,
+  note text,
+  occurred_at timestamptz not null default now(),
+  created_at timestamptz not null default now()
+);
+
+
+
