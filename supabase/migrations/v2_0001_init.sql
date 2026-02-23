@@ -39,3 +39,15 @@ create table if not exists warehouse_location (
 );
 
 
+create table if not exists item (
+  id uuid primary key default gen_random_uuid(),
+  org_id uuid not null references org(id) on delete cascade,
+  sku text not null,
+  name text not null,
+  item_type text not null, -- 'RM' | 'FG'
+  uom text not null default 'PCS',
+  is_active boolean not null default true,
+  created_at timestamptz not null default now(),
+  unique (org_id, sku)
+);
+
