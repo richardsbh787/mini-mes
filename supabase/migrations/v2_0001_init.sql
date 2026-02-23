@@ -113,3 +113,18 @@ create table if not exists production_plan (
 );
 
 
+create table if not exists production_plan_line (
+  id uuid primary key default gen_random_uuid(),
+  org_id uuid not null references org(id) on delete cascade,
+  plan_id uuid not null references production_plan(id) on delete cascade,
+  work_order_id uuid not null,
+  sequence_no int not null default 1,
+  planned_start_date date,
+  planned_end_date date,
+  status text not null default 'PLANNED', -- PLANNED | IN_PROGRESS | DONE | HOLD
+  note text,
+  created_at timestamptz not null default now(),
+  unique (plan_id, work_order_id)
+);
+
+
