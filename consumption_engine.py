@@ -23,9 +23,9 @@ class LedgerEntry:
     location_id: Optional[str]
     txn_type: str  # "ISSUE" or "RECEIPT" etc.
     qty: Decimal
-    uom: str = "PCS"
     ref_type: str
     ref_id: str
+    uom: str = "PCS"
     note: Optional[str] = None
 
 
