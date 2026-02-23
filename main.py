@@ -44,20 +44,18 @@ from schemas import (
 
 app = FastAPI()
 @app.post("/v2/consume/preview")
-def consume_preview():
+def consume_preview(org_id: str, work_order_id: str, item_id: str, qty: Decimal, direction: str = "CONSUME", reason: str = "preview"):
     req = ConsumptionRequest(
-        org_id="demo-org",
-        work_order_id="demo-wo",
+        org_id=org_id,
+        work_order_id=work_order_id,
         bom_id=None,
-        item_id="demo-item",
+        item_id=item_id,
         location_id=None,
-        qty=Decimal("1.000000"),
-        direction="CONSUME",
-        reason="preview",
+        qty=qty,
+        direction=direction,
+        reason=reason,
     )
     return build_ledger_entry(req).__dict__
-Base.metadata.create_all(bind=engine)
-
 
 # ==========================
 # Root
