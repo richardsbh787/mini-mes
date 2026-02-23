@@ -388,6 +388,26 @@ def log_production(log: ProductionLogCreate, db: Session = Depends(get_db)):
             quantity=required_qty,
             reference_id=work_order.id
         ))
+       
+        # 先拿到原料主数据（为了取 material_code)
+        rm = db.query(RawMaterial).filter(RawMaterial.id == item.raw_material_id).first()
+        if not rm:
+            raise HTTPException(status_code=400, detail=f"Raw material master not found: {item.raw_material_id}")
+
+        db.add(StockLedger(
+            org_id="demo-org",                 # 先保留写死，后续你做 multi-tenant 再换
+            item_id=rm.material_code,          # ✅ 用 RM-DEMO-001 这种
+            location_id=None,
+            txn_type="ISSUE",
+            qty=float(required_qty),
+            uom=rm.unit or "PCS",              # ✅ 优先用原料自己的 unit
+            ref_type="work_order",
+            ref_id=str(work_order.id),
+            note="auto consume from production-log",
+        ))
+
+
+
 
 
     # ==========================================================
