@@ -92,6 +92,11 @@ def consume_commit(org_id: str, work_order_id: str, item_id: str, qty: Decimal, 
 
     return {"ok": True, "stock_ledger_id": row.id, "txn_type": row.txn_type, "qty": row.qty}
 
+@app.get("/v2/stock-ledger")
+def get_stock_ledger(limit: int = 20, db: Session = Depends(get_db)):
+    return db.query(StockLedger).order_by(StockLedger.id.desc()).limit(limit).all()
+
+
 # ==========================
 # Root
 # ==========================
