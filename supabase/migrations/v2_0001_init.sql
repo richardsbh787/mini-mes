@@ -94,3 +94,8 @@ create table if not exists inventory_adjustment_line (
 );
 
 
+alter table inventory_adjustment
+  add constraint inventory_adjustment_status_chk
+  check (status in ('DRAFT','APPROVED','VOID'));
+
+
