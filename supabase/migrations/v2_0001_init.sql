@@ -139,3 +139,16 @@ create table if not exists bom (
 );
 
 
+create table if not exists bom_line (
+  id uuid primary key default gen_random_uuid(),
+  org_id uuid not null references org(id) on delete cascade,
+  bom_id uuid not null references bom(id) on delete cascade,
+  component_item_id uuid not null references item(id),
+  qty_per numeric(18,6) not null,
+  uom text not null default 'PCS',
+  scrap_rate numeric(6,4) not null default 0, -- 0.0000 ~ 1.0000
+  created_at timestamptz not null default now(),
+  unique (bom_id, component_item_id)
+);
+
+
