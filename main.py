@@ -1,3 +1,4 @@
+from decimal import Decimal
 from consumption_engine import ConsumptionRequest, build_ledger_entry
 from models import InventoryTransaction
 from models import MaterialTransaction, RawMaterialInventory
@@ -42,6 +43,19 @@ from schemas import (
 # ==========================
 
 app = FastAPI()
+@app.post("/v2/consume/preview")
+def consume_preview():
+    req = ConsumptionRequest(
+        org_id="demo-org",
+        work_order_id="demo-wo",
+        bom_id=None,
+        item_id="demo-item",
+        location_id=None,
+        qty=Decimal("1.000000"),
+        direction="CONSUME",
+        reason="preview",
+    )
+    return build_ledger_entry(req).__dict__
 Base.metadata.create_all(bind=engine)
 
 
