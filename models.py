@@ -316,4 +316,27 @@ class InventoryTransaction(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
 
+class StockLedger(Base):
+    __tablename__ = "stock_ledger"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    org_id = Column(String, nullable=False, index=True)
+    item_id = Column(String, nullable=False, index=True)
+    location_id = Column(String, nullable=True, index=True)
+
+    txn_type = Column(String, nullable=False)  # ISSUE / RECEIPT / ADJ_701 / ADJ_702
+    qty = Column(Float, nullable=False)
+    uom = Column(String, nullable=False, default="PCS")
+
+    ref_type = Column(String, nullable=True)
+    ref_id = Column(String, nullable=True)
+    note = Column(String, nullable=True)
+
+    occurred_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+
+
+
+
 
