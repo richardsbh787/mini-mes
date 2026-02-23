@@ -1,3 +1,5 @@
+
+
 from decimal import Decimal
 from consumption_engine import ConsumptionRequest, build_ledger_entry
 from models import InventoryTransaction
@@ -16,6 +18,7 @@ from sqlalchemy.orm import Session
 from database import engine, get_db
 from models import (
     Base,
+    StockLedger,
     Product,
     SalesOrder,
     ProductionLine,
@@ -43,6 +46,7 @@ from schemas import (
 # ==========================
 
 app = FastAPI()
+Base.metadata.create_all(bind=engine)
 @app.post("/v2/consume/preview")
 def consume_preview(org_id: str, work_order_id: str, item_id: str, qty: Decimal, direction: str = "CONSUME", reason: str = "preview"):
     req = ConsumptionRequest(
@@ -56,6 +60,37 @@ def consume_preview(org_id: str, work_order_id: str, item_id: str, qty: Decimal,
         reason=reason,
     )
     return build_ledger_entry(req).__dict__
+
+@app.post("/v2/consume/commit")
+def consume_commit(org_id: str, work_order_id: str, item_id: str, qty: Decimal, direction: str = "CONSUME", reason: str = "commit", db: Session = Depends(get_db)):
+    req = ConsumptionRequest(
+        org_id=org_id,
+        work_order_id=work_order_id,
+        bom_id=None,
+        item_id=item_id,
+        location_id=None,
+        qty=qty,
+        direction=direction,
+        reason=reason,
+    )
+    led = build_ledger_entry(req)
+
+    row = StockLedger(
+        org_id=led.org_id,
+        item_id=led.item_id,
+        location_id=led.location_id,
+        txn_type=led.txn_type,
+        qty=float(led.qty),
+        uom=led.uom,
+        ref_type=led.ref_type,
+        ref_id=led.ref_id,
+        note=led.note,
+    )
+    db.add(row)
+    db.commit()
+    db.refresh(row)
+
+    return {"ok": True, "stock_ledger_id": row.id, "txn_type": row.txn_type, "qty": row.qty}
 
 # ==========================
 # Root
