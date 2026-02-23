@@ -152,3 +152,17 @@ create table if not exists bom_line (
 );
 
 
+create table if not exists consumption_event (
+  id uuid primary key default gen_random_uuid(),
+  org_id uuid not null references org(id) on delete cascade,
+  work_order_id uuid not null,
+  bom_id uuid,
+  item_id uuid not null references item(id),
+  location_id uuid references warehouse_location(id),
+  qty numeric(18,6) not null,
+  direction text not null, -- 'CONSUME' | 'REVERSE'
+  reason text,
+  created_at timestamptz not null default now()
+);
+
+
