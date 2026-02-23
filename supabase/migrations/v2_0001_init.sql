@@ -82,3 +82,15 @@ create table if not exists inventory_adjustment (
 );
 
 
+create table if not exists inventory_adjustment_line (
+  id uuid primary key default gen_random_uuid(),
+  org_id uuid not null references org(id) on delete cascade,
+  adjustment_id uuid not null references inventory_adjustment(id) on delete cascade,
+  item_id uuid not null references item(id),
+  location_id uuid references warehouse_location(id),
+  qty numeric(18,6) not null,
+  note text,
+  created_at timestamptz not null default now()
+);
+
+
