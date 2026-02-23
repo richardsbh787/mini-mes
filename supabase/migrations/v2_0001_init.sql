@@ -99,3 +99,17 @@ alter table inventory_adjustment
   check (status in ('DRAFT','APPROVED','VOID'));
 
 
+create table if not exists production_plan (
+  id uuid primary key default gen_random_uuid(),
+  org_id uuid not null references org(id) on delete cascade,
+  plan_no text not null,
+  status text not null default 'PLANNED', -- PLANNED | RELEASED | CLOSED | VOID
+  start_date date,
+  end_date date,
+  priority int not null default 3,
+  note text,
+  created_at timestamptz not null default now(),
+  unique (org_id, plan_no)
+);
+
+
