@@ -68,4 +68,17 @@ create table if not exists stock_ledger (
 );
 
 
+create table if not exists inventory_adjustment (
+  id uuid primary key default gen_random_uuid(),
+  org_id uuid not null references org(id) on delete cascade,
+  adjustment_type text not null, -- '701' | '702'
+  status text not null default 'DRAFT', -- DRAFT | APPROVED | VOID
+  reason_code text,
+  ref_doc text,
+  note text,
+  approved_by uuid,
+  approved_at timestamptz,
+  created_at timestamptz not null default now()
+);
+
 
