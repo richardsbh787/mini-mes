@@ -166,3 +166,6 @@ create table if not exists consumption_event (
 );
 
 
+alter table consumption_event
+  add column stock_ledger_id uuid;
+
