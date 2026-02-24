@@ -1,7 +1,124 @@
 Mini-MES Dev Log
 
-Date: 2026-02-15
 
+-------------------------------------------------------
+Day2 done: /v2/stock/onhand
+onhand uses sum(stock_ledger.qty)
+commit payload cleaned (no warehouse/location)
+--------------------------------------------------------
+在你的 Mini-MES Dev Log.txt 追加一行：
+onhand_demo = -7 (org=c243..., item=97e3..., asof 2026-02-24)
+-------------------------------------------------------
+
+Date : 2026-02-24
+为了避免你后面忘 UUID，
+请把这两个值写进你本地 Mini-MES Dev Log.txt（追加一小段）：
+
+demo_org_uuid = c243bd45-6032-4217-88cb-94d6cfdffebc
+
+demo_item_uuid = 97e34f3f-5e70-441a-ab26-3c5508cdb060
+
+--------------------------------------------------------
+
+
+CURRENT LOCKED TASK
+Mini-MES V2：Ultimate Mode / Step-Lock Mode / Supabase 架构开发（Schema + RLS + 模块边界）
+
+Step 1（锁定执行）— 建立 Supabase「工业级数据底座」蓝图（V2）
+目标：先把 数据模型 + 约束 + 可扩展边界 定死，后续 API / UI 才不会反复推倒。
+1) Supabase 项目基线
+Auth：Email/Password（先够用）
+组织隔离：multi-tenant（每条业务数据必须带 org_id）
+权限：RLS 默认全开（除系统表）
+
+
+2) V2 核心表（必须含你已锁定的模块）
+A. Inventory（含 Post Inventory Adjustments 701/702）
+inventory_item（物料/成品主档：RM/FG）
+inventory_location（仓位/库位）
+stock_ledger（唯一库存总账：所有入出/调整都写这里）
+inventory_adjustment（701/702：Raw Materials / Finished Goods）
+字段要有：adjustment_type(701/702), reason_code, ref_doc, approved_by, approved_at
+
+
+B. Production + Scrap（更细）
+work_order
+production_event（产线事件流：开工/完工/暂停/报废等）
+scrap_event（报废明细：原因、数量、责任归属可选、照片/附件可选）
+scrap_disposition（报废去向：返工/报废/让步接收/回收）
+
+C. Maintenance（设备维修保养）
+machine_asset
+maintenance_plan（点检/保养周期）
+maintenance_work_order（维修工单）
+maintenance_log（维修记录 + 停机原因）
+
+D. PLUS Commercial Layer（你要求 V2 必须有）
+billing_invoice
+lhdn_einvoice_profile / lhdn_einvoice_document
+sales_commission_policy / sales_commission_statement
+
+
+E. 贸易与运输（你要求必须有）
+purchase_order（incoterm 字段）
+shipment
+shipment_milestone
+shipment_insurance
+insurance_coverage_milestone
+
+
+3) 关键约束（防“系统库存≠实际库存”）
+库存只信 stock_ledger：任何 RM/FG 变动都必须写 ledger（包括 701/702）
+stock_on_hand 作为视图/物化视图（可选），不直接写
+所有业务表必须：org_id, created_at, created_by
+
+
+4) RLS 最小规则（先够用，后续再加细）
+org_id = auth.jwt() ->> 'org_id' 才允许 SELECT/INSERT/UPDATE
+关键表（ledger/adjustment/commission/einvoice）需要额外：仅 role=admin/finance 可写
+
+
+5) 交付物（Step 1 输出你会拿来开工）
+V2_ERD（表清单 + 主外键）
+迁移脚本 v2_0001_init.sql
+RLS policies v2_0002_rls.sql
+
+
+—---------------------------------------------------------------------------------------------------------------------------
+
+已完成（全部都在 supabase/migrations/v2_0001_init.sql，并已 commit+push 到 v2-multilevel-bom）：
+V2 分支隔离：V1(main) 不会被污染。
+
+
+Supabase 基础：启用 pgcrypto（支持 uuid）。
+多租户底座：org + org_user（以后所有数据用 org_id 隔离）。
+WMS 骨架：warehouse（仓库）+ warehouse_location（库位/bin）。
+物料/成品主档：item（RM/FG 统一）。
+库存唯一总账：stock_ledger（所有入库/出库/调整/扣料都要写这里）。
+701/702 调整单：inventory_adjustment + inventory_adjustment_line + 状态约束。
+排程骨架：production_plan + production_plan_line。
+多层 BOM 骨架：bom + bom_line。
+自动扣料事件骨架：consumption_event，并加了 stock_ledger_id（为扣料→写入总账做桥）。
+我们到目前完成了什么（极简）
+V2 分支已建立并推送 ✅
+V2 自动扣料引擎骨架（ConsumptionRequest / LedgerEntry / build_ledger_entry）✅
+/v2/consume/preview 可预览生成 ledger ✅
+/v2/consume/commit 可写入 stock_ledger ✅
+关键修复：补回 Base.metadata.create_all 并确认 stock_ledger 表已创建 ✅
+你现在已经具备的能力（极简）
+预览扣料：/v2/consume/preview
+真实写入扣料到库存总账：/v2/consume/commit
+查询库存总账：/v2/stock-ledger
+
+
+今天你已经完成：
+✅ Supabase 写入闭环：/v2/consume/commit 写 stock_ledger + consumption_event
+✅ Supabase 查询：/v2/stock-ledger 读取最新台账
+✅ ref_id 追溯：ledger.ref_id 回写 event.id
+✅ preview/commit 分离：preview 不落库，commit 落库
+
+
+Date: 2026-02-15
 Phase: Risk Engine V1
 
 Today Done:
@@ -17,7 +134,6 @@ System Status:
 
 Next Step:
 - Add PATCH /work-order
-
 
 -----------------------------------------
 2026-02-16
@@ -45,16 +161,11 @@ Material Ready / Not Ready
 Role 权限
 👉 交期控制神器
 
-
-
 🟡 Pro Plan
 Simulation Mode
 Advanced Queue Control
 Delay Analytics
 Confidence Scoring
-
-
-
 
 🔴 Advanced Plan
 Waiver Workflow

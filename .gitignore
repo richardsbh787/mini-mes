@@ -16,3 +16,5 @@ mini_mes.db
 
 # Secrets
 token_git.txt
+
+.env
