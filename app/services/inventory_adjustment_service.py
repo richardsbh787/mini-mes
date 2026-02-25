@@ -8,7 +8,7 @@ from app.repositories.stock_ledger_repo import insert_adjustment_ledger, update_
 def commit_adjustment(payload: Dict[str, Any]) -> Dict[str, Any]:
     """
     Minimal payload:
-      org_id (uuid), adj_type ("701" or "702"), reason (text), lines: [{item_id(uuid), qty(float), uom(text), note(optional)}]
+      org_id (uuid), adj_type ("701" or "702"), reason (text), lines: [{item_id(uuid), qty(float), uom(text), note(optional)}] (uom only stored in                 stock_ledger)
     """
     org_id = payload["org_id"]
     adj_type = payload["adj_type"]
