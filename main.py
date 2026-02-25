@@ -133,9 +133,9 @@ def stock_onhand(org_id: str, item_id: str):
     return {"org_id": org_id, "item_id": item_id, "onhand_qty": get_onhand(org_id, item_id)}
 
 @app.post("/v2/inventory-adjustment/commit")
-def inventory_adjustment_commit(org_uuid: str, item_id: str, qty: Decimal):
+def inventory_adjustment_commit(org_id: str, item_id: str, qty: Decimal):
     payload = {
-        "org_id": org_uuid,
+        "org_id": org_id,
         "adj_type": "701",
         "reason": "manual",
         "lines": [
