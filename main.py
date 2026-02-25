@@ -590,6 +590,7 @@ app.include_router(model_routing_router)
 from app.api.v2.routing_check import router as routing_check_router
 app.include_router(routing_check_router)
 
-
+from app.api.v2.e2e_bootstrap import router as e2e_bootstrap_router
+app.include_router(e2e_bootstrap_router)
 
 

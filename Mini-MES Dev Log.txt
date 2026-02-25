@@ -1,6 +1,8 @@
 Mini-MES Dev Log
 
 
+
+✅ Routing：model_routing 表 + /v2/model-routing upsert/get + /v2/routing-check（next_stage）
 -------------------------------------------------------
 Day2 done: /v2/stock/onhand
 onhand uses sum(stock_ledger.qty)
