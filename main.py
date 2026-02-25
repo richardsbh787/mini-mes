@@ -113,12 +113,14 @@ def consume_commit(
     org_id: str,
     item_id: str,
     qty: Decimal,
+    model_code: str | None = None
 ):
     payload = {
         "org_id": org_id,
         "item_id": item_id,
         "qty": float(qty),
         "uom": "ea",
+        "model_code": model_code,
     }
     return commit_consume(payload)
 
