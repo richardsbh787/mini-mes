@@ -587,6 +587,9 @@ def get_inventory_transactions(db: Session = Depends(get_db)):
 from app.api.v2.model_routing import router as model_routing_router
 app.include_router(model_routing_router)
 
+from app.api.v2.routing_check import router as routing_check_router
+app.include_router(routing_check_router)
+
 
 
 
