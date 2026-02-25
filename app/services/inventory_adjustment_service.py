@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import Any, Dict, List
 from datetime import datetime, timezone
 
-from app.repositories.inventory_adjustment_repo import insert_adjustment, insert_adjustment_lines
+from app.repositories.inventory_adjustment_repo import insert_adjustment, insert_adjustment_line
 from app.repositories.stock_ledger_repo import insert_adjustment_ledger, update_ref_id
 
 def commit_adjustment(payload: Dict[str, Any]) -> Dict[str, Any]:
@@ -45,8 +45,12 @@ def commit_adjustment(payload: Dict[str, Any]) -> Dict[str, Any]:
          
         })
 
-    inserted_lines = insert_adjustment_lines(line_rows)
-
+    inserted_lines = []
+    for lr, led_id in zip(line_rows, ledger_ids):
+        lr2 = dict(lr)
+        ln = insert_adjustment_line(lr2)
+        inserted_lines.append(ln)
+        update_ref_id(led_id, ln["id"])
 
     return {
         "ok": True,

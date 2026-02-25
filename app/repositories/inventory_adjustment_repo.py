@@ -16,3 +16,11 @@ def insert_adjustment_lines(lines: List[Dict[str, Any]]) -> List[Dict[str, Any]]
     resp = sb_table(LIN).insert(lines).execute()
     data = getattr(resp, "data", None)
     return data or []
+
+
+def insert_adjustment_line(line: Dict[str, Any]) -> Dict[str, Any]:
+    resp = sb_table(LIN).insert(line).execute()
+    data = getattr(resp, "data", None)
+    if not data:
+        raise RuntimeError("Supabase insert inventory_adjustment_line returned empty data")
+    return data[0]

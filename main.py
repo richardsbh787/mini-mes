@@ -582,3 +582,11 @@ def get_boms(db: Session = Depends(get_db)):
 @app.get("/inventory-transactions")
 def get_inventory_transactions(db: Session = Depends(get_db)):
     return db.query(InventoryTransaction).order_by(InventoryTransaction.created_at.desc()).all()
+
+
+from app.api.v2.model_routing import router as model_routing_router
+app.include_router(model_routing_router)
+
+
+
+
