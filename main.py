@@ -98,12 +98,12 @@ def root():
 # ==========================================================
 @app.post("/v2/consume/preview")
 def consume_preview(
-    org_uuid: str,
+    org_id: str,
     item_id: str,
     qty: Decimal,
 ):
     payload = {
-        "org_id": org_uuid,
+        "org_id": org_id,
         "item_id": item_id,
         "qty": float(qty),
         "uom": "ea",
@@ -113,12 +113,12 @@ def consume_preview(
 
 @app.post("/v2/consume/commit")
 def consume_commit(
-    org_uuid: str,
+    org_id: str,
     item_id: str,
     qty: Decimal,
 ):
     payload = {
-        "org_id": org_uuid,
+        "org_id": org_id,
         "item_id": item_id,
         "qty": float(qty),
         "uom": "ea",
