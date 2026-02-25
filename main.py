@@ -11,9 +11,6 @@ from typing import List
 from app.services.consume_service import preview_consume
 from app.repositories.stock_ledger_repo import get_onhand
 from app.services.inventory_adjustment_service import commit_adjustment
-
-
-
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 
@@ -128,12 +125,12 @@ def consume_commit(
 from app.repositories.stock_ledger_repo import list_ledger
 
 @app.get("/v2/stock-ledger")
-def get_stock_ledger(org_uuid: str, limit: int = 20):
-    return list_ledger(org_id=org_uuid, limit=limit)
+def get_stock_ledger(org_id: str, limit: int = 20):
+    return list_ledger(org_id=org_id, limit=limit)
 
 @app.get("/v2/stock/onhand")
-def stock_onhand(org_uuid: str, item_id: str):
-    return {"org_id": org_uuid, "item_id": item_id, "onhand_qty": get_onhand(org_uuid, item_id)}
+def stock_onhand(org_id: str, item_id: str):
+    return {"org_id": org_id, "item_id": item_id, "onhand_qty": get_onhand(org_id, item_id)}
 
 @app.post("/v2/inventory-adjustment/commit")
 def inventory_adjustment_commit(org_uuid: str, item_id: str, qty: Decimal):
