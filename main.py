@@ -13,7 +13,6 @@ from app.repositories.stock_ledger_repo import get_onhand
 from app.services.inventory_adjustment_service import commit_adjustment
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
-
 from database import engine, get_db
 
 # ✅ Consumption Engine (v2)
@@ -78,7 +77,8 @@ print(">>> USING THIS MAIN FILE <<<")
 # App Init
 # ==========================
 app = FastAPI()
-
+from app.api.v2.fg_receive import router as fg_receive_router
+app.include_router(fg_receive_router)
 # ✅ 关键：确保所有 models 都被 import 后，再 create_all
 Base.metadata.create_all(bind=engine)
 
