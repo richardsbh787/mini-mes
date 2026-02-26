@@ -2,12 +2,37 @@ Mini-MES Dev Log
 
 
 
+---------------------------------------------------------------
+我要你做的很简单：在你的 Mini-MES Dev Log 里加两行“记录本次验证用的 ledger id”，
+以后你查账/回放 E2E 不会丢。在 Dev Log 追加这两行（原样）：
+
+consume_ledger_id = f3bec36d-1bff-4dbf-aa53-22ca063da982
+
+fg_receive_ledger_id = a92506fd-f9de-4c18-afee-87914a799229
+
+--------------------------------------------------------
+✅ FG Receive：新增 /v2/fg/receive 写 stock_ledger（txn_type=RECEIVE）并已验证可查询
+--------------------------------------------------------
+✅ Consumption Event：已支持写入 model_code（可追溯到 MODEL-A）
+--------------------------------------------------------
+✅ DB Migration：v2_0003 新增 consumption_event.model_code（已执行 + 已入 Git）
+-------------------------------------------------------
+✅ Consume: commit 支持可选 model_code（为后续按 routing/stage 绑定做准备）
+------------------------------------------------------
+✅ Inventory Adjustment: 参数统一 org_id + E2E 已验证（ledger 生成 + ref_id 回写） + docstring 对齐
+------------------------------------------------------
+✅ Adjustment E2E：/v2/inventory-adjustment/commit 参数 org_id，生成 ledger（txn_type=ADJUSTMENT）且 ref_id=adjustment_line.id
+------------------------------------------------------
+✅ Stock Query：/v2/stock-ledger + /v2/stock/onhand 参数统一 org_id，Swagger 已验证
+------------------------------------------------------
+✅ Consume E2E：/v2/consume preview/commit + ledger 可查 + ledger.ref_id = consumption_event_id
+------------------------------------------------------
 ✅ Routing：model_routing 表 + /v2/model-routing upsert/get + /v2/routing-check（next_stage）
 -------------------------------------------------------
 Day2 done: /v2/stock/onhand
 onhand uses sum(stock_ledger.qty)
 commit payload cleaned (no warehouse/location)
---------------------------------------------------------
+-------------------------------------------------------
 在你的 Mini-MES Dev Log.txt 追加一行：
 onhand_demo = -7 (org=c243..., item=97e3..., asof 2026-02-24)
 -------------------------------------------------------
@@ -176,7 +201,6 @@ Risk Audit Trail
 Financial Visibility Layer
 👉 适合 80–150 人结构化工厂
 
-
 ------------------------------------------
 
 🧱 MVP 最终范围（再次锁定）
@@ -227,7 +251,6 @@ AI 优化
 如果达成，
 你已经有可卖基础。
 
-
 ---------------------------------------------
 
 现在给你 Mini-MES 全系统工业计算总纲。
@@ -264,10 +287,7 @@ REWORK 是否耗料 = 由 rework_consumes_material 决定
 
 1️⃣ 有效耗料工时
 consumption_hours = produced_hours + scrap_hours
-
-
 如果：
-
 rework_consumes_material == True
     consumption_hours += rework_hours
 
@@ -275,9 +295,7 @@ rework_consumes_material == True
 required_qty = consumption_hours × quantity_required
 
 3️⃣ 总耗料
-
 对每一个 BOM item：
-
 material_inventory.quantity_on_hand -= required_qty
 
 4️⃣ 写交易记录
@@ -292,63 +310,41 @@ scrap 不产生库存
 scrap 只增加 actual_hours
 
 🔷 MODULE 4 — Rework 工业逻辑
-
 你当前选择的是：
-
 B = 支持生产 + 返工（无 warranty）
-
 情况 A（默认推荐）
 rework_consumes_material = False
-
-
 公式：
-
 只增加 actual_hours
 不扣原料
 
 情况 B（真实维修类）
 rework_consumes_material = True
-
-
 公式：
-
 原料 = GOOD + SCRAP + REWORK
 
 🔷 MODULE 5 — 库存系统
 原料库存公式
 New Inventory =
 Old Inventory - Σ(required_qty)
-
 库存不足判定
 IF quantity_on_hand < required_qty
     raise BLOCKED_MATERIAL
 
 🔷 MODULE 6 — 生产日志的数学真相
-
 每一次 POST /production-log：
-
 1️⃣ 更新工单时间
 2️⃣ 扣BOM原料
 3️⃣ 写MaterialTransaction
 4️⃣ 更新状态
 
 🔷 MODULE 7 — 你的数据库现在的真实验证
-
 你刚刚库存：
-
 100 → 86
-
-
 代表：
-
 累计消耗 = 14
-
-
 这符合：
-
 (生产+报废) × quantity_required
-
-
 ✔ 逻辑正确
 ✔ Scrap 已经计算
 ✔ Rework 可控
@@ -356,28 +352,21 @@ IF quantity_on_hand < required_qty
 
 🔷 MODULE 8 — 系统核心公式总览（最终版）
 actual_hours += produced + scrap + rework
-
 remaining = planned - actual
-
 consumption_hours =
     produced
   + scrap
   + (rework if consumes_material else 0)
-
 required_qty =
     consumption_hours × BOM.quantity_required
-
 inventory -= required_qty
 
 🔷 你现在的系统状态
-
 ✔ 工单时间系统稳定
 ✔ Scrap 已纳入
 ✔ Rework 可选耗料
 ✔ 库存逻辑工业级
 ✔ 交易记录可追溯
-
-
 
 -------------------------------------
 
@@ -1004,17 +993,11 @@ Mini ERP 级别
 🎯 六、如果你继续升级
 
 下一阶段会是：
-
 多层 BOM 递归展开
-
 批次号追溯
-
 原料批次选择逻辑
-
 MRP 自动算缺料
-
 标准成本 vs 实际成本
-
 那已经是 SAP / Oracle 级别逻辑。
 
 ------------------------------------
@@ -1022,118 +1005,71 @@ MRP 自动算缺料
 🧭 Mini-MES v2 升级路线图
 
 （工业逻辑进阶版）
-
 不会乱。分阶段推进。
-
 🔹 当前状态（v1 已完成）
-
 你已经拥有：
-
 单层 BOM
-
 自动扣料（Good + Scrap + Rework）
-
 原料库存
-
 成品库存
-
 工单状态机
-
 事件影响产能
-
 出货扣减
-
 这是：
-
 轻量级 MES 核心骨架
 
 🚀 v2 升级阶段设计
 
-我给你分 5 阶段。
+给你分 5 阶段。
 
 🟢 Phase 1 — 稳定工业扣料引擎（必须先做）
-
 目标：
-
 让当前系统“跑不坏”
-
 你要测试：
-
 Good only
-
 Good + Scrap
-
 Good + Scrap + Rework (不耗料)
-
 Good + Scrap + Rework (耗料)
-
 库存不足
-
 重复提交 log
-
 完工后再次提交 log
 
 如果全部稳定：
-
 ✔ 扣料引擎合格
 ✔ 可以进入 v2
 
-🟡 Phase 2 — 成品自动入库
-
+🟢Phase 2 — 成品自动入库
 现在你缺少：
-
 DONE → 自动增加成品库存
 
-
 当工单完成：
-
 Inventory.quantity_on_hand += good_qty
-
-
 这是完整制造闭环。
 
 🟠 Phase 3 — 多层 BOM
-
 加入：
-
 is_sub_assembly = True
-
-
 支持：
-
 递归展开 BOM
-
-
 这一步是结构升级，不是难度升级。
 
 🔵 Phase 4 — 批次追溯（Lot Tracking）
-
 新增字段：
-
 lot_no
-
-
 原料交易记录变成：
-
 MaterialTransaction:
   raw_material_id
   lot_no
   work_order_id
   quantity
 
-
 实现：
-
 质量回溯
-
 客诉追踪
-
 这是工业级必备。
 
 🔴 Phase 5 — 成本流动
-
 增加：
-
 unit_cost
 material_cost
 labor_cost
@@ -1141,7 +1077,6 @@ overhead_cost
 
 
 实现：
-
 实时产品成本
 毛利分析
 
@@ -1149,15 +1084,10 @@ overhead_cost
 这就是 ERP 的核心。
 
 🎯 你现在该做什么？
-
 不要升级。
-
 先完成：
-
 Phase 1 测试清单
-
 跑 20 次 production-log
-
 确认：
 
 库存永远正确
