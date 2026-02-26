@@ -1,9 +1,10 @@
 from __future__ import annotations
 from typing import Any, Dict
 from datetime import datetime, timezone
+from app.repositories.stock_ledger_repo import update_ref_id, insert_ledger
+from app.repositories.consumption_event_repo import insert_event
 
-from app.repos.stock_ledger_repo import update_ref_id, insert_ledger
-from app.repos.consumption_event_repo import insert_event
+
 
 def commit_consume(payload: Dict[str, Any]) -> Dict[str, Any]:
     """
@@ -16,6 +17,7 @@ def commit_consume(payload: Dict[str, Any]) -> Dict[str, Any]:
     item_id = payload["item_id"]
     qty = payload["qty"]
     uom = payload["uom"]
+    model_code = payload.get("model_code")
 
     
     # ISSUE: store as negative qty (locked convention)
@@ -39,6 +41,7 @@ def commit_consume(payload: Dict[str, Any]) -> Dict[str, Any]:
         "direction": "CONSUME",
         "reason": "commit",
         "stock_ledger_id": ledger_row["id"],
+        "model_code": model_code,
     })
     update_ref_id(ledger_row["id"], ev_row["id"]) 
     
