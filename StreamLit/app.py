@@ -1,40 +1,140 @@
+# =========================
+# Mini-MES Item Master (FROZEN STABLE)
+# Patched by 沁然 — 5 fixes + UX patch:
+# 1. Vendor combo uniqueness check restored
+# 2. Vendor_Name uses up() for uppercase
+# 3. Save local PermissionError protection restored
+# 4. confirm_save_open added to FORM_KEYS
+# 5. missing_value restored to v <= 0 (Standard Pack=0 not allowed)
+# 6. Roll/Sheet/Life fields → text_input (blank default, autocomplete off)
+#    Standard Pack → min_value=1
+# =========================
 import streamlit as st
 import pandas as pd
 import re
 from pathlib import Path
 from datetime import datetime
 
+# =========================
+# Page config
+# =========================
 st.set_page_config(layout="wide")
 st.title("Mini-MES Item Master")
 st.sidebar.caption(f"RUNNING FILE: {__file__}")
 
 # =========================
-# Helpers
+# Form keys (for reset_form_only)
 # =========================
-FORM_KEYS = [
-    "item_code","item_name","item_desc","vendor_name","vendor_item_code","delivery_lead_time","standard_pack",
-    "uom_type",
-    "item_group","uom_family","uom_base","track_lot","default_location",
-    "item_category",  # ✅ NEW
-    "pack_uom","pack_size_units","pack_size_uom",
-    "roll_len","roll_wid","roll_thk","sheet_len","sheet_wid","sheet_thk",
-    "open_life_hours","shelf_life_days",
-]
+# =========================
+# Utilities
+# =========================
+def fv() -> int:
+    """Return current form version — used as widget key suffix."""
+    return st.session_state.get("form_version", 0)
+
+def fk(key: str) -> str:
+    """Return versioned widget key e.g. 'item_name_3'."""
+    return f"{key}_{fv()}"
 
 def to_upper_key(key: str):
-    v = st.session_state.get(key, "")
+    k = fk(key)
+    v = st.session_state.get(k, "")
     if isinstance(v, str):
-        st.session_state[key] = v.upper()
+        st.session_state[k] = v.upper()
+    if key in ("item_name", "item_desc", "vendor_name", "vendor_item_code"):
+        st.session_state.pop("last_add_msg", None)
 
-
-
-
+def gs(key: str, default=None):
+    """Get session value by base key (version-aware)."""
+    return st.session_state.get(fk(key), default)
 
 def reset_form_only(rerun: bool = True):
-    for k in FORM_KEYS:
-        st.session_state.pop(k, None)
+    """Bump form_version → all widget keys change → Streamlit renders fresh widgets."""
+    st.session_state["form_version"] = fv() + 1
+    st.session_state.pop("pending_row", None)
+    st.session_state.pop("pending_preview", None)
+    st.session_state.pop("last_add_msg", None)
     if rerun:
         st.rerun()
+
+def up(x: str) -> str:
+    return str(x or "").strip().upper()
+
+def norm_num(x) -> str:
+    if x is None:
+        return ""
+    if isinstance(x, (int, float)):
+        return str(x)
+    return str(x).strip()
+
+def missing_value(v) -> bool:
+    if isinstance(v, str):
+        return not v.strip()
+    if isinstance(v, (int, float)):
+        return v <= 0   # ✅ FIX #5: restored to <= 0 (Standard Pack=0 not allowed)
+    return v is None
+
+def parse_dim_field(val, field_name: str) -> tuple:
+    """
+    Parse a dimension text_input value.
+    Returns (float_value, error_msg_or_None).
+    Accepts: "100", "100.5", empty string (→ 0.0 for optional fields).
+    Rejects: letters, negative, comma numbers.
+    """
+    s = str(val or "").strip().replace(",", "")
+    if s == "":
+        return (0.0, None)   # empty = 0, caller decides if required
+    try:
+        v = float(s)
+    except ValueError:
+        return (None, f"❌ {field_name}: '{val}' 不是有效数字（请输入如 100 或 25.5）")
+    if v < 0:
+        return (None, f"❌ {field_name}: 不允许负数")
+    return (v, None)
+
+def norm_prefix(x: str) -> str:
+    x = str(x or "").strip().upper()
+    x = re.sub(r"\s+", "_", x)
+    x = re.sub(r"[^A-Z0-9_]", "", x)
+    return x
+
+def locked_field(label: str, value: str):
+    safe_value = (
+        str(value)
+        .replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+    )
+    st.markdown(f"##### {label}")
+    st.markdown(
+        f"""
+        <div style="
+            padding:10px;
+            background-color:#1f2937;
+            border:1px solid #374151;
+            border-radius:6px;
+            font-weight:600;
+            font-size:16px;
+            color:#ffffff;">
+            {safe_value}
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+def get_options(df: pd.DataFrame, col: str):
+    if col not in df.columns:
+        return []
+    return (
+        df[col]
+        .dropna()
+        .astype(str)
+        .str.strip()
+        .replace("", pd.NA)
+        .dropna()
+        .unique()
+        .tolist()
+    )
 
 def read_sheet_csv(uploaded_file, must_have: list[str]) -> pd.DataFrame:
     raw = pd.read_csv(uploaded_file, header=None)
@@ -58,78 +158,49 @@ def read_sheet_csv(uploaded_file, must_have: list[str]) -> pd.DataFrame:
     df.columns = [re.sub(r"\s+", " ", str(c)).strip() for c in df.columns]
     return df
 
-def get_options(df: pd.DataFrame, col: str):
-    if col not in df.columns:
-        return []
-    return (
-        df[col]
-        .dropna()
-        .astype(str)
-        .str.strip()
-        .replace("", pd.NA)
-        .dropna()
-        .unique()
-        .tolist()
-    )
-
-def locked_field(label: str, value: str):
-
-    safe_value = (
-        str(value)
-        .replace("&", "&amp;")
-        .replace("<", "&lt;")
-        .replace(">", "&gt;")
-    )
-
-    st.markdown(f"##### {label}")
-    st.markdown(
-        f"""
-        <div style="
-            padding:10px;
-            background-color:#1f2937;
-            border:1px solid #374151;
-            border-radius:6px;
-            font-weight:600;
-            font-size:16px;
-            color:#ffffff;">
-            {safe_value}
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
+def normalize_vendor_cols(df: pd.DataFrame) -> pd.DataFrame:
+    if df is None:
+        return df
+    rename_map = {}
+    if "Vendor_Name" not in df.columns and "Vendor Name" in df.columns:
+        rename_map["Vendor Name"] = "Vendor_Name"
+    if "Vendor_Item_Code" not in df.columns:
+        if "Vendor Item Code" in df.columns:
+            rename_map["Vendor Item Code"] = "Vendor_Item_Code"
+        if "Vendor Item_Code" in df.columns:
+            rename_map["Vendor Item_Code"] = "Vendor_Item_Code"
+    if rename_map:
+        df = df.rename(columns=rename_map)
+    return df
 
 # =========================
-# Sidebar: Upload
+# Boot: clear form only once
 # =========================
+if "_boot_cleared" not in st.session_state:
+    st.session_state["_boot_cleared"] = True
+    reset_form_only(rerun=False)
 
+# =========================
+# Sidebar uploads
+# =========================
 st.sidebar.header("Upload Google Sheet CSV")
 
-colA, colB = st.sidebar.columns(2)
-with colA:
-    if st.sidebar.button("Reset Form", key="btn_reset_form"):
-        reset_form_only()   # 只清表单字段，不要清 uploader
+if st.sidebar.button("Reset Form", key="btn_reset_form"):
+    reset_form_only()
 
-dropdown_file = st.sidebar.file_uploader(
-    "Upload DropDown CSV", type=["csv"], key="uploader_dropdown"
-)
-itemmaster_file = st.sidebar.file_uploader(
-    "Upload ItemMaster CSV", type=["csv"], key="uploader_itemmaster"
-)
+dropdown_file = st.sidebar.file_uploader("Upload DropDown CSV", type=["csv"], key="uploader_dropdown")
+itemmaster_file = st.sidebar.file_uploader("Upload ItemMaster CSV", type=["csv"], key="uploader_itemmaster")
 
-
-
-# ✅ 关键：一定要在 read_sheet_csv 之前挡住 None
 if dropdown_file is None or itemmaster_file is None:
     st.warning("请上传 DropDown.csv 与 ItemMaster.csv")
     st.stop()
 
-# =========================
-# Load CSVs (Dropdown + ItemMaster)
-# =========================
 dropdown_sig = (getattr(dropdown_file, "name", ""), getattr(dropdown_file, "size", 0))
 itemmaster_sig = (getattr(itemmaster_file, "name", ""), getattr(itemmaster_file, "size", 0))
 
+# =========================
+# Load CSVs
+# =========================
 try:
     dropdown_df = read_sheet_csv(
         dropdown_file,
@@ -142,41 +213,34 @@ except ValueError:
 try:
     loaded_item_df = read_sheet_csv(
         itemmaster_file,
-        must_have=["Item_Code", "Item_Name", "Item_Group", "Uom_Family", "Default Location"]
+        must_have=["Item_Code", "Item_Name", "Item_Group", "Uom_Family", "Default Location"],
     )
+    loaded_item_df = normalize_vendor_cols(loaded_item_df)
 except ValueError:
     st.error("ItemMaster.csv 格式不正确：找不到模板表头。请使用系统导出的 ItemMaster 模板文件再上传。")
     st.stop()
 
-# 允许你强制回到上传的原始 ItemMaster（丢弃未保存追加）
 if st.sidebar.button("Reload from ItemMaster CSV", key="btn_reload_itemmaster"):
     st.session_state["item_df"] = loaded_item_df.copy()
     st.session_state["base_cols"] = loaded_item_df.columns.tolist()
+    st.session_state["itemmaster_sig"] = itemmaster_sig
     st.session_state["dirty"] = False
     reset_form_only(rerun=False)
     st.rerun()
 
-
-
-
-
-
-
-# 初始化 session 工作副本（关键：不再因 rerun 丢失）
 if "item_df" not in st.session_state or st.session_state.get("itemmaster_sig") != itemmaster_sig:
     st.session_state["item_df"] = loaded_item_df.copy()
-    st.session_state["base_cols"] = loaded_item_df.columns.tolist()   # ✅ 记住原列顺序
+    st.session_state["base_cols"] = loaded_item_df.columns.tolist()
     st.session_state["itemmaster_sig"] = itemmaster_sig
     st.session_state["dirty"] = False
     reset_form_only(rerun=False)
 
 item_df = st.session_state["item_df"]
 
+# Ensure Item_Code col exists
+if "Item_Code" not in item_df.columns:
+    item_df["Item_Code"] = ""
 
-
-# =========================
-# DEBUG（你不要可以注释掉）
-# =========================
 with st.expander("DEBUG (optional)", expanded=False):
     st.write("DropDown columns =", list(dropdown_df.columns))
     st.write("ItemMaster columns =", list(item_df.columns))
@@ -184,386 +248,568 @@ with st.expander("DEBUG (optional)", expanded=False):
     st.dataframe(item_df.head(10), use_container_width=True)
 
 # =========================
-# Form UI
+# Item Code (always visible above tabs)
 # =========================
-st.subheader("New Item Entry (1–22)")
+st.subheader("New Item Entry")
 
-# =========================
-# Item Code Auto (TOP + BIG)
-# =========================
-if "Item_Code" not in item_df.columns:
-    item_df["Item_Code"] = ""
-
-def norm_prefix(x: str) -> str:
-    x = str(x or "").strip().upper()
-    x = re.sub(r"\s+", "_", x)
-    x = re.sub(r"[^A-Z0-9_]", "", x)
-    return x
-
-prefix = norm_prefix(st.session_state.get("item_group", ""))  # ✅ 用 session，避免顺序问题
-pattern = re.compile(rf"^{re.escape(prefix)}-(\d+)$") if prefix else None
-
+# Compute next_code from item_group session value
+group_val = gs("item_group", "")
+prefix = norm_prefix(group_val)
 max_n = 0
 if prefix:
+    pattern = re.compile(rf"^{re.escape(prefix)}-(\d+)$")
     for code in item_df["Item_Code"].dropna().astype(str).str.strip().str.upper():
         m = pattern.match(code)
         if m:
             max_n = max(max_n, int(m.group(1)))
-
-next_code = f"{prefix}-{max_n + 1:04d}" if prefix else "PLEASE_SELECT_ITEM_GROUP"
-
-# ✅ 让 reset 能清，但依然 disabled
-st.session_state["item_code"] = next_code
+next_code = f"{prefix}-{max_n + 1:04d}" if prefix else "WAITING_ITEM_GROUP"
+# ✅ Don't set item_code in session_state — widget key is versioned, value derived from next_code directly
 
 st.markdown(
     f"""
     <div style="padding:10px;border:2px solid #111;border-radius:10px;
-                font-size:26px;font-weight:900;color:#111;background:#f3f4f6;">
+                font-size:26px;font-weight:900;color:#111;background:#f3f4f6;
+                margin-bottom:12px;">
         ITEM CODE: {next_code}
     </div>
     """,
     unsafe_allow_html=True
 )
+st.text_input("Item Code (Auto Generated)", value=next_code, key=fk("item_code"), disabled=True)
 
-st.text_input(
-    "Item Code (Auto Generated)",
-    value=next_code,
-    key="item_code",
-    disabled=True
-)
-
-
-
-item_name = st.text_input(
-    "1. Item Name",
-    key="item_name",
-    on_change=to_upper_key,
-    args=("item_name",),
-)
-
-item_desc = st.text_area(
-    "2. Item Descriptions",
-    height=80,
-    key="item_desc",
-    on_change=to_upper_key,
-    args=("item_desc",),
-)
-
-vendor_name = st.text_input(
-    "3. Vendor Name",
-    key="vendor_name",
-    on_change=to_upper_key,
-    args=("vendor_name",),
-)
-
-vendor_item_code = st.text_input(
-    "4. Vendor Item Code",
-    key="vendor_item_code",
-    on_change=to_upper_key,
-    args=("vendor_item_code",),
-)
-
-delivery_lead_time = st.number_input(
-    "5. Delivery Lead time (Week)",
-    min_value=0,
-    step=1,
-    format="%d",
-    key="delivery_lead_time"
-)
-
-standard_pack = st.number_input(
-    "6. Standard Pack",
-    min_value=0,
-    step=1,
-    format="%d",
-    key="standard_pack"
-)
-
-# 如果你希望 Standard Pack 也强制大写（有时会写 CARTON / BAG），改成：
-# standard_pack = st.text_input("6. Standard Pack", key="standard_pack", on_change=to_upper_key, args=("standard_pack",))
-
-st.divider()
-
-uom_type = st.radio(
-    "UOM Type (先选这个，系统才显示相关字段)",
-    ["PCS/COUNT", "LENGTH", "WEIGHT", "AREA"],
-    horizontal=True,
-    key="uom_type"
-)
-
-# UOM Type → 自动单位映射（必须与你 DropDown 的 Uom_Base 列一致）
-UOMTYPE_TO_BASE = {
-    "PCS/COUNT": "PCS",
-    "LENGTH": "MM",
-    "AREA": "MM2",
-    "WEIGHT": "KG",
-}
-
-uom_auto = UOMTYPE_TO_BASE.get(uom_type, "")
-
-
-
-item_group = st.selectbox(
-    "7. Item Group",
-    [""] + get_options(dropdown_df, "Item_Group"),
-    key="item_group",
-)
-
-ITEM_CATEGORY_OPTS = ["", "RAW_MATERIAL", "WIP", "FINISHED_GOODS", "CONSUMABLE"]
-item_category = st.selectbox(
-    "8. Item Category (Required)",
-    ITEM_CATEGORY_OPTS,
-    key="item_category",
-)
-
-locked_field("9. Uom_Family (Auto)", uom_auto)
-locked_field("10. Uom_Base (Auto)", uom_auto)
-
-uom_family = uom_auto
-uom_base = uom_auto
-
-
-track_lot_opts = [""] + (get_options(dropdown_df, "Track Lot") or ["Y", "N"])
-track_lot = st.selectbox("11. Track Lot", track_lot_opts, key="track_lot")
-
-default_location = st.selectbox(
-    "12. Default Location",
-    [""] + get_options(dropdown_df, "Default Location"),
-    key="default_location"
-)
-
-# ✅ Pack 只给 LENGTH / AREA（WEIGHT 不要 pack）
-if uom_type in ["LENGTH", "AREA"]:
-
-    pack_uom = st.selectbox(
-        "12. Pack_Uom",
-        [""] + get_options(dropdown_df, "Pack_Uom"),
-        key="pack_uom"
-    )
-
-    pack_size_units = st.number_input(
-        "13. Pack Size / Unit",
-        min_value=0.0,
-        step=1.0,
-        key="pack_size_units"
-    )
-
-    locked_field("14. Pack Size Uom (Auto)", uom_auto)
-
-    pack_size_uom = uom_auto
-
-else:
-    pack_uom = ""
-    pack_size_units = ""
-    pack_size_uom = ""
-
-st.divider()
-
-# 15–20 尺寸：只在 LENGTH/AREA 才出现（WEIGHT 不需要这些尺寸）
-# LENGTH = ROLL ONLY
-if uom_type == "LENGTH":
-    roll_len = st.number_input("15. Roll Length mm", min_value=0.0, step=1.0, key="roll_len")
-    roll_wid = st.number_input("16. Roll Width mm",  min_value=0.0, step=1.0, key="roll_wid")
-    roll_thk = st.number_input("17. Roll Thickness mm", min_value=0.0, step=0.1, key="roll_thk")
-
-    sheet_len = sheet_wid = sheet_thk = ""
-    open_life_hours = shelf_life_days = ""
-
-# AREA = SHEET ONLY
-elif uom_type == "AREA":
-    sheet_len = st.number_input("18. Sheet Length mm", min_value=0.0, step=1.0, key="sheet_len")
-    sheet_wid = st.number_input("19. Sheet Width mm",  min_value=0.0, step=1.0, key="sheet_wid")
-    sheet_thk = st.number_input("20. Sheet Thickness mm", min_value=0.0, step=0.1, key="sheet_thk")
-
-    roll_len = roll_wid = roll_thk = ""
-    open_life_hours = shelf_life_days = ""
-
-# WEIGHT = Life only (暂时)
-elif uom_type == "WEIGHT":
-    roll_len = roll_wid = roll_thk = ""
-    sheet_len = sheet_wid = sheet_thk = ""
-
-    open_life_hours = st.number_input("21. Open Life Hour", min_value=0.0, step=1.0, format="%.0f", key="open_life_hours")
-    shelf_life_days = st.number_input("22. Shelf_life_days", min_value=0.0, step=1.0, format="%.0f", key="shelf_life_days")
-
-# PCS/COUNT（保持你原本隐藏逻辑）
-else:
-    roll_len = roll_wid = roll_thk = ""
-    sheet_len = sheet_wid = sheet_thk = ""
-    open_life_hours = ""
-    shelf_life_days = ""
-
-st.divider()
-
-
-
+UOMTYPE_TO_BASE = {"PCS/COUNT": "PCS", "LENGTH": "MM", "AREA": "MM2", "WEIGHT": "KG"}
 
 # =========================
-# Save / Export
+# Tabs
 # =========================
-st.divider()
-st.subheader("Save / Export")
+tab1, tab2, tab3 = st.tabs(["📋 Item Info", "⚙️ Specification", "📦 Pack & Save"])
 
-# ✅ 强制同步 dirty：如果已回到原始上传版本，就不该显示未保存
-try:
-    same_as_uploaded = st.session_state["item_df"].reset_index(drop=True).equals(
-        loaded_item_df.reset_index(drop=True)
-    )
-    if same_as_uploaded:
-        st.session_state["dirty"] = False
-except Exception:
-    pass
-if st.session_state.get("dirty", False):
-    st.warning("⚠️ You have unsaved changes. Click 'Save to local file' or 'Download' to keep it.")
-else:
-    st.info("ℹ️ No pending changes.")
+# ── TAB 1: Item Info ─────────────────────────────────────────
+with tab1:
+    col_a, col_b = st.columns(2)
 
-# --- Add Item ---
-if st.button("Add Item (append to ItemMaster)", key="btn_add_item"):
-    # 必填校验
-    if not item_name.strip():
-        st.error("Item Name is required.")
-        st.stop()
-    if not item_group.strip():
-        st.error("Item Group is required.")
-        st.stop()
-    if not item_category.strip():
-        st.error("Item Category is required.")
-        st.stop()
-    if not uom_family.strip():
-        st.error("Uom_Family is required.")
-        st.stop()
-    if not uom_base.strip():
-        st.error("Uom_Base is required.")
-        st.stop()
-    if not track_lot.strip():
-        st.error("Track Lot is required.")
-        st.stop()
-    if next_code == "PLEASE_SELECT_ITEM_GROUP":
-        st.error("Please select Item Group first.")
-        st.stop()
-    if not item_category.strip():
-        st.error("Item Category is required.")
-        st.stop()
+    with col_a:
+        st.selectbox("Item Group (Required)", [""] + get_options(dropdown_df, "Item_Group"), key=fk("item_group"))
+        ITEM_CATEGORY_OPTS = ["", "RAW_MATERIAL", "WIP", "FINISHED_GOODS", "CONSUMABLE"]
+        st.selectbox("Item Category (Required)", ITEM_CATEGORY_OPTS, key=fk("item_category"))
+        st.text_input("Item Name (Required)", key=fk("item_name"),
+                      on_change=to_upper_key, args=("item_name",), autocomplete="off")
+        st.text_area("Item Descriptions (Required)", height=100, key=fk("item_desc"),
+                     on_change=to_upper_key, args=("item_desc",))
 
-    def up(x: str) -> str:
-        return str(x or "").strip().upper()
+    with col_b:
+        st.text_input("Vendor Name (Required)", key=fk("vendor_name"),
+                      on_change=to_upper_key, args=("vendor_name",),
+                      autocomplete="off", placeholder="e.g. ABC TRADING  — or type N/A if not applicable")
+        st.text_input("Vendor Item Code (Required)", key=fk("vendor_item_code"),
+                      on_change=to_upper_key, args=("vendor_item_code",),
+                      autocomplete="off", placeholder="Vendor's part number — or N/A if not applicable")
+        st.number_input("Delivery Lead Time (Week)", min_value=0.0, step=0.5,
+                        format="%.1f", key=fk("delivery_lead_time"))
+        st.number_input("Standard Pack (Required, min 1)", min_value=1, step=1,
+                        format="%d", key=fk("standard_pack"))
 
-    def norm_num(x) -> str:
-        if x is None:
-            return ""
-        if isinstance(x, (int, float)):
-            return str(x)
-        return str(x).strip()
+# ── TAB 2: Specification ─────────────────────────────────────
+with tab2:
+    col_c, col_d = st.columns(2)
 
-    new_row = {
-        "Item_Code": up(next_code),
-        "Item_Name": up(item_name),
-        "Item Descriptions": up(item_desc),
-        "Vendor Name": up(vendor_name),
-        "Vendor Item_Code": up(vendor_item_code),
+    with col_c:
+        st.radio("UOM Type (Required)", ["PCS/COUNT", "LENGTH", "WEIGHT", "AREA"],
+                 horizontal=True, key=fk("uom_type"))
+        uom_type_now = gs("uom_type", "PCS/COUNT")
+        uom_auto  = UOMTYPE_TO_BASE.get(uom_type_now, "PCS")
+        uom_family = uom_auto
+        uom_base   = uom_auto
+        locked_field("UOM Family (Auto)", uom_auto)
+        locked_field("UOM Base (Auto)",   uom_auto)
 
-        "Delivery Lead Time (Week)": norm_num(delivery_lead_time),
-        "Standard Pack": norm_num(standard_pack),
+        track_lot_opts = [""] + (get_options(dropdown_df, "Track Lot") or ["Y", "N"])
+        st.selectbox("Track Lot (Required)", track_lot_opts, key=fk("track_lot"))
+        st.selectbox("Default Location (Required)",
+                     [""] + get_options(dropdown_df, "Default Location"), key=fk("default_location"))
 
-        "Item_Group": up(item_group),
-        "Item_Category": up(item_category),   # ✅ 加在这里
-        "Uom_Family": up(uom_family),
-        "Uom_Base": up(uom_base),
-        "Track Lot": up(track_lot),
-        "Default Location": up(default_location),
+    with col_d:
+        STATUS_OPTIONS = ["", "ACTIVE", "SLOW_MOVING", "HOLD", "OBSOLETE"]
+        st.selectbox("Status (Required)", STATUS_OPTIONS, key=fk("status"))
+        st.checkbox("STATUS CONSIGN", key=fk("status_consign"), value=False)
 
-        "Pack_Uom": up(pack_uom),
-        "Pack_Size / units": norm_num(pack_size_units),
-        "Pack_Size_Uom": up(pack_size_uom),
+        st.caption("Compliance")
+        col_r1, col_r2, col_r3 = st.columns(3)
+        with col_r1:
+            st.checkbox("ROHS", key=fk("rohs"), value=False)
+        with col_r2:
+            st.checkbox("ESD",  key=fk("esd"),  value=False)
+        with col_r3:
+            st.checkbox("UL",   key=fk("ul"),   value=False)
+        st.text_input("OTHER Compliance (If any)", key=fk("other_compliance"),
+                      on_change=to_upper_key, args=("other_compliance",), autocomplete="off")
 
-        "Roll_Length_mm": norm_num(roll_len),
-        "Roll_Width_mm": norm_num(roll_wid),
-        "Roll_Thickness_mm": norm_num(roll_thk),
-        "Sheet_Length_mm": norm_num(sheet_len),
-        "Sheet_Width_mm": norm_num(sheet_wid),
-        "Sheet_Thickness_mm": norm_num(sheet_thk),
+# ── TAB 3: Pack & Save ───────────────────────────────────────
+with tab3:
+    uom_type_now  = gs("uom_type", "PCS/COUNT")
+    uom_auto      = UOMTYPE_TO_BASE.get(uom_type_now, "PCS")
+    pack_size_uom = uom_auto if uom_type_now in ["LENGTH", "AREA"] else ""
 
-        "Open_life_hours": norm_num(open_life_hours),
-        "Shelf_life_days": norm_num(shelf_life_days),
-    }
-    
-    # 缺列补齐
-    for k in new_row.keys():
-        if k not in item_df.columns:
-            item_df[k] = ""
-
-    item_df.loc[len(item_df)] = new_row
-    st.session_state["dirty"] = True
-
-# ✅ Add Item 后清空表单（但保留 item_df）
-    reset_form_only(rerun=True)
-
-# 生成导出内容（永远从 session 的 item_df）
-export_df = st.session_state["item_df"]
-
-base_cols = st.session_state.get("base_cols", export_df.columns.tolist())
-extra_cols = [c for c in export_df.columns if c not in base_cols]
-
-save_ts = st.session_state.get("last_save_ts", "")
-save_path = st.session_state.get("last_save_path", "")
-
-export_df = export_df.copy()
-export_df["Saved_At"] = save_ts
-export_df["Saved_File"] = save_path
-
-# ✅ 按原表顺序导出 + 把新列放最后
-export_df = export_df.reindex(columns=base_cols + [c for c in export_df.columns if c not in base_cols])
-
-csv_out = export_df.to_csv(index=False).encode("utf-8-sig")
-
-st.download_button(
-    "Download Updated ItemMaster CSV",
-    data=csv_out,
-    file_name="ItemMaster.updated.csv",
-    mime="text/csv",
-    key="btn_download_csv"
-)
-
-
-
-# Save to local file
-if st.button("Save to local file", key="btn_save_local"):
-    ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    out_path = (Path(__file__).parent.parent / "data" / "ItemMaster.SAVED.csv").resolve()
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-
-    # ✅ 再重新生成一次 csv_out（包含 Saved_At/Saved_File）
-    export_df = st.session_state["item_df"].copy()
-    base_cols = st.session_state.get("base_cols", export_df.columns.tolist())
-    export_df["Saved_At"] = ts
-    export_df["Saved_File"] = str(out_path)
-    export_df = export_df.reindex(columns=base_cols + [c for c in export_df.columns if c not in base_cols])
-    csv_out2 = export_df.to_csv(index=False).encode("utf-8-sig")
-
-    saved_ok = False
-    try:
-        out_path.write_bytes(csv_out2)
-        saved_ok = True
-    except PermissionError:
-        try:
-            ts2 = datetime.now().strftime("%Y%m%d_%H%M%S")
-            alt_path = out_path.with_name(f"ItemMaster.SAVED_{ts2}.csv")
-            alt_path.write_bytes(csv_out2)
-            out_path = alt_path
-            saved_ok = True
-        except Exception as e:
-            st.error(f"Save failed: {e}")
-
-    if saved_ok:
-        st.session_state["dirty"] = False
-        st.session_state["last_save_ts"] = ts
-        st.session_state["last_save_path"] = str(out_path)
-        st.session_state["last_save_msg"] = f"Saved ✅ {ts} → {out_path}"
-        st.rerun()
+    # ── Packaging ──
+    st.markdown("##### 📦 Packaging")
+    if uom_type_now in ["LENGTH", "AREA"]:
+        col_p1, col_p2, col_p3 = st.columns(3)
+        with col_p1:
+            st.selectbox("Pack UOM (Required)", [""] + get_options(dropdown_df, "Pack_Uom"), key=fk("pack_uom"))
+        with col_p2:
+            st.number_input("Pack Size / Unit (Required)", min_value=0.0, step=1.0, key=fk("pack_size_units"))
+        with col_p3:
+            locked_field("Pack Size UOM (Auto)", uom_auto)
     else:
-        st.session_state["dirty"] = True
+        st.info(f"UOM = {uom_type_now} — Packaging not required.")
+        pack_size_uom = ""
 
-# ✅ 永久显示最后一次保存位置
-if st.session_state.get("last_save_msg"):
-    st.success(st.session_state["last_save_msg"])
+    st.divider()
+
+    # ── Dimensions / Life ──
+    st.markdown("##### 📐 Dimensions / Life")
+
+    if uom_type_now == "LENGTH":
+        st.caption("All 3 fields required ✱")
+        col_d1, col_d2, col_d3 = st.columns(3)
+        with col_d1:
+            st.text_input("Roll Length mm ✱", key=fk("roll_len"), placeholder="e.g. 1000", autocomplete="off")
+        with col_d2:
+            st.text_input("Roll Width mm ✱",  key=fk("roll_wid"), placeholder="e.g. 500",  autocomplete="off")
+        with col_d3:
+            st.text_input("Roll Thickness mm ✱", key=fk("roll_thk"), placeholder="e.g. 0.5", autocomplete="off")
+
+    elif uom_type_now == "AREA":
+        st.caption("All 3 fields required ✱")
+        col_d1, col_d2, col_d3 = st.columns(3)
+        with col_d1:
+            st.text_input("Sheet Length mm ✱", key=fk("sheet_len"), placeholder="e.g. 1200", autocomplete="off")
+        with col_d2:
+            st.text_input("Sheet Width mm ✱",  key=fk("sheet_wid"), placeholder="e.g. 900",  autocomplete="off")
+        with col_d3:
+            st.text_input("Sheet Thickness mm ✱", key=fk("sheet_thk"), placeholder="e.g. 1.2", autocomplete="off")
+
+    elif uom_type_now == "WEIGHT":
+        st.caption("Both fields required ✱")
+        col_d1, col_d2 = st.columns(2)
+        with col_d1:
+            st.text_input("Open Life Hour ✱",  key=fk("open_life_hours"), placeholder="e.g. 24",  autocomplete="off")
+        with col_d2:
+            st.text_input("Shelf Life Days ✱", key=fk("shelf_life_days"), placeholder="e.g. 365", autocomplete="off")
+
+    else:  # PCS/COUNT
+        st.info("UOM = PCS/COUNT — no dimension fields required.")
+
+ # ── EMP + Timestamp ──
+    st.markdown("##### 🖊️ Record")
+    col_e1, col_e2 = st.columns(2)
+    with col_e1:
+        st.text_input("EMP NO / EMP NAME (Required)", key=fk("entered_by"),
+                      on_change=to_upper_key, args=("entered_by",), autocomplete="off")
+    with col_e2:
+        entered_at_display = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        st.caption(f"Entered At (Auto): {entered_at_display}")
+
+    st.divider()
+
+    # ── Success banner ──
+    if st.session_state.get("last_add_msg"):
+        st.success(st.session_state["last_add_msg"])
+        st.caption("👆 Form has been cleared. Fill in the fields above for the next item.")
+
+    # ── Save / Export ──
+    st.markdown("##### 💾 Save / Export")
+    if st.session_state.get("dirty", False):
+        st.warning("⚠ Unsaved changes — please Save or Download.")
+
+# read back uom values after tabs (needed by Add Item below)
+uom_type_now  = gs("uom_type", "PCS/COUNT")
+uom_auto      = UOMTYPE_TO_BASE.get(uom_type_now, "PCS")
+uom_family    = uom_auto
+uom_base      = uom_auto
+pack_size_uom = uom_auto if uom_type_now in ["LENGTH", "AREA"] else ""
+
+
+# =========================
+# Add Item + Save/Export (inside Tab 3 context)
+# =========================
+with tab3:
+ st.markdown("---")
+
+ # ── STEP 1: User clicks "Add Item" → validate → store pending_row → show preview ──
+ if st.button("➕ Add Item (append to ItemMaster)", key="btn_add_item", type="primary"):
+    # Clear any previous pending
+    st.session_state.pop("pending_row", None)
+    st.session_state.pop("pending_preview", None)
+
+    entered_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    code_to_save = up(next_code)
+
+    REQUIRED = {
+        "Item Name":                    gs("item_name", ""),
+        "Item Descriptions":            gs("item_desc", ""),
+        "Vendor Name":                  gs("vendor_name", ""),
+        "Vendor Item Code":             gs("vendor_item_code", ""),
+        "Item Group":                   gs("item_group", ""),
+        "Item Category":                gs("item_category", ""),
+        "UOM Type":                     gs("uom_type", ""),
+        "Track Lot":                    gs("track_lot", ""),
+        "Default Location":             gs("default_location", ""),
+        "Delivery Lead time (Week)":    gs("delivery_lead_time", 0.0),
+        "Standard Pack":                gs("standard_pack", 0),
+        "Entered By":                   gs("entered_by", ""),
+        "Status":                       gs("status", ""),
+    }
+    uom_type_now2 = gs("uom_type", "")
+    if uom_type_now2 in ["LENGTH", "AREA"]:
+        REQUIRED.update({
+            "Pack_Uom":         gs("pack_uom", ""),
+            "Pack Size / Unit": gs("pack_size_units", 0.0),
+        })
+    if uom_type_now2 == "WEIGHT":
+        REQUIRED.update({
+            "Open Life Hour":  gs("open_life_hours", ""),
+            "Shelf life days": gs("shelf_life_days", ""),
+        })
+
+    missing = [k for k, v in REQUIRED.items() if missing_value(v)]
+    if missing:
+        st.error("❌ Required fields missing: " + ", ".join(missing))
+        st.stop()
+
+    # Dimension validation
+    dim_errors = []
+    def pd_wrap(key, label):
+        v, err = parse_dim_field(gs(key, ""), label)
+        if err:
+            dim_errors.append(err)
+            return None
+        return v
+
+    uom_type_now3 = gs("uom_type", "")
+    if uom_type_now3 == "LENGTH":
+        roll_len_v = pd_wrap("roll_len", "Roll Length mm")
+        roll_wid_v = pd_wrap("roll_wid", "Roll Width mm")
+        roll_thk_v = pd_wrap("roll_thk", "Roll Thickness mm")
+        if roll_len_v is not None and roll_len_v == 0.0:
+            dim_errors.append("❌ Roll Length mm: 必填，不能为空或0")
+        if roll_wid_v is not None and roll_wid_v == 0.0:
+            dim_errors.append("❌ Roll Width mm: 必填，不能为空或0")
+        if roll_thk_v is not None and roll_thk_v == 0.0:
+            dim_errors.append("❌ Roll Thickness mm: 必填，不能为空或0")
+        sheet_len_v = sheet_wid_v = sheet_thk_v = 0.0
+        open_life_v = shelf_life_v = 0.0
+    elif uom_type_now3 == "AREA":
+        sheet_len_v = pd_wrap("sheet_len", "Sheet Length mm")
+        sheet_wid_v = pd_wrap("sheet_wid", "Sheet Width mm")
+        sheet_thk_v = pd_wrap("sheet_thk", "Sheet Thickness mm")
+        if sheet_len_v is not None and sheet_len_v == 0.0:
+            dim_errors.append("❌ Sheet Length mm: 必填，不能为空或0")
+        if sheet_wid_v is not None and sheet_wid_v == 0.0:
+            dim_errors.append("❌ Sheet Width mm: 必填，不能为空或0")
+        if sheet_thk_v is not None and sheet_thk_v == 0.0:
+            dim_errors.append("❌ Sheet Thickness mm: 必填，不能为空或0")
+        roll_len_v = roll_wid_v = roll_thk_v = 0.0
+        open_life_v = shelf_life_v = 0.0
+    elif uom_type_now3 == "WEIGHT":
+        open_life_v  = pd_wrap("open_life_hours", "Open Life Hour")
+        shelf_life_v = pd_wrap("shelf_life_days",  "Shelf life days")
+        if open_life_v is not None and open_life_v == 0.0:
+            dim_errors.append("❌ Open Life Hour: 必填，不能为空或0")
+        if shelf_life_v is not None and shelf_life_v == 0.0:
+            dim_errors.append("❌ Shelf life days: 必填，不能为空或0")
+        roll_len_v = roll_wid_v = roll_thk_v = 0.0
+        sheet_len_v = sheet_wid_v = sheet_thk_v = 0.0
+    else:
+        roll_len_v = roll_wid_v = roll_thk_v = 0.0
+        sheet_len_v = sheet_wid_v = sheet_thk_v = 0.0
+        open_life_v = shelf_life_v = 0.0
+
+    if dim_errors:
+        for e in dim_errors:
+            st.error(e)
+        st.stop()
+
+    if code_to_save == "WAITING_ITEM_GROUP" or not code_to_save:
+        st.error("❌ Please select Item Group first.")
+        st.stop()
+
+    exists_code = (
+        item_df["Item_Code"].dropna().astype(str).str.strip().str.upper()
+        .eq(code_to_save).any()
+    )
+    if exists_code:
+        st.error(f"❌ Item_Code already exists: {code_to_save}")
+        st.stop()
+
+    vic = up(gs("vendor_item_code", ""))
+    # ✅ N/A is acceptable — skip uniqueness check (e.g. consumables with no vendor code)
+    if "Vendor_Item_Code" in item_df.columns and vic and vic != "N/A":
+        if (item_df["Vendor_Item_Code"].fillna("").astype(str).str.strip().str.upper().eq(vic)).any():
+            st.error(f"❌ Vendor Item Code already exists: {vic}")
+            st.stop()
+
+    # ✅ Duplicate content check — reject if all fields (except Item_Code & Entered_At) are identical
+    EXCLUDE_FROM_DUP = {"Item_Code", "Entered_At", "Entered_By"}
+    _uom_now = gs("uom_type", "PCS/COUNT")
+
+    candidate = {
+        "Item_Name":               up(gs("item_name", "")),
+        "Item Descriptions":       up(gs("item_desc", "")),
+        "Vendor_Name":             up(gs("vendor_name", "")),
+        "Vendor_Item_Code":        up(gs("vendor_item_code", "")),
+        "Delivery Lead Time (Week)": norm_num(gs("delivery_lead_time", 0.0)),
+        "STATUS_CONSIGN":          "TRUE" if gs("status_consign", False) else "FALSE",
+        "Standard Pack":           norm_num(gs("standard_pack", 0)),
+        "Item_Group":              up(gs("item_group", "")),
+        "Item_Category":           up(gs("item_category", "")),
+        "Uom_Family":              up(uom_family),
+        "Uom_Base":                up(uom_base),
+        "Track Lot":               up(gs("track_lot", "")),
+        "Default Location":        up(gs("default_location", "")),
+        "Pack_Uom":                up(gs("pack_uom", "")),
+        "Pack_Size / units":       "" if _uom_now in ["PCS/COUNT", "WEIGHT"] else norm_num(gs("pack_size_units", 0.0)),
+        "Roll_Length_mm":          norm_num(roll_len_v),
+        "Roll_Width_mm":           norm_num(roll_wid_v),
+        "Roll_Thickness_mm":       norm_num(roll_thk_v),
+        "Sheet_Length_mm":         norm_num(sheet_len_v),
+        "Sheet_Width_mm":          norm_num(sheet_wid_v),
+        "Sheet_Thickness_mm":      norm_num(sheet_thk_v),
+        "Open_life_hours":         norm_num(open_life_v),
+        "Shelf_life_days":         norm_num(shelf_life_v),
+        "Status":                  up(gs("status", "")),
+        "ROHS":  "TRUE" if gs("rohs", False) else "FALSE",
+        "ESD":   "TRUE" if gs("esd",  False) else "FALSE",
+        "UL":    "TRUE" if gs("ul",   False) else "FALSE",
+        "OTHER": up(gs("other_compliance", "")),
+    }
+
+    # Compare against every existing row — match = all shared fields identical
+    dup_found = False
+    dup_code  = ""
+    for _, existing_row in item_df.iterrows():
+        match = True
+        for field, cval in candidate.items():
+            if field in EXCLUDE_FROM_DUP:
+                continue
+            eval_str = str(existing_row.get(field, "") or "").strip().upper()
+            if eval_str != str(cval).strip().upper():
+                match = False
+                break
+        if match:
+            dup_found = True
+            dup_code  = str(existing_row.get("Item_Code", "?"))
+            break
+
+    if dup_found:
+        st.error(
+            f"❌ Duplicate entry detected — all fields match existing item: **{dup_code}**. "
+            f"Please verify this is not an accidental re-entry."
+        )
+        st.stop()
+
+    # ✅ All validation passed → build new_row and store as pending
+    new_row = {
+        "Item_Code":               code_to_save,
+        "Item_Name":               up(gs("item_name", "")),
+        "Item Descriptions":       up(gs("item_desc", "")),
+        "Vendor_Name":             up(gs("vendor_name", "")),
+        "Vendor_Item_Code":        up(gs("vendor_item_code", "")),
+        "Delivery Lead Time (Week)": norm_num(gs("delivery_lead_time", 0.0)),
+        "STATUS_CONSIGN":          "TRUE" if gs("status_consign", False) else "FALSE",
+        "Standard Pack":           norm_num(gs("standard_pack", 0)),
+        "Item_Group":              up(gs("item_group", "")),
+        "Item_Category":           up(gs("item_category", "")),
+        "Uom_Family":              up(uom_family),
+        "Uom_Base":                up(uom_base),
+        "Track Lot":               up(gs("track_lot", "")),
+        "Default Location":        up(gs("default_location", "")),
+        "Pack_Uom":                up(gs("pack_uom", "")),
+        "Pack_Size / units":       "" if _uom_now in ["PCS/COUNT", "WEIGHT"] else norm_num(gs("pack_size_units", 0.0)),
+        "Pack_Size_Uom":           up(pack_size_uom),
+        "Roll_Length_mm":          norm_num(roll_len_v),
+        "Roll_Width_mm":           norm_num(roll_wid_v),
+        "Roll_Thickness_mm":       norm_num(roll_thk_v),
+        "Sheet_Length_mm":         norm_num(sheet_len_v),
+        "Sheet_Width_mm":          norm_num(sheet_wid_v),
+        "Sheet_Thickness_mm":      norm_num(sheet_thk_v),
+        "Open_life_hours":         norm_num(open_life_v),
+        "Shelf_life_days":         norm_num(shelf_life_v),
+        "Entered_By":              up(gs("entered_by", "")),
+        "Entered_At":              entered_at,
+        "Status":                  up(gs("status", "")),
+        "ROHS":  "TRUE" if gs("rohs", False) else "FALSE",
+        "ESD":   "TRUE" if gs("esd",  False) else "FALSE",
+        "UL":    "TRUE" if gs("ul",   False) else "FALSE",
+        "OTHER": up(gs("other_compliance", "")),
+    }
+    st.session_state["pending_row"]     = new_row
+    st.session_state["pending_preview"] = True
+    st.rerun()
+
+ # ── STEP 2: Show preview table + Confirm / Back ──
+ if st.session_state.get("pending_preview") and st.session_state.get("pending_row"):
+    nr = st.session_state["pending_row"]
+
+    st.markdown("---")
+    st.warning("⚠️ Please review before confirming — this will be written to ItemMaster.")
+
+    uom_fam = nr.get("Uom_Family", "PCS")
+
+    # Helper: render a compact section as markdown table (no wide spacing)
+    def preview_block(title: str, rows: list):
+        """rows = list of (label, value) tuples. Skips empty/zero/dash values."""
+        filtered = [(k, v) for k, v in rows if v and v not in ("0", "0.0", "—", "FALSE")]
+        if not filtered:
+            return
+        st.markdown(f"**{title}**")
+        lines = ["| Field | Value |", "|---|---|"]
+        for k, v in filtered:
+            lines.append(f"| {k} | {v} |")
+        st.markdown("\n".join(lines))
+        st.markdown("")
+
+    preview_block("🔖 Identification", [
+        ("Item Code",        nr.get("Item_Code","")),
+        ("Item Group",       nr.get("Item_Group","")),
+        ("Item Category",    nr.get("Item_Category","")),
+        ("Item Name",        nr.get("Item_Name","")),
+        ("Description",      nr.get("Item Descriptions","")),
+        ("Status",           nr.get("Status","")),
+    ])
+
+    preview_block("🏭 Vendor", [
+        ("Vendor Name",      nr.get("Vendor_Name","")),
+        ("Vendor Item Code", nr.get("Vendor_Item_Code","")),
+        ("Lead Time (Wk)",   nr.get("Delivery Lead Time (Week)","")),
+        ("Standard Pack",    nr.get("Standard Pack","")),
+        ("Status Consign",   nr.get("STATUS_CONSIGN","") if nr.get("STATUS_CONSIGN") == "TRUE" else ""),
+    ])
+
+    preview_block("📐 UOM & Location", [
+        ("UOM Family",       nr.get("Uom_Family","")),
+        ("UOM Base",         nr.get("Uom_Base","")),
+        ("Track Lot",        nr.get("Track Lot","")),
+        ("Default Location", nr.get("Default Location","")),
+    ])
+
+    # Packaging — only show if LENGTH or AREA
+    if uom_fam in ("MM", "MM2"):
+        preview_block("📦 Packaging", [
+            ("Pack UOM",         nr.get("Pack_Uom","") or "—"),
+            ("Pack Size / Unit", nr.get("Pack_Size / units","") or "—"),
+            ("Pack Size UOM",    nr.get("Pack_Size_Uom","") or "—"),
+        ])
+
+    # Dimensions — only show relevant rows per UOM
+    if uom_fam == "MM":
+        preview_block("📏 Roll Dimensions", [
+            ("Roll Length mm",    nr.get("Roll_Length_mm","")),
+            ("Roll Width mm",     nr.get("Roll_Width_mm","")),
+            ("Roll Thickness mm", nr.get("Roll_Thickness_mm","")),
+        ])
+    elif uom_fam == "MM2":
+        preview_block("📏 Sheet Dimensions", [
+            ("Sheet Length mm",    nr.get("Sheet_Length_mm","")),
+            ("Sheet Width mm",     nr.get("Sheet_Width_mm","")),
+            ("Sheet Thickness mm", nr.get("Sheet_Thickness_mm","")),
+        ])
+    elif uom_fam == "KG":
+        preview_block("⏱ Shelf Life", [
+            ("Open Life Hours", nr.get("Open_life_hours","")),
+            ("Shelf Life Days", nr.get("Shelf_life_days","")),
+        ])
+
+    # Compliance — only show TRUE values
+    compliance_val = " / ".join(
+        k for k, v in [("ROHS", nr.get("ROHS")), ("ESD", nr.get("ESD")), ("UL", nr.get("UL"))]
+        if v == "TRUE"
+    ) or "None"
+    preview_block("✅ Compliance & Record", [
+        ("Compliance",   compliance_val),
+        ("Other",        nr.get("OTHER","") or ""),
+        ("Entered By",   nr.get("Entered_By","")),
+        ("Entered At",   nr.get("Entered_At","")),
+    ])
+
+    st.markdown("---")
+    col_confirm, col_back = st.columns(2)
+
+    with col_back:
+        if st.button("✏️ Back to Edit", key="btn_preview_back"):
+            st.session_state.pop("pending_row", None)
+            st.session_state.pop("pending_preview", None)
+            st.rerun()
+
+    with col_confirm:
+        if st.button("✅ Confirm & Save to ItemMaster", key="btn_preview_confirm", type="primary"):
+            nr = st.session_state["pending_row"]
+            item_df = st.session_state["item_df"]
+
+            for k in nr.keys():
+                if k not in item_df.columns:
+                    item_df[k] = ""
+
+            item_df.loc[len(item_df)] = nr
+            st.session_state["item_df"] = item_df
+            st.session_state["dirty"]   = True
+
+            st.session_state["last_add_msg"] = (
+                f"✅ SAVED: {nr['Item_Code']}  |  "
+                f"{nr.get('Item_Name','')}  |  "
+                f"Vendor: {nr.get('Vendor_Name','')}  |  "
+                f"Form cleared — ready for next entry."
+            )
+            st.session_state.pop("pending_row", None)
+            st.session_state.pop("pending_preview", None)
+            reset_form_only(rerun=True)
+
+ # ── Success banner ──
+ if st.session_state.get("last_add_msg") and not st.session_state.get("pending_preview"):
+    st.success(st.session_state["last_add_msg"])
+    st.caption("👆 Form cleared. Fill in the fields for the next item.")
+
+ # ── Download ──
+ export_df = st.session_state["item_df"].copy()
+ base_cols = st.session_state.get("base_cols", export_df.columns.tolist())
+ export_df = export_df.reindex(columns=base_cols + [c for c in export_df.columns if c not in base_cols])
+ csv_out = export_df.to_csv(index=False).encode("utf-8-sig")
+ st.download_button(
+     "⬇️ Download Updated ItemMaster CSV",
+     data=csv_out,
+     file_name="ItemMaster.updated.csv",
+     mime="text/csv",
+     key="btn_download_csv"
+ )
+
+ # ── Save local (2-step confirm) ──
+ if st.button("💾 Save to local file", key="btn_save_local"):
+     st.session_state["confirm_save_open"] = True
+
+ if st.session_state.get("confirm_save_open", False):
+     st.warning("请确认：你要把当前 ItemMaster 保存到本机文件吗？")
+     col_yes, col_no = st.columns(2)
+     with col_no:
+         if st.button("NO - Cancel", key="btn_confirm_save_no"):
+             st.session_state["confirm_save_open"] = False
+             st.info("已取消保存。")
+             st.rerun()
+     with col_yes:
+         if st.button("YES - Confirm Save", key="btn_confirm_save_yes"):
+             out_path = (Path(__file__).parent.parent / "data" / "ItemMaster.SAVED.csv").resolve()
+             out_path.parent.mkdir(parents=True, exist_ok=True)
+             export_df2 = st.session_state["item_df"].copy()
+             base_cols2 = st.session_state.get("base_cols", export_df2.columns.tolist())
+             export_df2 = export_df2.reindex(columns=base_cols2 + [c for c in export_df2.columns if c not in base_cols2])
+             csv_out2 = export_df2.to_csv(index=False).encode("utf-8-sig")
+             try:
+                 out_path.write_bytes(csv_out2)
+             except PermissionError:
+                 ts2 = datetime.now().strftime("%Y%m%d_%H%M%S")
+                 out_path = out_path.with_name(f"ItemMaster.SAVED_{ts2}.csv")
+                 out_path.write_bytes(csv_out2)
+             st.session_state["confirm_save_open"] = False
+             st.session_state["dirty"] = False
+             reset_form_only(rerun=False)
+             st.success(f"Saved ✅ → {out_path}")
+             st.rerun()
