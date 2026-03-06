@@ -32,8 +32,9 @@ def commit_adjustment(payload: Dict[str, Any]) -> Dict[str, Any]:
         qty = float(ln["qty"])
         uom = ln["uom"]
         note = ln.get("note")
+        location_code = ln.get("location_code")
 
-        led = insert_adjustment_ledger(org_id=org_id, item_id=item_id, qty=qty, uom=uom, note=note)
+        led = insert_adjustment_ledger(org_id=org_id, item_id=item_id, qty=qty, uom=uom, location_code=location_code,note=note)
         ledger_ids.append(led["id"])
 
         line_rows.append({

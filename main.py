@@ -5,7 +5,7 @@ from __future__ import annotations
 from app.services.consume_service import commit_consume
 from app.infra.load_env import load_env_if_needed
 load_env_if_needed()
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 from decimal import Decimal
 from typing import List
 from app.services.consume_service import preview_consume
@@ -14,6 +14,13 @@ from app.services.inventory_adjustment_service import commit_adjustment
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from database import engine, get_db
+from app.constants.locations import RM_STORE
+from app.constants.txn_type import TRANSFER
+from app.constants.locations import ALL as LOCATION_ALL
+from app.repositories.stock_ledger_repo import insert_ledger
+from app.constants.txn_type import RECEIPT
+from app.constants.locations import WIP, FG_STORE
+
 
 # ✅ Consumption Engine (v2)
 from consumption_engine import ConsumptionRequest, build_ledger_entry
@@ -131,20 +138,43 @@ def get_stock_ledger(org_id: str, limit: int = 20):
     return list_ledger(org_id=org_id, limit=limit)
 
 @app.get("/v2/stock/onhand")
-def stock_onhand(org_id: str, item_id: str):
-    return {"org_id": org_id, "item_id": item_id, "onhand_qty": get_onhand(org_id, item_id)}
+def stock_onhand(org_id: str, item_id: str, location_code: str | None = None):
+    return {
+        "org_id": org_id,
+        "item_id": item_id,
+        "location_code": location_code,
+        "onhand_qty": get_onhand(org_id, item_id, location_code=location_code),
+    }
 
 @app.post("/v2/inventory-adjustment/commit")
-def inventory_adjustment_commit(org_id: str, item_id: str, qty: Decimal):
+def inventory_adjustment_commit(
+    org_id: str,
+    item_id: str,
+    qty: Decimal,
+    location_code: str = RM_STORE,   # ✅ 新增：可选地点，默认 RM_STORE
+):
     payload = {
         "org_id": org_id,
         "adj_type": "701",
         "reason": "manual",
         "lines": [
-            {"item_id": item_id, "qty": float(qty), "uom": "ea", "note": "test adjustment"}
+            {
+                "item_id": item_id,
+                "qty": float(qty),
+                "uom": "ea",
+                "note": "test adjustment",
+                "location_code": location_code,  # ✅ 新增：把 location_code 传进 payload
+            }
         ],
     }
-    return commit_adjustment(payload)
+
+    res = commit_adjustment(payload)
+
+    # ✅ 回传本次 adjustment 的地点
+    if isinstance(res, dict):
+        res["location_code"] = location_code
+
+    return res
 
 
 # ==========================
@@ -591,5 +621,302 @@ app.include_router(routing_check_router)
 
 from app.api.v2.e2e_bootstrap import router as e2e_bootstrap_router
 app.include_router(e2e_bootstrap_router)
+
+@app.post("/v2/transfer/commit")
+def transfer_commit(
+    org_id: str,
+    item_id: str,
+    qty: float,
+    from_loc: str,
+    to_loc: str,
+    uom: str = "ea",
+    ref_type: str = "TRANSFER",
+    ref_id: str | None = None,
+    note: str | None = None,
+):
+    # validate locations
+    if from_loc not in LOCATION_ALL:
+        raise HTTPException(status_code=400, detail=f"invalid from_loc: {from_loc}")
+    if to_loc not in LOCATION_ALL:
+        raise HTTPException(status_code=400, detail=f"invalid to_loc: {to_loc}")
+    if qty == 0:
+        raise HTTPException(status_code=400, detail="qty cannot be 0")
+
+    row = insert_ledger({
+        "org_id": org_id,
+        "item_id": item_id,
+        "location_code": to_loc,     # ✅ 最小版：以 to_loc 作为当前所在位置
+        "txn_type": TRANSFER,
+        "qty": abs(qty),             # ✅ transfer 统一正数
+        "uom": uom,
+        "ref_type": ref_type,
+        "ref_id": ref_id,
+        "note": note or f"FROM:{from_loc}",
+        "occurred_at": datetime.now(timezone.utc).isoformat(),
+    })
+
+    return {
+        "ok": True,
+        "stock_ledger_id": row["id"],
+        "txn_type": TRANSFER,
+        "from_loc": from_loc,
+        "to_loc": to_loc,
+        "location_code": to_loc,
+        "qty": abs(qty),
+    }
+
+
+from app.infra.supabase_client import sb_table
+
+STAGE_ORDER = ["PRE", "ASSY", "PACK"]
+
+def _sum_stage(org_id: str, wo_no: str, stage_code: str) -> float:
+    resp = (
+        sb_table("hourly_output_log")
+        .select("actual_qty")
+        .eq("org_id", org_id)
+        .eq("work_order_no", wo_no)
+        .eq("stage_code", stage_code)
+        .execute()
+    )
+    data = getattr(resp, "data", None) or []
+    return float(sum(float(r["actual_qty"]) for r in data))
+
+@app.post("/v2/hourly-output/commit")
+def hourly_output_commit(
+    org_id: str,
+    work_order_no: str,
+    stage_code: str,                 # PRE / ASSY / PACK
+    hour_start: str,                 # ISO string
+    plan_qty: float,
+    actual_qty: float,
+    scrap_qty: float = 0,
+    rework_qty: float = 0,
+    carry_in_wip_qty: float = 0,
+    line_code: str | None = None,
+    reason_code: str | None = None,
+    note: str | None = None,
+    skip_escalation: bool = False,
+):
+    stage_code = stage_code.upper().strip()
+    if stage_code not in STAGE_ORDER:
+        raise HTTPException(status_code=400, detail=f"invalid stage_code: {stage_code}")
+
+    try:
+        hs = datetime.fromisoformat(hour_start.replace("Z", "+00:00"))
+    except Exception:
+        raise HTTPException(status_code=400, detail="hour_start must be ISO format")
+
+    if stage_code == "ASSY":
+        pre_total = _sum_stage(org_id, work_order_no, "PRE")
+        if float(actual_qty) > float(pre_total) + float(carry_in_wip_qty):
+            raise HTTPException(
+                status_code=400,
+                detail=f"ASSY actual_qty({actual_qty}) > PRE_total({pre_total}) + carry_in_wip_qty({carry_in_wip_qty})"
+            )
+
+    if stage_code == "PACK":
+        assy_total = _sum_stage(org_id, work_order_no, "ASSY")
+        if float(actual_qty) > float(assy_total) + float(carry_in_wip_qty):
+            raise HTTPException(
+                status_code=400,
+                detail=f"PACK actual_qty({actual_qty}) > ASSY_total({assy_total}) + carry_in_wip_qty({carry_in_wip_qty})"
+            )
+
+    row = {
+        "org_id": org_id,
+        "work_order_no": work_order_no,
+        "line_code": line_code,
+        "stage_code": stage_code,
+        "hour_start": hs.astimezone(timezone.utc).isoformat(),
+        "plan_qty": float(plan_qty),
+        "actual_qty": float(actual_qty),
+        "scrap_qty": float(scrap_qty),
+        "rework_qty": float(rework_qty),
+        "carry_in_wip_qty": float(carry_in_wip_qty),
+        "reason_code": reason_code,
+        "note": note,
+        "skip_escalation": bool(skip_escalation),
+    }
+
+    resp = sb_table("hourly_output_log").insert(row).execute()
+    data = getattr(resp, "data", None)
+    if not data:
+        raise HTTPException(status_code=400, detail="insert hourly_output_log returned empty data")
+
+    return {"ok": True, "hourly_log_id": data[0]["id"], "stage_code": stage_code, "hour_start": row["hour_start"]}
+
+
+
+
+@app.post("/v2/hourly-output/check-missed")
+def check_missed_hourly_reports(org_id: str, now_iso: str | None = None, window_hours: int = 6):
+    # allow testing with a fixed time
+    now = datetime.now(timezone.utc)
+    if now_iso:
+        now = datetime.fromisoformat(now_iso.replace("Z", "+00:00")).astimezone(timezone.utc)
+
+    if window_hours < 1 or window_hours > 72:
+        raise HTTPException(status_code=400, detail="window_hours must be 1..72")
+
+    # For MVP: only check the last N hours window
+    window_start = now - timedelta(hours=window_hours)
+
+    # find all hourly logs for this org
+    logs_resp = (
+        sb_table("hourly_output_log")
+        .select("work_order_no, stage_code, hour_start")
+        .eq("org_id", org_id)
+        .execute()
+    )
+    logs = getattr(logs_resp, "data", None) or []
+
+    # Build a set of reported keys (wo, stage, hour_start)
+    reported = set()
+    for r in logs:
+        reported.add((r["work_order_no"], r["stage_code"], r["hour_start"]))
+
+  
+
+    # We generate candidate hours: each hour between window_start and now (rounded down)
+    base = now.replace(minute=0, second=0, microsecond=0)
+    hours = []
+    t = base
+    while t >= window_start:
+        hours.append(t)
+        t = t - timedelta(hours=1)
+
+    created = 0
+    for (wo, stage, _) in reported:
+        for hs in hours:
+            hs_iso = hs.isoformat()
+            key = (wo, stage, hs_iso)
+            if key in reported:
+                continue
+
+            due_at = hs + timedelta(minutes=15)
+            if now <= due_at:
+                continue  # not overdue yet
+
+            # upsert-like: try insert, ignore if exists
+            alert_row = {
+                "org_id": org_id,
+                "work_order_no": wo,
+                "stage_code": stage,
+                "hour_start": hs_iso,
+                "due_at": due_at.isoformat(),
+                "status": "OPEN",
+            }
+            try:
+                sb_table("missed_report_alert").insert(alert_row).execute()
+                created += 1
+            except Exception:
+                pass
+
+    return {"ok": True, "created": created}
+
+
+
+
+@app.get("/v2/hourly-output/alerts")
+def list_missed_alerts(org_id: str, status: str = "OPEN", limit: int = 50):
+    resp = (
+        sb_table("missed_report_alert")
+        .select("*")
+        .eq("org_id", org_id)
+        .eq("status", status)
+        .order("due_at", desc=True)
+        .limit(limit)
+        .execute()
+    )
+    data = getattr(resp, "data", None) or []
+    return data
+
+@app.post("/v2/hourly-output/alerts/{alert_id}/ack")
+def ack_missed_alert(alert_id: str, org_id: str, ack_by: str, ack_note: str | None = None, status: str = "ACK"):
+    status = status.upper()
+    if status not in ["ACK", "SKIP", "CLOSED"]:
+        raise HTTPException(status_code=400, detail="status must be ACK/SKIP/CLOSED")
+
+    resp = (
+        sb_table("missed_report_alert")
+        .update({"status": status, "ack_by": ack_by, "ack_note": ack_note})
+        .eq("id", alert_id)
+        .eq("org_id", org_id)
+        .execute()
+    )
+    data = getattr(resp, "data", None) or []
+    if not data:
+        raise HTTPException(status_code=404, detail="alert not found")
+    return {"ok": True, "id": data[0]["id"], "status": data[0]["status"]}
+
+
+
+@app.get("/v2/hourly-output/alert-summary")
+def alert_summary(org_id: str):
+    # OPEN count
+    open_resp = (
+        sb_table("missed_report_alert")
+        .select("id", count="exact")
+        .eq("org_id", org_id)
+        .eq("status", "OPEN")
+        .execute()
+    )
+    open_count = getattr(open_resp, "count", None)
+
+    # SKIP count
+    skip_resp = (
+        sb_table("missed_report_alert")
+        .select("id", count="exact")
+        .eq("org_id", org_id)
+        .eq("status", "SKIP")
+        .execute()
+    )
+    skip_count = getattr(skip_resp, "count", None)
+
+    return {"ok": True, "open": open_count or 0, "skip": skip_count or 0}
+
+
+
+
+
+@app.post("/v2/output/receive")
+def output_receive(
+    org_id: str,
+    item_id: str,
+    qty: float,
+    to_loc: str = WIP,              # 默认先入 WIP
+    uom: str = "ea",
+    ref_type: str = "OUTPUT",
+    ref_id: str | None = None,
+    note: str | None = None,
+):
+    if to_loc not in LOCATION_ALL:
+        raise HTTPException(status_code=400, detail=f"invalid to_loc: {to_loc}")
+    if qty == 0:
+        raise HTTPException(status_code=400, detail="qty cannot be 0")
+
+    row = insert_ledger({
+        "org_id": org_id,
+        "item_id": item_id,
+        "location_code": to_loc,
+        "txn_type": RECEIPT,
+        "qty": abs(qty),
+        "uom": uom,
+        "ref_type": ref_type,
+        "ref_id": ref_id,
+        "note": note,
+        "occurred_at": datetime.now(timezone.utc).isoformat(),
+    })
+
+    return {
+        "ok": True,
+        "stock_ledger_id": row["id"],
+        "txn_type": RECEIPT,
+        "location_code": to_loc,
+        "qty": abs(qty),
+        "ref_type": ref_type,
+    }
+
 
 

@@ -3,6 +3,32 @@ Mini-MES Dev Log
 
 
 
+Missed check: /v2/hourly-output/check-missed 生成 missed_report_alert (OPEN)（超 hour_start+15min 未报）
+Supervisor action: /v2/hourly-output/alerts/{id}/ack 可设 ACK/SKIP/CLOSED，SKIP=停止升级
+-------------------------------------------------------------
+Missed check: /v2/hourly-output/check-missed 生成 missed_report_alert (OPEN)（超 hour_start+15min 未报）
+Supervisor action: /v2/hourly-output/alerts/{id}/ack 可设 ACK/SKIP/CLOSED，SKIP=停止升级
+-------------------------------------------------------------
+Rule: ASSY actual_qty <= PRE_total + carry_in_wip_qty（否则 400）
+Rule: PACK actual_qty <= ASSY_total + carry_in_wip_qty（否则 400）
+--------------------------------------------------------------
+Output to WIP = RECEIPT (to_loc=WIP) via /v2/output/receive ref_type=OUTPUT_WIP
+Output to FG = RECEIPT (to_loc=FG_STORE) via /v2/output/receive ref_type=OUTPUT_FG
+--------------------------------------------------------------
+Kitting = TRANSFER (RM_STORE → KIT_PARK) via /v2/transfer/commit ref_type=KITTING
+Issue-to-line = TRANSFER (KIT_PARK → LINE) via /v2/transfer/commit ref_type=ISSUE_TO_LINE
+--------------------------------------------------------------
+inventory_adjustment_line 目前无 location_code 列：location 以 stock_ledger.location_code 为准；API response 顶层回传 location_code；后续若要 line 级追溯再做 DB migration 加列。
+--------------------------------------------------------------
+Ledger 强校验：txn_type 必须 ∈ {RECEIPT, TRANSFER, ISSUE, ADJUSTMENT, SHIPMENT}；location_code 若存在必须 ∈ locations.ALL
+已落地 location_code 的事件：
+FG Receive → txn_type=RECEIPT，默认 FG_STORE，可 override PACK_PARK
+Consume Commit/Preview → txn_type=ISSUE，location_code=LINE
+Inventory Adjustment → txn_type=ADJUSTMENT，location_code=RM_STORE
+**验收点：**三类事件写入 ledger 后，/v2/stock-ledger 必须能看到对应 txn_type + location_code，且 onhand 支持按 location_code 过滤
+
+---------------------------------------------------------------
+✅ E2E Combo：ISSUE（consume）+ RECEIVE（fg）两笔 ledger 已写入并对账通过
 --------------------------------------------------------------
 把这次“组合验证”的两条 id 追加到 Dev Log，并贴回两行：
 

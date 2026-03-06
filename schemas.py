@@ -202,23 +202,6 @@ class RawMaterialResponse(RawMaterialCreate):
 
 
 # ==========================================================
-# Raw Material Schema
-# ==========================================================
-
-class RawMaterialCreate(BaseModel):
-    material_code: str
-    material_name: str
-    unit: str
-
-
-class RawMaterialResponse(RawMaterialCreate):
-    id: int
-
-    class Config:
-        from_attributes = True
-
-
-# ==========================================================
 # BOM Schema
 # ==========================================================
 

@@ -1,0 +1,1 @@
+alter table public.stock_ledger add column if not exists location_code text;

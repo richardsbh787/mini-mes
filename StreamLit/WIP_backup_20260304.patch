@@ -1,0 +1,1459 @@
+diff --git a/Mini-MES Dev Log.txt b/Mini-MES Dev Log.txt
+index 5a50130..aed12de 100644
+--- a/Mini-MES Dev Log.txt	
++++ b/Mini-MES Dev Log.txt	
+@@ -3,6 +3,32 @@ Mini-MES Dev Log
+ 
+ 
+ 
++Missed check: /v2/hourly-output/check-missed 生成 missed_report_alert (OPEN)（超 hour_start+15min 未报）
++Supervisor action: /v2/hourly-output/alerts/{id}/ack 可设 ACK/SKIP/CLOSED，SKIP=停止升级
++-------------------------------------------------------------
++Missed check: /v2/hourly-output/check-missed 生成 missed_report_alert (OPEN)（超 hour_start+15min 未报）
++Supervisor action: /v2/hourly-output/alerts/{id}/ack 可设 ACK/SKIP/CLOSED，SKIP=停止升级
++-------------------------------------------------------------
++Rule: ASSY actual_qty <= PRE_total + carry_in_wip_qty（否则 400）
++Rule: PACK actual_qty <= ASSY_total + carry_in_wip_qty（否则 400）
++--------------------------------------------------------------
++Output to WIP = RECEIPT (to_loc=WIP) via /v2/output/receive ref_type=OUTPUT_WIP
++Output to FG = RECEIPT (to_loc=FG_STORE) via /v2/output/receive ref_type=OUTPUT_FG
++--------------------------------------------------------------
++Kitting = TRANSFER (RM_STORE → KIT_PARK) via /v2/transfer/commit ref_type=KITTING
++Issue-to-line = TRANSFER (KIT_PARK → LINE) via /v2/transfer/commit ref_type=ISSUE_TO_LINE
++--------------------------------------------------------------
++inventory_adjustment_line 目前无 location_code 列：location 以 stock_ledger.location_code 为准；API response 顶层回传 location_code；后续若要 line 级追溯再做 DB migration 加列。
++--------------------------------------------------------------
++Ledger 强校验：txn_type 必须 ∈ {RECEIPT, TRANSFER, ISSUE, ADJUSTMENT, SHIPMENT}；location_code 若存在必须 ∈ locations.ALL
++已落地 location_code 的事件：
++FG Receive → txn_type=RECEIPT，默认 FG_STORE，可 override PACK_PARK
++Consume Commit/Preview → txn_type=ISSUE，location_code=LINE
++Inventory Adjustment → txn_type=ADJUSTMENT，location_code=RM_STORE
++**验收点：**三类事件写入 ledger 后，/v2/stock-ledger 必须能看到对应 txn_type + location_code，且 onhand 支持按 location_code 过滤
++
++---------------------------------------------------------------
++✅ E2E Combo：ISSUE（consume）+ RECEIVE（fg）两笔 ledger 已写入并对账通过
+ --------------------------------------------------------------
+ 把这次“组合验证”的两条 id 追加到 Dev Log，并贴回两行：
+ 
+diff --git a/StreamLit/app.py b/StreamLit/app.py
+index 8fbed01..8cf0574 100644
+--- a/StreamLit/app.py
++++ b/StreamLit/app.py
+@@ -18,7 +18,7 @@ FORM_KEYS = [
+     "item_category",  # ✅ NEW
+     "pack_uom","pack_size_units","pack_size_uom",
+     "roll_len","roll_wid","roll_thk","sheet_len","sheet_wid","sheet_thk",
+-    "open_life_hours","shelf_life_days",
++    "open_life_hours","shelf_life_days","entered_by","entered_at","status",
+ ]
+ 
+ def to_upper_key(key: str):
+@@ -26,10 +26,6 @@ def to_upper_key(key: str):
+     if isinstance(v, str):
+         st.session_state[key] = v.upper()
+ 
+-
+-
+-
+-
+ def reset_form_only(rerun: bool = True):
+     for k in FORM_KEYS:
+         st.session_state.pop(k, None)
+@@ -58,6 +54,28 @@ def read_sheet_csv(uploaded_file, must_have: list[str]) -> pd.DataFrame:
+     df.columns = [re.sub(r"\s+", " ", str(c)).strip() for c in df.columns]
+     return df
+ 
++
++# ---------- start: normalize vendor columns ----------
++def normalize_vendor_cols(df):
++    if df is None:
++        return df
++    rename_map = {}
++    # 兼容旧列名 -> canonical
++    if "Vendor_Name" not in df.columns and "Vendor Name" in df.columns:
++        rename_map["Vendor Name"] = "Vendor_Name"
++    if "Vendor_Item_Code" not in df.columns:
++        if "Vendor Item Code" in df.columns:
++            rename_map["Vendor Item Code"] = "Vendor_Item_Code"
++        elif "Vendor Item_Code" in df.columns:
++            rename_map["Vendor Item_Code"] = "Vendor_Item_Code"
++    if rename_map:
++        df = df.rename(columns=rename_map)
++    return df
++
++
++# ---------- end ----------
++
++
+ def get_options(df: pd.DataFrame, col: str):
+     if col not in df.columns:
+         return []
+@@ -142,12 +160,15 @@ except ValueError:
+ try:
+     loaded_item_df = read_sheet_csv(
+         itemmaster_file,
+-        must_have=["Item_Code", "Item_Name", "Item_Group", "Uom_Family", "Default Location"]
++        must_have=["Item_Code", "Item_Name", "Item_Group", "Uom_Family", "Default Location"],
+     )
++    loaded_item_df = normalize_vendor_cols(loaded_item_df)  # ✅ 放在读完之后
++
+ except ValueError:
+     st.error("ItemMaster.csv 格式不正确：找不到模板表头。请使用系统导出的 ItemMaster 模板文件再上传。")
+     st.stop()
+ 
++
+ # 允许你强制回到上传的原始 ItemMaster（丢弃未保存追加）
+ if st.sidebar.button("Reload from ItemMaster CSV", key="btn_reload_itemmaster"):
+     st.session_state["item_df"] = loaded_item_df.copy()
+@@ -184,12 +205,12 @@ with st.expander("DEBUG (optional)", expanded=False):
+     st.dataframe(item_df.head(10), use_container_width=True)
+ 
+ # =========================
+-# Form UI
++# 【功能】Form UI：改成 Tabs 分段录入，解决“滚轮找不到输入位”
+ # =========================
+-st.subheader("New Item Entry (1–22)")
++st.subheader("New Item Entry (Tabs)")
+ 
+ # =========================
+-# Item Code Auto (TOP + BIG)
++# 【功能】Item Code Auto（保持你原逻辑：依 item_group 自动递增）
+ # =========================
+ if "Item_Code" not in item_df.columns:
+     item_df["Item_Code"] = ""
+@@ -200,7 +221,7 @@ def norm_prefix(x: str) -> str:
+     x = re.sub(r"[^A-Z0-9_]", "", x)
+     return x
+ 
+-prefix = norm_prefix(st.session_state.get("item_group", ""))  # ✅ 用 session，避免顺序问题
++prefix = norm_prefix(st.session_state.get("item_group", ""))  # ✅ 用 session 避免顺序问题
+ pattern = re.compile(rf"^{re.escape(prefix)}-(\d+)$") if prefix else None
+ 
+ max_n = 0
+@@ -212,7 +233,7 @@ if prefix:
+ 
+ next_code = f"{prefix}-{max_n + 1:04d}" if prefix else "PLEASE_SELECT_ITEM_GROUP"
+ 
+-# ✅ 让 reset 能清，但依然 disabled
++# 【功能】让 reset 能清，但 Item Code 依然 disabled
+ st.session_state["item_code"] = next_code
+ 
+ st.markdown(
+@@ -232,66 +253,9 @@ st.text_input(
+     disabled=True
+ )
+ 
+-
+-
+-item_name = st.text_input(
+-    "1. Item Name",
+-    key="item_name",
+-    on_change=to_upper_key,
+-    args=("item_name",),
+-)
+-
+-item_desc = st.text_area(
+-    "2. Item Descriptions",
+-    height=80,
+-    key="item_desc",
+-    on_change=to_upper_key,
+-    args=("item_desc",),
+-)
+-
+-vendor_name = st.text_input(
+-    "3. Vendor Name",
+-    key="vendor_name",
+-    on_change=to_upper_key,
+-    args=("vendor_name",),
+-)
+-
+-vendor_item_code = st.text_input(
+-    "4. Vendor Item Code",
+-    key="vendor_item_code",
+-    on_change=to_upper_key,
+-    args=("vendor_item_code",),
+-)
+-
+-delivery_lead_time = st.number_input(
+-    "5. Delivery Lead time (Week)",
+-    min_value=0,
+-    step=1,
+-    format="%d",
+-    key="delivery_lead_time"
+-)
+-
+-standard_pack = st.number_input(
+-    "6. Standard Pack",
+-    min_value=0,
+-    step=1,
+-    format="%d",
+-    key="standard_pack"
+-)
+-
+-# 如果你希望 Standard Pack 也强制大写（有时会写 CARTON / BAG），改成：
+-# standard_pack = st.text_input("6. Standard Pack", key="standard_pack", on_change=to_upper_key, args=("standard_pack",))
+-
+-st.divider()
+-
+-uom_type = st.radio(
+-    "UOM Type (先选这个，系统才显示相关字段)",
+-    ["PCS/COUNT", "LENGTH", "WEIGHT", "AREA"],
+-    horizontal=True,
+-    key="uom_type"
+-)
+-
+-# UOM Type → 自动单位映射（必须与你 DropDown 的 Uom_Base 列一致）
++# =========================
++# 【功能】UOM Type → 自动单位映射（你原本逻辑保留）
++# =========================
+ UOMTYPE_TO_BASE = {
+     "PCS/COUNT": "PCS",
+     "LENGTH": "MM",
+@@ -299,102 +263,211 @@ UOMTYPE_TO_BASE = {
+     "WEIGHT": "KG",
+ }
+ 
+-uom_auto = UOMTYPE_TO_BASE.get(uom_type, "")
++# =========================
++# 【功能】Tabs 分段：Basic / Vendor / Logistics / Packing / Dimensions / Meta
++# =========================
++tab_basic, tab_vendor, tab_logi, tab_pack, tab_dim, tab_meta = st.tabs(
++    ["Basic", "Vendor", "Logistics", "Packing", "Dimensions", "Meta"]
++)
+ 
++# =========================
++# 【功能】Basic：名称/描述/UOM/Item Group/Category（最常填）
++# =========================
++with tab_basic:
++    st.subheader("Basic")
++
++    item_name = st.text_input(
++        "1. Item Name",
++        key="item_name",
++        on_change=to_upper_key,
++        args=("item_name",),
++    )
+ 
++    item_desc = st.text_area(
++        "2. Item Descriptions",
++        height=80,
++        key="item_desc",
++        on_change=to_upper_key,
++        args=("item_desc",),
++    )
+ 
+-item_group = st.selectbox(
+-    "7. Item Group",
+-    [""] + get_options(dropdown_df, "Item_Group"),
+-    key="item_group",
+-)
++    # 【功能】先选 UOM Type，后面字段按类型显示
++    uom_type = st.radio(
++        "UOM Type (先选这个，系统才显示相关字段)",
++        ["PCS/COUNT", "LENGTH", "WEIGHT", "AREA"],
++        horizontal=True,
++        key="uom_type"
++    )
+ 
+-ITEM_CATEGORY_OPTS = ["", "RAW_MATERIAL", "WIP", "FINISHED_GOODS", "CONSUMABLE"]
+-item_category = st.selectbox(
+-    "8. Item Category (Required)",
+-    ITEM_CATEGORY_OPTS,
+-    key="item_category",
+-)
++    uom_auto = UOMTYPE_TO_BASE.get(uom_type, "")
++    locked_field("Uom_Family (Auto)", uom_auto)
++    locked_field("Uom_Base (Auto)", uom_auto)
++    uom_family = uom_auto
++    uom_base = uom_auto
+ 
+-locked_field("9. Uom_Family (Auto)", uom_auto)
+-locked_field("10. Uom_Base (Auto)", uom_auto)
++    item_group = st.selectbox(
++        "7. Item Group",
++        [""] + get_options(dropdown_df, "Item_Group"),
++        key="item_group",
++    )
+ 
+-uom_family = uom_auto
+-uom_base = uom_auto
++    ITEM_CATEGORY_OPTS = ["", "RAW_MATERIAL", "WIP", "FINISHED_GOODS", "CONSUMABLE"]
++    item_category = st.selectbox(
++        "8. Item Category (Required)",
++        ITEM_CATEGORY_OPTS,
++        key="item_category",
++    )
+ 
++    track_lot_opts = [""] + (get_options(dropdown_df, "Track Lot") or ["Y", "N"])
++    track_lot = st.selectbox("11. Track Lot", track_lot_opts, key="track_lot")
+ 
+-track_lot_opts = [""] + (get_options(dropdown_df, "Track Lot") or ["Y", "N"])
+-track_lot = st.selectbox("11. Track Lot", track_lot_opts, key="track_lot")
++# =========================
++# 【功能】Vendor：供应商字段集中，避免上下跳
++# =========================
++with tab_vendor:
++    st.subheader("Vendor")
++
++    vendor_name = st.text_input(
++        "3. Vendor Name",
++        key="vendor_name",
++        on_change=to_upper_key,
++        args=("vendor_name",),
++    )
+ 
+-default_location = st.selectbox(
+-    "12. Default Location",
+-    [""] + get_options(dropdown_df, "Default Location"),
+-    key="default_location"
+-)
++    vendor_item_code = st.text_input(
++        "4. Vendor Item Code",
++        key="vendor_item_code",
++        on_change=to_upper_key,
++        args=("vendor_item_code",),
++    )
+ 
+-# ✅ Pack 只给 LENGTH / AREA（WEIGHT 不要 pack）
+-if uom_type in ["LENGTH", "AREA"]:
++# =========================
++# 【功能】Logistics：默认库位 + 交期 +（WEIGHT 时）寿命字段
++# =========================
++with tab_logi:
++    st.subheader("Logistics")
+ 
+-    pack_uom = st.selectbox(
+-        "12. Pack_Uom",
+-        [""] + get_options(dropdown_df, "Pack_Uom"),
+-        key="pack_uom"
++    default_location = st.selectbox(
++        "12. Default Location",
++        [""] + get_options(dropdown_df, "Default Location"),
++        key="default_location"
+     )
+ 
+-    pack_size_units = st.number_input(
+-        "13. Pack Size / Unit",
++    delivery_lead_time = st.number_input(
++        "5. Delivery Lead time (Week)",
+         min_value=0.0,
+-        step=1.0,
+-        key="pack_size_units"
++        step=0.1,
++        format="%.1f",
++        key="delivery_lead_time"
+     )
+ 
+-    locked_field("14. Pack Size Uom (Auto)", uom_auto)
++    # 【功能】WEIGHT 才需要 life 字段；其他类型清空
++    if uom_type == "WEIGHT":
++        open_life_hours = st.number_input(
++            "21. Open Life Hour",
++            min_value=0.0,
++            step=1.0,
++            format="%.0f",
++            key="open_life_hours"
++        )
++        shelf_life_days = st.number_input(
++            "22. Shelf_life_days",
++            min_value=0.0,
++            step=1.0,
++            format="%.0f",
++            key="shelf_life_days"
++        )
++    else:
++        open_life_hours = ""
++        shelf_life_days = ""
+ 
+-    pack_size_uom = uom_auto
++# =========================
++# 【功能】Packing：Standard Pack +（LENGTH/AREA）Pack 相关字段
++# =========================
++with tab_pack:
++    st.subheader("Packing")
++
++    standard_pack = st.number_input(
++        "6. Standard Pack",
++        min_value=0,
++        step=1,
++        format="%d",
++        key="standard_pack"
++    )
+ 
+-else:
+-    pack_uom = ""
+-    pack_size_units = ""
+-    pack_size_uom = ""
++    # 【功能】Pack 只给 LENGTH / AREA（你原逻辑保留）
++    if uom_type in ["LENGTH", "AREA"]:
++        pack_uom = st.selectbox(
++            "12. Pack_Uom",
++            [""] + get_options(dropdown_df, "Pack_Uom"),
++            key="pack_uom"
++        )
++
++        pack_size_units = st.number_input(
++            "13. Pack Size / Unit",
++            min_value=0.0,
++            step=1.0,
++            key="pack_size_units"
++        )
++
++        locked_field("14. Pack Size Uom (Auto)", uom_auto)
++        pack_size_uom = uom_auto
++    else:
++        pack_uom = ""
++        pack_size_units = ""
++        pack_size_uom = ""
+ 
+-st.divider()
++# =========================
++# 【功能】Dimensions：尺寸字段（LENGTH=Roll / AREA=Sheet；其他类型清空）
++# =========================
++with tab_dim:
++    st.subheader("Dimensions")
+ 
+-# 15–20 尺寸：只在 LENGTH/AREA 才出现（WEIGHT 不需要这些尺寸）
+-# LENGTH = ROLL ONLY
+-if uom_type == "LENGTH":
+-    roll_len = st.number_input("15. Roll Length mm", min_value=0.0, step=1.0, key="roll_len")
+-    roll_wid = st.number_input("16. Roll Width mm",  min_value=0.0, step=1.0, key="roll_wid")
+-    roll_thk = st.number_input("17. Roll Thickness mm", min_value=0.0, step=0.1, key="roll_thk")
++    if uom_type == "LENGTH":
++        roll_len = st.number_input("15. Roll Length mm", min_value=0.0, step=1.0, key="roll_len")
++        roll_wid = st.number_input("16. Roll Width mm",  min_value=0.0, step=1.0, key="roll_wid")
++        roll_thk = st.number_input("17. Roll Thickness mm", min_value=0.0, step=0.1, key="roll_thk")
+ 
+-    sheet_len = sheet_wid = sheet_thk = ""
+-    open_life_hours = shelf_life_days = ""
++        sheet_len = sheet_wid = sheet_thk = ""
+ 
+-# AREA = SHEET ONLY
+-elif uom_type == "AREA":
+-    sheet_len = st.number_input("18. Sheet Length mm", min_value=0.0, step=1.0, key="sheet_len")
+-    sheet_wid = st.number_input("19. Sheet Width mm",  min_value=0.0, step=1.0, key="sheet_wid")
+-    sheet_thk = st.number_input("20. Sheet Thickness mm", min_value=0.0, step=0.1, key="sheet_thk")
++    elif uom_type == "AREA":
++        sheet_len = st.number_input("18. Sheet Length mm", min_value=0.0, step=1.0, key="sheet_len")
++        sheet_wid = st.number_input("19. Sheet Width mm",  min_value=0.0, step=1.0, key="sheet_wid")
++        sheet_thk = st.number_input("20. Sheet Thickness mm", min_value=0.0, step=0.1, key="sheet_thk")
+ 
+-    roll_len = roll_wid = roll_thk = ""
+-    open_life_hours = shelf_life_days = ""
++        roll_len = roll_wid = roll_thk = ""
+ 
+-# WEIGHT = Life only (暂时)
+-elif uom_type == "WEIGHT":
+-    roll_len = roll_wid = roll_thk = ""
+-    sheet_len = sheet_wid = sheet_thk = ""
++    else:
++        roll_len = roll_wid = roll_thk = ""
++        sheet_len = sheet_wid = sheet_thk = ""
+ 
+-    open_life_hours = st.number_input("21. Open Life Hour", min_value=0.0, step=1.0, format="%.0f", key="open_life_hours")
+-    shelf_life_days = st.number_input("22. Shelf_life_days", min_value=0.0, step=1.0, format="%.0f", key="shelf_life_days")
++# =========================
++# 【功能】Meta：录入人/状态；Entered_At 系统自动显示
++# =========================
++with tab_meta:
++    st.subheader("Meta")
++
++    entered_by = st.text_input(
++        "Entered By (Required)",
++        key="entered_by",
++        on_change=to_upper_key,
++        args=("entered_by",),
++    )
+ 
+-# PCS/COUNT（保持你原本隐藏逻辑）
+-else:
+-    roll_len = roll_wid = roll_thk = ""
+-    sheet_len = sheet_wid = sheet_thk = ""
+-    open_life_hours = ""
+-    shelf_life_days = ""
++    status = st.selectbox(
++        "Status (Required)",
++        ["", "ACTIVE", "SLOW_MOVING", "EOL"],
++        key="status",
++    )
+ 
+-st.divider()
++    # 【功能】系统自动时间（仅显示，不让用户编辑）
++    entered_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
++    st.caption(f"Entered At (Auto): {entered_at}")
+ 
++# =========================
++# 【功能】分隔线：表单结束（下面接 Save / Export 区）
++# =========================
++st.divider()
+ 
+ 
+ 
+@@ -404,117 +477,165 @@ st.divider()
+ st.divider()
+ st.subheader("Save / Export")
+ 
+-# ✅ 强制同步 dirty：如果已回到原始上传版本，就不该显示未保存
+-try:
+-    same_as_uploaded = st.session_state["item_df"].reset_index(drop=True).equals(
+-        loaded_item_df.reset_index(drop=True)
+-    )
+-    if same_as_uploaded:
+-        st.session_state["dirty"] = False
+-except Exception:
+-    pass
+-if st.session_state.get("dirty", False):
+-    st.warning("⚠️ You have unsaved changes. Click 'Save to local file' or 'Download' to keep it.")
+-else:
+-    st.info("ℹ️ No pending changes.")
++def up(x: str) -> str:
++    return str(x or "").strip().upper()
++
++def norm_num(x) -> str:
++    if x is None:
++        return ""
++    if isinstance(x, (int, float)):
++        return str(x)
++    return str(x).strip()
++
++def missing_value(v) -> bool:
++    # string
++    if isinstance(v, str):
++        return not v.strip()
++    # numeric: treat <=0 as missing
++    if isinstance(v, (int, float)):
++        return v <= 0
++    return v is None
+ 
+ # --- Add Item ---
+ if st.button("Add Item (append to ItemMaster)", key="btn_add_item"):
+-    # 必填校验
+-    if not item_name.strip():
+-        st.error("Item Name is required.")
+-        st.stop()
+-    if not item_group.strip():
+-        st.error("Item Group is required.")
+-        st.stop()
+-    if not item_category.strip():
+-        st.error("Item Category is required.")
+-        st.stop()
+-    if not uom_family.strip():
+-        st.error("Uom_Family is required.")
+-        st.stop()
+-    if not uom_base.strip():
+-        st.error("Uom_Base is required.")
+-        st.stop()
+-    if not track_lot.strip():
+-        st.error("Track Lot is required.")
++
++    # ✅ 系统自动时间（按下按钮那一刻）
++    entered_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
++
++    # ✅ 必填（严格）
++    REQUIRED = {
++        "Item Name": item_name,
++        "Item Descriptions": item_desc,
++        "Vendor Name": vendor_name,
++        "Vendor Item Code": vendor_item_code,
++        "Item Group": item_group,
++        "Item Category": item_category,
++        "UOM Type": uom_type,
++        "Track Lot": track_lot,
++        "Default Location": default_location,
++        "Delivery Lead time (Week)": delivery_lead_time,
++        "Standard Pack": standard_pack,
++        "Entered By": entered_by,
++        "Status": status,
++    }
++
++    # LENGTH / AREA 额外必填
++    if uom_type in ["LENGTH", "AREA"]:
++        REQUIRED.update({
++            "Pack_Uom": pack_uom,
++            "Pack Size / Unit": pack_size_units,
++        })
++
++    # WEIGHT 额外必填
++    if uom_type == "WEIGHT":
++        REQUIRED.update({
++            "Open Life Hour": open_life_hours,
++            "Shelf life days": shelf_life_days,
++        })
++
++    missing = [k for k, v in REQUIRED.items() if missing_value(v)]
++    if missing:
++        st.error("❌ Required fields missing: " + ", ".join(missing))
+         st.stop()
++
+     if next_code == "PLEASE_SELECT_ITEM_GROUP":
+-        st.error("Please select Item Group first.")
+-        st.stop()
+-    if not item_category.strip():
+-        st.error("Item Category is required.")
++        st.error("❌ Please select Item Group first.")
+         st.stop()
+ 
+-    def up(x: str) -> str:
+-        return str(x or "").strip().upper()
+-
+-    def norm_num(x) -> str:
+-        if x is None:
+-            return ""
+-        if isinstance(x, (int, float)):
+-            return str(x)
+-        return str(x).strip()
+-
+-    new_row = {
+-        "Item_Code": up(next_code),
+-        "Item_Name": up(item_name),
+-        "Item Descriptions": up(item_desc),
+-        "Vendor Name": up(vendor_name),
+-        "Vendor Item_Code": up(vendor_item_code),
+-
+-        "Delivery Lead Time (Week)": norm_num(delivery_lead_time),
+-        "Standard Pack": norm_num(standard_pack),
+-
+-        "Item_Group": up(item_group),
+-        "Item_Category": up(item_category),   # ✅ 加在这里
+-        "Uom_Family": up(uom_family),
+-        "Uom_Base": up(uom_base),
+-        "Track Lot": up(track_lot),
+-        "Default Location": up(default_location),
+-
+-        "Pack_Uom": up(pack_uom),
+-        "Pack_Size / units": norm_num(pack_size_units),
+-        "Pack_Size_Uom": up(pack_size_uom),
+-
+-        "Roll_Length_mm": norm_num(roll_len),
+-        "Roll_Width_mm": norm_num(roll_wid),
+-        "Roll_Thickness_mm": norm_num(roll_thk),
+-        "Sheet_Length_mm": norm_num(sheet_len),
+-        "Sheet_Width_mm": norm_num(sheet_wid),
+-        "Sheet_Thickness_mm": norm_num(sheet_thk),
+-
+-        "Open_life_hours": norm_num(open_life_hours),
+-        "Shelf_life_days": norm_num(shelf_life_days),
+-    }
++    # ✅ Unique: Item_Code
++    if "Item_Code" in item_df.columns:
++        exists_code = (
++            item_df["Item_Code"]
++            .dropna()
++            .astype(str)
++            .str.strip()
++            .str.upper()
++            .eq(up(next_code))
++            .any()
++        )
++        if exists_code:
++            st.error(f"❌ Item_Code already exists: {up(next_code)}")
++            st.stop()
++
++# ✅ Unique: Vendor_Name + Vendor_Item_Code (组合唯一) —— canonical
++# V2 冻结阶段：暂不启用，只保留 Item_Code 唯一
++# （vendor_item_code 可能 N/A/空，容易误判重复）
++# VENDOR_NAME_COL = "Vendor_Name"
++# VENDOR_ITEM_CODE_COL = "Vendor_Item_Code"
++# vn = up(vendor_name)
++# vic = up(vendor_item_code)
++# if VENDOR_NAME_COL in item_df.columns and VENDOR_ITEM_CODE_COL in item_df.columns:
++#     exists_vendor_combo = (
++#         item_df[VENDOR_NAME_COL].fillna("").astype(str).str.strip().str.upper().eq(vn)
++#         &
++#         item_df[VENDOR_ITEM_CODE_COL].fillna("").astype(str).str.strip().str.upper().eq(vic)
++#     ).any()
++#     if exists_vendor_combo:
++#         st.error(f"❌ Duplicate Vendor combo: {vn} + {vic}")
++#         st.stop()
++# ✅ 只有通过重复检查后，才创建 new_row（注意：不缩进到上面 if 里）
++
++new_row = {
++    "Item_Code": up(next_code),
++    "Item_Name": up(item_name),
++    "Item Descriptions": up(item_desc),
++    "Vendor_Name": str(vendor_name or "").strip(),
++    "Vendor_Item_Code": up(vendor_item_code),
++
++    "Delivery Lead Time (Week)": norm_num(delivery_lead_time),
++    "Standard Pack": norm_num(standard_pack),
++
++    "Item_Group": up(item_group),
++    "Item_Category": up(item_category),
++    "Uom_Family": up(uom_family),
++    "Uom_Base": up(uom_base),
++    "Track Lot": up(track_lot),
++    "Default Location": up(default_location),
++
++    "Pack_Uom": up(pack_uom),
++    "Pack_Size / units": norm_num(pack_size_units),
++    "Pack_Size_Uom": up(pack_size_uom),
++
++    "Roll_Length_mm": norm_num(roll_len),
++    "Roll_Width_mm": norm_num(roll_wid),
++    "Roll_Thickness_mm": norm_num(roll_thk),
++    "Sheet_Length_mm": norm_num(sheet_len),
++    "Sheet_Width_mm": norm_num(sheet_wid),
++    "Sheet_Thickness_mm": norm_num(sheet_thk),
++
++    "Open_life_hours": norm_num(open_life_hours),
++    "Shelf_life_days": norm_num(shelf_life_days),
++
++    # ✅ Trace
++    "Entered_By": up(entered_by),
++    "Entered_At": entered_at,
++    "Status": up(status),
++}
+     
+-    # 缺列补齐
+-    for k in new_row.keys():
+-        if k not in item_df.columns:
+-            item_df[k] = ""
+-
+-    item_df.loc[len(item_df)] = new_row
+-    st.session_state["dirty"] = True
++    
++# 【功能】缺列补齐：new_row 有的列，item_df 没有就先加空列
++for k in new_row.keys():
++    if k not in item_df.columns:
++        item_df[k] = ""
+ 
+-# ✅ Add Item 后清空表单（但保留 item_df）
+-    reset_form_only(rerun=True)
++# 【功能】追加一行（只做一次，别重复）
++item_df.loc[len(item_df)] = new_row
+ 
+-# 生成导出内容（永远从 session 的 item_df）
+-export_df = st.session_state["item_df"]
++# 【功能】标记已修改 + 清空表单
++st.session_state["dirty"] = True
++reset_form_only(rerun=True)    
++  
+ 
++# --- Export (always based on session item_df) ---
++export_df = st.session_state["item_df"].copy()
+ base_cols = st.session_state.get("base_cols", export_df.columns.tolist())
+-extra_cols = [c for c in export_df.columns if c not in base_cols]
+ 
+ save_ts = st.session_state.get("last_save_ts", "")
+ save_path = st.session_state.get("last_save_path", "")
+-
+-export_df = export_df.copy()
+ export_df["Saved_At"] = save_ts
+ export_df["Saved_File"] = save_path
+ 
+-# ✅ 按原表顺序导出 + 把新列放最后
+ export_df = export_df.reindex(columns=base_cols + [c for c in export_df.columns if c not in base_cols])
+-
+ csv_out = export_df.to_csv(index=False).encode("utf-8-sig")
+ 
+ st.download_button(
+@@ -525,44 +646,31 @@ st.download_button(
+     key="btn_download_csv"
+ )
+ 
+-
+-
+-# Save to local file
++# --- Save to local file ---
+ if st.button("Save to local file", key="btn_save_local"):
+     ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+     out_path = (Path(__file__).parent.parent / "data" / "ItemMaster.SAVED.csv").resolve()
+     out_path.parent.mkdir(parents=True, exist_ok=True)
+ 
+-    # ✅ 再重新生成一次 csv_out（包含 Saved_At/Saved_File）
+-    export_df = st.session_state["item_df"].copy()
+-    base_cols = st.session_state.get("base_cols", export_df.columns.tolist())
+-    export_df["Saved_At"] = ts
+-    export_df["Saved_File"] = str(out_path)
+-    export_df = export_df.reindex(columns=base_cols + [c for c in export_df.columns if c not in base_cols])
+-    csv_out2 = export_df.to_csv(index=False).encode("utf-8-sig")
++    export_df2 = st.session_state["item_df"].copy()
++    base_cols2 = st.session_state.get("base_cols", export_df2.columns.tolist())
++    export_df2["Saved_At"] = ts
++    export_df2["Saved_File"] = str(out_path)
++    export_df2 = export_df2.reindex(columns=base_cols2 + [c for c in export_df2.columns if c not in base_cols2])
++    csv_out2 = export_df2.to_csv(index=False).encode("utf-8-sig")
+ 
+-    saved_ok = False
+     try:
+         out_path.write_bytes(csv_out2)
+-        saved_ok = True
+     except PermissionError:
+-        try:
+-            ts2 = datetime.now().strftime("%Y%m%d_%H%M%S")
+-            alt_path = out_path.with_name(f"ItemMaster.SAVED_{ts2}.csv")
+-            alt_path.write_bytes(csv_out2)
+-            out_path = alt_path
+-            saved_ok = True
+-        except Exception as e:
+-            st.error(f"Save failed: {e}")
+-
+-    if saved_ok:
+-        st.session_state["dirty"] = False
+-        st.session_state["last_save_ts"] = ts
+-        st.session_state["last_save_path"] = str(out_path)
+-        st.session_state["last_save_msg"] = f"Saved ✅ {ts} → {out_path}"
+-        st.rerun()
+-    else:
+-        st.session_state["dirty"] = True
++        ts2 = datetime.now().strftime("%Y%m%d_%H%M%S")
++        out_path = out_path.with_name(f"ItemMaster.SAVED_{ts2}.csv")
++        out_path.write_bytes(csv_out2)
++
++    st.session_state["dirty"] = False
++    st.session_state["last_save_ts"] = ts
++    st.session_state["last_save_path"] = str(out_path)
++    st.session_state["last_save_msg"] = f"Saved ✅ {ts} → {out_path}"
++    st.rerun()
+ 
+ # ✅ 永久显示最后一次保存位置
+ if st.session_state.get("last_save_msg"):
+diff --git a/app/api/v2/fg_receive.py b/app/api/v2/fg_receive.py
+index 0356349..191b4ac 100644
+--- a/app/api/v2/fg_receive.py
++++ b/app/api/v2/fg_receive.py
+@@ -1,22 +1,28 @@
+ from fastapi import APIRouter, HTTPException
+ from datetime import datetime, timezone
+ from app.repositories.stock_ledger_repo import insert_ledger
++from app.constants.txn_type import RECEIPT
++from app.constants.locations import FG_STORE, PACK_PARK
++
++
++
+ 
+ router = APIRouter(prefix="/v2/fg", tags=["v2-fg"])
+ 
+ @router.post("/receive")
+-def fg_receive(org_id: str, item_id: str, qty: float, uom: str = "ea", ref_type: str = "FG_RECEIVE", ref_id: str | None = None):
++def fg_receive(org_id: str, item_id: str, qty: float, uom: str = "ea", ref_type: str = "FG_RECEIVE", ref_id: str | None = None,location_code: str = FG_STORE):
+     try:
+         row = insert_ledger({
+             "org_id": org_id,
+             "item_id": item_id,
+-            "txn_type": "RECEIVE",
++            "location_code": location_code,
++            "txn_type": RECEIPT,
+             "qty": abs(qty),
+             "uom": uom,
+             "ref_type": ref_type,
+             "ref_id": ref_id,
+             "occurred_at": datetime.now(timezone.utc).isoformat(),
+         })
+-        return {"ok": True, "stock_ledger_id": row["id"]}
++        return {"ok": True, "stock_ledger_id": row["id"], "location_code": location_code, "txn_type": RECEIPT}
+     except Exception as e:
+         raise HTTPException(status_code=400, detail=str(e))
+\ No newline at end of file
+diff --git a/app/repositories/stock_ledger_repo.py b/app/repositories/stock_ledger_repo.py
+index ff9b2c2..9786e53 100644
+--- a/app/repositories/stock_ledger_repo.py
++++ b/app/repositories/stock_ledger_repo.py
+@@ -2,10 +2,23 @@ from __future__ import annotations
+ from typing import Any, Dict, List
+ from app.infra.supabase_client import sb_table
+ from datetime import datetime, timezone
++from app.constants.txn_type import ALL, ADJUSTMENT
++from app.constants.locations import ALL as LOCATION_ALL
++from app.constants.locations import RM_STORE
++from decimal import Decimal
++from typing import Optional
+ 
+ TABLE = "stock_ledger"
+ 
+ def insert_ledger(entry: Dict[str, Any]) -> Dict[str, Any]:
++    txn_type = entry.get("txn_type")
++    if txn_type not in ALL:
++        raise ValueError(f"invalid txn_type: {txn_type}")
++
++    loc = entry.get("location_code")
++    if loc is not None and loc not in LOCATION_ALL:
++        raise ValueError(f"invalid location_code: {loc}")
++
+     resp = sb_table(TABLE).insert(entry).execute()
+     data = getattr(resp, "data", None)
+     if not data:
+@@ -28,22 +41,40 @@ def update_ref_id(ledger_id: str, ref_id: str) -> None:
+     sb_table(TABLE).update({"ref_id": ref_id}).eq("id", ledger_id).execute()
+ 
+ 
+-from typing import Optional
+ 
+-def get_onhand(org_id: str, item_id: str, location_id: Optional[str] = None) -> float:
+-    q = sb_table(TABLE).select("qty").eq("org_id", org_id).eq("item_id", item_id)
+-    if location_id is not None:
+-        q = q.eq("location_id", location_id)
++def get_onhand(org_id: str, item_id: str, location_code: Optional[str] = None) -> float:
++    q = (
++        sb_table(TABLE)
++        .select("qty")
++        .eq("org_id", org_id)
++        .eq("item_id", item_id)
++    )
++    if location_code is not None:
++        q = q.eq("location_code", location_code)
++
+     resp = q.execute()
+     data = getattr(resp, "data", None) or []
+-    return float(sum(float(r["qty"]) for r in data))
++
++    total = Decimal("0")
++    for r in data:
++        total += Decimal(str(r.get("qty", 0)))
++
++    return float(total)
+ 
+ 
+-def insert_adjustment_ledger(org_id: str, item_id: str, qty: float, uom: str, note: str | None = None) -> Dict[str, Any]:
++def insert_adjustment_ledger(
++    org_id: str,
++    item_id: str,
++    qty: float,
++    uom: str,
++    location_code: str = RM_STORE,
++    note: str | None = None,
++) -> Dict[str, Any]:
+     return insert_ledger({
+         "org_id": org_id,
+         "item_id": item_id,
+-        "txn_type": "ADJUSTMENT",
++        "location_code": location_code,
++        "txn_type": ADJUSTMENT,
+         "qty": qty,
+         "uom": uom,
+         "ref_type": "INVENTORY_ADJUSTMENT",
+diff --git a/app/services/consume_service.py b/app/services/consume_service.py
+index 3f251e7..b680fcd 100644
+--- a/app/services/consume_service.py
++++ b/app/services/consume_service.py
+@@ -1,31 +1,51 @@
+ from __future__ import annotations
+ from typing import Any, Dict
+ from datetime import datetime, timezone
+-from app.repositories.stock_ledger_repo import update_ref_id, insert_ledger
+-from app.repositories.consumption_event_repo import insert_event
++from decimal import Decimal
++from fastapi import HTTPException
+ 
++from app.repositories.stock_ledger_repo import update_ref_id, insert_ledger, get_onhand
++from app.repositories.consumption_event_repo import insert_event
++from app.constants.txn_type import ISSUE
++from app.constants.locations import LINE
+ 
+ 
+ def commit_consume(payload: Dict[str, Any]) -> Dict[str, Any]:
+-    """
+-    payload should already be validated by FastAPI schema layer.
+-    Minimal required keys:
+-      org_id, item_id, qty, uom
+-   
+-    """
+     org_id = payload["org_id"]
+     item_id = payload["item_id"]
+-    qty = payload["qty"]
+     uom = payload["uom"]
+     model_code = payload.get("model_code")
+ 
+-    
+-    # ISSUE: store as negative qty (locked convention)
++    # 1) qty 强制为正数输入（系统自己写负数到ledger）
++    try:
++        qty = Decimal(str(payload["qty"]))
++    except Exception:
++        raise HTTPException(status_code=400, detail="qty must be a number")
++
++    if qty <= 0:
++        raise HTTPException(status_code=400, detail="qty must be > 0")
++
++    # 2) 幂等键（防 Swagger 双击/重试）
++    #   你先不改表也可以：把它塞进 reason，至少能追溯/人工排查重复
++    client_txn_id = payload.get("client_txn_id")
++    if not client_txn_id:
++        raise HTTPException(status_code=400, detail="client_txn_id is required (uuid)")
++
++    # 3) 防负库存：写入前查 onhand
++    onhand = Decimal(str(get_onhand(org_id=org_id, item_id=item_id, location_code=LINE)))
++    if onhand < qty:
++        raise HTTPException(
++            status_code=400,
++            detail=f"Insufficient stock at {LINE}: onhand={onhand} {uom}, required={qty} {uom}"
++        )
++
++    # ISSUE: ledger 存负数（锁定约定）
+     ledger_row = insert_ledger({
+         "org_id": org_id,
+         "item_id": item_id,
+-        "txn_type": "ISSUE",
+-        "qty": -abs(qty),
++        "location_code": LINE,
++        "txn_type": ISSUE,
++        "qty": float(-qty),  # 或保持 Decimal 看你repo是否支持
+         "uom": uom,
+         "ref_type": "CONSUMPTION_EVENT",
+         "occurred_at": datetime.now(timezone.utc).isoformat(),
+@@ -37,23 +57,27 @@ def commit_consume(payload: Dict[str, Any]) -> Dict[str, Any]:
+         "bom_id": None,
+         "item_id": item_id,
+         "location_id": None,
+-        "qty": qty,
++        "qty": float(qty),  # 事件存正数（更清晰）
+         "direction": "CONSUME",
+-        "reason": "commit",
++        "reason": f"commit:{client_txn_id}",  # 轻量幂等/追溯
+         "stock_ledger_id": ledger_row["id"],
+         "model_code": model_code,
+     })
+-    update_ref_id(ledger_row["id"], ev_row["id"]) 
+-    
++
++    update_ref_id(ledger_row["id"], ev_row["id"])
++
+     return {
+         "ok": True,
+         "stock_ledger_id": ledger_row["id"],
+         "consumption_event_id": ev_row["id"],
+-        "txn_type": "ISSUE",
+-        "qty": qty,
++        "txn_type": ISSUE,
++        "location_code": LINE,
++        "qty": float(qty),
++        "uom": uom,
++        "onhand_before": float(onhand),
++        "onhand_after": float(onhand - qty),
+     }
+ 
+-
+ def preview_consume(payload: Dict[str, Any]) -> Dict[str, Any]:
+     org_id = payload["org_id"]
+     item_id = payload["item_id"]
+@@ -63,7 +87,8 @@ def preview_consume(payload: Dict[str, Any]) -> Dict[str, Any]:
+     ledger_entry = {
+         "org_id": org_id,
+         "item_id": item_id,
+-        "txn_type": "ISSUE",
++        "location_code": LINE,
++        "txn_type": ISSUE,
+         "qty": -abs(qty),
+         "uom": uom,
+         "ref_type": "CONSUMPTION_EVENT",
+diff --git a/app/services/inventory_adjustment_service.py b/app/services/inventory_adjustment_service.py
+index ce616a2..9824fb2 100644
+--- a/app/services/inventory_adjustment_service.py
++++ b/app/services/inventory_adjustment_service.py
+@@ -32,8 +32,9 @@ def commit_adjustment(payload: Dict[str, Any]) -> Dict[str, Any]:
+         qty = float(ln["qty"])
+         uom = ln["uom"]
+         note = ln.get("note")
++        location_code = ln.get("location_code")
+ 
+-        led = insert_adjustment_ledger(org_id=org_id, item_id=item_id, qty=qty, uom=uom, note=note)
++        led = insert_adjustment_ledger(org_id=org_id, item_id=item_id, qty=qty, uom=uom, location_code=location_code,note=note)
+         ledger_ids.append(led["id"])
+ 
+         line_rows.append({
+diff --git a/main.py b/main.py
+index 5405af5..cdcbf43 100644
+--- a/main.py
++++ b/main.py
+@@ -5,7 +5,7 @@ from __future__ import annotations
+ from app.services.consume_service import commit_consume
+ from app.infra.load_env import load_env_if_needed
+ load_env_if_needed()
+-from datetime import datetime
++from datetime import datetime, timezone, timedelta
+ from decimal import Decimal
+ from typing import List
+ from app.services.consume_service import preview_consume
+@@ -14,6 +14,13 @@ from app.services.inventory_adjustment_service import commit_adjustment
+ from fastapi import FastAPI, Depends, HTTPException
+ from sqlalchemy.orm import Session
+ from database import engine, get_db
++from app.constants.locations import RM_STORE
++from app.constants.txn_type import TRANSFER
++from app.constants.locations import ALL as LOCATION_ALL
++from app.repositories.stock_ledger_repo import insert_ledger
++from app.constants.txn_type import RECEIPT
++from app.constants.locations import WIP, FG_STORE
++
+ 
+ # ✅ Consumption Engine (v2)
+ from consumption_engine import ConsumptionRequest, build_ledger_entry
+@@ -131,20 +138,43 @@ def get_stock_ledger(org_id: str, limit: int = 20):
+     return list_ledger(org_id=org_id, limit=limit)
+ 
+ @app.get("/v2/stock/onhand")
+-def stock_onhand(org_id: str, item_id: str):
+-    return {"org_id": org_id, "item_id": item_id, "onhand_qty": get_onhand(org_id, item_id)}
++def stock_onhand(org_id: str, item_id: str, location_code: str | None = None):
++    return {
++        "org_id": org_id,
++        "item_id": item_id,
++        "location_code": location_code,
++        "onhand_qty": get_onhand(org_id, item_id, location_code=location_code),
++    }
+ 
+ @app.post("/v2/inventory-adjustment/commit")
+-def inventory_adjustment_commit(org_id: str, item_id: str, qty: Decimal):
++def inventory_adjustment_commit(
++    org_id: str,
++    item_id: str,
++    qty: Decimal,
++    location_code: str = RM_STORE,   # ✅ 新增：可选地点，默认 RM_STORE
++):
+     payload = {
+         "org_id": org_id,
+         "adj_type": "701",
+         "reason": "manual",
+         "lines": [
+-            {"item_id": item_id, "qty": float(qty), "uom": "ea", "note": "test adjustment"}
++            {
++                "item_id": item_id,
++                "qty": float(qty),
++                "uom": "ea",
++                "note": "test adjustment",
++                "location_code": location_code,  # ✅ 新增：把 location_code 传进 payload
++            }
+         ],
+     }
+-    return commit_adjustment(payload)
++
++    res = commit_adjustment(payload)
++
++    # ✅ 回传本次 adjustment 的地点
++    if isinstance(res, dict):
++        res["location_code"] = location_code
++
++    return res
+ 
+ 
+ # ==========================
+@@ -592,4 +622,301 @@ app.include_router(routing_check_router)
+ from app.api.v2.e2e_bootstrap import router as e2e_bootstrap_router
+ app.include_router(e2e_bootstrap_router)
+ 
++@app.post("/v2/transfer/commit")
++def transfer_commit(
++    org_id: str,
++    item_id: str,
++    qty: float,
++    from_loc: str,
++    to_loc: str,
++    uom: str = "ea",
++    ref_type: str = "TRANSFER",
++    ref_id: str | None = None,
++    note: str | None = None,
++):
++    # validate locations
++    if from_loc not in LOCATION_ALL:
++        raise HTTPException(status_code=400, detail=f"invalid from_loc: {from_loc}")
++    if to_loc not in LOCATION_ALL:
++        raise HTTPException(status_code=400, detail=f"invalid to_loc: {to_loc}")
++    if qty == 0:
++        raise HTTPException(status_code=400, detail="qty cannot be 0")
++
++    row = insert_ledger({
++        "org_id": org_id,
++        "item_id": item_id,
++        "location_code": to_loc,     # ✅ 最小版：以 to_loc 作为当前所在位置
++        "txn_type": TRANSFER,
++        "qty": abs(qty),             # ✅ transfer 统一正数
++        "uom": uom,
++        "ref_type": ref_type,
++        "ref_id": ref_id,
++        "note": note or f"FROM:{from_loc}",
++        "occurred_at": datetime.now(timezone.utc).isoformat(),
++    })
++
++    return {
++        "ok": True,
++        "stock_ledger_id": row["id"],
++        "txn_type": TRANSFER,
++        "from_loc": from_loc,
++        "to_loc": to_loc,
++        "location_code": to_loc,
++        "qty": abs(qty),
++    }
++
++
++from app.infra.supabase_client import sb_table
++
++STAGE_ORDER = ["PRE", "ASSY", "PACK"]
++
++def _sum_stage(org_id: str, wo_no: str, stage_code: str) -> float:
++    resp = (
++        sb_table("hourly_output_log")
++        .select("actual_qty")
++        .eq("org_id", org_id)
++        .eq("work_order_no", wo_no)
++        .eq("stage_code", stage_code)
++        .execute()
++    )
++    data = getattr(resp, "data", None) or []
++    return float(sum(float(r["actual_qty"]) for r in data))
++
++@app.post("/v2/hourly-output/commit")
++def hourly_output_commit(
++    org_id: str,
++    work_order_no: str,
++    stage_code: str,                 # PRE / ASSY / PACK
++    hour_start: str,                 # ISO string
++    plan_qty: float,
++    actual_qty: float,
++    scrap_qty: float = 0,
++    rework_qty: float = 0,
++    carry_in_wip_qty: float = 0,
++    line_code: str | None = None,
++    reason_code: str | None = None,
++    note: str | None = None,
++    skip_escalation: bool = False,
++):
++    stage_code = stage_code.upper().strip()
++    if stage_code not in STAGE_ORDER:
++        raise HTTPException(status_code=400, detail=f"invalid stage_code: {stage_code}")
++
++    try:
++        hs = datetime.fromisoformat(hour_start.replace("Z", "+00:00"))
++    except Exception:
++        raise HTTPException(status_code=400, detail="hour_start must be ISO format")
++
++    if stage_code == "ASSY":
++        pre_total = _sum_stage(org_id, work_order_no, "PRE")
++        if float(actual_qty) > float(pre_total) + float(carry_in_wip_qty):
++            raise HTTPException(
++                status_code=400,
++                detail=f"ASSY actual_qty({actual_qty}) > PRE_total({pre_total}) + carry_in_wip_qty({carry_in_wip_qty})"
++            )
++
++    if stage_code == "PACK":
++        assy_total = _sum_stage(org_id, work_order_no, "ASSY")
++        if float(actual_qty) > float(assy_total) + float(carry_in_wip_qty):
++            raise HTTPException(
++                status_code=400,
++                detail=f"PACK actual_qty({actual_qty}) > ASSY_total({assy_total}) + carry_in_wip_qty({carry_in_wip_qty})"
++            )
++
++    row = {
++        "org_id": org_id,
++        "work_order_no": work_order_no,
++        "line_code": line_code,
++        "stage_code": stage_code,
++        "hour_start": hs.astimezone(timezone.utc).isoformat(),
++        "plan_qty": float(plan_qty),
++        "actual_qty": float(actual_qty),
++        "scrap_qty": float(scrap_qty),
++        "rework_qty": float(rework_qty),
++        "carry_in_wip_qty": float(carry_in_wip_qty),
++        "reason_code": reason_code,
++        "note": note,
++        "skip_escalation": bool(skip_escalation),
++    }
++
++    resp = sb_table("hourly_output_log").insert(row).execute()
++    data = getattr(resp, "data", None)
++    if not data:
++        raise HTTPException(status_code=400, detail="insert hourly_output_log returned empty data")
++
++    return {"ok": True, "hourly_log_id": data[0]["id"], "stage_code": stage_code, "hour_start": row["hour_start"]}
++
++
++
++
++@app.post("/v2/hourly-output/check-missed")
++def check_missed_hourly_reports(org_id: str, now_iso: str | None = None, window_hours: int = 6):
++    # allow testing with a fixed time
++    now = datetime.now(timezone.utc)
++    if now_iso:
++        now = datetime.fromisoformat(now_iso.replace("Z", "+00:00")).astimezone(timezone.utc)
++
++    if window_hours < 1 or window_hours > 72:
++        raise HTTPException(status_code=400, detail="window_hours must be 1..72")
++
++    # For MVP: only check the last N hours window
++    window_start = now - timedelta(hours=window_hours)
++
++    # find all hourly logs for this org
++    logs_resp = (
++        sb_table("hourly_output_log")
++        .select("work_order_no, stage_code, hour_start")
++        .eq("org_id", org_id)
++        .execute()
++    )
++    logs = getattr(logs_resp, "data", None) or []
++
++    # Build a set of reported keys (wo, stage, hour_start)
++    reported = set()
++    for r in logs:
++        reported.add((r["work_order_no"], r["stage_code"], r["hour_start"]))
++
++  
++
++    # We generate candidate hours: each hour between window_start and now (rounded down)
++    base = now.replace(minute=0, second=0, microsecond=0)
++    hours = []
++    t = base
++    while t >= window_start:
++        hours.append(t)
++        t = t - timedelta(hours=1)
++
++    created = 0
++    for (wo, stage, _) in reported:
++        for hs in hours:
++            hs_iso = hs.isoformat()
++            key = (wo, stage, hs_iso)
++            if key in reported:
++                continue
++
++            due_at = hs + timedelta(minutes=15)
++            if now <= due_at:
++                continue  # not overdue yet
++
++            # upsert-like: try insert, ignore if exists
++            alert_row = {
++                "org_id": org_id,
++                "work_order_no": wo,
++                "stage_code": stage,
++                "hour_start": hs_iso,
++                "due_at": due_at.isoformat(),
++                "status": "OPEN",
++            }
++            try:
++                sb_table("missed_report_alert").insert(alert_row).execute()
++                created += 1
++            except Exception:
++                pass
++
++    return {"ok": True, "created": created}
++
++
++
++
++@app.get("/v2/hourly-output/alerts")
++def list_missed_alerts(org_id: str, status: str = "OPEN", limit: int = 50):
++    resp = (
++        sb_table("missed_report_alert")
++        .select("*")
++        .eq("org_id", org_id)
++        .eq("status", status)
++        .order("due_at", desc=True)
++        .limit(limit)
++        .execute()
++    )
++    data = getattr(resp, "data", None) or []
++    return data
++
++@app.post("/v2/hourly-output/alerts/{alert_id}/ack")
++def ack_missed_alert(alert_id: str, org_id: str, ack_by: str, ack_note: str | None = None, status: str = "ACK"):
++    status = status.upper()
++    if status not in ["ACK", "SKIP", "CLOSED"]:
++        raise HTTPException(status_code=400, detail="status must be ACK/SKIP/CLOSED")
++
++    resp = (
++        sb_table("missed_report_alert")
++        .update({"status": status, "ack_by": ack_by, "ack_note": ack_note})
++        .eq("id", alert_id)
++        .eq("org_id", org_id)
++        .execute()
++    )
++    data = getattr(resp, "data", None) or []
++    if not data:
++        raise HTTPException(status_code=404, detail="alert not found")
++    return {"ok": True, "id": data[0]["id"], "status": data[0]["status"]}
++
++
++
++@app.get("/v2/hourly-output/alert-summary")
++def alert_summary(org_id: str):
++    # OPEN count
++    open_resp = (
++        sb_table("missed_report_alert")
++        .select("id", count="exact")
++        .eq("org_id", org_id)
++        .eq("status", "OPEN")
++        .execute()
++    )
++    open_count = getattr(open_resp, "count", None)
++
++    # SKIP count
++    skip_resp = (
++        sb_table("missed_report_alert")
++        .select("id", count="exact")
++        .eq("org_id", org_id)
++        .eq("status", "SKIP")
++        .execute()
++    )
++    skip_count = getattr(skip_resp, "count", None)
++
++    return {"ok": True, "open": open_count or 0, "skip": skip_count or 0}
++
++
++
++
++
++@app.post("/v2/output/receive")
++def output_receive(
++    org_id: str,
++    item_id: str,
++    qty: float,
++    to_loc: str = WIP,              # 默认先入 WIP
++    uom: str = "ea",
++    ref_type: str = "OUTPUT",
++    ref_id: str | None = None,
++    note: str | None = None,
++):
++    if to_loc not in LOCATION_ALL:
++        raise HTTPException(status_code=400, detail=f"invalid to_loc: {to_loc}")
++    if qty == 0:
++        raise HTTPException(status_code=400, detail="qty cannot be 0")
++
++    row = insert_ledger({
++        "org_id": org_id,
++        "item_id": item_id,
++        "location_code": to_loc,
++        "txn_type": RECEIPT,
++        "qty": abs(qty),
++        "uom": uom,
++        "ref_type": ref_type,
++        "ref_id": ref_id,
++        "note": note,
++        "occurred_at": datetime.now(timezone.utc).isoformat(),
++    })
++
++    return {
++        "ok": True,
++        "stock_ledger_id": row["id"],
++        "txn_type": RECEIPT,
++        "location_code": to_loc,
++        "qty": abs(qty),
++        "ref_type": ref_type,
++    }
++
++
+ 
+diff --git a/schemas.py b/schemas.py
+index 877a5c2..e701de5 100644
+--- a/schemas.py
++++ b/schemas.py
+@@ -201,23 +201,6 @@ class RawMaterialResponse(RawMaterialCreate):
+         from_attributes = True
+ 
+ 
+-# ==========================================================
+-# Raw Material Schema
+-# ==========================================================
+-
+-class RawMaterialCreate(BaseModel):
+-    material_code: str
+-    material_name: str
+-    unit: str
+-
+-
+-class RawMaterialResponse(RawMaterialCreate):
+-    id: int
+-
+-    class Config:
+-        from_attributes = True
+-
+-
+ # ==========================================================
+ # BOM Schema
+ # ==========================================================
