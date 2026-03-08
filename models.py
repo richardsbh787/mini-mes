@@ -337,6 +337,64 @@ class StockLedger(Base):
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
 
 
+# ==========================================================
+# Multi-Level BOM (Step 1: Structure Only)
+# ==========================================================
+
+class BOMHeader(Base):
+    __tablename__ = "bom_header"
+
+    bom_id = Column(Integer, primary_key=True, index=True)
+    parent_system_item_code = Column(String, nullable=False, index=True)
+    bom_type = Column(String, nullable=False)
+    status = Column(String, nullable=False)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    created_by = Column(String, nullable=False)
+
+    versions = relationship("BOMVersion", back_populates="bom_header")
+
+
+class BOMVersion(Base):
+    __tablename__ = "bom_version"
+
+    version_id = Column(Integer, primary_key=True, index=True)
+    bom_id = Column(Integer, ForeignKey("bom_header.bom_id"), nullable=False, index=True)
+    bom_revision = Column(String, nullable=False)
+    status = Column(String, nullable=False)
+    effective_from = Column(Date, nullable=True)
+    effective_to = Column(Date, nullable=True)
+    remarks = Column(String, nullable=True)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    created_by = Column(String, nullable=False)
+    approved_by = Column(String, nullable=True)
+    approved_at = Column(DateTime, nullable=True)
+    source_version_id = Column(Integer, ForeignKey("bom_version.version_id"), nullable=True)
+    change_trigger = Column(String, nullable=True)
+
+    bom_header = relationship("BOMHeader", back_populates="versions")
+    source_version = relationship("BOMVersion", remote_side=[version_id])
+    lines = relationship("BOMLine", back_populates="version")
+
+
+class BOMLine(Base):
+    __tablename__ = "bom_line"
+
+    bom_line_id = Column(Integer, primary_key=True, index=True)
+    version_id = Column(Integer, ForeignKey("bom_version.version_id"), nullable=False, index=True)
+    sequence = Column(Integer, nullable=False)
+    component_system_item_code = Column(String, nullable=False, index=True)
+    qty_per = Column(Float, nullable=False)
+    uom = Column(String, nullable=False)
+    scrap_rate = Column(Float, nullable=False, default=0)
+    phantom_flag = Column(Boolean, nullable=False, default=False)
+    alt_group = Column(Integer, nullable=True)
+    alt_priority = Column(Integer, nullable=True)
+    operation_id = Column(String, nullable=True)
+    notes = Column(String, nullable=True)
+
+    version = relationship("BOMVersion", back_populates="lines")
+
+
 
 
 

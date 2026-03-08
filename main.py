@@ -43,6 +43,9 @@ from models import (
     MaterialTransaction,
     InventoryTransaction,
     StockLedger,
+    BOMHeader,
+    BOMVersion,
+    BOMLine,
 )
 
 # ✅ Schemas (只 import 一次，不要重复)
@@ -621,6 +624,18 @@ app.include_router(routing_check_router)
 
 from app.api.v2.e2e_bootstrap import router as e2e_bootstrap_router
 app.include_router(e2e_bootstrap_router)
+
+from app.api.v2.bom_maintenance import router as bom_maintenance_router
+app.include_router(bom_maintenance_router)
+
+from app.api.v2.bom_flat_explosion import router as bom_flat_explosion_router
+app.include_router(bom_flat_explosion_router)
+
+from app.api.v2.bom_tree_explosion import router as bom_tree_explosion_router
+app.include_router(bom_tree_explosion_router)
+
+from app.api.v2.work_order_bom_preview import router as work_order_bom_preview_router
+app.include_router(work_order_bom_preview_router)
 
 @app.post("/v2/transfer/commit")
 def transfer_commit(
