@@ -15,27 +15,41 @@ flat_svc = BOMFlatExplosionService()
 tree_svc = BOMTreeExplosionService()
 
 
-@router.post("/bom-preview", response_model=WorkOrderBOMPreviewResponse)
-def work_order_bom_preview(payload: WorkOrderBOMPreviewRequest, db: Session = Depends(get_db)):
+def build_work_order_bom_preview(
+    db: Session,
+    parent_system_item_code: str,
+    work_order_qty: float,
+    version_id: int | None,
+) -> dict:
     tree_result = tree_svc.explode_tree(
         db=db,
-        parent_system_item_code=payload.parent_system_item_code,
-        required_qty=payload.work_order_qty,
-        version_id=payload.version_id,
+        parent_system_item_code=parent_system_item_code,
+        required_qty=work_order_qty,
+        version_id=version_id,
     )
     selected_version_id = tree_result["version_id"]
 
     flat_materials = flat_svc.explode_flat(
         db=db,
-        parent_system_item_code=payload.parent_system_item_code,
-        required_qty=payload.work_order_qty,
+        parent_system_item_code=parent_system_item_code,
+        required_qty=work_order_qty,
         version_id=selected_version_id,
     )
 
     return {
-        "parent_system_item_code": payload.parent_system_item_code,
-        "work_order_qty": payload.work_order_qty,
+        "parent_system_item_code": parent_system_item_code,
+        "work_order_qty": work_order_qty,
         "version_id": selected_version_id,
         "flat_materials": flat_materials,
         "tree": tree_result["tree"],
     }
+
+
+@router.post("/bom-preview", response_model=WorkOrderBOMPreviewResponse)
+def work_order_bom_preview(payload: WorkOrderBOMPreviewRequest, db: Session = Depends(get_db)):
+    return build_work_order_bom_preview(
+        db=db,
+        parent_system_item_code=payload.parent_system_item_code,
+        work_order_qty=payload.work_order_qty,
+        version_id=payload.version_id,
+    )

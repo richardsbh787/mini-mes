@@ -395,6 +395,24 @@ class BOMLine(Base):
     version = relationship("BOMVersion", back_populates="lines")
 
 
+class WorkOrderBOMSnapshot(Base):
+    __tablename__ = "work_order_bom_snapshot"
+
+    id = Column(Integer, primary_key=True, index=True)
+    work_order_no = Column(String, nullable=False, unique=True, index=True)
+    parent_system_item_code = Column(String, nullable=False)
+    work_order_qty = Column(Float, nullable=False)
+    bom_version_id = Column(Integer, ForeignKey("bom_version.version_id"), nullable=False)
+    status = Column(String, nullable=False, default="DRAFT")
+    issue_status = Column(String, nullable=False, default="PENDING")
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    created_by = Column(String, nullable=True)
+    released_by = Column(String, nullable=True)
+    released_at = Column(DateTime, nullable=True)
+    issued_by = Column(String, nullable=True)
+    issued_at = Column(DateTime, nullable=True)
+
+    bom_version = relationship("BOMVersion")
 
 
 
