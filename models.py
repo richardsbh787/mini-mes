@@ -332,6 +332,10 @@ class StockLedger(Base):
     ref_type = Column(String, nullable=True)
     ref_id = Column(String, nullable=True)
     note = Column(String, nullable=True)
+    issue_event_id = Column(Integer, nullable=True, index=True)
+    correction_event_id = Column(Integer, nullable=True, index=True)
+    snapshot_id = Column(Integer, nullable=True, index=True)
+    work_order_no = Column(String, nullable=True, index=True)
 
     occurred_at = Column(DateTime, nullable=False, default=datetime.utcnow)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
@@ -413,6 +417,34 @@ class WorkOrderBOMSnapshot(Base):
     issued_at = Column(DateTime, nullable=True)
 
     bom_version = relationship("BOMVersion")
+
+
+class MaterialIssueEvent(Base):
+    __tablename__ = "material_issue_event"
+
+    issue_event_id = Column(Integer, primary_key=True, index=True)
+    snapshot_id = Column(Integer, ForeignKey("work_order_bom_snapshot.id"), nullable=False, index=True)
+    work_order_no = Column(String, nullable=False, index=True)
+    bom_version_id = Column(Integer, ForeignKey("bom_version.version_id"), nullable=False, index=True)
+    org_id = Column(String, nullable=False, index=True)
+    location_id = Column(String, nullable=False, index=True)
+    issued_by = Column(String, nullable=False)
+    issued_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+
+
+class MaterialIssueCorrectionEvent(Base):
+    __tablename__ = "material_issue_correction_event"
+
+    correction_event_id = Column(Integer, primary_key=True, index=True)
+    original_issue_event_id = Column(Integer, ForeignKey("material_issue_event.issue_event_id"), nullable=False, index=True)
+    snapshot_id = Column(Integer, ForeignKey("work_order_bom_snapshot.id"), nullable=False, index=True)
+    work_order_no = Column(String, nullable=False, index=True)
+    org_id = Column(String, nullable=False, index=True)
+    location_id = Column(String, nullable=False, index=True)
+    reason_code = Column(String, nullable=False, index=True)
+    reason_note = Column(String, nullable=True)
+    corrected_by = Column(String, nullable=False)
+    corrected_at = Column(DateTime, nullable=False, default=datetime.utcnow)
 
 
 

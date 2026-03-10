@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import date, datetime
 
 from fastapi import HTTPException
@@ -15,6 +15,16 @@ class _FlatLine:
     item_code: str
     total_qty: float
     uom: str
+    sources: list["_FlatLeafSource"] = field(default_factory=list)
+
+
+@dataclass(frozen=True)
+class _FlatLeafSource:
+    path: tuple[str, ...]
+    parent_lineage: tuple[str, ...]
+    is_phantom: bool
+    leaf_reason: str
+    exploded_from_version: int
 
 
 class BOMFlatExplosionService:
@@ -96,11 +106,23 @@ class BOMFlatExplosionService:
         return active_header, version
 
     @staticmethod
-    def _merge_line(flat: dict[str, _FlatLine], item_code: str, qty: float, uom: str) -> None:
+    def _merge_line(
+        flat: dict[str, _FlatLine],
+        item_code: str,
+        qty: float,
+        uom: str,
+        source: _FlatLeafSource,
+    ) -> None:
         if item_code in flat:
             flat[item_code].total_qty += qty
+            flat[item_code].sources.append(source)
             return
-        flat[item_code] = _FlatLine(item_code=item_code, total_qty=qty, uom=uom)
+        flat[item_code] = _FlatLine(
+            item_code=item_code,
+            total_qty=qty,
+            uom=uom,
+            sources=[source],
+        )
 
     def _explode_from_version(
         self,
@@ -141,7 +163,19 @@ class BOMFlatExplosionService:
                 continue
 
             if not line.phantom_flag:
-                self._merge_line(flat, child_code, child_required_qty, line.uom)
+                self._merge_line(
+                    flat=flat,
+                    item_code=child_code,
+                    qty=child_required_qty,
+                    uom=line.uom,
+                    source=_FlatLeafSource(
+                        path=tuple(child_path),
+                        parent_lineage=tuple(path),
+                        is_phantom=bool(line.phantom_flag),
+                        leaf_reason="NO_CHILD_BOM",
+                        exploded_from_version=version.version_id,
+                    ),
+                )
 
     def explode_flat(
         self,

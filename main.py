@@ -14,6 +14,7 @@ from app.services.inventory_adjustment_service import commit_adjustment
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from database import engine, get_db
+from app.bootstrap.material_issue_trace_schema import ensure_material_issue_trace_schema
 from app.bootstrap.work_order_bom_snapshot_schema import ensure_work_order_bom_snapshot_release_columns
 from app.constants.locations import RM_STORE
 from app.constants.txn_type import TRANSFER
@@ -93,6 +94,7 @@ app.include_router(fg_receive_router)
 # ✅ 关键：确保所有 models 都被 import 后，再 create_all
 Base.metadata.create_all(bind=engine)
 ensure_work_order_bom_snapshot_release_columns(engine)
+ensure_material_issue_trace_schema(engine)
 
 # ==========================
 # Root
@@ -650,6 +652,9 @@ app.include_router(work_order_material_issue_preview_router)
 
 from app.api.v2.work_order_material_issue_commit import router as work_order_material_issue_commit_router
 app.include_router(work_order_material_issue_commit_router)
+
+from app.api.v2.work_order_material_issue_correction_commit import router as work_order_material_issue_correction_commit_router
+app.include_router(work_order_material_issue_correction_commit_router)
 
 @app.post("/v2/transfer/commit")
 def transfer_commit(

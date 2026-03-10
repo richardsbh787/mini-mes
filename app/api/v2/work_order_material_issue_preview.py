@@ -35,6 +35,18 @@ def build_material_issue_preview_from_snapshot(snapshot: WorkOrderBOMSnapshot, d
             ),
         )
 
+    issue_status = str(snapshot.issue_status or "PENDING").upper()
+    if issue_status == "ISSUED":
+        raise HTTPException(
+            status_code=409,
+            detail=f"Snapshot already ISSUED and cannot preview material issue: id={snapshot.id}",
+        )
+    if issue_status != "PENDING":
+        raise HTTPException(
+            status_code=409,
+            detail=f"Snapshot issue_status {issue_status} cannot preview material issue: id={snapshot.id}",
+        )
+
     flat_materials = flat_svc.explode_flat(
         db=db,
         parent_system_item_code=snapshot.parent_system_item_code,

@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from database import get_db
-from models import StockLedger, WorkOrderBOMSnapshot
+from models import MaterialIssueEvent, StockLedger, WorkOrderBOMSnapshot
 from app.api.v2.work_order_material_issue_preview import build_material_issue_preview_from_snapshot
 from app.schemas.work_order_material_issue_commit import (
     WorkOrderMaterialIssueCommitRequest,
@@ -41,17 +41,32 @@ def work_order_material_issue_commit(
 
     issue_status = str(snapshot.issue_status or "PENDING").upper()
     if issue_status == "ISSUED":
-        raise HTTPException(status_code=409, detail=f"Snapshot already ISSUED: id={payload.snapshot_id}")
+        raise HTTPException(
+            status_code=409,
+            detail=f"Snapshot already ISSUED and cannot commit material issue: id={payload.snapshot_id}",
+        )
     if issue_status != "PENDING":
         raise HTTPException(
             status_code=409,
-            detail=f"Snapshot issue_status {issue_status} cannot issue (only PENDING allowed): id={payload.snapshot_id}",
+            detail=f"Snapshot issue_status {issue_status} cannot commit material issue: id={payload.snapshot_id}",
         )
 
     preview = build_material_issue_preview_from_snapshot(snapshot=snapshot, db=db)
     issue_lines = preview["issue_lines"]
 
     try:
+        issue_event = MaterialIssueEvent(
+            snapshot_id=snapshot.id,
+            work_order_no=snapshot.work_order_no,
+            bom_version_id=snapshot.bom_version_id,
+            org_id=payload.org_id,
+            location_id=payload.location_id,
+            issued_by=payload.issued_by,
+            issued_at=datetime.utcnow(),
+        )
+        db.add(issue_event)
+        db.flush()
+
         for line in issue_lines:
             db.add(
                 StockLedger(
@@ -64,6 +79,9 @@ def work_order_material_issue_commit(
                     ref_type="WORK_ORDER_BOM_SNAPSHOT",
                     ref_id=str(snapshot.id),
                     note=snapshot.work_order_no,
+                    issue_event_id=issue_event.issue_event_id,
+                    snapshot_id=snapshot.id,
+                    work_order_no=snapshot.work_order_no,
                     occurred_at=datetime.utcnow(),
                 )
             )

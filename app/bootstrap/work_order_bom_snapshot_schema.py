@@ -44,9 +44,6 @@ def ensure_work_order_bom_snapshot_release_columns(engine: Engine) -> None:
             "ADD COLUMN issued_at DATETIME"
         )
 
-    if not statements:
-        return
-
     with engine.begin() as conn:
         for sql in statements:
             conn.execute(text(sql))
