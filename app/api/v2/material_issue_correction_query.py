@@ -43,6 +43,14 @@ def serialize_correction_event(
 @router.get(
     "/material-issue-corrections",
     response_model=list[WorkOrderMaterialIssueCorrectionQueryResponse],
+    summary="List correction governance records",
+    description=(
+        "Read-only minimal governance list surface for material issue corrections. "
+        "Supports only the fixed correction-event filters on this endpoint and is intended "
+        "for minimal manual lookup of correction records. "
+        "Not a reporting, analytics, export, ledger-detail, or approval-workflow API."
+    ),
+    response_description="Read-only list of minimal correction governance records.",
 )
 def list_material_issue_corrections(
     work_order_no: str | None = None,
@@ -82,6 +90,15 @@ def list_material_issue_corrections(
 @router.get(
     "/material-issue-correction/{original_issue_event_id}",
     response_model=WorkOrderMaterialIssueCorrectionQueryResponse,
+    summary="Get correction governance record by original issue event",
+    description=(
+        "Read-only minimal governance lookup for checking whether a correction exists for "
+        "a specific original material issue event and for reading the fixed correction "
+        "governance fields exposed by this API. "
+        "Not a ledger-detail, correction-line, approval-state, inventory-summary, "
+        "reporting, analytics, or export API."
+    ),
+    response_description="Read-only minimal correction governance record for the original issue event.",
 )
 def get_material_issue_correction(
     original_issue_event_id: int,

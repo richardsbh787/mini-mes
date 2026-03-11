@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import date, timedelta
 
 import unittest
+from unittest.mock import patch
 from fastapi import HTTPException
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
@@ -13,6 +14,8 @@ from models import BOMHeader, BOMLine, BOMVersion, MaterialIssueCorrectionEvent,
 from app.api.v2.work_order_bom_bind import work_order_bom_bind
 from app.api.v2.work_order_bom_preview import build_work_order_bom_preview
 from app.api.v2.work_order_bom_release import work_order_bom_release
+from app.api.v2.material_issue_correction_query import get_material_issue_correction
+from app.api.v2.material_issue_correction_query import list_material_issue_corrections
 from app.api.v2.work_order_material_issue_commit import work_order_material_issue_commit
 from app.api.v2.work_order_material_issue_correction_commit import work_order_material_issue_correction_commit
 from app.api.v2.work_order_material_issue_preview import build_material_issue_preview_from_snapshot
@@ -419,9 +422,9 @@ class MultilayerBOMConstraintsTests(unittest.TestCase):
 
         for issue_status, expected_detail in [
             ("ISSUED", "Snapshot already ISSUED and cannot commit material issue: id=1"),
-            ("VOID", "Snapshot issue_status VOID cannot commit material issue: id=1"),
-            ("CLOSED", "Snapshot issue_status CLOSED cannot commit material issue: id=1"),
-            ("UNKNOWN", "Snapshot issue_status UNKNOWN cannot commit material issue: id=1"),
+            ("VOID", "Snapshot issue_status VOID cannot commit material issue (only PENDING allowed): id=1"),
+            ("CLOSED", "Snapshot issue_status CLOSED cannot commit material issue (only PENDING allowed): id=1"),
+            ("UNKNOWN", "Snapshot issue_status UNKNOWN cannot commit material issue (only PENDING allowed): id=1"),
         ]:
             db.query(StockLedger).delete()
             db.query(WorkOrderBOMSnapshot).delete()
@@ -454,6 +457,279 @@ class MultilayerBOMConstraintsTests(unittest.TestCase):
             self.assertEqual(db.query(StockLedger).count(), 0)
             self.assertEqual(db.query(MaterialIssueEvent).count(), 0)
             self.assertEqual(db.query(MaterialIssueCorrectionEvent).count(), 0)
+
+    def test_material_issue_commit_rejects_non_released_statuses(self) -> None:
+        db = self._new_db()
+
+        root = _add_header(db, "FG-1")
+        root_v = _add_version(db, root.bom_id)
+        _add_line(db, root_v.version_id, sequence=10, component_code="RM-1", qty_per=1.0)
+        db.commit()
+
+        for snapshot_status, expected_detail in [
+            ("DRAFT", "Snapshot status DRAFT cannot commit material issue (only RELEASED allowed): id=1"),
+            ("VOID", "Snapshot status VOID cannot commit material issue (only RELEASED allowed): id=1"),
+            ("CLOSED", "Snapshot status CLOSED cannot commit material issue (only RELEASED allowed): id=1"),
+        ]:
+            db.query(StockLedger).delete()
+            db.query(MaterialIssueEvent).delete()
+            db.query(WorkOrderBOMSnapshot).delete()
+            snapshot = WorkOrderBOMSnapshot(
+                id=1,
+                work_order_no=f"WO-COMMIT-{snapshot_status}",
+                parent_system_item_code="FG-1",
+                work_order_qty=1.0,
+                bom_version_id=root_v.version_id,
+                status=snapshot_status,
+                issue_status="PENDING",
+                created_by="test",
+            )
+            db.add(snapshot)
+            db.commit()
+
+            with self.assertRaises(HTTPException) as exc:
+                work_order_material_issue_commit(
+                    payload=WorkOrderMaterialIssueCommitRequest(
+                        snapshot_id=1,
+                        org_id="ORG-1",
+                        location_id="RM-STORE",
+                        issued_by="store",
+                    ),
+                    db=db,
+                )
+
+            self.assertEqual(exc.exception.status_code, 409)
+            self.assertEqual(exc.exception.detail, expected_detail)
+            self.assertEqual(db.query(StockLedger).count(), 0)
+            self.assertEqual(db.query(MaterialIssueEvent).count(), 0)
+
+    def test_material_issue_commit_rejects_missing_bom_version_id(self) -> None:
+        db = self._new_db()
+
+        root = _add_header(db, "FG-1")
+        root_v = _add_version(db, root.bom_id)
+        snapshot = WorkOrderBOMSnapshot(
+            id=1,
+            work_order_no="WO-NO-BOM",
+            parent_system_item_code="FG-1",
+            work_order_qty=1.0,
+            bom_version_id=root_v.version_id,
+            status="RELEASED",
+            issue_status="PENDING",
+            created_by="test",
+        )
+        db.add(snapshot)
+        db.commit()
+        db.refresh(snapshot)
+        db.autoflush = False
+        snapshot.bom_version_id = None
+
+        try:
+            with self.assertRaises(HTTPException) as exc:
+                work_order_material_issue_commit(
+                    payload=WorkOrderMaterialIssueCommitRequest(
+                        snapshot_id=1,
+                        org_id="ORG-1",
+                        location_id="RM-STORE",
+                        issued_by="store",
+                    ),
+                    db=db,
+                )
+        finally:
+            db.autoflush = True
+            db.rollback()
+
+        self.assertEqual(exc.exception.status_code, 409)
+        self.assertEqual(exc.exception.detail, "Snapshot missing bom_version_id: id=1")
+        self.assertEqual(db.query(MaterialIssueEvent).count(), 0)
+        self.assertEqual(db.query(StockLedger).count(), 0)
+
+    def test_material_issue_commit_rejects_duplicate_issue_event_for_snapshot(self) -> None:
+        db = self._new_db()
+
+        root = _add_header(db, "FG-1")
+        root_v = _add_version(db, root.bom_id)
+        _add_line(db, root_v.version_id, sequence=10, component_code="RM-1", qty_per=1.0)
+
+        snapshot = WorkOrderBOMSnapshot(
+            id=1,
+            work_order_no="WO-DUP-ISSUE",
+            parent_system_item_code="FG-1",
+            work_order_qty=1.0,
+            bom_version_id=root_v.version_id,
+            status="RELEASED",
+            issue_status="PENDING",
+            created_by="test",
+        )
+        db.add(snapshot)
+        db.flush()
+        db.add(
+            MaterialIssueEvent(
+                snapshot_id=snapshot.id,
+                work_order_no=snapshot.work_order_no,
+                bom_version_id=snapshot.bom_version_id,
+                org_id="ORG-1",
+                location_id="RM-STORE",
+                issued_by="store",
+            )
+        )
+        db.commit()
+
+        with self.assertRaises(HTTPException) as exc:
+            work_order_material_issue_commit(
+                payload=WorkOrderMaterialIssueCommitRequest(
+                    snapshot_id=1,
+                    org_id="ORG-1",
+                    location_id="RM-STORE",
+                    issued_by="store",
+                ),
+                db=db,
+            )
+
+        self.assertEqual(exc.exception.status_code, 409)
+        self.assertEqual(exc.exception.detail, "Issue event already exists for snapshot: id=1")
+        self.assertEqual(db.query(MaterialIssueEvent).count(), 1)
+        self.assertEqual(db.query(StockLedger).count(), 0)
+
+    def test_material_issue_commit_rejects_blank_identity_fields(self) -> None:
+        db = self._new_db()
+
+        with self.assertRaises(HTTPException) as issued_by_exc:
+            work_order_material_issue_commit(
+                payload=WorkOrderMaterialIssueCommitRequest(
+                    snapshot_id=1,
+                    org_id="ORG-1",
+                    location_id="RM-STORE",
+                    issued_by="   ",
+                ),
+                db=db,
+            )
+        self.assertEqual(issued_by_exc.exception.status_code, 400)
+        self.assertEqual(issued_by_exc.exception.detail, "issued_by is required")
+
+        with self.assertRaises(HTTPException) as org_exc:
+            work_order_material_issue_commit(
+                payload=WorkOrderMaterialIssueCommitRequest(
+                    snapshot_id=1,
+                    org_id="   ",
+                    location_id="RM-STORE",
+                    issued_by="store",
+                ),
+                db=db,
+            )
+        self.assertEqual(org_exc.exception.status_code, 400)
+        self.assertEqual(org_exc.exception.detail, "org_id is required")
+
+        with self.assertRaises(HTTPException) as location_exc:
+            work_order_material_issue_commit(
+                payload=WorkOrderMaterialIssueCommitRequest(
+                    snapshot_id=1,
+                    org_id="ORG-1",
+                    location_id="   ",
+                    issued_by="store",
+                ),
+                db=db,
+            )
+        self.assertEqual(location_exc.exception.status_code, 400)
+        self.assertEqual(location_exc.exception.detail, "location_id is required")
+
+    def test_material_issue_commit_rejects_preview_with_no_issue_lines(self) -> None:
+        db = self._new_db()
+
+        snapshot = WorkOrderBOMSnapshot(
+            id=1,
+            work_order_no="WO-EMPTY-LINES",
+            parent_system_item_code="FG-1",
+            work_order_qty=1.0,
+            bom_version_id=100,
+            status="RELEASED",
+            issue_status="PENDING",
+            created_by="test",
+        )
+        db.add(snapshot)
+        db.commit()
+
+        with patch(
+            "app.api.v2.work_order_material_issue_commit.build_material_issue_preview_from_snapshot",
+            return_value={"issue_lines": []},
+        ):
+            with self.assertRaises(HTTPException) as exc:
+                work_order_material_issue_commit(
+                    payload=WorkOrderMaterialIssueCommitRequest(
+                        snapshot_id=1,
+                        org_id="ORG-1",
+                        location_id="RM-STORE",
+                        issued_by="store",
+                    ),
+                    db=db,
+                )
+
+        self.assertEqual(exc.exception.status_code, 409)
+        self.assertEqual(exc.exception.detail, "Material issue preview returned no issue lines: id=1")
+        self.assertEqual(db.query(MaterialIssueEvent).count(), 0)
+        self.assertEqual(db.query(StockLedger).count(), 0)
+
+    def test_material_issue_commit_rejects_invalid_preview_line_qty_and_uom(self) -> None:
+        db = self._new_db()
+
+        snapshot = WorkOrderBOMSnapshot(
+            id=1,
+            work_order_no="WO-BAD-LINES",
+            parent_system_item_code="FG-1",
+            work_order_qty=1.0,
+            bom_version_id=100,
+            status="RELEASED",
+            issue_status="PENDING",
+            created_by="test",
+        )
+        db.add(snapshot)
+        db.commit()
+
+        with patch(
+            "app.api.v2.work_order_material_issue_commit.build_material_issue_preview_from_snapshot",
+            return_value={
+                "issue_lines": [
+                    {"item_code": "RM-NEG", "required_qty": 0.0, "uom": "PCS"},
+                ]
+            },
+        ):
+            with self.assertRaises(HTTPException) as qty_exc:
+                work_order_material_issue_commit(
+                    payload=WorkOrderMaterialIssueCommitRequest(
+                        snapshot_id=1,
+                        org_id="ORG-1",
+                        location_id="RM-STORE",
+                        issued_by="store",
+                    ),
+                    db=db,
+                )
+
+        self.assertEqual(qty_exc.exception.status_code, 409)
+        self.assertEqual(qty_exc.exception.detail, "Invalid required_qty for item RM-NEG: must be > 0")
+
+        with patch(
+            "app.api.v2.work_order_material_issue_commit.build_material_issue_preview_from_snapshot",
+            return_value={
+                "issue_lines": [
+                    {"item_code": "RM-NOUOM", "required_qty": 1.0, "uom": "   "},
+                ]
+            },
+        ):
+            with self.assertRaises(HTTPException) as uom_exc:
+                work_order_material_issue_commit(
+                    payload=WorkOrderMaterialIssueCommitRequest(
+                        snapshot_id=1,
+                        org_id="ORG-1",
+                        location_id="RM-STORE",
+                        issued_by="store",
+                    ),
+                    db=db,
+                )
+
+        self.assertEqual(uom_exc.exception.status_code, 409)
+        self.assertEqual(uom_exc.exception.detail, "Invalid uom for item RM-NOUOM: uom cannot be blank")
+        self.assertEqual(db.query(MaterialIssueEvent).count(), 0)
+        self.assertEqual(db.query(StockLedger).count(), 0)
 
     def test_material_issue_commit_rolls_back_ledger_and_issue_status_on_failure(self) -> None:
         db = self._new_db()
@@ -854,6 +1130,7 @@ class MultilayerBOMConstraintsTests(unittest.TestCase):
             db.query(WorkOrderBOMSnapshot).filter(WorkOrderBOMSnapshot.id == 1).one().issue_status,
             before_snapshot_status,
         )
+
     def test_material_issue_correction_list_returns_minimal_field_contract(self) -> None:
         db = self._new_db()
 
@@ -1126,6 +1403,7 @@ class MultilayerBOMConstraintsTests(unittest.TestCase):
         self.assertEqual(exc.exception.status_code, 404)
         self.assertEqual(exc.exception.detail, "Correction not found for original_issue_event_id=999")
         self.assertEqual(list_result, [])
+
     def test_material_issue_correction_list_is_read_only(self) -> None:
         db = self._new_db()
 
@@ -1191,6 +1469,7 @@ class MultilayerBOMConstraintsTests(unittest.TestCase):
             db.query(WorkOrderBOMSnapshot).filter(WorkOrderBOMSnapshot.id == 2).one().issue_status,
             before_snapshot_status,
         )
+
     def test_material_issue_correction_rolls_back_atomically(self) -> None:
         db = self._new_db()
 
@@ -1401,6 +1680,7 @@ class MultilayerBOMConstraintsTests(unittest.TestCase):
         self.assertEqual(corrected_by_exc.exception.detail, "corrected_by is required")
         self.assertEqual(db.query(MaterialIssueCorrectionEvent).count(), 0)
         self.assertEqual(db.query(StockLedger).count(), 1)
+
     def test_material_issue_correction_rejects_unsupported_reason_code(self) -> None:
         db = self._new_db()
 
@@ -1675,6 +1955,7 @@ class MultilayerBOMConstraintsTests(unittest.TestCase):
         self.assertEqual(exc.exception.detail, "Correction context mismatch with original trace: issue_event_id=1")
         self.assertEqual(db.query(MaterialIssueCorrectionEvent).count(), 0)
         self.assertEqual(db.query(StockLedger).count(), 1)
+
     def test_material_issue_correction_allows_approved_reason_codes(self) -> None:
         for reason_code, reason_note in [
             ("WRONG_ITEM", None),
