@@ -851,6 +851,70 @@ class MultilayerBOMConstraintsTests(unittest.TestCase):
             self.assertEqual(db.query(MaterialIssueCorrectionEvent).count(), 0)
             self.assertEqual(db.query(StockLedger).count(), 1)
 
+    def test_material_issue_correction_revalidates_blank_reason_code_and_corrected_by(self) -> None:
+        db = self._new_db()
+
+        snapshot = WorkOrderBOMSnapshot(
+            work_order_no="WO-CORR-REVALIDATE-1",
+            parent_system_item_code="FG-1",
+            work_order_qty=1.0,
+            bom_version_id=1,
+            status="RELEASED",
+            issue_status="ISSUED",
+            created_by="test",
+        )
+        issue_event = MaterialIssueEvent(
+            issue_event_id=1,
+            snapshot_id=1,
+            work_order_no="WO-CORR-REVALIDATE-1",
+            bom_version_id=1,
+            org_id="ORG-1",
+            location_id="RM-STORE",
+            issued_by="store",
+        )
+        ledger = StockLedger(
+            org_id="ORG-1",
+            item_id="RM-1",
+            location_id="RM-STORE",
+            txn_type="ISSUE",
+            qty=1.0,
+            uom="PCS",
+            issue_event_id=1,
+            snapshot_id=1,
+            work_order_no="WO-CORR-REVALIDATE-1",
+        )
+        db.add(snapshot)
+        db.add(issue_event)
+        db.add(ledger)
+        db.commit()
+
+        with self.assertRaises(HTTPException) as reason_exc:
+            work_order_material_issue_correction_commit(
+                payload=WorkOrderMaterialIssueCorrectionCommitRequest(
+                    original_issue_event_id=1,
+                    reason_code="   ",
+                    corrected_by="auditor",
+                ),
+                db=db,
+            )
+
+        self.assertEqual(reason_exc.exception.status_code, 400)
+        self.assertEqual(reason_exc.exception.detail, "reason_code is required")
+
+        with self.assertRaises(HTTPException) as corrected_by_exc:
+            work_order_material_issue_correction_commit(
+                payload=WorkOrderMaterialIssueCorrectionCommitRequest(
+                    original_issue_event_id=1,
+                    reason_code="WRONG_QTY",
+                    corrected_by="   ",
+                ),
+                db=db,
+            )
+
+        self.assertEqual(corrected_by_exc.exception.status_code, 400)
+        self.assertEqual(corrected_by_exc.exception.detail, "corrected_by is required")
+        self.assertEqual(db.query(MaterialIssueCorrectionEvent).count(), 0)
+        self.assertEqual(db.query(StockLedger).count(), 1)
     def test_material_issue_correction_rejects_unsupported_reason_code(self) -> None:
         db = self._new_db()
 
@@ -903,6 +967,228 @@ class MultilayerBOMConstraintsTests(unittest.TestCase):
         self.assertEqual(db.query(MaterialIssueCorrectionEvent).count(), 0)
         self.assertEqual(db.query(StockLedger).count(), 1)
 
+    def test_material_issue_correction_rejects_duplicate_correction_for_same_issue_event(self) -> None:
+        db = self._new_db()
+
+        snapshot = WorkOrderBOMSnapshot(
+            id=1,
+            work_order_no="WO-CORR-DUP-1",
+            parent_system_item_code="FG-1",
+            work_order_qty=1.0,
+            bom_version_id=1,
+            status="RELEASED",
+            issue_status="ISSUED",
+            created_by="test",
+        )
+        issue_event = MaterialIssueEvent(
+            issue_event_id=1,
+            snapshot_id=1,
+            work_order_no="WO-CORR-DUP-1",
+            bom_version_id=1,
+            org_id="ORG-1",
+            location_id="RM-STORE",
+            issued_by="store",
+        )
+        correction_event = MaterialIssueCorrectionEvent(
+            original_issue_event_id=1,
+            snapshot_id=1,
+            work_order_no="WO-CORR-DUP-1",
+            org_id="ORG-1",
+            location_id="RM-STORE",
+            reason_code="WRONG_QTY",
+            corrected_by="auditor",
+        )
+        ledger = StockLedger(
+            org_id="ORG-1",
+            item_id="RM-1",
+            location_id="RM-STORE",
+            txn_type="ISSUE",
+            qty=1.0,
+            uom="PCS",
+            issue_event_id=1,
+            snapshot_id=1,
+            work_order_no="WO-CORR-DUP-1",
+        )
+        db.add(snapshot)
+        db.add(issue_event)
+        db.add(correction_event)
+        db.add(ledger)
+        db.commit()
+
+        with self.assertRaises(HTTPException) as exc:
+            work_order_material_issue_correction_commit(
+                payload=WorkOrderMaterialIssueCorrectionCommitRequest(
+                    original_issue_event_id=1,
+                    reason_code="WRONG_QTY",
+                    corrected_by="auditor-2",
+                ),
+                db=db,
+            )
+
+        self.assertEqual(exc.exception.status_code, 409)
+        self.assertEqual(exc.exception.detail, "Issue event already corrected: issue_event_id=1")
+        self.assertEqual(db.query(MaterialIssueCorrectionEvent).count(), 1)
+        self.assertEqual(db.query(StockLedger).count(), 1)
+
+    def test_material_issue_correction_rejects_ineligible_original_issue_trace(self) -> None:
+        db = self._new_db()
+
+        snapshot = WorkOrderBOMSnapshot(
+            id=1,
+            work_order_no="WO-CORR-INELIGIBLE-1",
+            parent_system_item_code="FG-1",
+            work_order_qty=1.0,
+            bom_version_id=1,
+            status="RELEASED",
+            issue_status="ISSUED",
+            created_by="test",
+        )
+        issue_event = MaterialIssueEvent(
+            issue_event_id=1,
+            snapshot_id=1,
+            work_order_no="WO-CORR-INELIGIBLE-1",
+            bom_version_id=1,
+            org_id="ORG-1",
+            location_id="RM-STORE",
+            issued_by="store",
+        )
+        bad_ledger = StockLedger(
+            org_id="ORG-1",
+            item_id="RM-1",
+            location_id="RM-STORE",
+            txn_type="RECEIPT",
+            qty=1.0,
+            uom="PCS",
+            issue_event_id=1,
+            correction_event_id=99,
+            snapshot_id=1,
+            work_order_no="WO-CORR-INELIGIBLE-1",
+        )
+        db.add(snapshot)
+        db.add(issue_event)
+        db.add(bad_ledger)
+        db.commit()
+
+        with self.assertRaises(HTTPException) as exc:
+            work_order_material_issue_correction_commit(
+                payload=WorkOrderMaterialIssueCorrectionCommitRequest(
+                    original_issue_event_id=1,
+                    reason_code="WRONG_QTY",
+                    corrected_by="auditor",
+                ),
+                db=db,
+            )
+
+        self.assertEqual(exc.exception.status_code, 409)
+        self.assertEqual(exc.exception.detail, "Issue event is not eligible for correction: issue_event_id=1")
+        self.assertEqual(db.query(MaterialIssueCorrectionEvent).count(), 0)
+        self.assertEqual(db.query(StockLedger).count(), 1)
+
+    def test_material_issue_correction_rejects_nonpositive_correction_qty(self) -> None:
+        db = self._new_db()
+
+        snapshot = WorkOrderBOMSnapshot(
+            id=1,
+            work_order_no="WO-CORR-BAD-QTY-1",
+            parent_system_item_code="FG-1",
+            work_order_qty=1.0,
+            bom_version_id=1,
+            status="RELEASED",
+            issue_status="ISSUED",
+            created_by="test",
+        )
+        issue_event = MaterialIssueEvent(
+            issue_event_id=1,
+            snapshot_id=1,
+            work_order_no="WO-CORR-BAD-QTY-1",
+            bom_version_id=1,
+            org_id="ORG-1",
+            location_id="RM-STORE",
+            issued_by="store",
+        )
+        zero_qty_ledger = StockLedger(
+            org_id="ORG-1",
+            item_id="RM-1",
+            location_id="RM-STORE",
+            txn_type="ISSUE",
+            qty=0.0,
+            uom="PCS",
+            issue_event_id=1,
+            snapshot_id=1,
+            work_order_no="WO-CORR-BAD-QTY-1",
+        )
+        db.add(snapshot)
+        db.add(issue_event)
+        db.add(zero_qty_ledger)
+        db.commit()
+
+        with self.assertRaises(HTTPException) as exc:
+            work_order_material_issue_correction_commit(
+                payload=WorkOrderMaterialIssueCorrectionCommitRequest(
+                    original_issue_event_id=1,
+                    reason_code="WRONG_QTY",
+                    corrected_by="auditor",
+                ),
+                db=db,
+            )
+
+        self.assertEqual(exc.exception.status_code, 409)
+        self.assertEqual(exc.exception.detail, "Issue event is not eligible for correction: issue_event_id=1")
+        self.assertEqual(db.query(MaterialIssueCorrectionEvent).count(), 0)
+        self.assertEqual(db.query(StockLedger).count(), 1)
+
+    def test_material_issue_correction_rejects_context_mismatch_with_original_trace(self) -> None:
+        db = self._new_db()
+
+        snapshot = WorkOrderBOMSnapshot(
+            id=1,
+            work_order_no="WO-CORR-CONTEXT-1",
+            parent_system_item_code="FG-1",
+            work_order_qty=1.0,
+            bom_version_id=1,
+            status="RELEASED",
+            issue_status="ISSUED",
+            created_by="test",
+        )
+        issue_event = MaterialIssueEvent(
+            issue_event_id=1,
+            snapshot_id=1,
+            work_order_no="WO-CORR-CONTEXT-1",
+            bom_version_id=1,
+            org_id="ORG-1",
+            location_id="RM-STORE",
+            issued_by="store",
+        )
+        mismatch_ledger = StockLedger(
+            org_id="ORG-2",
+            item_id="RM-1",
+            location_id="RM-STORE",
+            txn_type="ISSUE",
+            qty=1.0,
+            uom="PCS",
+            issue_event_id=1,
+            snapshot_id=1,
+            work_order_no="WO-CORR-CONTEXT-1",
+        )
+        db.add(snapshot)
+        db.add(issue_event)
+        db.add(mismatch_ledger)
+        db.commit()
+
+        with self.assertRaises(HTTPException) as exc:
+            work_order_material_issue_correction_commit(
+                payload=WorkOrderMaterialIssueCorrectionCommitRequest(
+                    original_issue_event_id=1,
+                    reason_code="WRONG_QTY",
+                    corrected_by="auditor",
+                ),
+                db=db,
+            )
+
+        self.assertEqual(exc.exception.status_code, 409)
+        self.assertEqual(exc.exception.detail, "Correction context mismatch with original trace: issue_event_id=1")
+        self.assertEqual(db.query(MaterialIssueCorrectionEvent).count(), 0)
+        self.assertEqual(db.query(StockLedger).count(), 1)
     def test_material_issue_correction_allows_approved_reason_codes(self) -> None:
         for reason_code, reason_note in [
             ("WRONG_ITEM", None),
