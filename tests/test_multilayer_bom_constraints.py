@@ -1024,6 +1024,108 @@ class MultilayerBOMConstraintsTests(unittest.TestCase):
 
         self.assertEqual(result, [])
 
+    def test_material_issue_correction_query_surfaces_share_same_field_set(self) -> None:
+        db = self._new_db()
+
+        correction = MaterialIssueCorrectionEvent(
+            correction_event_id=81,
+            original_issue_event_id=81,
+            snapshot_id=81,
+            work_order_no="WO-CORR-CONSISTENCY-1",
+            org_id="ORG-1",
+            location_id="RM-STORE",
+            reason_code="WRONG_QTY",
+            reason_note="note",
+            corrected_by="auditor",
+        )
+        db.add(correction)
+        db.commit()
+
+        lookup_result = get_material_issue_correction(original_issue_event_id=81, db=db)
+        list_result = list_material_issue_corrections(work_order_no="WO-CORR-CONSISTENCY-1", db=db)
+
+        self.assertEqual(set(lookup_result.keys()), set(list_result[0].keys()))
+
+    def test_material_issue_correction_query_surfaces_hide_internal_fields(self) -> None:
+        db = self._new_db()
+
+        correction = MaterialIssueCorrectionEvent(
+            correction_event_id=82,
+            original_issue_event_id=82,
+            snapshot_id=82,
+            work_order_no="WO-CORR-HIDDEN-1",
+            org_id="ORG-1",
+            location_id="RM-STORE",
+            reason_code="WRONG_ITEM",
+            reason_note=None,
+            corrected_by="auditor",
+        )
+        db.add(correction)
+        db.commit()
+
+        lookup_result = get_material_issue_correction(original_issue_event_id=82, db=db)
+        list_result = list_material_issue_corrections(work_order_no="WO-CORR-HIDDEN-1", db=db)
+
+        for hidden_field in ["org_id", "location_id", "bom_version_id", "issue_status", "ledger_rows"]:
+            self.assertNotIn(hidden_field, lookup_result)
+            self.assertNotIn(hidden_field, list_result[0])
+
+    def test_material_issue_correction_list_reason_code_normalization_is_pinned(self) -> None:
+        db = self._new_db()
+
+        db.add(
+            MaterialIssueCorrectionEvent(
+                correction_event_id=83,
+                original_issue_event_id=83,
+                snapshot_id=83,
+                work_order_no="WO-CORR-NORM-1",
+                org_id="ORG-1",
+                location_id="RM-STORE",
+                reason_code="RETURN_TO_STOCK",
+                reason_note=None,
+                corrected_by="auditor",
+            )
+        )
+        db.commit()
+
+        result = list_material_issue_corrections(reason_code="  return_to_stock  ", db=db)
+
+        self.assertEqual([row["correction_event_id"] for row in result], [83])
+
+    def test_material_issue_correction_list_default_ordering_is_pinned(self) -> None:
+        db = self._new_db()
+
+        for correction_event_id in [84, 85, 86]:
+            db.add(
+                MaterialIssueCorrectionEvent(
+                    correction_event_id=correction_event_id,
+                    original_issue_event_id=correction_event_id,
+                    snapshot_id=correction_event_id,
+                    work_order_no="WO-CORR-ORDER-1",
+                    org_id="ORG-1",
+                    location_id="RM-STORE",
+                    reason_code="WRONG_QTY",
+                    reason_note=None,
+                    corrected_by="auditor",
+                )
+            )
+        db.commit()
+
+        result = list_material_issue_corrections(work_order_no="WO-CORR-ORDER-1", db=db)
+
+        self.assertEqual([row["correction_event_id"] for row in result], [86, 85, 84])
+
+    def test_material_issue_correction_query_empty_result_semantics_remain_distinct(self) -> None:
+        db = self._new_db()
+
+        with self.assertRaises(HTTPException) as exc:
+            get_material_issue_correction(original_issue_event_id=999, db=db)
+
+        list_result = list_material_issue_corrections(work_order_no="WO-NOT-FOUND", db=db)
+
+        self.assertEqual(exc.exception.status_code, 404)
+        self.assertEqual(exc.exception.detail, "Correction not found for original_issue_event_id=999")
+        self.assertEqual(list_result, [])
     def test_material_issue_correction_list_is_read_only(self) -> None:
         db = self._new_db()
 

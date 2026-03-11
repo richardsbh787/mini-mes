@@ -11,21 +11,33 @@ from app.schemas.work_order_material_issue_correction_query import (
 router = APIRouter(prefix="/v2", tags=["v2-material-issue-correction-query"])
 DEFAULT_CORRECTION_LIST_LIMIT = 100
 MAX_CORRECTION_LIST_LIMIT = 500
+CORRECTION_QUERY_FIELD_NAMES = (
+    "correction_event_id",
+    "original_issue_event_id",
+    "snapshot_id",
+    "work_order_no",
+    "reason_code",
+    "reason_note",
+    "corrected_by",
+    "corrected_at",
+)
+
+
+def normalize_correction_reason_code_filter(reason_code: str | None) -> str | None:
+    if reason_code is None:
+        return None
+    normalized_reason_code = reason_code.strip().upper()
+    return normalized_reason_code or None
+
+
+def apply_correction_list_default_order(query):
+    return query.order_by(MaterialIssueCorrectionEvent.correction_event_id.desc())
 
 
 def serialize_correction_event(
     correction_event: MaterialIssueCorrectionEvent,
 ) -> dict[str, object]:
-    return {
-        "correction_event_id": correction_event.correction_event_id,
-        "original_issue_event_id": correction_event.original_issue_event_id,
-        "snapshot_id": correction_event.snapshot_id,
-        "work_order_no": correction_event.work_order_no,
-        "reason_code": correction_event.reason_code,
-        "reason_note": correction_event.reason_note,
-        "corrected_by": correction_event.corrected_by,
-        "corrected_at": correction_event.corrected_at,
-    }
+    return {field_name: getattr(correction_event, field_name) for field_name in CORRECTION_QUERY_FIELD_NAMES}
 
 
 @router.get(
@@ -54,21 +66,16 @@ def list_material_issue_corrections(
         if normalized_work_order_no:
             query = query.filter(MaterialIssueCorrectionEvent.work_order_no == normalized_work_order_no)
 
-    if reason_code is not None:
-        normalized_reason_code = reason_code.strip().upper()
-        if normalized_reason_code:
-            query = query.filter(MaterialIssueCorrectionEvent.reason_code == normalized_reason_code)
+    normalized_reason_code = normalize_correction_reason_code_filter(reason_code)
+    if normalized_reason_code:
+        query = query.filter(MaterialIssueCorrectionEvent.reason_code == normalized_reason_code)
 
     if corrected_by is not None:
         normalized_corrected_by = corrected_by.strip()
         if normalized_corrected_by:
             query = query.filter(MaterialIssueCorrectionEvent.corrected_by == normalized_corrected_by)
 
-    correction_events = (
-        query.order_by(MaterialIssueCorrectionEvent.correction_event_id.desc())
-        .limit(limit)
-        .all()
-    )
+    correction_events = apply_correction_list_default_order(query).limit(limit).all()
     return [serialize_correction_event(correction_event) for correction_event in correction_events]
 
 
