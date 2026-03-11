@@ -854,6 +854,241 @@ class MultilayerBOMConstraintsTests(unittest.TestCase):
             db.query(WorkOrderBOMSnapshot).filter(WorkOrderBOMSnapshot.id == 1).one().issue_status,
             before_snapshot_status,
         )
+    def test_material_issue_correction_list_returns_minimal_field_contract(self) -> None:
+        db = self._new_db()
+
+        correction = MaterialIssueCorrectionEvent(
+            correction_event_id=21,
+            original_issue_event_id=12,
+            snapshot_id=4,
+            work_order_no="WO-CORR-LIST-1",
+            org_id="ORG-1",
+            location_id="RM-STORE",
+            reason_code="WRONG_QTY",
+            reason_note="manual trace",
+            corrected_by="auditor",
+        )
+        db.add(correction)
+        db.commit()
+
+        result = list_material_issue_corrections(db=db)
+
+        self.assertEqual(len(result), 1)
+        self.assertEqual(
+            set(result[0].keys()),
+            {
+                "correction_event_id",
+                "original_issue_event_id",
+                "snapshot_id",
+                "work_order_no",
+                "reason_code",
+                "reason_note",
+                "corrected_by",
+                "corrected_at",
+            },
+        )
+        self.assertEqual(result[0]["correction_event_id"], 21)
+
+    def test_material_issue_correction_list_filters_by_work_order_no(self) -> None:
+        db = self._new_db()
+
+        db.add(
+            MaterialIssueCorrectionEvent(
+                correction_event_id=31,
+                original_issue_event_id=20,
+                snapshot_id=5,
+                work_order_no="WO-MATCH",
+                org_id="ORG-1",
+                location_id="RM-STORE",
+                reason_code="WRONG_ITEM",
+                reason_note=None,
+                corrected_by="auditor-a",
+            )
+        )
+        db.add(
+            MaterialIssueCorrectionEvent(
+                correction_event_id=32,
+                original_issue_event_id=21,
+                snapshot_id=6,
+                work_order_no="WO-OTHER",
+                org_id="ORG-1",
+                location_id="RM-STORE",
+                reason_code="WRONG_QTY",
+                reason_note=None,
+                corrected_by="auditor-b",
+            )
+        )
+        db.commit()
+
+        result = list_material_issue_corrections(work_order_no="WO-MATCH", db=db)
+
+        self.assertEqual([row["correction_event_id"] for row in result], [31])
+
+    def test_material_issue_correction_list_filters_by_reason_code(self) -> None:
+        db = self._new_db()
+
+        db.add(
+            MaterialIssueCorrectionEvent(
+                correction_event_id=41,
+                original_issue_event_id=30,
+                snapshot_id=7,
+                work_order_no="WO-REASON-1",
+                org_id="ORG-1",
+                location_id="RM-STORE",
+                reason_code="WRONG_ITEM",
+                reason_note=None,
+                corrected_by="auditor-a",
+            )
+        )
+        db.add(
+            MaterialIssueCorrectionEvent(
+                correction_event_id=42,
+                original_issue_event_id=31,
+                snapshot_id=8,
+                work_order_no="WO-REASON-2",
+                org_id="ORG-1",
+                location_id="RM-STORE",
+                reason_code="OTHER",
+                reason_note="note",
+                corrected_by="auditor-b",
+            )
+        )
+        db.commit()
+
+        result = list_material_issue_corrections(reason_code="wrong_item", db=db)
+
+        self.assertEqual([row["correction_event_id"] for row in result], [41])
+
+    def test_material_issue_correction_list_filters_by_corrected_by(self) -> None:
+        db = self._new_db()
+
+        db.add(
+            MaterialIssueCorrectionEvent(
+                correction_event_id=51,
+                original_issue_event_id=40,
+                snapshot_id=9,
+                work_order_no="WO-BY-1",
+                org_id="ORG-1",
+                location_id="RM-STORE",
+                reason_code="WRONG_QTY",
+                reason_note=None,
+                corrected_by="auditor-a",
+            )
+        )
+        db.add(
+            MaterialIssueCorrectionEvent(
+                correction_event_id=52,
+                original_issue_event_id=41,
+                snapshot_id=10,
+                work_order_no="WO-BY-2",
+                org_id="ORG-1",
+                location_id="RM-STORE",
+                reason_code="WRONG_QTY",
+                reason_note=None,
+                corrected_by="auditor-b",
+            )
+        )
+        db.commit()
+
+        result = list_material_issue_corrections(corrected_by="auditor-b", db=db)
+
+        self.assertEqual([row["correction_event_id"] for row in result], [52])
+
+    def test_material_issue_correction_list_applies_limit(self) -> None:
+        db = self._new_db()
+
+        for correction_event_id in [61, 62, 63]:
+            db.add(
+                MaterialIssueCorrectionEvent(
+                    correction_event_id=correction_event_id,
+                    original_issue_event_id=correction_event_id,
+                    snapshot_id=correction_event_id,
+                    work_order_no=f"WO-LIMIT-{correction_event_id}",
+                    org_id="ORG-1",
+                    location_id="RM-STORE",
+                    reason_code="WRONG_QTY",
+                    reason_note=None,
+                    corrected_by="auditor",
+                )
+            )
+        db.commit()
+
+        result = list_material_issue_corrections(limit=2, db=db)
+
+        self.assertEqual([row["correction_event_id"] for row in result], [63, 62])
+
+    def test_material_issue_correction_list_returns_empty_list_when_no_rows_match(self) -> None:
+        db = self._new_db()
+
+        result = list_material_issue_corrections(reason_code="WRONG_ITEM", db=db)
+
+        self.assertEqual(result, [])
+
+    def test_material_issue_correction_list_is_read_only(self) -> None:
+        db = self._new_db()
+
+        snapshot = WorkOrderBOMSnapshot(
+            id=2,
+            work_order_no="WO-CORR-LIST-READ-ONLY-1",
+            parent_system_item_code="FG-1",
+            work_order_qty=1.0,
+            bom_version_id=1,
+            status="RELEASED",
+            issue_status="ISSUED",
+            created_by="test",
+        )
+        issue_event = MaterialIssueEvent(
+            issue_event_id=2,
+            snapshot_id=2,
+            work_order_no="WO-CORR-LIST-READ-ONLY-1",
+            bom_version_id=1,
+            org_id="ORG-1",
+            location_id="RM-STORE",
+            issued_by="store",
+        )
+        correction = MaterialIssueCorrectionEvent(
+            correction_event_id=71,
+            original_issue_event_id=2,
+            snapshot_id=2,
+            work_order_no="WO-CORR-LIST-READ-ONLY-1",
+            org_id="ORG-1",
+            location_id="RM-STORE",
+            reason_code="RETURN_TO_STOCK",
+            reason_note=None,
+            corrected_by="auditor",
+        )
+        ledger = StockLedger(
+            org_id="ORG-1",
+            item_id="RM-1",
+            location_id="RM-STORE",
+            txn_type="ISSUE",
+            qty=1.0,
+            uom="PCS",
+            issue_event_id=2,
+            snapshot_id=2,
+            work_order_no="WO-CORR-LIST-READ-ONLY-1",
+        )
+        db.add(snapshot)
+        db.add(issue_event)
+        db.add(correction)
+        db.add(ledger)
+        db.commit()
+
+        before_snapshot_status = db.query(WorkOrderBOMSnapshot).filter(WorkOrderBOMSnapshot.id == 2).one().issue_status
+        before_issue_count = db.query(MaterialIssueEvent).count()
+        before_correction_count = db.query(MaterialIssueCorrectionEvent).count()
+        before_ledger_count = db.query(StockLedger).count()
+
+        result = list_material_issue_corrections(db=db)
+
+        self.assertEqual([row["correction_event_id"] for row in result], [71])
+        self.assertEqual(db.query(MaterialIssueEvent).count(), before_issue_count)
+        self.assertEqual(db.query(MaterialIssueCorrectionEvent).count(), before_correction_count)
+        self.assertEqual(db.query(StockLedger).count(), before_ledger_count)
+        self.assertEqual(
+            db.query(WorkOrderBOMSnapshot).filter(WorkOrderBOMSnapshot.id == 2).one().issue_status,
+            before_snapshot_status,
+        )
     def test_material_issue_correction_rolls_back_atomically(self) -> None:
         db = self._new_db()
 
