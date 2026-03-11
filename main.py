@@ -656,6 +656,9 @@ app.include_router(work_order_material_issue_commit_router)
 from app.api.v2.work_order_material_issue_correction_commit import router as work_order_material_issue_correction_commit_router
 app.include_router(work_order_material_issue_correction_commit_router)
 
+from app.api.v2.material_issue_correction_query import router as material_issue_correction_query_router
+app.include_router(material_issue_correction_query_router)
+
 @app.post("/v2/transfer/commit")
 def transfer_commit(
     org_id: str,
