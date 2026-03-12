@@ -16,6 +16,7 @@ from sqlalchemy.orm import Session
 from database import engine, get_db
 from app.bootstrap.material_issue_trace_schema import ensure_material_issue_trace_schema
 from app.bootstrap.work_order_bom_snapshot_schema import ensure_work_order_bom_snapshot_release_columns
+from app.bootstrap.work_order_routing_binding_schema import ensure_work_order_routing_binding_column
 from app.constants.locations import RM_STORE
 from app.constants.txn_type import TRANSFER
 from app.constants.locations import ALL as LOCATION_ALL
@@ -95,6 +96,7 @@ app.include_router(fg_receive_router)
 Base.metadata.create_all(bind=engine)
 ensure_work_order_bom_snapshot_release_columns(engine)
 ensure_material_issue_trace_schema(engine)
+ensure_work_order_routing_binding_column(engine)
 
 # ==========================
 # Root
@@ -254,6 +256,11 @@ def create_work_order(work_order: WorkOrderCreate, db: Session = Depends(get_db)
     if not line:
         raise HTTPException(status_code=404, detail="Production line not found")
 
+    if work_order.routing_id is not None:
+        from app.services.work_order_routing_binding import validate_routing_binding
+
+        validate_routing_binding(db=db, product_id=work_order.product_id, routing_id=work_order.routing_id)
+
     status = "OPEN" if work_order.is_material_ready else "BLOCKED_MATERIAL"
 
     db_work_order = WorkOrder(
@@ -261,6 +268,7 @@ def create_work_order(work_order: WorkOrderCreate, db: Session = Depends(get_db)
         sales_order_id=work_order.sales_order_id,
         product_id=work_order.product_id,
         production_line_id=work_order.production_line_id,
+        routing_id=work_order.routing_id,
         planned_hours=work_order.planned_hours,
         remaining_hours=work_order.planned_hours,
         priority=work_order.priority,
@@ -658,6 +666,12 @@ app.include_router(work_order_material_issue_correction_commit_router)
 
 from app.api.v2.material_issue_correction_query import router as material_issue_correction_query_router
 app.include_router(material_issue_correction_query_router)
+
+from app.api.v2.routing_maintenance import router as routing_maintenance_router
+app.include_router(routing_maintenance_router)
+
+from app.api.v2.work_order_routing_bind import router as work_order_routing_bind_router
+app.include_router(work_order_routing_bind_router)
 
 @app.post("/v2/transfer/commit")
 def transfer_commit(

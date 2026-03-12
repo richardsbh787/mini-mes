@@ -80,6 +80,7 @@ class WorkOrderCreate(BaseModel):
     sales_order_id: int
     product_id: int
     production_line_id: int
+    routing_id: Optional[int] = None
     planned_hours: float
     priority: str
     promise_date: date
@@ -101,6 +102,7 @@ class WorkOrderResponse(BaseModel):
     sales_order_id: int
     product_id: int
     production_line_id: int
+    routing_id: Optional[int]
 
     planned_hours: float
     actual_hours: float

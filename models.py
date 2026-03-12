@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, Date, DateTime, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, Date, DateTime, Boolean, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from database import Base
@@ -71,6 +71,7 @@ class WorkOrder(Base):
     sales_order_id = Column(Integer, ForeignKey("sales_orders.id"), nullable=False)
     product_id = Column(Integer, ForeignKey("products.id"), nullable=False)
     production_line_id = Column(Integer, ForeignKey("production_lines.id"), nullable=False)
+    routing_id = Column(Integer, ForeignKey("routing_header.id"), nullable=True)
 
     # ==========================
     # Hours Control
@@ -113,6 +114,7 @@ class WorkOrder(Base):
     sales_order = relationship("SalesOrder")
     product = relationship("Product")
     production_line = relationship("ProductionLine")
+    routing = relationship("RoutingHeader")
 
 
 # ==========================================================
@@ -445,6 +447,42 @@ class MaterialIssueCorrectionEvent(Base):
     reason_note = Column(String, nullable=True)
     corrected_by = Column(String, nullable=False)
     corrected_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+
+
+class RoutingHeader(Base):
+    __tablename__ = "routing_header"
+
+    id = Column(Integer, primary_key=True, index=True)
+    item_code = Column(String, nullable=False, index=True)
+    routing_code = Column(String, nullable=False, index=True)
+    routing_name = Column(String, nullable=False)
+    status = Column(String, nullable=False)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+
+    steps = relationship(
+        "RoutingStep",
+        back_populates="routing",
+        cascade="all, delete-orphan",
+        order_by="RoutingStep.seq_no",
+    )
+
+
+class RoutingStep(Base):
+    __tablename__ = "routing_step"
+    __table_args__ = (
+        UniqueConstraint("routing_id", "seq_no", name="uq_routing_step_routing_id_seq_no"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    routing_id = Column(Integer, ForeignKey("routing_header.id"), nullable=False, index=True)
+    seq_no = Column(Integer, nullable=False)
+    step_code = Column(String, nullable=False)
+    step_name = Column(String, nullable=False)
+    department = Column(String, nullable=True)
+    is_required = Column(Boolean, nullable=False)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+
+    routing = relationship("RoutingHeader", back_populates="steps")
 
 
 
