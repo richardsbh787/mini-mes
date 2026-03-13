@@ -11,6 +11,7 @@ from typing import List
 from app.services.consume_service import preview_consume
 from app.repositories.stock_ledger_repo import get_onhand
 from app.services.inventory_adjustment_service import commit_adjustment
+from app.services.work_order_mainline import create_work_order_record, list_work_order_reads
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from database import engine, get_db
@@ -252,40 +253,12 @@ def get_production_lines(db: Session = Depends(get_db)):
 # ==========================
 @app.post("/work-orders", response_model=WorkOrderResponse)
 def create_work_order(work_order: WorkOrderCreate, db: Session = Depends(get_db)):
-    line = db.query(ProductionLine).filter(ProductionLine.id == work_order.production_line_id).first()
-    if not line:
-        raise HTTPException(status_code=404, detail="Production line not found")
-
-    if work_order.routing_id is not None:
-        from app.services.work_order_routing_binding import validate_routing_binding
-
-        validate_routing_binding(db=db, product_id=work_order.product_id, routing_id=work_order.routing_id)
-
-    status = "OPEN" if work_order.is_material_ready else "BLOCKED_MATERIAL"
-
-    db_work_order = WorkOrder(
-        work_order_no=work_order.work_order_no,
-        sales_order_id=work_order.sales_order_id,
-        product_id=work_order.product_id,
-        production_line_id=work_order.production_line_id,
-        routing_id=work_order.routing_id,
-        planned_hours=work_order.planned_hours,
-        remaining_hours=work_order.planned_hours,
-        priority=work_order.priority,
-        promise_date=work_order.promise_date,
-        is_material_ready=work_order.is_material_ready,
-        material_ready_date=work_order.material_ready_date,
-        status=status,
-    )
-    db.add(db_work_order)
-    db.commit()
-    db.refresh(db_work_order)
-    return db_work_order
+    return create_work_order_record(db=db, work_order=work_order)
 
 
 @app.get("/work-orders", response_model=List[WorkOrderResponse])
 def get_work_orders(db: Session = Depends(get_db)):
-    return db.query(WorkOrder).all()
+    return list_work_order_reads(db=db)
 
 
 # ================================

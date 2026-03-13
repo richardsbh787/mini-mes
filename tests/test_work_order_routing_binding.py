@@ -8,11 +8,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 
 from database import Base
-from main import create_work_order
 from models import Product, ProductionLine, RoutingHeader, RoutingStep, SalesOrder, WorkOrder
 from schemas import WorkOrderCreate
 from app.api.v2.work_order_routing_bind import work_order_routing_bind
 from app.schemas.work_order_routing_bind import WorkOrderRoutingBindRequest
+from app.services.work_order_mainline import create_work_order_record
 
 
 def _make_session() -> Session:
@@ -101,7 +101,8 @@ class WorkOrderRoutingBindingTests(unittest.TestCase):
         _add_routing_step(db, routing_id=routing.id, seq_no=10)
         db.commit()
 
-        row = create_work_order(
+        row = create_work_order_record(
+            db=db,
             work_order=WorkOrderCreate(
                 work_order_no="WO-100",
                 sales_order_id=sales_order.id,
@@ -113,7 +114,6 @@ class WorkOrderRoutingBindingTests(unittest.TestCase):
                 promise_date=date(2026, 3, 20),
                 is_material_ready=False,
             ),
-            db=db,
         )
 
         self.assertEqual(row.routing_id, routing.id)
@@ -141,7 +141,8 @@ class WorkOrderRoutingBindingTests(unittest.TestCase):
             (empty.id, f"Routing header has no steps and cannot be bound: id={empty.id}"),
         ]:
             with self.assertRaises(HTTPException) as exc:
-                create_work_order(
+                create_work_order_record(
+                    db=db,
                     work_order=WorkOrderCreate(
                         work_order_no=f"WO-{routing_id}",
                         sales_order_id=sales_order.id,
@@ -153,7 +154,6 @@ class WorkOrderRoutingBindingTests(unittest.TestCase):
                         promise_date=date(2026, 3, 20),
                         is_material_ready=True,
                     ),
-                    db=db,
                 )
             self.assertEqual(exc.exception.status_code, 409)
             self.assertEqual(exc.exception.detail, expected_detail)
@@ -165,7 +165,8 @@ class WorkOrderRoutingBindingTests(unittest.TestCase):
         step = _add_routing_step(db, routing_id=routing.id, seq_no=10, step_code="PACK", step_name="Packing")
         db.commit()
 
-        work_order = create_work_order(
+        work_order = create_work_order_record(
+            db=db,
             work_order=WorkOrderCreate(
                 work_order_no="WO-500",
                 sales_order_id=sales_order.id,
@@ -176,7 +177,6 @@ class WorkOrderRoutingBindingTests(unittest.TestCase):
                 promise_date=date(2026, 3, 22),
                 is_material_ready=True,
             ),
-            db=db,
         )
 
         before_header = db.query(RoutingHeader).filter(RoutingHeader.id == routing.id).one()

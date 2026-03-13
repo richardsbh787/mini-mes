@@ -5,6 +5,7 @@ from database import get_db
 from models import WorkOrder
 from schemas import WorkOrderResponse
 from app.schemas.work_order_routing_bind import WorkOrderRoutingBindRequest
+from app.services.work_order_read_surface import build_work_order_response
 from app.services.work_order_routing_binding import bind_work_order_to_routing
 
 
@@ -17,4 +18,5 @@ def work_order_routing_bind(payload: WorkOrderRoutingBindRequest, db: Session = 
     if not work_order:
         raise HTTPException(status_code=404, detail=f"WorkOrder not found: id={payload.work_order_id}")
 
-    return bind_work_order_to_routing(db=db, work_order=work_order, routing_id=payload.routing_id)
+    bound_work_order = bind_work_order_to_routing(db=db, work_order=work_order, routing_id=payload.routing_id)
+    return build_work_order_response(bound_work_order)

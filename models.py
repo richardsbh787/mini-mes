@@ -115,6 +115,7 @@ class WorkOrder(Base):
     product = relationship("Product")
     production_line = relationship("ProductionLine")
     routing = relationship("RoutingHeader")
+    routing_snapshot = relationship("WorkOrderRoutingSnapshot", back_populates="work_order", uselist=False)
 
 
 # ==========================================================
@@ -483,6 +484,40 @@ class RoutingStep(Base):
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
 
     routing = relationship("RoutingHeader", back_populates="steps")
+
+
+class WorkOrderRoutingSnapshot(Base):
+    __tablename__ = "work_order_routing_snapshot"
+
+    id = Column(Integer, primary_key=True, index=True)
+    work_order_id = Column(Integer, ForeignKey("work_orders.id"), nullable=False, unique=True, index=True)
+    source_routing_id = Column(Integer, ForeignKey("routing_header.id"), nullable=False, index=True)
+    routing_code = Column(String, nullable=False)
+    routing_name = Column(String, nullable=False)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+
+    work_order = relationship("WorkOrder", back_populates="routing_snapshot")
+    steps = relationship(
+        "WorkOrderRoutingSnapshotStep",
+        back_populates="snapshot",
+        cascade="all, delete-orphan",
+        order_by="WorkOrderRoutingSnapshotStep.seq_no",
+    )
+
+
+class WorkOrderRoutingSnapshotStep(Base):
+    __tablename__ = "work_order_routing_snapshot_step"
+
+    id = Column(Integer, primary_key=True, index=True)
+    snapshot_id = Column(Integer, ForeignKey("work_order_routing_snapshot.id"), nullable=False, index=True)
+    seq_no = Column(Integer, nullable=False)
+    step_code = Column(String, nullable=False)
+    step_name = Column(String, nullable=False)
+    department = Column(String, nullable=True)
+    is_required = Column(Boolean, nullable=False)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+
+    snapshot = relationship("WorkOrderRoutingSnapshot", back_populates="steps")
 
 
 

@@ -96,6 +96,50 @@ class WorkOrderUpdate(BaseModel):
     status: Optional[WorkOrderStatus] = None
 
 
+class WorkOrderRoutingStepDefinition(BaseModel):
+    seq_no: int
+    step_code: str
+    step_name: str
+    department: Optional[str]
+    is_required: bool
+
+    class Config:
+        from_attributes = True
+
+
+class WorkOrderRoutingDefinition(BaseModel):
+    routing_id: int
+    routing_code: str
+    routing_name: str
+    routing_status: str
+    steps: list[WorkOrderRoutingStepDefinition] = []
+
+    class Config:
+        from_attributes = True
+
+
+class WorkOrderRoutingSnapshotStepRead(BaseModel):
+    seq_no: int
+    step_code: str
+    step_name: str
+    department: Optional[str]
+    is_required: bool
+
+    class Config:
+        from_attributes = True
+
+
+class WorkOrderRoutingSnapshotRead(BaseModel):
+    snapshot_id: int
+    source_routing_id: int
+    routing_code: str
+    routing_name: str
+    steps: list[WorkOrderRoutingSnapshotStepRead] = []
+
+    class Config:
+        from_attributes = True
+
+
 class WorkOrderResponse(BaseModel):
     id: int
     work_order_no: str
@@ -114,6 +158,8 @@ class WorkOrderResponse(BaseModel):
 
     is_material_ready: bool
     material_ready_date: Optional[date]
+    routing_definition: Optional[WorkOrderRoutingDefinition] = None
+    routing_snapshot: Optional[WorkOrderRoutingSnapshotRead] = None
 
     created_datetime: datetime
     started_at: Optional[datetime]
