@@ -6,6 +6,7 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session, selectinload
 
 from models import WorkOrder, WorkOrderRoutingSnapshot
+from app.services.work_order_routing_readiness import validate_work_order_execution_ready_snapshot
 
 
 @dataclass(frozen=True)
@@ -40,14 +41,10 @@ def resolve_work_order_execution_routing_authority(
     if not work_order:
         raise HTTPException(status_code=404, detail=f"WorkOrder not found: id={work_order_id}")
 
-    if work_order.routing_snapshot is None:
-        raise HTTPException(
-            status_code=409,
-            detail=(
-                "WorkOrder has no routing snapshot and cannot resolve execution routing authority: "
-                f"id={work_order_id}"
-            ),
-        )
+    ready_snapshot = validate_work_order_execution_ready_snapshot(
+        work_order.routing_snapshot,
+        work_order_id=work_order_id,
+    )
 
     ordered_steps = tuple(
         WorkOrderExecutionRoutingStepAuthority(
@@ -57,14 +54,14 @@ def resolve_work_order_execution_routing_authority(
             department=step.department,
             is_required=step.is_required,
         )
-        for step in sorted(work_order.routing_snapshot.steps, key=lambda step: (step.seq_no, step.id))
+        for step in ready_snapshot.steps
     )
 
     return WorkOrderExecutionRoutingAuthority(
         work_order_id=work_order.id,
-        snapshot_id=work_order.routing_snapshot.id,
-        source_routing_id=work_order.routing_snapshot.source_routing_id,
-        routing_code=work_order.routing_snapshot.routing_code,
-        routing_name=work_order.routing_snapshot.routing_name,
+        snapshot_id=ready_snapshot.snapshot_id,
+        source_routing_id=ready_snapshot.source_routing_id,
+        routing_code=ready_snapshot.routing_code,
+        routing_name=ready_snapshot.routing_name,
         steps=ordered_steps,
     )
