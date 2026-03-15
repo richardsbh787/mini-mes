@@ -181,13 +181,20 @@ class WorkOrderRoutingStepActiveTests(unittest.TestCase):
         db = self._new_db()
         work_order_id = self._create_work_order_with_snapshot(db, "2")
 
+        guard_work_order_routing_snapshot_active_step(
+            db=db,
+            work_order_id=work_order_id,
+            current_step_code="ASSY",
+            target_seq_no=20,
+            active_step_code="ASSY",
+        )
+
         active = guard_work_order_routing_snapshot_active_step(
             db=db,
             work_order_id=work_order_id,
             current_step_code="ASSY",
             target_seq_no=20,
             active_step_code="ASSY",
-            existing_active_seq_no=20,
         )
 
         self.assertEqual(active.active_step.seq_no, 20)
@@ -273,6 +280,14 @@ class WorkOrderRoutingStepActiveTests(unittest.TestCase):
         db = self._new_db()
         work_order_id = self._create_work_order_with_snapshot(db, "7")
 
+        guard_work_order_routing_snapshot_active_step(
+            db=db,
+            work_order_id=work_order_id,
+            current_seq_no=10,
+            target_seq_no=10,
+            active_seq_no=10,
+        )
+
         with self.assertRaises(HTTPException) as exc:
             guard_work_order_routing_snapshot_active_step(
                 db=db,
@@ -280,7 +295,6 @@ class WorkOrderRoutingStepActiveTests(unittest.TestCase):
                 current_seq_no=10,
                 target_seq_no=20,
                 active_seq_no=20,
-                existing_active_step_code="CUT",
             )
 
         self.assertEqual(exc.exception.status_code, 409)
@@ -353,7 +367,7 @@ class WorkOrderRoutingStepActiveTests(unittest.TestCase):
             f"WorkOrder routing snapshot is not execution-ready: snapshot step missing step_code: snapshot_id={snapshot.id}, step_id={snapshot.steps[1].id}",
         )
 
-    def test_unknown_existing_active_passes_through_step_28(self) -> None:
+    def test_unknown_candidate_passes_through_step_28(self) -> None:
         db = self._new_db()
         work_order_id = self._create_work_order_with_snapshot(db, "11")
 
@@ -363,8 +377,7 @@ class WorkOrderRoutingStepActiveTests(unittest.TestCase):
                 work_order_id=work_order_id,
                 current_seq_no=10,
                 target_seq_no=20,
-                active_seq_no=20,
-                existing_active_seq_no=999,
+                active_seq_no=999,
             )
 
         self.assertEqual(exc.exception.status_code, 409)

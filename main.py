@@ -18,6 +18,7 @@ from database import engine, get_db
 from app.bootstrap.material_issue_trace_schema import ensure_material_issue_trace_schema
 from app.bootstrap.work_order_bom_snapshot_schema import ensure_work_order_bom_snapshot_release_columns
 from app.bootstrap.work_order_routing_binding_schema import ensure_work_order_routing_binding_column
+from app.bootstrap.work_order_routing_execution_state_schema import ensure_work_order_routing_execution_state_columns
 from app.constants.locations import RM_STORE
 from app.constants.txn_type import TRANSFER
 from app.constants.locations import ALL as LOCATION_ALL
@@ -98,6 +99,7 @@ Base.metadata.create_all(bind=engine)
 ensure_work_order_bom_snapshot_release_columns(engine)
 ensure_material_issue_trace_schema(engine)
 ensure_work_order_routing_binding_column(engine)
+ensure_work_order_routing_execution_state_columns(engine)
 
 # ==========================
 # Root

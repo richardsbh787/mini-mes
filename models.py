@@ -527,6 +527,11 @@ class WorkOrderRoutingSnapshotStep(Base):
     step_name = Column(String, nullable=False)
     department = Column(String, nullable=True)
     is_required = Column(Boolean, nullable=False)
+    execution_status = Column(String, nullable=False, default="PENDING")
+    started_at = Column(DateTime, nullable=True)
+    started_by = Column(String, nullable=True)
+    completed_at = Column(DateTime, nullable=True)
+    completed_by = Column(String, nullable=True)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
 
     snapshot = relationship("WorkOrderRoutingSnapshot", back_populates="steps")

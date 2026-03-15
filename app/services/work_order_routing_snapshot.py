@@ -25,6 +25,11 @@ def create_work_order_routing_snapshot(db: Session, work_order: WorkOrder, routi
                 step_name=step.step_name,
                 department=step.department,
                 is_required=step.is_required,
+                execution_status="PENDING",
+                started_at=None,
+                started_by=None,
+                completed_at=None,
+                completed_by=None,
             )
         )
 

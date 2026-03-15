@@ -13,6 +13,7 @@ from schemas import WorkOrderCreate
 from app.api.v2.work_order_routing_bind import work_order_routing_bind
 from app.schemas.work_order_routing_bind import WorkOrderRoutingBindRequest
 from app.services.work_order_mainline import create_work_order_record
+from app.services.work_order_routing_step_active import guard_work_order_routing_snapshot_active_step
 from app.services.work_order_routing_step_active_release import (
     guard_work_order_routing_snapshot_active_step_release,
 )
@@ -152,14 +153,20 @@ class WorkOrderRoutingStepActiveReleaseTests(unittest.TestCase):
         db = self._new_db()
         work_order_id = self._create_work_order_with_snapshot(db, "1")
 
+        guard_work_order_routing_snapshot_active_step(
+            db=db,
+            work_order_id=work_order_id,
+            current_step_code="ASSY",
+            target_step_code="ASSY",
+            active_step_code="ASSY",
+        )
+
         release = guard_work_order_routing_snapshot_active_step_release(
             db=db,
             work_order_id=work_order_id,
             current_step_code="ASSY",
             target_step_code="ASSY",
             release_step_code="ASSY",
-            active_step_code="ASSY",
-            existing_active_step_code="ASSY",
         )
 
         self.assertEqual(release.release_target_step.seq_no, 20)
@@ -172,14 +179,20 @@ class WorkOrderRoutingStepActiveReleaseTests(unittest.TestCase):
         db = self._new_db()
         work_order_id = self._create_work_order_with_snapshot(db, "2")
 
+        guard_work_order_routing_snapshot_active_step(
+            db=db,
+            work_order_id=work_order_id,
+            current_seq_no=20,
+            target_seq_no=20,
+            active_seq_no=20,
+        )
+
         release = guard_work_order_routing_snapshot_active_step_release(
             db=db,
             work_order_id=work_order_id,
             current_seq_no=20,
             target_seq_no=20,
             release_seq_no=20,
-            active_seq_no=20,
-            existing_active_seq_no=20,
         )
 
         self.assertIsNone(release.resulting_active_step)
@@ -274,6 +287,14 @@ class WorkOrderRoutingStepActiveReleaseTests(unittest.TestCase):
         db = self._new_db()
         work_order_id = self._create_work_order_with_snapshot(db, "7")
 
+        guard_work_order_routing_snapshot_active_step(
+            db=db,
+            work_order_id=work_order_id,
+            current_seq_no=10,
+            target_seq_no=10,
+            active_seq_no=10,
+        )
+
         with self.assertRaises(HTTPException) as exc:
             guard_work_order_routing_snapshot_active_step_release(
                 db=db,
@@ -281,12 +302,10 @@ class WorkOrderRoutingStepActiveReleaseTests(unittest.TestCase):
                 current_seq_no=20,
                 target_seq_no=20,
                 release_seq_no=20,
-                active_seq_no=20,
-                existing_active_step_code="CUT",
             )
 
         self.assertEqual(exc.exception.status_code, 409)
-        self.assertEqual(exc.exception.detail, "work order already has a different active step")
+        self.assertEqual(exc.exception.detail, "active step release target does not match current active step")
 
     def test_release_target_different_from_current_active_is_rejected(self) -> None:
         db = self._new_db()
