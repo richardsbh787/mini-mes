@@ -651,6 +651,9 @@ app.include_router(work_order_routing_bind_router)
 from app.api.v2.work_order_routing_execution_read import router as work_order_routing_execution_read_router
 app.include_router(work_order_routing_execution_read_router)
 
+from app.api.v2.work_order_routing_execution_action import router as work_order_routing_execution_action_router
+app.include_router(work_order_routing_execution_action_router)
+
 @app.post("/v2/transfer/commit")
 def transfer_commit(
     org_id: str,
