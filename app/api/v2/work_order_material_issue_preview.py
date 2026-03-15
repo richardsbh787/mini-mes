@@ -2,16 +2,32 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from database import get_db
-from models import WorkOrderBOMSnapshot
+from models import WorkOrderBOMSnapshot, WorkOrderBOMSnapshotLine
 from app.schemas.work_order_material_issue_preview import (
     WorkOrderMaterialIssuePreviewRequest,
     WorkOrderMaterialIssuePreviewResponse,
 )
-from app.services.bom_flat_explosion_service import BOMFlatExplosionService
 
 
 router = APIRouter(prefix="/v2/work-order", tags=["v2-work-order-material-issue-preview"])
-flat_svc = BOMFlatExplosionService()
+
+
+def _load_snapshot_issue_lines(snapshot_id: int, db: Session) -> list[dict]:
+    detail_rows = (
+        db.query(WorkOrderBOMSnapshotLine)
+        .filter(WorkOrderBOMSnapshotLine.snapshot_id == snapshot_id)
+        .order_by(WorkOrderBOMSnapshotLine.seq_no.asc(), WorkOrderBOMSnapshotLine.id.asc())
+        .all()
+    )
+    return [
+        {
+            "item_code": row.item_code,
+            "item_name": row.item_name,
+            "required_qty": row.required_qty,
+            "uom": row.uom,
+        }
+        for row in detail_rows
+    ]
 
 
 def build_material_issue_preview_from_snapshot(snapshot: WorkOrderBOMSnapshot, db: Session) -> dict:
@@ -47,22 +63,10 @@ def build_material_issue_preview_from_snapshot(snapshot: WorkOrderBOMSnapshot, d
             detail=f"Snapshot issue_status {issue_status} cannot preview material issue: id={snapshot.id}",
         )
 
-    flat_materials = flat_svc.explode_flat(
-        db=db,
-        parent_system_item_code=snapshot.parent_system_item_code,
-        required_qty=snapshot.work_order_qty,
-        version_id=snapshot.bom_version_id,
-    )
+    if not snapshot.bom_version_id:
+        raise HTTPException(status_code=409, detail=f"Snapshot missing bom_version_id: id={snapshot.id}")
 
-    issue_lines = [
-        {
-            "item_code": row["item_code"],
-            "item_name": row.get("item_name"),
-            "required_qty": row["total_qty"],
-            "uom": row["uom"],
-        }
-        for row in flat_materials
-    ]
+    issue_lines = _load_snapshot_issue_lines(snapshot_id=snapshot.id, db=db)
 
     return {
         "snapshot_id": snapshot.id,

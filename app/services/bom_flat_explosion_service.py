@@ -1,13 +1,13 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 
 from fastapi import HTTPException
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
-from models import BOMHeader, BOMLine, BOMVersion
+from models import BOMHeader, BOMLine, BOMVersion, Product, RawMaterial
 
 
 @dataclass
@@ -28,6 +28,18 @@ class _FlatLeafSource:
 
 
 class BOMFlatExplosionService:
+    @staticmethod
+    def _lookup_item_name(db: Session, item_code: str) -> str | None:
+        product = db.query(Product).filter(Product.model_no == item_code).first()
+        if product:
+            return product.model_description
+
+        raw_material = db.query(RawMaterial).filter(RawMaterial.material_code == item_code).first()
+        if raw_material:
+            return raw_material.material_name
+
+        return None
+
     @staticmethod
     def _is_date_effective(version: BOMVersion, on_date: date) -> bool:
         if version.effective_from and on_date < version.effective_from:
@@ -162,6 +174,9 @@ class BOMFlatExplosionService:
                 )
                 continue
 
+            if line.phantom_flag:
+                raise HTTPException(status_code=409, detail=f"Phantom component has no child BOM: {child_code}")
+
             if not line.phantom_flag:
                 self._merge_line(
                     flat=flat,
@@ -184,7 +199,7 @@ class BOMFlatExplosionService:
         required_qty: float,
         version_id: int | None = None,
     ) -> list[dict]:
-        on_date = datetime.utcnow().date()
+        on_date = datetime.now(timezone.utc).date()
         header = self._pick_header_by_parent_code(db, parent_system_item_code)
         if str(header.status).upper() != "ACTIVE":
             raise HTTPException(status_code=400, detail=f"BOM header is OBSOLETE for {parent_system_item_code}")
@@ -206,7 +221,7 @@ class BOMFlatExplosionService:
         result = [
             {
                 "item_code": row.item_code,
-                "item_name": None,
+                "item_name": self._lookup_item_name(db, row.item_code),
                 "total_qty": row.total_qty,
                 "uom": row.uom,
             }

@@ -61,6 +61,19 @@ class WorkOrderBOMSnapshotSchemaTests(unittest.TestCase):
                 "issued_at",
             },
         )
+        detail_columns = {col["name"] for col in inspector.get_columns("work_order_bom_snapshot_line")}
+        self.assertEqual(
+            detail_columns,
+            {
+                "id",
+                "snapshot_id",
+                "seq_no",
+                "item_code",
+                "item_name",
+                "required_qty",
+                "uom",
+            },
+        )
 
         with engine.begin() as conn:
             row = conn.execute(
@@ -108,6 +121,9 @@ class WorkOrderBOMSnapshotSchemaTests(unittest.TestCase):
 
         ensure_work_order_bom_snapshot_release_columns(engine)
         ensure_work_order_bom_snapshot_release_columns(engine)
+
+        inspector = inspect(engine)
+        self.assertTrue(inspector.has_table("work_order_bom_snapshot_line"))
 
         with engine.begin() as conn:
             row = conn.execute(

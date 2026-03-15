@@ -20,6 +20,16 @@ def work_order_material_issue_commit(
     payload: WorkOrderMaterialIssueCommitRequest,
     db: Session = Depends(get_db),
 ):
+    issued_by = (payload.issued_by or "").strip()
+    org_id = (payload.org_id or "").strip()
+    location_id = (payload.location_id or "").strip()
+    if not issued_by:
+        raise HTTPException(status_code=400, detail="issued_by is required")
+    if not org_id:
+        raise HTTPException(status_code=400, detail="org_id is required")
+    if not location_id:
+        raise HTTPException(status_code=400, detail="location_id is required")
+
     snapshot = (
         db.query(WorkOrderBOMSnapshot)
         .filter(WorkOrderBOMSnapshot.id == payload.snapshot_id)
@@ -39,6 +49,14 @@ def work_order_material_issue_commit(
             detail=f"Snapshot status {snapshot_status} cannot issue (only RELEASED allowed): id={payload.snapshot_id}",
         )
 
+    existing_issue_event = (
+        db.query(MaterialIssueEvent)
+        .filter(MaterialIssueEvent.snapshot_id == snapshot.id)
+        .first()
+    )
+    if existing_issue_event:
+        raise HTTPException(status_code=409, detail=f"Issue event already exists for snapshot: id={payload.snapshot_id}")
+
     issue_status = str(snapshot.issue_status or "PENDING").upper()
     if issue_status == "ISSUED":
         raise HTTPException(
@@ -51,17 +69,37 @@ def work_order_material_issue_commit(
             detail=f"Snapshot issue_status {issue_status} cannot commit material issue: id={payload.snapshot_id}",
         )
 
+    if not snapshot.bom_version_id:
+        raise HTTPException(status_code=409, detail=f"Snapshot missing bom_version_id: id={payload.snapshot_id}")
+
     preview = build_material_issue_preview_from_snapshot(snapshot=snapshot, db=db)
     issue_lines = preview["issue_lines"]
+    if not issue_lines:
+        raise HTTPException(
+            status_code=409,
+            detail=f"Material issue preview returned no issue lines: id={payload.snapshot_id}",
+        )
+
+    for line in issue_lines:
+        if float(line["required_qty"]) <= 0:
+            raise HTTPException(
+                status_code=409,
+                detail=f"Invalid required_qty for item {line['item_code']}: must be > 0",
+            )
+        if not str(line["uom"] or "").strip():
+            raise HTTPException(
+                status_code=409,
+                detail=f"Invalid uom for item {line['item_code']}: uom cannot be blank",
+            )
 
     try:
         issue_event = MaterialIssueEvent(
             snapshot_id=snapshot.id,
             work_order_no=snapshot.work_order_no,
             bom_version_id=snapshot.bom_version_id,
-            org_id=payload.org_id,
-            location_id=payload.location_id,
-            issued_by=payload.issued_by,
+            org_id=org_id,
+            location_id=location_id,
+            issued_by=issued_by,
             issued_at=datetime.utcnow(),
         )
         db.add(issue_event)
@@ -70,9 +108,9 @@ def work_order_material_issue_commit(
         for line in issue_lines:
             db.add(
                 StockLedger(
-                    org_id=payload.org_id,
+                    org_id=org_id,
                     item_id=line["item_code"],
-                    location_id=payload.location_id,
+                    location_id=location_id,
                     txn_type="ISSUE",
                     qty=float(line["required_qty"]),
                     uom=line["uom"],
@@ -87,7 +125,7 @@ def work_order_material_issue_commit(
             )
 
         snapshot.issue_status = "ISSUED"
-        snapshot.issued_by = payload.issued_by
+        snapshot.issued_by = issued_by
         snapshot.issued_at = datetime.utcnow()
 
         db.commit()

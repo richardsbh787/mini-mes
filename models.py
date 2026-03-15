@@ -422,6 +422,18 @@ class WorkOrderBOMSnapshot(Base):
     bom_version = relationship("BOMVersion")
 
 
+class WorkOrderBOMSnapshotLine(Base):
+    __tablename__ = "work_order_bom_snapshot_line"
+
+    id = Column(Integer, primary_key=True, index=True)
+    snapshot_id = Column(Integer, ForeignKey("work_order_bom_snapshot.id"), nullable=False, index=True)
+    seq_no = Column(Integer, nullable=False)
+    item_code = Column(String, nullable=False, index=True)
+    item_name = Column(String, nullable=True)
+    required_qty = Column(Float, nullable=False)
+    uom = Column(String, nullable=False)
+
+
 class MaterialIssueEvent(Base):
     __tablename__ = "material_issue_event"
 

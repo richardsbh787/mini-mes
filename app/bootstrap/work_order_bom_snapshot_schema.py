@@ -61,3 +61,23 @@ def ensure_work_order_bom_snapshot_release_columns(engine: Engine) -> None:
                 "WHERE issue_status IS NULL OR TRIM(issue_status) = ''"
             )
         )
+
+    inspector = inspect(engine)
+    detail_table_name = "work_order_bom_snapshot_line"
+    if inspector.has_table(detail_table_name):
+        return
+
+    with engine.begin() as conn:
+        conn.execute(
+            text(
+                "CREATE TABLE work_order_bom_snapshot_line ("
+                "id INTEGER PRIMARY KEY, "
+                "snapshot_id INTEGER NOT NULL, "
+                "seq_no INTEGER NOT NULL, "
+                "item_code VARCHAR NOT NULL, "
+                "item_name VARCHAR, "
+                "required_qty FLOAT NOT NULL, "
+                "uom VARCHAR NOT NULL"
+                ")"
+            )
+        )

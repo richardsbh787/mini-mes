@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
@@ -56,7 +56,7 @@ class BOMTreeExplosionService:
             children.append(
                 {
                     "item_code": child_code,
-                    "item_name": None,
+                    "item_name": self.flat_rules._lookup_item_name(db, child_code),
                     "required_qty": child_required_qty,
                     "uom": line.uom,
                     "level": level + 1,
@@ -76,7 +76,7 @@ class BOMTreeExplosionService:
         required_qty: float,
         version_id: int | None = None,
     ) -> dict:
-        on_date = datetime.utcnow().date()
+        on_date = datetime.now(timezone.utc).date()
         header = self.flat_rules._pick_header_by_parent_code(db, parent_system_item_code)
         version = self.flat_rules._pick_version_for_root(db, header, on_date, version_id)
 
@@ -99,7 +99,7 @@ class BOMTreeExplosionService:
             "version_id": version.version_id,
             "tree": {
                 "item_code": parent_system_item_code,
-                "item_name": None,
+                "item_name": self.flat_rules._lookup_item_name(db, parent_system_item_code),
                 "required_qty": required_qty,
                 "uom": None,
                 "level": 0,

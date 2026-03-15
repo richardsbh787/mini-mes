@@ -3,7 +3,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from database import get_db
-from models import WorkOrderBOMSnapshot
+from models import WorkOrderBOMSnapshot, WorkOrderBOMSnapshotLine
 from app.api.v2.work_order_bom_preview import build_work_order_bom_preview
 from app.schemas.work_order_bom_bind import (
     WorkOrderBOMBindRequest,
@@ -43,6 +43,18 @@ def work_order_bom_bind(payload: WorkOrderBOMBindRequest, db: Session = Depends(
     )
     db.add(snapshot)
     try:
+        db.flush()
+        for seq_no, line in enumerate(preview["flat_materials"], start=1):
+            db.add(
+                WorkOrderBOMSnapshotLine(
+                    snapshot_id=snapshot.id,
+                    seq_no=seq_no,
+                    item_code=line["item_code"],
+                    item_name=line.get("item_name"),
+                    required_qty=line["total_qty"],
+                    uom=line["uom"],
+                )
+            )
         db.commit()
         db.refresh(snapshot)
     except IntegrityError:
@@ -51,6 +63,9 @@ def work_order_bom_bind(payload: WorkOrderBOMBindRequest, db: Session = Depends(
             status_code=409,
             detail=f"Snapshot already exists for work_order_no={payload.work_order_no}",
         )
+    except Exception:
+        db.rollback()
+        raise
 
     return {
         "snapshot_id": snapshot.id,

@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session, sessionmaker
 from pydantic import ValidationError
 
 from database import Base
-from models import BOMHeader, BOMLine, BOMVersion, MaterialIssueCorrectionEvent, MaterialIssueEvent, StockLedger, WorkOrderBOMSnapshot
+from models import BOMHeader, BOMLine, BOMVersion, MaterialIssueCorrectionEvent, MaterialIssueEvent, StockLedger, WorkOrderBOMSnapshot, WorkOrderBOMSnapshotLine
 from app.api.v2.work_order_bom_bind import work_order_bom_bind
 from app.api.v2.work_order_bom_preview import build_work_order_bom_preview
 from app.api.v2.work_order_bom_release import work_order_bom_release
@@ -131,7 +131,7 @@ class MultilayerBOMConstraintsTests(unittest.TestCase):
             ],
         )
 
-    def test_flat_explosion_skips_phantom_with_no_child_bom(self) -> None:
+    def test_flat_explosion_rejects_phantom_with_no_child_bom(self) -> None:
         db = self._new_db()
         svc = BOMFlatExplosionService()
 
@@ -141,18 +141,11 @@ class MultilayerBOMConstraintsTests(unittest.TestCase):
         _add_line(db, root_v.version_id, sequence=20, component_code="PH-1", qty_per=5.0, phantom_flag=True)
         db.commit()
 
-        rows = svc.explode_flat(db=db, parent_system_item_code="FG-1", required_qty=3.0, version_id=root_v.version_id)
-        self.assertEqual(
-            rows,
-            [
-                {
-                    "item_code": "RM-1",
-                    "item_name": None,
-                    "total_qty": 6.0,
-                    "uom": "PCS",
-                }
-            ],
-        )
+        with self.assertRaises(HTTPException) as exc:
+            svc.explode_flat(db=db, parent_system_item_code="FG-1", required_qty=3.0, version_id=root_v.version_id)
+
+        self.assertEqual(exc.exception.status_code, 409)
+        self.assertEqual(exc.exception.detail, "Phantom component has no child BOM: PH-1")
 
     def test_flat_explosion_detects_cycle_with_full_path(self) -> None:
         db = self._new_db()
@@ -226,6 +219,17 @@ class MultilayerBOMConstraintsTests(unittest.TestCase):
             created_by="test",
         )
         db.add(snapshot)
+        db.flush()
+        db.add(
+            WorkOrderBOMSnapshotLine(
+                snapshot_id=snapshot.id,
+                seq_no=1,
+                item_code="RM-LOCKED",
+                item_name=None,
+                required_qty=2.0,
+                uom="PCS",
+            )
+        )
         db.commit()
         db.refresh(snapshot)
 
@@ -314,6 +318,183 @@ class MultilayerBOMConstraintsTests(unittest.TestCase):
         self.assertEqual(
             exc.exception.detail,
             "Snapshot already exists for work_order_no=WO-DUP-1",
+        )
+
+    def test_work_order_bind_persists_snapshot_header_and_flat_detail_lines_together(self) -> None:
+        db = self._new_db()
+
+        root = _add_header(db, "FG-1")
+        root_v = _add_version(db, root.bom_id)
+        _add_line(db, root_v.version_id, sequence=10, component_code="RM-1", qty_per=2.0)
+        _add_line(db, root_v.version_id, sequence=20, component_code="RM-2", qty_per=3.0, uom="KG")
+        db.commit()
+
+        result = work_order_bom_bind(
+            payload=WorkOrderBOMBindRequest(
+                work_order_no="WO-DETAIL-1",
+                parent_system_item_code="FG-1",
+                work_order_qty=4.0,
+                version_id=root_v.version_id,
+                created_by="planner",
+            ),
+            db=db,
+        )
+
+        snapshot = db.query(WorkOrderBOMSnapshot).filter(WorkOrderBOMSnapshot.id == result["snapshot_id"]).one()
+        detail_rows = (
+            db.query(WorkOrderBOMSnapshotLine)
+            .filter(WorkOrderBOMSnapshotLine.snapshot_id == snapshot.id)
+            .order_by(WorkOrderBOMSnapshotLine.seq_no.asc(), WorkOrderBOMSnapshotLine.id.asc())
+            .all()
+        )
+
+        self.assertEqual(snapshot.work_order_no, "WO-DETAIL-1")
+        self.assertEqual(snapshot.bom_version_id, root_v.version_id)
+        self.assertEqual(
+            [
+                {
+                    "seq_no": row.seq_no,
+                    "item_code": row.item_code,
+                    "item_name": row.item_name,
+                    "required_qty": row.required_qty,
+                    "uom": row.uom,
+                }
+                for row in detail_rows
+            ],
+            [
+                {
+                    "seq_no": 1,
+                    "item_code": "RM-1",
+                    "item_name": None,
+                    "required_qty": 8.0,
+                    "uom": "PCS",
+                },
+                {
+                    "seq_no": 2,
+                    "item_code": "RM-2",
+                    "item_name": None,
+                    "required_qty": 12.0,
+                    "uom": "KG",
+                },
+            ],
+        )
+
+    def test_work_order_bind_duplicate_does_not_create_duplicate_snapshot_detail_rows(self) -> None:
+        db = self._new_db()
+
+        root = _add_header(db, "FG-1")
+        root_v = _add_version(db, root.bom_id)
+        _add_line(db, root_v.version_id, sequence=10, component_code="RM-1", qty_per=1.0)
+        db.commit()
+
+        work_order_bom_bind(
+            payload=WorkOrderBOMBindRequest(
+                work_order_no="WO-DUP-DETAIL-1",
+                parent_system_item_code="FG-1",
+                work_order_qty=2.0,
+                version_id=root_v.version_id,
+                created_by="planner",
+            ),
+            db=db,
+        )
+
+        with self.assertRaises(HTTPException):
+            work_order_bom_bind(
+                payload=WorkOrderBOMBindRequest(
+                    work_order_no="WO-DUP-DETAIL-1",
+                    parent_system_item_code="FG-1",
+                    work_order_qty=2.0,
+                    version_id=root_v.version_id,
+                    created_by="planner",
+                ),
+                db=db,
+            )
+
+        self.assertEqual(db.query(WorkOrderBOMSnapshot).count(), 1)
+        self.assertEqual(db.query(WorkOrderBOMSnapshotLine).count(), 1)
+
+    def test_work_order_bind_rolls_back_snapshot_header_when_detail_persistence_fails(self) -> None:
+        db = self._new_db()
+
+        root = _add_header(db, "FG-1")
+        root_v = _add_version(db, root.bom_id)
+        _add_line(db, root_v.version_id, sequence=10, component_code="RM-1", qty_per=1.0)
+        db.commit()
+
+        original_commit = db.commit
+
+        def fail_commit():
+            raise RuntimeError("boom")
+
+        db.commit = fail_commit
+        try:
+            with self.assertRaises(RuntimeError):
+                work_order_bom_bind(
+                    payload=WorkOrderBOMBindRequest(
+                        work_order_no="WO-ROLLBACK-DETAIL-1",
+                        parent_system_item_code="FG-1",
+                        work_order_qty=2.0,
+                        version_id=root_v.version_id,
+                        created_by="planner",
+                    ),
+                    db=db,
+                )
+        finally:
+            db.commit = original_commit
+
+        self.assertEqual(db.query(WorkOrderBOMSnapshot).count(), 0)
+        self.assertEqual(db.query(WorkOrderBOMSnapshotLine).count(), 0)
+
+    def test_persisted_snapshot_detail_rows_remain_bind_time_locked_baseline(self) -> None:
+        db = self._new_db()
+
+        root = _add_header(db, "FG-1")
+        locked_v = _add_version(db, root.bom_id)
+        _add_line(db, locked_v.version_id, sequence=10, component_code="RM-LOCKED", qty_per=1.0)
+        db.commit()
+
+        result = work_order_bom_bind(
+            payload=WorkOrderBOMBindRequest(
+                work_order_no="WO-LOCKED-DETAIL-1",
+                parent_system_item_code="FG-1",
+                work_order_qty=2.0,
+                version_id=locked_v.version_id,
+                created_by="planner",
+            ),
+            db=db,
+        )
+
+        newer_v = _add_version(db, root.bom_id)
+        _add_line(db, newer_v.version_id, sequence=10, component_code="RM-NEW", qty_per=1.0)
+        db.commit()
+
+        detail_rows = (
+            db.query(WorkOrderBOMSnapshotLine)
+            .filter(WorkOrderBOMSnapshotLine.snapshot_id == result["snapshot_id"])
+            .order_by(WorkOrderBOMSnapshotLine.seq_no.asc(), WorkOrderBOMSnapshotLine.id.asc())
+            .all()
+        )
+        fresh_preview = build_work_order_bom_preview(
+            db=db,
+            parent_system_item_code="FG-1",
+            work_order_qty=2.0,
+            version_id=None,
+        )
+
+        self.assertEqual(
+            [(row.item_code, row.required_qty, row.uom) for row in detail_rows],
+            [("RM-LOCKED", 2.0, "PCS")],
+        )
+        self.assertEqual(
+            fresh_preview["flat_materials"],
+            [
+                {
+                    "item_code": "RM-NEW",
+                    "item_name": None,
+                    "total_qty": 2.0,
+                    "uom": "PCS",
+                }
+            ],
         )
 
     def test_work_order_release_rejects_non_draft_statuses(self) -> None:
@@ -422,9 +603,9 @@ class MultilayerBOMConstraintsTests(unittest.TestCase):
 
         for issue_status, expected_detail in [
             ("ISSUED", "Snapshot already ISSUED and cannot commit material issue: id=1"),
-            ("VOID", "Snapshot issue_status VOID cannot commit material issue (only PENDING allowed): id=1"),
-            ("CLOSED", "Snapshot issue_status CLOSED cannot commit material issue (only PENDING allowed): id=1"),
-            ("UNKNOWN", "Snapshot issue_status UNKNOWN cannot commit material issue (only PENDING allowed): id=1"),
+            ("VOID", "Snapshot issue_status VOID cannot commit material issue: id=1"),
+            ("CLOSED", "Snapshot issue_status CLOSED cannot commit material issue: id=1"),
+            ("UNKNOWN", "Snapshot issue_status UNKNOWN cannot commit material issue: id=1"),
         ]:
             db.query(StockLedger).delete()
             db.query(WorkOrderBOMSnapshot).delete()
@@ -467,9 +648,9 @@ class MultilayerBOMConstraintsTests(unittest.TestCase):
         db.commit()
 
         for snapshot_status, expected_detail in [
-            ("DRAFT", "Snapshot status DRAFT cannot commit material issue (only RELEASED allowed): id=1"),
-            ("VOID", "Snapshot status VOID cannot commit material issue (only RELEASED allowed): id=1"),
-            ("CLOSED", "Snapshot status CLOSED cannot commit material issue (only RELEASED allowed): id=1"),
+            ("DRAFT", "Snapshot is DRAFT and cannot issue: id=1"),
+            ("VOID", "Snapshot is VOID and cannot issue: id=1"),
+            ("CLOSED", "Snapshot status CLOSED cannot issue (only RELEASED allowed): id=1"),
         ]:
             db.query(StockLedger).delete()
             db.query(MaterialIssueEvent).delete()
@@ -748,6 +929,17 @@ class MultilayerBOMConstraintsTests(unittest.TestCase):
             created_by="test",
         )
         db.add(snapshot)
+        db.flush()
+        db.add(
+            WorkOrderBOMSnapshotLine(
+                snapshot_id=snapshot.id,
+                seq_no=1,
+                item_code="RM-1",
+                item_name=None,
+                required_qty=6.0,
+                uom="PCS",
+            )
+        )
         db.commit()
         db.refresh(snapshot)
 
@@ -799,6 +991,17 @@ class MultilayerBOMConstraintsTests(unittest.TestCase):
             created_by="test",
         )
         db.add(snapshot)
+        db.flush()
+        db.add(
+            WorkOrderBOMSnapshotLine(
+                snapshot_id=snapshot.id,
+                seq_no=1,
+                item_code="RM-1",
+                item_name=None,
+                required_qty=2.0,
+                uom="PCS",
+            )
+        )
         db.commit()
         db.refresh(snapshot)
 
@@ -837,6 +1040,17 @@ class MultilayerBOMConstraintsTests(unittest.TestCase):
             created_by="test",
         )
         db.add(snapshot)
+        db.flush()
+        db.add(
+            WorkOrderBOMSnapshotLine(
+                snapshot_id=snapshot.id,
+                seq_no=1,
+                item_code="RM-1",
+                item_name=None,
+                required_qty=6.0,
+                uom="PCS",
+            )
+        )
         db.commit()
         db.refresh(snapshot)
 
