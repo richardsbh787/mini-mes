@@ -19,6 +19,7 @@ from app.bootstrap.material_issue_trace_schema import ensure_material_issue_trac
 from app.bootstrap.work_order_bom_snapshot_schema import ensure_work_order_bom_snapshot_release_columns
 from app.bootstrap.work_order_routing_binding_schema import ensure_work_order_routing_binding_column
 from app.bootstrap.work_order_routing_execution_state_schema import ensure_work_order_routing_execution_state_columns
+from app.bootstrap.raw_material_uom_schema import ensure_raw_material_uom_columns
 from app.constants.locations import RM_STORE
 from app.constants.txn_type import TRANSFER
 from app.constants.locations import ALL as LOCATION_ALL
@@ -100,6 +101,7 @@ ensure_work_order_bom_snapshot_release_columns(engine)
 ensure_material_issue_trace_schema(engine)
 ensure_work_order_routing_binding_column(engine)
 ensure_work_order_routing_execution_state_columns(engine)
+ensure_raw_material_uom_columns(engine)
 
 # ==========================
 # Root
@@ -549,6 +551,8 @@ def create_raw_material(material: RawMaterialCreate, db: Session = Depends(get_d
         material_code=material.material_code,
         material_name=material.material_name,
         unit=material.unit,
+        conversion_type=material.conversion_type,
+        standard_conversion_ratio=material.standard_conversion_ratio,
     )
     db.add(rm)
     db.commit()

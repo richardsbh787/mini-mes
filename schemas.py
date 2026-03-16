@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, field_validator
 from datetime import date, datetime
 from typing import Optional
 from enum import Enum
@@ -240,6 +240,16 @@ class RawMaterialCreate(BaseModel):
     material_code: str
     material_name: str
     unit: str
+    conversion_type: str = "STANDARD"
+    standard_conversion_ratio: float = Field(default=1.0, gt=0)
+
+    @field_validator("conversion_type")
+    @classmethod
+    def validate_conversion_type(cls, value: str) -> str:
+        normalized = str(value or "").strip().upper()
+        if normalized not in {"STANDARD", "LOT_ACTUAL"}:
+            raise ValueError("conversion_type must be STANDARD or LOT_ACTUAL")
+        return normalized
 
 
 class RawMaterialResponse(RawMaterialCreate):

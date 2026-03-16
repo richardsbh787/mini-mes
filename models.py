@@ -265,6 +265,8 @@ class RawMaterial(Base):
     material_code = Column(String, unique=True, nullable=False)
     material_name = Column(String, nullable=False)
     unit = Column(String, nullable=False)
+    conversion_type = Column(String, nullable=False, default="STANDARD")
+    standard_conversion_ratio = Column(Float, nullable=False, default=1.0)
 
 
 # ==========================================================
