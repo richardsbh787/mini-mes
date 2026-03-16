@@ -20,6 +20,7 @@ from app.bootstrap.work_order_bom_snapshot_schema import ensure_work_order_bom_s
 from app.bootstrap.work_order_routing_binding_schema import ensure_work_order_routing_binding_column
 from app.bootstrap.work_order_routing_execution_state_schema import ensure_work_order_routing_execution_state_columns
 from app.bootstrap.raw_material_uom_schema import ensure_raw_material_uom_columns
+from app.bootstrap.work_order_wip_transfer_schema import ensure_work_order_wip_transfer_schema
 from app.constants.locations import RM_STORE
 from app.constants.txn_type import TRANSFER
 from app.constants.locations import ALL as LOCATION_ALL
@@ -102,6 +103,7 @@ ensure_material_issue_trace_schema(engine)
 ensure_work_order_routing_binding_column(engine)
 ensure_work_order_routing_execution_state_columns(engine)
 ensure_raw_material_uom_columns(engine)
+ensure_work_order_wip_transfer_schema(engine)
 
 # ==========================
 # Root
@@ -657,6 +659,9 @@ app.include_router(work_order_routing_execution_read_router)
 
 from app.api.v2.work_order_routing_execution_action import router as work_order_routing_execution_action_router
 app.include_router(work_order_routing_execution_action_router)
+
+from app.api.v2.work_order_wip_transfer import router as work_order_wip_transfer_router
+app.include_router(work_order_wip_transfer_router)
 
 @app.post("/v2/transfer/commit")
 def transfer_commit(

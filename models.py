@@ -539,4 +539,24 @@ class WorkOrderRoutingSnapshotStep(Base):
     snapshot = relationship("WorkOrderRoutingSnapshot", back_populates="steps")
 
 
+class WorkOrderWipTransfer(Base):
+    __tablename__ = "work_order_wip_transfer"
+
+    id = Column(Integer, primary_key=True, index=True)
+    transfer_no = Column(String, nullable=False, unique=True, index=True)
+    work_order_id = Column(Integer, ForeignKey("work_orders.id"), nullable=False, index=True)
+    routing_snapshot_id = Column(Integer, ForeignKey("work_order_routing_snapshot.id"), nullable=False, index=True)
+    from_step_no = Column(Integer, nullable=False)
+    to_step_no = Column(Integer, nullable=False)
+    handling_unit_type = Column(String, nullable=False)
+    handling_unit_label = Column(String, nullable=True)
+    txn_qty = Column(Float, nullable=False)
+    txn_uom = Column(String, nullable=False)
+    base_qty = Column(Float, nullable=False)
+    base_uom = Column(String, nullable=False)
+    transfer_status = Column(String, nullable=False, default="CREATED")
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    created_by = Column(String, nullable=False)
+
+
 
