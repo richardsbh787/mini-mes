@@ -15,6 +15,12 @@ class WorkOrderWipTransferCreateRequest(BaseModel):
     created_by: str
 
 
+class WorkOrderWipTransferQcDecisionRequest(BaseModel):
+    qc_decision: str
+    qc_decided_by: str
+    qc_remark: str | None = None
+
+
 class WorkOrderWipTransferResponse(BaseModel):
     id: int
     transfer_no: str
@@ -29,5 +35,10 @@ class WorkOrderWipTransferResponse(BaseModel):
     base_qty: float
     base_uom: str
     transfer_status: str
+    qc_decision: str | None
+    qc_decided_at: datetime | None
+    qc_decided_by: str | None
+    qc_remark: str | None
+    is_available_for_next_step: bool
     created_at: datetime
     created_by: str

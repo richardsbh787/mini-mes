@@ -3,9 +3,11 @@ from sqlalchemy.orm import Session
 
 from app.schemas.work_order_wip_transfer import (
     WorkOrderWipTransferCreateRequest,
+    WorkOrderWipTransferQcDecisionRequest,
     WorkOrderWipTransferResponse,
 )
 from app.services.work_order_wip_transfer import (
+    apply_work_order_wip_transfer_qc_decision,
     create_work_order_wip_transfer,
     get_work_order_wip_transfer,
     list_work_order_wip_transfers,
@@ -39,3 +41,12 @@ def work_order_wip_transfer_detail(
     db: Session = Depends(get_db),
 ):
     return get_work_order_wip_transfer(db=db, transfer_id=transfer_id)
+
+
+@router.post("/wip-transfers/{transfer_id}/qc-decision", response_model=WorkOrderWipTransferResponse)
+def work_order_wip_transfer_qc_decision(
+    transfer_id: int,
+    payload: WorkOrderWipTransferQcDecisionRequest,
+    db: Session = Depends(get_db),
+):
+    return apply_work_order_wip_transfer_qc_decision(db=db, transfer_id=transfer_id, payload=payload)

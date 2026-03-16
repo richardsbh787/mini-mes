@@ -555,6 +555,10 @@ class WorkOrderWipTransfer(Base):
     base_qty = Column(Float, nullable=False)
     base_uom = Column(String, nullable=False)
     transfer_status = Column(String, nullable=False, default="CREATED")
+    qc_decision = Column(String, nullable=True)
+    qc_decided_at = Column(DateTime, nullable=True)
+    qc_decided_by = Column(String, nullable=True)
+    qc_remark = Column(String, nullable=True)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
     created_by = Column(String, nullable=False)
 

@@ -7,12 +7,14 @@ from sqlalchemy.orm import Session, selectinload
 
 from app.schemas.work_order_wip_transfer import (
     WorkOrderWipTransferCreateRequest,
+    WorkOrderWipTransferQcDecisionRequest,
     WorkOrderWipTransferResponse,
 )
 from models import Product, RawMaterial, WorkOrder, WorkOrderRoutingSnapshot, WorkOrderRoutingSnapshotStep, WorkOrderWipTransfer
 
 
 ALLOWED_HANDLING_UNIT_TYPES = {"PALLET", "BUNDLE", "ROLL", "CARTON", "BIN", "TRAY", "LOOSE"}
+ALLOWED_QC_DECISIONS = {"PASS", "HOLD", "REWORK"}
 
 
 def create_work_order_wip_transfer(
@@ -150,6 +152,55 @@ def get_work_order_wip_transfer(
     return _to_response(row)
 
 
+def apply_work_order_wip_transfer_qc_decision(
+    db: Session,
+    *,
+    transfer_id: int,
+    payload: WorkOrderWipTransferQcDecisionRequest,
+) -> WorkOrderWipTransferResponse:
+    normalized = _validate_qc_input(payload)
+
+    row = db.query(WorkOrderWipTransfer).filter(WorkOrderWipTransfer.id == transfer_id).first()
+    if row is None:
+        raise HTTPException(status_code=404, detail=f"WIP transfer not found: id={transfer_id}")
+
+    current_status = _status(row.transfer_status)
+    if current_status != "CREATED":
+        raise HTTPException(
+            status_code=409,
+            detail=(
+                "WIP transfer QC decision is not allowed for current transfer_status: "
+                f"id={transfer_id}, transfer_status={row.transfer_status}"
+            ),
+        )
+
+    if row.qc_decision is not None or row.qc_decided_at is not None or row.qc_decided_by is not None:
+        raise HTTPException(
+            status_code=409,
+            detail=f"WIP transfer already has a terminal QC decision: id={transfer_id}",
+        )
+
+    qc_decision = _validate_qc_decision(normalized["qc_decision"])
+
+    row.qc_decision = qc_decision
+    row.qc_decided_at = datetime.utcnow()
+    row.qc_decided_by = normalized["qc_decided_by"]
+    row.qc_remark = normalized["qc_remark"]
+    row.transfer_status = "RELEASED" if qc_decision == "PASS" else "QC_LOCKED"
+    db.add(row)
+    try:
+        db.commit()
+        db.refresh(row)
+    except Exception:
+        db.rollback()
+        raise HTTPException(
+            status_code=500,
+            detail=f"WIP transfer QC decision failed and rolled back: id={transfer_id}",
+        )
+
+    return _to_response(row)
+
+
 def _validate_input(payload: WorkOrderWipTransferCreateRequest) -> dict[str, object]:
     normalized = {
         "from_step_no": payload.from_step_no,
@@ -167,6 +218,23 @@ def _validate_input(payload: WorkOrderWipTransferCreateRequest) -> dict[str, obj
     if not normalized["created_by"]:
         raise HTTPException(status_code=409, detail="Invalid created_by for WIP transfer: created_by is required")
     return normalized
+
+
+def _validate_qc_input(payload: WorkOrderWipTransferQcDecisionRequest) -> dict[str, str | None]:
+    normalized = {
+        "qc_decision": str(payload.qc_decision or "").strip().upper(),
+        "qc_decided_by": str(payload.qc_decided_by or "").strip(),
+        "qc_remark": _normalize_optional_text(payload.qc_remark),
+    }
+    if not normalized["qc_decided_by"]:
+        raise HTTPException(status_code=409, detail="Invalid qc_decided_by for WIP transfer: qc_decided_by is required")
+    return normalized
+
+
+def _validate_qc_decision(qc_decision: str) -> str:
+    if qc_decision not in ALLOWED_QC_DECISIONS:
+        raise HTTPException(status_code=409, detail=f"Invalid qc_decision for WIP transfer: qc_decision={qc_decision}")
+    return qc_decision
 
 
 def _validate_route_linkage(
@@ -326,6 +394,11 @@ def _to_response(row: WorkOrderWipTransfer) -> WorkOrderWipTransferResponse:
         base_qty=row.base_qty,
         base_uom=row.base_uom,
         transfer_status=row.transfer_status,
+        qc_decision=row.qc_decision,
+        qc_decided_at=row.qc_decided_at,
+        qc_decided_by=row.qc_decided_by,
+        qc_remark=row.qc_remark,
+        is_available_for_next_step=_status(row.transfer_status) == "RELEASED" and _status(row.qc_decision) == "PASS",
         created_at=row.created_at,
         created_by=row.created_by,
     )

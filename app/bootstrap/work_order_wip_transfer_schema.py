@@ -25,6 +25,10 @@ def ensure_work_order_wip_transfer_schema(engine: Engine) -> None:
                     "base_qty FLOAT NOT NULL, "
                     "base_uom VARCHAR NOT NULL, "
                     "transfer_status VARCHAR NOT NULL, "
+                    "qc_decision VARCHAR, "
+                    "qc_decided_at DATETIME, "
+                    "qc_decided_by VARCHAR, "
+                    "qc_remark VARCHAR, "
                     "created_at DATETIME NOT NULL, "
                     "created_by VARCHAR NOT NULL"
                     ")"
@@ -61,6 +65,14 @@ def ensure_work_order_wip_transfer_schema(engine: Engine) -> None:
         statements.append("ALTER TABLE work_order_wip_transfer ADD COLUMN base_uom VARCHAR")
     if "transfer_status" not in existing_columns:
         statements.append("ALTER TABLE work_order_wip_transfer ADD COLUMN transfer_status VARCHAR")
+    if "qc_decision" not in existing_columns:
+        statements.append("ALTER TABLE work_order_wip_transfer ADD COLUMN qc_decision VARCHAR")
+    if "qc_decided_at" not in existing_columns:
+        statements.append("ALTER TABLE work_order_wip_transfer ADD COLUMN qc_decided_at DATETIME")
+    if "qc_decided_by" not in existing_columns:
+        statements.append("ALTER TABLE work_order_wip_transfer ADD COLUMN qc_decided_by VARCHAR")
+    if "qc_remark" not in existing_columns:
+        statements.append("ALTER TABLE work_order_wip_transfer ADD COLUMN qc_remark VARCHAR")
     if "created_at" not in existing_columns:
         statements.append("ALTER TABLE work_order_wip_transfer ADD COLUMN created_at DATETIME")
     if "created_by" not in existing_columns:
