@@ -581,4 +581,21 @@ class WorkOrderFgReceive(Base):
     remark = Column(String, nullable=True)
 
 
+class WorkOrderShipment(Base):
+    __tablename__ = "work_order_shipment"
+
+    id = Column(Integer, primary_key=True, index=True)
+    shipment_no = Column(String, nullable=False, unique=True, index=True)
+    work_order_id = Column(Integer, ForeignKey("work_orders.id"), nullable=False, index=True)
+    sales_order_id = Column(Integer, ForeignKey("sales_orders.id"), nullable=False, index=True)
+    fg_receive_id = Column(Integer, ForeignKey("work_order_fg_receive.id"), nullable=False, index=True)
+    txn_qty = Column(Float, nullable=False)
+    txn_uom = Column(String, nullable=False)
+    shipment_ref = Column(String, nullable=False)
+    shipment_remark = Column(String, nullable=True)
+    shipment_status = Column(String, nullable=False, default="SHIPPED")
+    shipped_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    shipped_by = Column(String, nullable=False)
+
+
 

@@ -21,6 +21,7 @@ from app.bootstrap.work_order_routing_binding_schema import ensure_work_order_ro
 from app.bootstrap.work_order_routing_execution_state_schema import ensure_work_order_routing_execution_state_columns
 from app.bootstrap.raw_material_uom_schema import ensure_raw_material_uom_columns
 from app.bootstrap.work_order_fg_receive_schema import ensure_work_order_fg_receive_schema
+from app.bootstrap.work_order_shipment_schema import ensure_work_order_shipment_schema
 from app.bootstrap.work_order_wip_transfer_schema import ensure_work_order_wip_transfer_schema
 from app.constants.locations import RM_STORE
 from app.constants.txn_type import TRANSFER
@@ -96,7 +97,9 @@ print(">>> USING THIS MAIN FILE <<<")
 # ==========================
 app = FastAPI()
 from app.api.v2.fg_receive import router as fg_receive_router
+from app.api.v2.shipment import router as shipment_router
 app.include_router(fg_receive_router)
+app.include_router(shipment_router)
 # ✅ 关键：确保所有 models 都被 import 后，再 create_all
 Base.metadata.create_all(bind=engine)
 ensure_work_order_bom_snapshot_release_columns(engine)
@@ -105,6 +108,7 @@ ensure_work_order_routing_binding_column(engine)
 ensure_work_order_routing_execution_state_columns(engine)
 ensure_raw_material_uom_columns(engine)
 ensure_work_order_fg_receive_schema(engine)
+ensure_work_order_shipment_schema(engine)
 ensure_work_order_wip_transfer_schema(engine)
 
 # ==========================
