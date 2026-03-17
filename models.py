@@ -563,4 +563,22 @@ class WorkOrderWipTransfer(Base):
     created_by = Column(String, nullable=False)
 
 
+class WorkOrderFgReceive(Base):
+    __tablename__ = "work_order_fg_receive"
+
+    id = Column(Integer, primary_key=True, index=True)
+    fg_receive_no = Column(String, nullable=False, unique=True, index=True)
+    work_order_id = Column(Integer, ForeignKey("work_orders.id"), nullable=False, index=True)
+    wip_transfer_id = Column(Integer, ForeignKey("work_order_wip_transfer.id"), nullable=False, unique=True, index=True)
+    routing_snapshot_id = Column(Integer, ForeignKey("work_order_routing_snapshot.id"), nullable=False, index=True)
+    fg_handling_unit_type = Column(String, nullable=False)
+    fg_handling_unit_label = Column(String, nullable=True)
+    txn_qty = Column(Float, nullable=False)
+    txn_uom = Column(String, nullable=False)
+    receive_status = Column(String, nullable=False, default="RECEIVED")
+    received_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    received_by = Column(String, nullable=False)
+    remark = Column(String, nullable=True)
+
+
 

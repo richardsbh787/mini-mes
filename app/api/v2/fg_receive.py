@@ -1,28 +1,38 @@
-from fastapi import APIRouter, HTTPException
-from datetime import datetime, timezone
-from app.repositories.stock_ledger_repo import insert_ledger
-from app.constants.txn_type import RECEIPT
-from app.constants.locations import FG_STORE, PACK_PARK
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
+
+from app.schemas.work_order_fg_receive import WorkOrderFgReceiveCreateRequest, WorkOrderFgReceiveResponse
+from app.services.work_order_fg_receive import (
+    create_work_order_fg_receive,
+    get_work_order_fg_receive,
+    list_work_order_fg_receipts,
+)
+from database import get_db
 
 
+router = APIRouter(tags=["v2-work-order-fg-receive"])
 
 
-router = APIRouter(prefix="/v2/fg", tags=["v2-fg"])
+@router.post("/work-orders/{work_order_id}/fg-receipts", response_model=WorkOrderFgReceiveResponse)
+def work_order_fg_receive_create(
+    work_order_id: int,
+    payload: WorkOrderFgReceiveCreateRequest,
+    db: Session = Depends(get_db),
+):
+    return create_work_order_fg_receive(db=db, work_order_id=work_order_id, payload=payload)
 
-@router.post("/receive")
-def fg_receive(org_id: str, item_id: str, qty: float, uom: str = "ea", ref_type: str = "FG_RECEIVE", ref_id: str | None = None,location_code: str = FG_STORE):
-    try:
-        row = insert_ledger({
-            "org_id": org_id,
-            "item_id": item_id,
-            "location_code": location_code,
-            "txn_type": RECEIPT,
-            "qty": abs(qty),
-            "uom": uom,
-            "ref_type": ref_type,
-            "ref_id": ref_id,
-            "occurred_at": datetime.now(timezone.utc).isoformat(),
-        })
-        return {"ok": True, "stock_ledger_id": row["id"], "location_code": location_code, "txn_type": RECEIPT}
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+
+@router.get("/work-orders/{work_order_id}/fg-receipts", response_model=list[WorkOrderFgReceiveResponse])
+def work_order_fg_receive_list(
+    work_order_id: int,
+    db: Session = Depends(get_db),
+):
+    return list_work_order_fg_receipts(db=db, work_order_id=work_order_id)
+
+
+@router.get("/fg-receipts/{fg_receive_id}", response_model=WorkOrderFgReceiveResponse)
+def work_order_fg_receive_detail(
+    fg_receive_id: int,
+    db: Session = Depends(get_db),
+):
+    return get_work_order_fg_receive(db=db, fg_receive_id=fg_receive_id)

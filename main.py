@@ -20,6 +20,7 @@ from app.bootstrap.work_order_bom_snapshot_schema import ensure_work_order_bom_s
 from app.bootstrap.work_order_routing_binding_schema import ensure_work_order_routing_binding_column
 from app.bootstrap.work_order_routing_execution_state_schema import ensure_work_order_routing_execution_state_columns
 from app.bootstrap.raw_material_uom_schema import ensure_raw_material_uom_columns
+from app.bootstrap.work_order_fg_receive_schema import ensure_work_order_fg_receive_schema
 from app.bootstrap.work_order_wip_transfer_schema import ensure_work_order_wip_transfer_schema
 from app.constants.locations import RM_STORE
 from app.constants.txn_type import TRANSFER
@@ -103,6 +104,7 @@ ensure_material_issue_trace_schema(engine)
 ensure_work_order_routing_binding_column(engine)
 ensure_work_order_routing_execution_state_columns(engine)
 ensure_raw_material_uom_columns(engine)
+ensure_work_order_fg_receive_schema(engine)
 ensure_work_order_wip_transfer_schema(engine)
 
 # ==========================
