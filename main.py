@@ -650,6 +650,9 @@ app.include_router(work_order_material_issue_preview_router)
 from app.api.v2.work_order_material_issue_commit import router as work_order_material_issue_commit_router
 app.include_router(work_order_material_issue_commit_router)
 
+from app.api.v2.material_issue_stock_ledger import router as material_issue_stock_ledger_router
+app.include_router(material_issue_stock_ledger_router)
+
 from app.api.v2.work_order_material_issue_correction_commit import router as work_order_material_issue_correction_commit_router
 app.include_router(work_order_material_issue_correction_commit_router)
 

@@ -347,6 +347,7 @@ class StockLedger(Base):
     note = Column(String, nullable=True)
     source_event_type = Column(String, nullable=True, index=True)
     source_event_id = Column(Integer, nullable=True, index=True)
+    source_event_line_id = Column(Integer, nullable=True, index=True)
     work_order_id = Column(Integer, nullable=True, index=True)
     sales_order_id = Column(Integer, nullable=True, index=True)
     issue_event_id = Column(Integer, nullable=True, index=True)

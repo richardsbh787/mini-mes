@@ -31,6 +31,8 @@ def ensure_stock_ledger_fg_receive_columns(engine: Engine) -> None:
         statements.append("ALTER TABLE stock_ledger ADD COLUMN source_event_type VARCHAR")
     if "source_event_id" not in existing_columns:
         statements.append("ALTER TABLE stock_ledger ADD COLUMN source_event_id INTEGER")
+    if "source_event_line_id" not in existing_columns:
+        statements.append("ALTER TABLE stock_ledger ADD COLUMN source_event_line_id INTEGER")
     if "work_order_id" not in existing_columns:
         statements.append("ALTER TABLE stock_ledger ADD COLUMN work_order_id INTEGER")
     if "sales_order_id" not in existing_columns:
