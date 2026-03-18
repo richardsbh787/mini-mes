@@ -99,8 +99,10 @@ print(">>> USING THIS MAIN FILE <<<")
 app = FastAPI()
 from app.api.v2.fg_receive import router as fg_receive_router
 from app.api.v2.shipment import router as shipment_router
+from app.api.v2.stock_ledger_read import router as stock_ledger_read_router
 app.include_router(fg_receive_router)
 app.include_router(shipment_router)
+app.include_router(stock_ledger_read_router)
 # ✅ 关键：确保所有 models 都被 import 后，再 create_all
 Base.metadata.create_all(bind=engine)
 ensure_work_order_bom_snapshot_release_columns(engine)
