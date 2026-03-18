@@ -326,21 +326,36 @@ class StockLedger(Base):
 
     id = Column(Integer, primary_key=True, index=True)
 
+    ledger_no = Column(String, nullable=True, unique=True, index=True)
     org_id = Column(String, nullable=False, index=True)
     item_id = Column(String, nullable=False, index=True)
+    item_code = Column(String, nullable=True, index=True)
     location_id = Column(String, nullable=True, index=True)
 
     txn_type = Column(String, nullable=False)  # ISSUE / RECEIPT / ADJ_701 / ADJ_702
+    movement_type = Column(String, nullable=True, index=True)
+    stock_bucket = Column(String, nullable=True, index=True)
     qty = Column(Float, nullable=False)
     uom = Column(String, nullable=False, default="PCS")
+    txn_qty = Column(Float, nullable=True)
+    txn_uom = Column(String, nullable=True)
+    base_qty = Column(Float, nullable=True)
+    base_uom = Column(String, nullable=True)
 
     ref_type = Column(String, nullable=True)
     ref_id = Column(String, nullable=True)
     note = Column(String, nullable=True)
+    source_event_type = Column(String, nullable=True, index=True)
+    source_event_id = Column(Integer, nullable=True, index=True)
+    work_order_id = Column(Integer, nullable=True, index=True)
+    sales_order_id = Column(Integer, nullable=True, index=True)
     issue_event_id = Column(Integer, nullable=True, index=True)
     correction_event_id = Column(Integer, nullable=True, index=True)
     snapshot_id = Column(Integer, nullable=True, index=True)
     work_order_no = Column(String, nullable=True, index=True)
+    posted_by = Column(String, nullable=True)
+    remark = Column(String, nullable=True)
+    posted_at = Column(DateTime, nullable=True, index=True)
 
     occurred_at = Column(DateTime, nullable=False, default=datetime.utcnow)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow)

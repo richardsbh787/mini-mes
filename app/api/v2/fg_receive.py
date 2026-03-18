@@ -1,7 +1,9 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
+from app.schemas.stock_ledger_fg_receive import FgReceiveLedgerPostRequest, StockLedgerFgReceiveResponse
 from app.schemas.work_order_fg_receive import WorkOrderFgReceiveCreateRequest, WorkOrderFgReceiveResponse
+from app.services.work_order_fg_receive_ledger import get_fg_receive_stock_ledger, post_fg_receive_stock_ledger
 from app.services.work_order_fg_receive import (
     create_work_order_fg_receive,
     get_work_order_fg_receive,
@@ -36,3 +38,20 @@ def work_order_fg_receive_detail(
     db: Session = Depends(get_db),
 ):
     return get_work_order_fg_receive(db=db, fg_receive_id=fg_receive_id)
+
+
+@router.post("/fg-receipts/{fg_receive_id}/post-ledger", response_model=StockLedgerFgReceiveResponse)
+def fg_receive_stock_ledger_post(
+    fg_receive_id: int,
+    payload: FgReceiveLedgerPostRequest,
+    db: Session = Depends(get_db),
+):
+    return post_fg_receive_stock_ledger(db=db, fg_receive_id=fg_receive_id, payload=payload)
+
+
+@router.get("/stock-ledger/fg-receipts/{fg_receive_id}", response_model=StockLedgerFgReceiveResponse)
+def fg_receive_stock_ledger_detail(
+    fg_receive_id: int,
+    db: Session = Depends(get_db),
+):
+    return get_fg_receive_stock_ledger(db=db, fg_receive_id=fg_receive_id)
