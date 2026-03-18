@@ -9,7 +9,10 @@ class StockLedgerBalanceReadResponse(BaseModel):
     item_code: str
     stock_bucket: str | None
     base_uom: str
-    net_base_qty: float
+    total_in_qty: float
+    total_out_qty: float
+    net_balance_qty: float
+    last_posted_at: datetime
 
 
 class StockLedgerEntryReadResponse(BaseModel):

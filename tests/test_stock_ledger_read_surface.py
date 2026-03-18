@@ -57,20 +57,17 @@ class StockLedgerReadSurfaceTests(unittest.TestCase):
         qty: float,
         base_qty: float,
         base_uom: str,
-        txn_qty: float | None = None,
-        txn_uom: str | None = None,
-        source_event_type: str | None = None,
-        source_event_id: int | None = None,
+        source_event_type: str,
+        source_event_id: int,
         source_event_line_id: int | None = None,
-        posted_by: str = "reader",
         posted_at: datetime | None = None,
+        posted_by: str = "reader",
         remark: str | None = None,
-        work_order_id: int | None = None,
-        sales_order_id: int | None = None,
     ) -> StockLedger:
+        normalized_posted_at = posted_at or datetime(2026, 3, 18, 8, 0, 0)
         row = StockLedger(
             org_id=org_id,
-            ledger_no=f"SLED-{item_code}-{movement_type}-{source_event_id or 0}-{source_event_line_id or 0}",
+            ledger_no=f"SLED-{item_code}-{source_event_type}-{source_event_id}",
             item_id=item_code,
             item_code=item_code,
             txn_type=txn_type,
@@ -78,63 +75,50 @@ class StockLedgerReadSurfaceTests(unittest.TestCase):
             stock_bucket=stock_bucket,
             qty=qty,
             uom=base_uom,
-            txn_qty=txn_qty if txn_qty is not None else abs(qty),
-            txn_uom=txn_uom or base_uom,
+            txn_qty=abs(qty),
+            txn_uom=base_uom,
             base_qty=base_qty,
             base_uom=base_uom,
             source_event_type=source_event_type,
             source_event_id=source_event_id,
             source_event_line_id=source_event_line_id,
             posted_by=posted_by,
-            posted_at=posted_at or datetime(2026, 3, 18, 8, 0, 0),
-            occurred_at=posted_at or datetime(2026, 3, 18, 8, 0, 0),
+            posted_at=normalized_posted_at,
+            occurred_at=normalized_posted_at,
             remark=remark,
-            work_order_id=work_order_id,
-            sales_order_id=sales_order_id,
         )
         db.add(row)
         db.flush()
         return row
 
-    def test_balance_returns_full_aggregated_result_grouped_by_item_bucket_and_base_uom(self) -> None:
+    def test_balance_returns_correct_contract_and_supports_required_filters(self) -> None:
         db = self._new_db()
         client = self._new_client(db)
         self._seed_ledger(
             db,
-            item_code="RM-100",
-            stock_bucket="RAW_MATERIAL",
+            item_code="FG-100",
+            stock_bucket="FINISHED_GOODS",
             movement_type="IN",
             txn_type="RECEIPT",
             qty=10.0,
             base_qty=10.0,
-            base_uom="KG",
-            source_event_type="ADJUSTMENT",
-            source_event_id=1,
+            base_uom="PCS",
+            source_event_type="FG_RECEIVE",
+            source_event_id=101,
+            posted_at=datetime(2026, 3, 17, 9, 0, 0),
         )
         self._seed_ledger(
             db,
-            item_code="RM-100",
-            stock_bucket="RAW_MATERIAL",
+            item_code="FG-100",
+            stock_bucket="FINISHED_GOODS",
             movement_type="OUT",
             txn_type="ISSUE",
             qty=-4.0,
             base_qty=4.0,
-            base_uom="KG",
-            source_event_type="RM_ISSUE",
-            source_event_id=2,
-            source_event_line_id=21,
-        )
-        self._seed_ledger(
-            db,
-            item_code="RM-100",
-            stock_bucket="RAW_MATERIAL",
-            movement_type="IN",
-            txn_type="RECEIPT",
-            qty=3.0,
-            base_qty=3.0,
-            base_uom="BOX",
-            source_event_type="ADJUSTMENT",
-            source_event_id=3,
+            base_uom="PCS",
+            source_event_type="SHIPMENT",
+            source_event_id=102,
+            posted_at=datetime(2026, 3, 18, 14, 30, 0),
         )
         self._seed_ledger(
             db,
@@ -142,99 +126,143 @@ class StockLedgerReadSurfaceTests(unittest.TestCase):
             stock_bucket="FINISHED_GOODS",
             movement_type="IN",
             txn_type="RECEIPT",
-            qty=7.0,
-            base_qty=7.0,
+            qty=6.0,
+            base_qty=6.0,
             base_uom="PCS",
             source_event_type="FG_RECEIVE",
-            source_event_id=4,
+            source_event_id=103,
+            posted_at=datetime(2026, 3, 16, 12, 0, 0),
+        )
+        self._seed_ledger(
+            db,
+            item_code="RM-200",
+            stock_bucket="RAW_MATERIAL",
+            movement_type="OUT",
+            txn_type="ISSUE",
+            qty=-3.0,
+            base_qty=3.0,
+            base_uom="KG",
+            source_event_type="RM_ISSUE",
+            source_event_id=104,
+            source_event_line_id=9001,
+            posted_at=datetime(2026, 3, 18, 7, 0, 0),
         )
         db.commit()
 
-        response = client.get("/v2/stock-ledger/balance", params={"org_id": "ORG-READ"})
-
-        self.assertEqual(response.status_code, 200)
+        all_rows = client.get("/v2/stock-ledger/balance", params={"org_id": "ORG-READ"})
+        self.assertEqual(all_rows.status_code, 200)
         self.assertEqual(
-            response.json(),
+            all_rows.json(),
             [
-                {"item_code": "FG-200", "stock_bucket": "FINISHED_GOODS", "base_uom": "PCS", "net_base_qty": 7.0},
-                {"item_code": "RM-100", "stock_bucket": "RAW_MATERIAL", "base_uom": "BOX", "net_base_qty": 3.0},
-                {"item_code": "RM-100", "stock_bucket": "RAW_MATERIAL", "base_uom": "KG", "net_base_qty": 6.0},
+                {
+                    "item_code": "FG-100",
+                    "stock_bucket": "FINISHED_GOODS",
+                    "base_uom": "PCS",
+                    "total_in_qty": 10.0,
+                    "total_out_qty": 4.0,
+                    "net_balance_qty": 6.0,
+                    "last_posted_at": "2026-03-18T14:30:00",
+                },
+                {
+                    "item_code": "FG-200",
+                    "stock_bucket": "FINISHED_GOODS",
+                    "base_uom": "PCS",
+                    "total_in_qty": 6.0,
+                    "total_out_qty": 0.0,
+                    "net_balance_qty": 6.0,
+                    "last_posted_at": "2026-03-16T12:00:00",
+                },
+                {
+                    "item_code": "RM-200",
+                    "stock_bucket": "RAW_MATERIAL",
+                    "base_uom": "KG",
+                    "total_in_qty": 0.0,
+                    "total_out_qty": 3.0,
+                    "net_balance_qty": -3.0,
+                    "last_posted_at": "2026-03-18T07:00:00",
+                },
             ],
         )
 
-    def test_balance_applies_source_event_type_as_filter_not_grouping_key(self) -> None:
-        db = self._new_db()
-        client = self._new_client(db)
-        self._seed_ledger(
-            db,
-            item_code="RM-200",
-            stock_bucket="RAW_MATERIAL",
-            movement_type="OUT",
-            txn_type="ISSUE",
-            qty=-5.0,
-            base_qty=5.0,
-            base_uom="PCS",
-            source_event_type="RM_ISSUE",
-            source_event_id=11,
-            source_event_line_id=101,
-        )
-        self._seed_ledger(
-            db,
-            item_code="RM-200",
-            stock_bucket="RAW_MATERIAL",
-            movement_type="OUT",
-            txn_type="ISSUE",
-            qty=-2.0,
-            base_qty=2.0,
-            base_uom="PCS",
-            source_event_type="RM_ISSUE",
-            source_event_id=12,
-            source_event_line_id=102,
-        )
-        self._seed_ledger(
-            db,
-            item_code="RM-200",
-            stock_bucket="RAW_MATERIAL",
-            movement_type="IN",
-            txn_type="RECEIPT",
-            qty=9.0,
-            base_qty=9.0,
-            base_uom="PCS",
-            source_event_type="ADJUSTMENT",
-            source_event_id=13,
-        )
-        db.commit()
-
-        filtered = client.get(
+        item_filtered = client.get(
             "/v2/stock-ledger/balance",
-            params={"org_id": "ORG-READ", "source_event_type": "RM_ISSUE"},
+            params={"org_id": "ORG-READ", "item_code": "FG-100"},
         )
-        all_rows = client.get("/v2/stock-ledger/balance", params={"org_id": "ORG-READ"})
+        bucket_filtered = client.get(
+            "/v2/stock-ledger/balance",
+            params={"org_id": "ORG-READ", "stock_bucket": "RAW_MATERIAL"},
+        )
+        event_filtered = client.get(
+            "/v2/stock-ledger/balance",
+            params={"org_id": "ORG-READ", "source_event_type": "SHIPMENT"},
+        )
+        date_filtered = client.get(
+            "/v2/stock-ledger/balance",
+            params={
+                "org_id": "ORG-READ",
+                "date_from": "2026-03-18",
+                "date_to": "2026-03-18",
+            },
+        )
 
-        self.assertEqual(filtered.status_code, 200)
-        self.assertEqual(filtered.json(), [{"item_code": "RM-200", "stock_bucket": "RAW_MATERIAL", "base_uom": "PCS", "net_base_qty": -7.0}])
-        self.assertEqual(all_rows.status_code, 200)
-        self.assertEqual(all_rows.json(), [{"item_code": "RM-200", "stock_bucket": "RAW_MATERIAL", "base_uom": "PCS", "net_base_qty": 2.0}])
+        self.assertEqual(item_filtered.status_code, 200)
+        self.assertEqual(len(item_filtered.json()), 1)
+        self.assertEqual(item_filtered.json()[0]["item_code"], "FG-100")
 
-    def test_entries_support_pagination_and_expose_source_event_line_id_boundary(self) -> None:
+        self.assertEqual(bucket_filtered.status_code, 200)
+        self.assertEqual(bucket_filtered.json(), [
+            {
+                "item_code": "RM-200",
+                "stock_bucket": "RAW_MATERIAL",
+                "base_uom": "KG",
+                "total_in_qty": 0.0,
+                "total_out_qty": 3.0,
+                "net_balance_qty": -3.0,
+                "last_posted_at": "2026-03-18T07:00:00",
+            }
+        ])
+
+        self.assertEqual(event_filtered.status_code, 200)
+        self.assertEqual(event_filtered.json(), [
+            {
+                "item_code": "FG-100",
+                "stock_bucket": "FINISHED_GOODS",
+                "base_uom": "PCS",
+                "total_in_qty": 0.0,
+                "total_out_qty": 4.0,
+                "net_balance_qty": -4.0,
+                "last_posted_at": "2026-03-18T14:30:00",
+            }
+        ])
+
+        self.assertEqual(date_filtered.status_code, 200)
+        self.assertEqual(
+            date_filtered.json(),
+            [
+                {
+                    "item_code": "FG-100",
+                    "stock_bucket": "FINISHED_GOODS",
+                    "base_uom": "PCS",
+                    "total_in_qty": 0.0,
+                    "total_out_qty": 4.0,
+                    "net_balance_qty": -4.0,
+                    "last_posted_at": "2026-03-18T14:30:00",
+                },
+                {
+                    "item_code": "RM-200",
+                    "stock_bucket": "RAW_MATERIAL",
+                    "base_uom": "KG",
+                    "total_in_qty": 0.0,
+                    "total_out_qty": 3.0,
+                    "net_balance_qty": -3.0,
+                    "last_posted_at": "2026-03-18T07:00:00",
+                },
+            ],
+        )
+
+    def test_entries_support_all_required_filters_and_pagination(self) -> None:
         db = self._new_db()
         client = self._new_client(db)
-        self._seed_ledger(
-            db,
-            item_code="RM-300",
-            stock_bucket="RAW_MATERIAL",
-            movement_type="OUT",
-            txn_type="ISSUE",
-            qty=-2.0,
-            base_qty=2.0,
-            base_uom="PCS",
-            source_event_type="RM_ISSUE",
-            source_event_id=31,
-            source_event_line_id=301,
-            posted_at=datetime(2026, 3, 18, 8, 0, 0),
-            work_order_id=301,
-            sales_order_id=401,
-        )
         self._seed_ledger(
             db,
             item_code="FG-300",
@@ -245,27 +273,35 @@ class StockLedgerReadSurfaceTests(unittest.TestCase):
             base_qty=5.0,
             base_uom="PCS",
             source_event_type="FG_RECEIVE",
-            source_event_id=32,
-            source_event_line_id=302,
-            posted_at=datetime(2026, 3, 18, 9, 0, 0),
-            work_order_id=302,
-            sales_order_id=402,
+            source_event_id=301,
+            posted_at=datetime(2026, 3, 16, 8, 0, 0),
         )
         self._seed_ledger(
             db,
-            item_code="FG-301",
+            item_code="FG-300",
             stock_bucket="FINISHED_GOODS",
             movement_type="OUT",
             txn_type="ISSUE",
-            qty=-1.0,
-            base_qty=1.0,
+            qty=-2.0,
+            base_qty=2.0,
             base_uom="PCS",
             source_event_type="SHIPMENT",
-            source_event_id=33,
-            source_event_line_id=303,
-            posted_at=datetime(2026, 3, 18, 10, 0, 0),
-            work_order_id=303,
-            sales_order_id=403,
+            source_event_id=302,
+            posted_at=datetime(2026, 3, 17, 8, 0, 0),
+        )
+        self._seed_ledger(
+            db,
+            item_code="RM-300",
+            stock_bucket="RAW_MATERIAL",
+            movement_type="OUT",
+            txn_type="ISSUE",
+            qty=-1.5,
+            base_qty=1.5,
+            base_uom="KG",
+            source_event_type="RM_ISSUE",
+            source_event_id=303,
+            source_event_line_id=3303,
+            posted_at=datetime(2026, 3, 18, 8, 0, 0),
         )
         db.commit()
 
@@ -277,52 +313,125 @@ class StockLedgerReadSurfaceTests(unittest.TestCase):
             "/v2/stock-ledger/entries",
             params={"org_id": "ORG-READ", "page": 2, "page_size": 2},
         )
-
         self.assertEqual(first_page.status_code, 200)
-        first_payload = first_page.json()
-        self.assertEqual(len(first_payload), 2)
-        self.assertEqual([row["source_event_type"] for row in first_payload], ["SHIPMENT", "FG_RECEIVE"])
-        self.assertEqual(first_payload[0]["source_event_line_id"], None)
-        self.assertEqual(first_payload[1]["source_event_line_id"], None)
+        self.assertEqual(len(first_page.json()), 2)
+        self.assertEqual(
+            [row["source_event_type"] for row in first_page.json()],
+            ["RM_ISSUE", "SHIPMENT"],
+        )
+        self.assertEqual(first_page.json()[1]["source_event_line_id"], None)
 
         self.assertEqual(second_page.status_code, 200)
-        second_payload = second_page.json()
-        self.assertEqual(len(second_payload), 1)
-        self.assertEqual(second_payload[0]["source_event_type"], "RM_ISSUE")
-        self.assertEqual(second_payload[0]["source_event_line_id"], 301)
-        self.assertEqual(second_payload[0]["base_qty"], 2.0)
-        self.assertEqual(second_payload[0]["base_uom"], "PCS")
+        self.assertEqual(len(second_page.json()), 1)
+        self.assertEqual(second_page.json()[0]["source_event_type"], "FG_RECEIVE")
+        self.assertEqual(second_page.json()[0]["source_event_line_id"], None)
 
-    def test_entries_filter_and_empty_result_return_200_with_empty_list(self) -> None:
-        db = self._new_db()
-        client = self._new_client(db)
-        self._seed_ledger(
-            db,
-            item_code="FG-400",
-            stock_bucket="FINISHED_GOODS",
-            movement_type="IN",
-            txn_type="RECEIPT",
-            qty=2.0,
-            base_qty=2.0,
-            base_uom="PCS",
-            source_event_type="FG_RECEIVE",
-            source_event_id=41,
-            posted_at=datetime(2026, 3, 18, 11, 0, 0),
+        item_filtered = client.get(
+            "/v2/stock-ledger/entries",
+            params={"org_id": "ORG-READ", "item_code": "FG-300"},
         )
-        db.commit()
-
-        filtered = client.get(
+        bucket_filtered = client.get(
+            "/v2/stock-ledger/entries",
+            params={"org_id": "ORG-READ", "stock_bucket": "RAW_MATERIAL"},
+        )
+        movement_filtered = client.get(
+            "/v2/stock-ledger/entries",
+            params={"org_id": "ORG-READ", "movement_type": "OUT"},
+        )
+        type_filtered = client.get(
             "/v2/stock-ledger/entries",
             params={"org_id": "ORG-READ", "source_event_type": "SHIPMENT"},
         )
-        empty_balance = client.get("/v2/stock-ledger/balance", params={"org_id": "ORG-EMPTY"})
+        event_id_filtered = client.get(
+            "/v2/stock-ledger/entries",
+            params={"org_id": "ORG-READ", "source_event_id": 303},
+        )
+        date_filtered = client.get(
+            "/v2/stock-ledger/entries",
+            params={
+                "org_id": "ORG-READ",
+                "date_from": "2026-03-17",
+                "date_to": "2026-03-18",
+            },
+        )
 
-        self.assertEqual(filtered.status_code, 200)
-        self.assertEqual(filtered.json(), [])
-        self.assertEqual(empty_balance.status_code, 200)
-        self.assertEqual(empty_balance.json(), [])
+        self.assertEqual(item_filtered.status_code, 200)
+        self.assertEqual([row["source_event_type"] for row in item_filtered.json()], ["SHIPMENT", "FG_RECEIVE"])
 
-    def test_read_surface_does_not_write_mutate_or_change_step39_rows(self) -> None:
+        self.assertEqual(bucket_filtered.status_code, 200)
+        self.assertEqual(len(bucket_filtered.json()), 1)
+        self.assertEqual(bucket_filtered.json()[0]["item_code"], "RM-300")
+        self.assertEqual(bucket_filtered.json()[0]["source_event_line_id"], 3303)
+
+        self.assertEqual(movement_filtered.status_code, 200)
+        self.assertEqual([row["movement_type"] for row in movement_filtered.json()], ["OUT", "OUT"])
+
+        self.assertEqual(type_filtered.status_code, 200)
+        self.assertEqual(len(type_filtered.json()), 1)
+        self.assertEqual(type_filtered.json()[0]["source_event_id"], 302)
+
+        self.assertEqual(event_id_filtered.status_code, 200)
+        self.assertEqual(len(event_id_filtered.json()), 1)
+        self.assertEqual(event_id_filtered.json()[0]["source_event_id"], 303)
+
+        self.assertEqual(date_filtered.status_code, 200)
+        self.assertEqual(
+            [row["source_event_id"] for row in date_filtered.json()],
+            [303, 302],
+        )
+
+    def test_empty_results_return_200_with_empty_list(self) -> None:
+        db = self._new_db()
+        client = self._new_client(db)
+
+        balance = client.get("/v2/stock-ledger/balance", params={"org_id": "ORG-EMPTY"})
+        entries = client.get("/v2/stock-ledger/entries", params={"org_id": "ORG-EMPTY"})
+
+        self.assertEqual(balance.status_code, 200)
+        self.assertEqual(balance.json(), [])
+        self.assertEqual(entries.status_code, 200)
+        self.assertEqual(entries.json(), [])
+
+    def test_validation_guards_reject_invalid_enum_date_and_pagination_inputs(self) -> None:
+        db = self._new_db()
+        client = self._new_client(db)
+
+        invalid_balance_enum = client.get(
+            "/v2/stock-ledger/balance",
+            params={"org_id": "ORG-READ", "source_event_type": "BAD_EVENT"},
+        )
+        invalid_balance_date = client.get(
+            "/v2/stock-ledger/balance",
+            params={
+                "org_id": "ORG-READ",
+                "date_from": "2026-03-19",
+                "date_to": "2026-03-18",
+            },
+        )
+        invalid_entries_enum = client.get(
+            "/v2/stock-ledger/entries",
+            params={"org_id": "ORG-READ", "movement_type": "SIDEWAYS"},
+        )
+        invalid_entries_page = client.get(
+            "/v2/stock-ledger/entries",
+            params={"org_id": "ORG-READ", "page": 0},
+        )
+        invalid_entries_page_size = client.get(
+            "/v2/stock-ledger/entries",
+            params={"org_id": "ORG-READ", "page_size": 201},
+        )
+
+        self.assertEqual(invalid_balance_enum.status_code, 422)
+        self.assertEqual(invalid_balance_date.status_code, 422)
+        self.assertIn("date_from", invalid_balance_date.json()["detail"])
+
+        self.assertEqual(invalid_entries_enum.status_code, 422)
+        self.assertEqual(invalid_entries_page.status_code, 422)
+        self.assertIn("page", invalid_entries_page.json()["detail"])
+        self.assertEqual(invalid_entries_page_size.status_code, 422)
+        self.assertIn("page_size", invalid_entries_page_size.json()["detail"])
+
+    def test_read_surface_remains_read_only_and_keeps_rm_boundary_explicit(self) -> None:
         db = self._new_db()
         client = self._new_client(db)
         row = self._seed_ledger(
@@ -335,10 +444,10 @@ class StockLedgerReadSurfaceTests(unittest.TestCase):
             base_qty=8.0,
             base_uom="KG",
             source_event_type="RM_ISSUE",
-            source_event_id=51,
-            source_event_line_id=501,
+            source_event_id=501,
+            source_event_line_id=5501,
             posted_at=datetime(2026, 3, 18, 12, 0, 0),
-            remark="rm ledger net is issue-only truth",
+            remark="current RM ledger net result is not full physical on-hand",
         )
         db.commit()
 
@@ -359,9 +468,22 @@ class StockLedgerReadSurfaceTests(unittest.TestCase):
         entries = client.get("/v2/stock-ledger/entries", params={"org_id": "ORG-READ"})
 
         self.assertEqual(balance.status_code, 200)
-        self.assertEqual(balance.json(), [{"item_code": "RM-BOUNDARY", "stock_bucket": "RAW_MATERIAL", "base_uom": "KG", "net_base_qty": -8.0}])
+        self.assertEqual(
+            balance.json(),
+            [
+                {
+                    "item_code": "RM-BOUNDARY",
+                    "stock_bucket": "RAW_MATERIAL",
+                    "base_uom": "KG",
+                    "total_in_qty": 0.0,
+                    "total_out_qty": 8.0,
+                    "net_balance_qty": -8.0,
+                    "last_posted_at": "2026-03-18T12:00:00",
+                }
+            ],
+        )
         self.assertEqual(entries.status_code, 200)
-        self.assertEqual(entries.json()[0]["source_event_line_id"], 501)
+        self.assertEqual(entries.json()[0]["source_event_line_id"], 5501)
 
         after_row = db.query(StockLedger).filter(StockLedger.id == row.id).first()
         assert after_row is not None
