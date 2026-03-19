@@ -76,6 +76,7 @@ class WorkOrder(Base):
     # ==========================
     # Hours Control
     # ==========================
+    planned_qty = Column(Float, nullable=True)
     planned_hours = Column(Float, nullable=False)
     actual_hours = Column(Float, nullable=False, default=0)
     remaining_hours = Column(Float, nullable=False)
@@ -612,6 +613,173 @@ class WorkOrderShipment(Base):
     shipment_status = Column(String, nullable=False, default="SHIPPED")
     shipped_at = Column(DateTime, nullable=False, default=datetime.utcnow)
     shipped_by = Column(String, nullable=False)
+
+
+class PackingDetail(Base):
+    __tablename__ = "packing_detail"
+    __table_args__ = (
+        UniqueConstraint("work_order_id", "process_context", "label_type", name="uq_packing_detail_scope"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    work_order_id = Column(Integer, ForeignKey("work_orders.id"), nullable=False, index=True)
+    process_context = Column(String, nullable=False, index=True)
+    label_type = Column(String, nullable=False, index=True)
+    basis_qty = Column(Float, nullable=False)
+    pack_unit_qty = Column(Float, nullable=False)
+    full_pack_count = Column(Integer, nullable=False, default=0)
+    partial_pack_qty = Column(Float, nullable=False, default=0)
+    expected_label_qty = Column(Integer, nullable=False, default=0)
+    printed_label_qty = Column(Integer, nullable=False, default=0)
+    remaining_printable_qty = Column(Integer, nullable=False, default=0)
+    allow_partial = Column(Boolean, nullable=False, default=False)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class ExpectedPrintPlan(Base):
+    __tablename__ = "expected_print_plan"
+    __table_args__ = (
+        UniqueConstraint(
+            "work_order_id",
+            "anchor_type",
+            "label_type",
+            "process_context",
+            name="uq_expected_print_plan_scope",
+        ),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    work_order_id = Column(Integer, ForeignKey("work_orders.id"), nullable=False, index=True)
+    anchor_type = Column(String, nullable=False, index=True)
+    label_type = Column(String, nullable=False, index=True)
+    process_context = Column(String, nullable=False, index=True)
+    basis_qty = Column(Float, nullable=False)
+    expected_label_qty = Column(Integer, nullable=False, default=0)
+    printed_label_qty = Column(Integer, nullable=False, default=0)
+    remaining_printable_qty = Column(Integer, nullable=False, default=0)
+    calculated_at = Column(DateTime, nullable=False, default=datetime.utcnow, index=True)
+
+
+class LabelRangeBatch(Base):
+    __tablename__ = "label_range_batch"
+
+    id = Column(Integer, primary_key=True, index=True)
+    range_batch_id = Column(String, nullable=False, unique=True, index=True)
+    work_order_id = Column(Integer, ForeignKey("work_orders.id"), nullable=False, index=True)
+    anchor_type = Column(String, nullable=False, index=True)
+    range_start_no = Column(Integer, nullable=False)
+    range_last_no = Column(Integer, nullable=False)
+    range_qty = Column(Integer, nullable=False)
+    planned_qty = Column(Integer, nullable=False, default=0)
+    issued_qty = Column(Integer, nullable=False, default=0)
+    printed_qty = Column(Integer, nullable=False, default=0)
+    issued_to_line_qty = Column(Integer, nullable=False, default=0)
+    used_qty = Column(Integer, nullable=False, default=0)
+    damaged_qty = Column(Integer, nullable=False, default=0)
+    void_qty = Column(Integer, nullable=False, default=0)
+    unused_qty = Column(Integer, nullable=False, default=0)
+    issued_by = Column(String, nullable=False)
+    issued_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    status = Column(String, nullable=False, default="OPEN", index=True)
+
+
+class LabelInstance(Base):
+    __tablename__ = "label_instance"
+    __table_args__ = (
+        UniqueConstraint("label_instance_uuid", name="uq_label_instance_uuid"),
+        UniqueConstraint("work_order_id", "anchor_type", "run_seq_no", name="uq_label_instance_business_seq"),
+    )
+
+    id = Column("label_instance_id", Integer, primary_key=True, index=True)
+    label_instance_uuid = Column(String, nullable=False, index=True)
+    anchor_type = Column(String, nullable=False, index=True)
+    anchor_value = Column(String, nullable=False, index=True)
+    work_order_id = Column(Integer, ForeignKey("work_orders.id"), nullable=False, index=True)
+    run_seq_no = Column(Integer, nullable=False, index=True)
+    range_batch_id = Column(String, ForeignKey("label_range_batch.range_batch_id"), nullable=False, index=True)
+    print_status = Column(String, nullable=False, default="QUEUED", index=True)
+    print_attempt_no = Column(Integer, nullable=False, default=0)
+    printed_by = Column(String, nullable=True)
+    printed_at = Column(DateTime, nullable=True)
+    issued_to_line_at = Column(DateTime, nullable=True)
+    void_reason = Column(String, nullable=True)
+    reprint_reason = Column(String, nullable=True)
+    replaced_from_label_id = Column(Integer, ForeignKey("label_instance.label_instance_id"), nullable=True, index=True)
+
+
+class ManualExecutionEntry(Base):
+    __tablename__ = "manual_execution_entry"
+
+    id = Column(Integer, primary_key=True, index=True)
+    anchor_type = Column(String, nullable=False, index=True)
+    anchor_value = Column(String, nullable=False, index=True)
+    process_context = Column(String, nullable=False, index=True)
+    qty = Column(Float, nullable=False)
+    reason_code = Column(String, nullable=False, index=True)
+    entered_by = Column(String, nullable=False)
+    approved_by = Column(String, nullable=False)
+    witness = Column(String, nullable=False)
+    override_at = Column(DateTime, nullable=False, index=True)
+    remark = Column(String, nullable=True)
+    status = Column(String, nullable=False, default="MANUAL_FALLBACK", index=True)
+    original_manual_entry_id = Column(Integer, ForeignKey("manual_execution_entry.id"), nullable=True, index=True)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+
+
+class FallbackSession(Base):
+    __tablename__ = "fallback_session"
+
+    id = Column(Integer, primary_key=True, index=True)
+    line_or_station = Column(String, nullable=False, index=True)
+    effective_from = Column(DateTime, nullable=False, index=True)
+    effective_to = Column(DateTime, nullable=False, index=True)
+    reason_code = Column(String, nullable=False, index=True)
+    ordered_by = Column(String, nullable=False)
+    approved_by = Column(String, nullable=False)
+    witness = Column(String, nullable=False)
+    status = Column(String, nullable=False, default="OPEN", index=True)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+
+
+class DamagedLabelRecord(Base):
+    __tablename__ = "damaged_label_record"
+
+    id = Column(Integer, primary_key=True, index=True)
+    anchor_type = Column(String, nullable=False, index=True)
+    anchor_value = Column(String, nullable=False, index=True)
+    related_work_order = Column(Integer, ForeignKey("work_orders.id"), nullable=False, index=True)
+    label_serial = Column(String, nullable=False, index=True)
+    damage_stage = Column(String, nullable=False, index=True)
+    reported_by = Column(String, nullable=False)
+    reported_at = Column(DateTime, nullable=False, index=True)
+    reason = Column(String, nullable=False)
+    replacement_required = Column(Boolean, nullable=False, default=False)
+
+
+class ReplacementLabelLink(Base):
+    __tablename__ = "replacement_label_link"
+    __table_args__ = (
+        UniqueConstraint("damaged_label_id", "replacement_label_id", name="uq_replacement_label_link_pair"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    damaged_label_id = Column(Integer, ForeignKey("damaged_label_record.id"), nullable=False, index=True)
+    replacement_label_id = Column(Integer, ForeignKey("label_instance.label_instance_id"), nullable=False, index=True)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+
+
+class FailureQrSheetRecord(Base):
+    __tablename__ = "failure_qr_sheet_record"
+    __table_args__ = (
+        UniqueConstraint("damaged_label_id", "failure_qr_sheet_no", name="uq_failure_qr_sheet_pair"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    damaged_label_id = Column(Integer, ForeignKey("damaged_label_record.id"), nullable=False, index=True)
+    failure_qr_sheet_no = Column(String, nullable=False, index=True)
+    attached_by = Column(String, nullable=False)
+    attached_at = Column(DateTime, nullable=False, index=True)
 
 
 
