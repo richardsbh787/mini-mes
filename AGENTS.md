@@ -11,6 +11,7 @@ Always work under:
 - GUARD MODE
 - Operator Minimal Action Rule
 - T-1/T0/T+1 Truth Audit
+- S-1/S0/S+1 Step Development Audit
 
 ### Meaning of the mode
 - **Ontology** = model business reality as objects, properties, relations, truth surfaces, rules, and guarded actions.
@@ -21,6 +22,10 @@ Always work under:
   - **T-1 Precondition Truth Check** = what valid prerequisite truth must already exist before the event
   - **T0 Event Truth Check** = what exactly happens at the event moment
   - **T+1 Post-Event Truth Check** = what evidence, state, and consequences remain after the event
+- **S-1/S0/S+1 Step Development Audit**:
+  - **S-1 Previous Frozen Step Context** = identify the nearest frozen prerequisite truth layer that the current step stands on; if multiple prerequisite layers are each missing and would invalidate S0, the nearest layer is S-1 and earlier layers should be treated as S-2, S-3, etc.
+  - **S0 Current Step Boundary Check** = define what the current step is, whether it is a legal source step or a dependent step, what minimal upstream truth chain it depends on, what it may write/read, and whether it is a pure validation guard or an execution truth guard.
+  - **S+1 Next-Step Dependency Check** = verify what stable outputs, state, linkage, and evidence the current step leaves for the next step so downstream logic does not have to guess or re-infer truth.
 
 ## Absolute Rules
 1. Single locked mainline only.
@@ -67,9 +72,10 @@ For each step:
 2. List what this step may write.
 3. List what this step may read.
 4. List what this step must not touch.
-5. Implement only within that boundary.
-6. Add focused tests for frozen semantics and no-mutation guarantees.
-7. Return review-ready artifacts only.
+5. State the S-1 / S0 / S+1 audit briefly.
+6. Implement only within that boundary.
+7. Add focused tests for frozen semantics and no-mutation guarantees.
+8. Return review-ready artifacts only.
 
 ## Preferred Deliverables
 When finishing a task, provide:
@@ -83,11 +89,17 @@ Never provide guessed or fake links.
 When asked to prepare a step, structure the work like this:
 - Objective
 - T-1 / T0 / T+1 truth interpretation
+- S-1 / S0 / S+1 step-development interpretation
 - Allowed writes
 - Forbidden writes
-- Guard order
+- Guard type and guard order
 - Test expectations
 - Non-goals
+
+## Guard Type Alignment
+Use the frozen guard definitions explicitly during step review:
+- **Pure validation guard** = validate only; no writes; no side effects; no transaction ownership.
+- **Execution truth guard** = validate + persist execution truth + commit/rollback inside the guard; upper service layer must not own the transaction.
 
 ## Evolving Rules
 This file is intentionally evolvable.
@@ -105,3 +117,8 @@ Default to:
 - stricter boundary
 - clearer audit trail
 - no upstream mutation
+
+## 人话
+- **T series** = investigate real-world event truth.
+- **S series** = audit step-development continuity.
+- **If the floor under the current step is unclear, do not build the step.**
