@@ -102,11 +102,13 @@ from app.api.v2.fg_receive import router as fg_receive_router
 from app.api.v2.shipment import router as shipment_router
 from app.api.v2.stock_ledger_read import router as stock_ledger_read_router
 from app.api.v2.daily_stock_audit import router as daily_stock_audit_router
+from app.api.v2.prebuild_authorization_read import router as prebuild_authorization_read_router
 from app.services.step40a_daily_stock_audit import register_daily_stock_audit_scheduler
 app.include_router(fg_receive_router)
 app.include_router(shipment_router)
 app.include_router(stock_ledger_read_router)
 app.include_router(daily_stock_audit_router)
+app.include_router(prebuild_authorization_read_router)
 # ✅ 关键：确保所有 models 都被 import 后，再 create_all
 Base.metadata.create_all(bind=engine)
 ensure_work_order_bom_snapshot_release_columns(engine)
