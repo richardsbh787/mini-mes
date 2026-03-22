@@ -85,6 +85,13 @@ When finishing a task, provide:
 
 Never provide guessed or fake links.
 
+## Main Handoff Baseline
+The only valid main handoff baseline is:
+- `docs/handoffs/current_main_handoff.md`
+
+Do not guess the latest handoff by filename or timestamp.
+Do not use patch, patch_pack, or archive handoff files as the main baseline unless explicitly instructed.
+
 ## Step Review Template
 When asked to prepare a step, structure the work like this:
 - Objective
