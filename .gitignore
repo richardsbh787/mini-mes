@@ -19,3 +19,8 @@ token_git.txt
 
 .env
 mini-mes_backup_20260308/
+
+# Generated review/export artifacts
+txt/
+*.py.txt
+app_schemas_*.txt
