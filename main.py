@@ -23,6 +23,7 @@ from app.bootstrap.raw_material_uom_schema import ensure_raw_material_uom_column
 from app.bootstrap.stock_ledger_fg_receive_schema import ensure_stock_ledger_fg_receive_columns
 from app.bootstrap.work_order_fg_receive_schema import ensure_work_order_fg_receive_schema
 from app.bootstrap.work_order_shipment_schema import ensure_work_order_shipment_schema
+from app.bootstrap.step40a_daily_stock_audit_schema import ensure_step40a_daily_stock_audit_schema
 from app.bootstrap.work_order_wip_transfer_schema import ensure_work_order_wip_transfer_schema
 from app.constants.locations import RM_STORE
 from app.constants.txn_type import TRANSFER
@@ -100,9 +101,12 @@ app = FastAPI()
 from app.api.v2.fg_receive import router as fg_receive_router
 from app.api.v2.shipment import router as shipment_router
 from app.api.v2.stock_ledger_read import router as stock_ledger_read_router
+from app.api.v2.daily_stock_audit import router as daily_stock_audit_router
+from app.services.step40a_daily_stock_audit import register_daily_stock_audit_scheduler
 app.include_router(fg_receive_router)
 app.include_router(shipment_router)
 app.include_router(stock_ledger_read_router)
+app.include_router(daily_stock_audit_router)
 # ✅ 关键：确保所有 models 都被 import 后，再 create_all
 Base.metadata.create_all(bind=engine)
 ensure_work_order_bom_snapshot_release_columns(engine)
@@ -113,7 +117,9 @@ ensure_work_order_routing_execution_state_columns(engine)
 ensure_raw_material_uom_columns(engine)
 ensure_work_order_fg_receive_schema(engine)
 ensure_work_order_shipment_schema(engine)
+ensure_step40a_daily_stock_audit_schema(engine)
 ensure_work_order_wip_transfer_schema(engine)
+register_daily_stock_audit_scheduler(app)
 
 # ==========================
 # Root
