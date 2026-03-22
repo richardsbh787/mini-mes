@@ -27,6 +27,18 @@ Always work under:
   - **S0 Current Step Boundary Check** = define what the current step is, whether it is a legal source step or a dependent step, what minimal upstream truth chain it depends on, what it may write/read, and whether it is a pure validation guard or an execution truth guard.
   - **S+1 Next-Step Dependency Check** = verify what stable outputs, state, linkage, and evidence the current step leaves for the next step so downstream logic does not have to guess or re-infer truth.
 
+## Operator Minimal Action Rule
+Design every step and surface so the frontline operator performs the minimum necessary action only.
+
+Rules:
+- Do not push system complexity onto operators.
+- Prefer backend absorption over frontline burden.
+- Minimize clicks, inputs, decisions, and manual interpretation.
+- Do not require operators to reconstruct missing upstream truth by themselves.
+- If the system can derive, validate, default, or infer safely, do it in the system.
+- Read/write surfaces must stay simple enough for ordinary factory users to operate reliably.
+- When trade-offs exist, prefer lower operator burden unless that would break truth integrity or auditability.
+
 ## Absolute Rules
 1. Single locked mainline only.
 2. If the current step is not frozen, do not jump to the next step.
@@ -92,13 +104,55 @@ The only valid main handoff baseline is:
 Do not guess the latest handoff by filename or timestamp.
 Do not use patch, patch_pack, or archive handoff files as the main baseline unless explicitly instructed.
 
+## S-1 / S0 / S+1 Development Audit Rule
+Apply this before starting any new step design, implementation, or main review.
+
+### S-1: nearest frozen prerequisite layer
+Check:
+1. What already-frozen truth, state, binding, or context must already exist for S0 to be legal?
+2. Which frozen step wrote that truth?
+3. What may S0 read from that layer?
+4. What must S0 not mutate or reinterpret from that layer?
+5. What known scope limits or non-blocking notes from that layer must be inherited?
+
+If multiple prerequisite truths would each make S0 invalid if missing, order them by dependency distance:
+- the nearest layer is **S-1**
+- earlier layers are **S-2**, **S-3**, etc.
+
+Do not turn S-1 into a full historical chain dump.
+
+### S0: current step definition
+Check:
+1. What type of step is this? (truth surface / write surface / read surface / action surface / guard / trace)
+2. Is this a legal source step?
+3. If not a source step, what is the minimum upstream truth chain required before it can start?
+4. What does this step itself do?
+5. What does this step explicitly not do?
+6. What exact truth, state, event, or read surface does this step newly create?
+7. Who owns commit / rollback responsibility?
+
+Rule:
+- If S0 is not a source step, and its upstream truth is not frozen, not readable, or only assumed, do not start implementation.
+
+### S+1: downstream continuity check
+Check:
+1. Which next step, read surface, audit surface, or exception flow will rely on this step?
+2. What exact fields, states, relations, IDs, or evidence will they need?
+3. Does S0 leave those results in a stable, single-meaning form?
+4. Will downstream steps need to guess or reconstruct key context again?
+5. Does S0 create dual semantics, dual state sources, or broken continuity?
+
+Rule:
+- A step is not development-ready if its output forces downstream logic to guess.
+
 ## Step Review Template
 When asked to prepare a step, structure the work like this:
 - Objective
 - T-1 / T0 / T+1 truth interpretation
 - S-1 / S0 / S+1 step-development interpretation
 - Allowed writes
-- Forbidden writes
+- Allowed reads
+- Forbidden writes / forbidden mutations
 - Guard type and guard order
 - Test expectations
 - Non-goals
@@ -107,6 +161,8 @@ When asked to prepare a step, structure the work like this:
 Use the frozen guard definitions explicitly during step review:
 - **Pure validation guard** = validate only; no writes; no side effects; no transaction ownership.
 - **Execution truth guard** = validate + persist execution truth + commit/rollback inside the guard; upper service layer must not own the transaction.
+
+Do not blur these two guard types.
 
 ## Evolving Rules
 This file is intentionally evolvable.
