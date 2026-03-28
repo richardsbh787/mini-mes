@@ -21,6 +21,8 @@ Step 47A frozen admitted source event baseline
 
 Step 47B frozen legal location evidence & accountability baseline
 
+FG_RECEIVE Location Master Physical Schema Baseline frozen as design-layer schema baseline only
+
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
 
@@ -35,9 +37,12 @@ Step 47A is frozen.
 All four current candidate source-event types are NOT_ADMISSIBLE_YET.
 Step 47 admitted source list remains effectively EMPTY.
 location_code remains the main unblock key.
-Any future repaired source must still pass full Step 47A six-point re-evaluation before any unblock decision.
+Any future repaired FG_RECEIVE source must still pass full Step 47A admissibility re-evaluation before any unblock decision.
 
 Step 47B is frozen as Step 47B Task Card v2.1 = Design Freeze Baseline.
+
+FG_RECEIVE Location Master Physical Schema Baseline is frozen as a design-layer schema baseline only.
+It is not implementation authorization.
 
 2. Newly frozen step
 Step 40A - Daily Smart Stock Check / Movement Health Audit Baseline
@@ -265,7 +270,182 @@ G09 - If upstream frozen truth lacks explicit owner_role, duty_person, performed
 
 G10 - Any future evidence repair needed to satisfy Step 47A or Step 47 must be handled in a separate future step; Step 47B itself defines no write action and no runtime materialization path.
 
-5. Governance baseline normalization now frozen
+5. Newly frozen design-layer step
+FG_RECEIVE Location Master Physical Schema Baseline
+
+Status: Design-layer schema baseline - formally frozen
+
+Boundary
+
+This step is:
+
+design baseline
+
+physical schema baseline
+
+This step is not:
+
+migration authorization
+
+ORM authorization
+
+implementation authorization
+
+Step 47 unblock authorization
+
+admitted source activation
+
+Admitted truth surfaces
+
+Only these 3 physical truth surfaces are admitted:
+
+physical_location
+
+location_label
+
+label_location_mapping
+
+Minimum field skeleton
+
+physical_location
+
+id
+
+location_code
+
+location_name
+
+status
+
+created_at
+
+updated_at
+
+deactivated_at nullable
+
+location_label
+
+id
+
+label_token
+
+label_type
+
+status
+
+created_at
+
+updated_at
+
+retired_at nullable
+
+label_location_mapping
+
+id
+
+location_label_id
+
+physical_location_id
+
+status
+
+effective_from
+
+effective_to nullable
+
+created_at
+
+updated_at
+
+Core constraints
+
+physical_location.location_code must be unique
+
+location_label.label_token must be unique
+
+mapping must reference real label and real location
+
+effective_from required
+
+if effective_to is not null, then effective_to > effective_from
+
+same location_label_id must not have overlapping validity windows
+
+remap must be non-destructive:
+
+close old mapping
+
+create new mapping
+
+mapping history must remain readable
+
+Future FG_RECEIVE runtime legal resolution boundary
+
+Future FG_RECEIVE runtime may resolve location only through:
+
+input location_label_token
+
+unique matching location_label
+
+location_label.status = ACTIVE
+
+unique event-time valid label_location_mapping
+
+label_location_mapping.status = ACTIVE
+
+mapped physical_location.status = ACTIVE
+
+return unique physical_location.location_code
+
+Any of the following must fail hard with no fallback:
+
+label not found
+
+label inactive
+
+mapping not found
+
+multiple valid mappings at same time
+
+mapping inactive
+
+mapped location inactive
+
+event-time outside validity window
+
+Hard prohibitions
+
+Do not derive or backfill location truth from:
+
+board assignment
+
+WO header metadata
+
+BOM / routing metadata
+
+station habit
+
+last-used location
+
+default location
+
+operator memory
+
+manual typing fallback
+
+dropdown fallback
+
+post-event repair
+
+Locked status line
+
+Step 47 implementation remains BLOCKED.
+
+FG_RECEIVE is still not auto-admitted.
+
+Any future repaired FG_RECEIVE source must still re-run full Step 47A admissibility evaluation.
+
+6. Governance baseline normalization now frozen
 
 Main handoff baseline normalization has been completed.
 
@@ -302,7 +482,7 @@ docs/handoffs/current_main_handoff.md
 
 before any step work.
 
-6. Review / control discipline remains locked
+7. Review / control discipline remains locked
 
 Still in force:
 
@@ -322,7 +502,7 @@ T-1 / T0 / T+1 truth audit
 
 S-1 / S0 / S+1 step audit
 
-7. Current locked status
+8. Current locked status
 
 Step 45 is implemented and frozen.
 
@@ -333,6 +513,8 @@ Step 47 is design-frozen only.
 Step 47A is frozen as the admitted source event baseline.
 
 Step 47B is frozen as the legal location evidence & accountability baseline.
+
+FG_RECEIVE Location Master Physical Schema Baseline is frozen as a design-layer schema baseline only.
 
 Important
 
@@ -348,11 +530,13 @@ Step 47 implementation remains BLOCKED.
 
 Step 47 admitted source list remains effectively EMPTY.
 
+FG_RECEIVE is still not auto-admitted.
+
 location_code remains the main unblock key.
 
-Any future repaired source must still pass full Step 47A re-evaluation before any unblock decision.
+Any future repaired FG_RECEIVE source must still pass full Step 47A admissibility re-evaluation before any unblock decision.
 
-8. One-line summary
+9. One-line summary
 
 Step 40A, Step 45, and Step 46A remain formally implemented and frozen.
-Step 47 remains design-frozen and BLOCKED, Step 47A remains frozen with all four current candidates still NOT_ADMISSIBLE_YET and the admitted source list effectively EMPTY, and Step 47B is frozen as the legal location evidence & accountability baseline under Task Card v2.1 with location_code still the main unblock key.
+Step 47 remains design-frozen and BLOCKED, Step 47A remains frozen with all four current candidates still NOT_ADMISSIBLE_YET and the admitted source list effectively EMPTY, Step 47B remains frozen as the legal location evidence & accountability baseline under Task Card v2.1, and FG_RECEIVE Location Master Physical Schema Baseline is now frozen as a design-layer schema baseline only with FG_RECEIVE still not auto-admitted and location_code still the main unblock key.
