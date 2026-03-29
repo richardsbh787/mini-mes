@@ -23,6 +23,8 @@ Step 47B frozen legal location evidence & accountability baseline
 
 FG_RECEIVE Location Master Physical Schema Baseline frozen as design-layer schema baseline only
 
+FG_RECEIVE Event Truth Surface Baseline frozen as design-layer event-truth baseline only
+
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
 
@@ -42,6 +44,9 @@ Any future repaired FG_RECEIVE source must still pass full Step 47A admissibilit
 Step 47B is frozen as Step 47B Task Card v2.1 = Design Freeze Baseline.
 
 FG_RECEIVE Location Master Physical Schema Baseline is frozen as a design-layer schema baseline only.
+It is not implementation authorization.
+
+FG_RECEIVE Event Truth Surface Baseline is frozen as a design-layer event-truth baseline only.
 It is not implementation authorization.
 
 2. Newly frozen step
@@ -445,7 +450,70 @@ FG_RECEIVE is still not auto-admitted.
 
 Any future repaired FG_RECEIVE source must still re-run full Step 47A admissibility evaluation.
 
-6. Governance baseline normalization now frozen
+6. Newly frozen design-layer step
+FG_RECEIVE Event Truth Surface Baseline
+
+Status: Design-layer event-truth baseline - formally frozen
+
+Hard boundary
+
+This step is design freeze only.
+
+It is NOT implementation authorization.
+
+Step 47 implementation remains BLOCKED.
+
+FG_RECEIVE remains NOT auto-admitted.
+
+Frozen core definition
+
+A legally successful FG_RECEIVE event must atomically carry one and only one final location binding truth, with the minimum surface:
+
+bound_location_code
+
+bound_from_resolution_attempt_id
+
+location_evidence_snapshot_ref
+
+location_bound_at
+
+Locked rules
+
+1. A successful FG_RECEIVE event is not legally complete if any of the 4 fields above is missing.
+
+2. One FG_RECEIVE event may carry only one final location binding truth.
+
+3. Event truth may come only from this event's successful resolution attempt.
+
+4. Failed attempts must remain only in failed-attempt / resolution-trace surfaces and must not enter final bound truth.
+
+5. Later master remap / deactivate / retire must not rewrite old event truth.
+
+6. Event success truth write and event commit must be atomic; no async backfill, no read-time side write.
+
+Prior frozen boundaries preserved
+
+location legality still comes only from event-time resolution
+
+resolution failure still means FG_RECEIVE does not legally stand
+
+trace != truth
+
+maintenance audit != truth
+
+correction still requires independent correction / reversal path
+
+no re-resolve to silently change old bound events
+
+Step 47 remains blocked
+
+FG_RECEIVE remains not auto-admitted
+
+Non-blocking note
+
+The semantic boundary between bound_from_resolution_attempt_id and location_evidence_snapshot_ref is not yet further split at schema level; future schema baseline must explicitly decide whether these remain separate or can be structurally merged. This note must not weaken the frozen event-truth separation.
+
+7. Governance baseline normalization now frozen
 
 Main handoff baseline normalization has been completed.
 
@@ -482,7 +550,7 @@ docs/handoffs/current_main_handoff.md
 
 before any step work.
 
-7. Review / control discipline remains locked
+8. Review / control discipline remains locked
 
 Still in force:
 
@@ -502,7 +570,7 @@ T-1 / T0 / T+1 truth audit
 
 S-1 / S0 / S+1 step audit
 
-8. Current locked status
+9. Current locked status
 
 Step 45 is implemented and frozen.
 
@@ -515,6 +583,8 @@ Step 47A is frozen as the admitted source event baseline.
 Step 47B is frozen as the legal location evidence & accountability baseline.
 
 FG_RECEIVE Location Master Physical Schema Baseline is frozen as a design-layer schema baseline only.
+
+FG_RECEIVE Event Truth Surface Baseline is frozen as a design-layer event-truth baseline only.
 
 Important
 
@@ -536,7 +606,7 @@ location_code remains the main unblock key.
 
 Any future repaired FG_RECEIVE source must still pass full Step 47A admissibility re-evaluation before any unblock decision.
 
-9. One-line summary
+10. One-line summary
 
 Step 40A, Step 45, and Step 46A remain formally implemented and frozen.
-Step 47 remains design-frozen and BLOCKED, Step 47A remains frozen with all four current candidates still NOT_ADMISSIBLE_YET and the admitted source list effectively EMPTY, Step 47B remains frozen as the legal location evidence & accountability baseline under Task Card v2.1, and FG_RECEIVE Location Master Physical Schema Baseline is now frozen as a design-layer schema baseline only with FG_RECEIVE still not auto-admitted and location_code still the main unblock key.
+Step 47 remains design-frozen and BLOCKED, Step 47A remains frozen with all four current candidates still NOT_ADMISSIBLE_YET and the admitted source list effectively EMPTY, Step 47B remains frozen as the legal location evidence & accountability baseline under Task Card v2.1, and FG_RECEIVE now also has frozen design-layer baselines for both the Location Master Physical Schema and the Event Truth Surface while remaining NOT auto-admitted.
