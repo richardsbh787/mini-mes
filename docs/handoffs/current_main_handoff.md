@@ -25,6 +25,8 @@ FG_RECEIVE Location Master Physical Schema Baseline frozen as design-layer schem
 
 FG_RECEIVE Event Truth Surface Baseline frozen as design-layer event-truth baseline only
 
+FG_RECEIVE Event Truth Physical Schema Baseline frozen as design-layer physical-schema baseline only
+
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
 
@@ -47,6 +49,9 @@ FG_RECEIVE Location Master Physical Schema Baseline is frozen as a design-layer 
 It is not implementation authorization.
 
 FG_RECEIVE Event Truth Surface Baseline is frozen as a design-layer event-truth baseline only.
+It is not implementation authorization.
+
+FG_RECEIVE Event Truth Physical Schema Baseline is frozen as a design-layer physical-schema baseline only.
 It is not implementation authorization.
 
 2. Newly frozen step
@@ -513,7 +518,108 @@ Non-blocking note
 
 The semantic boundary between bound_from_resolution_attempt_id and location_evidence_snapshot_ref is not yet further split at schema level; future schema baseline must explicitly decide whether these remain separate or can be structurally merged. This note must not weaken the frozen event-truth separation.
 
-7. Governance baseline normalization now frozen
+7. Newly frozen design-layer step
+FG_RECEIVE Event Truth Physical Schema Baseline
+
+Status: Design-layer physical-schema baseline - formally frozen
+
+Boundary
+
+This patch is handoff-only.
+
+This step preserves the already-frozen FG_RECEIVE Event Truth Surface Baseline semantics and adds the physical-schema-layer minimum persistence skeleton only.
+
+Minimum persisted object
+
+FG_RECEIVE event truth is represented by one dedicated, minimum persisted final-truth object.
+
+Semantic grain: one FG_RECEIVE event may have at most one final event-truth record.
+
+Successful-resolution-only admission
+
+Only successful resolution may enter final truth.
+
+Failed / ambiguous / unresolved / candidate-level outcomes remain trace-only and must not occupy final-truth state.
+
+Four frozen minimum fields
+
+The minimum final-truth persistence skeleton must preserve:
+
+bound_location_code
+
+bound_from_resolution_attempt_id
+
+location_evidence_snapshot_ref
+
+location_bound_at
+
+Attempt and evidence separation
+
+bound_from_resolution_attempt_id and location_evidence_snapshot_ref must remain semantically distinct.
+
+They may coexist in the same minimum persisted final-truth object.
+
+They must not be merged into one mixed field, one ambiguous reference, or one combined JSON-like slot.
+
+Boundary firewall
+
+trace != truth
+
+master != event truth
+
+later master changes cannot rewrite old event truth
+
+repair must use independent correction path
+
+no silent re-resolve
+
+One-final-binding rule
+
+For one FG_RECEIVE event, final event truth is 0 or 1 only.
+
+No multi-final-truth fan-out.
+
+No second final bind may silently replace the first.
+
+New frozen addendum A
+
+Future correction path must not reuse, occupy, or masquerade as this final-truth object.
+
+If correction is needed in the future, it must go through an independent correction path / independent correction surface, not by taking over this object and not by weakening the one-final-truth boundary.
+
+New frozen addendum B
+
+location_evidence_snapshot_ref must resolve to an immutable evidence snapshot body.
+
+Future implementation must not treat it as a mutable live pointer and must not allow in-place overwrite that changes the historical evidence basis of an already-bound event truth.
+
+Explicit non-scope
+
+This step does NOT authorize:
+
+implementation
+
+table creation
+
+migration
+
+ORM model
+
+service
+
+router
+
+tests
+
+Step 47 admissibility release
+
+admitted source activation
+
+correction-path implementation
+
+semantic changes to the already-frozen FG_RECEIVE Event Truth Surface Baseline
+
+8. Governance baseline normalization now frozen
 
 Main handoff baseline normalization has been completed.
 
@@ -550,7 +656,7 @@ docs/handoffs/current_main_handoff.md
 
 before any step work.
 
-8. Review / control discipline remains locked
+9. Review / control discipline remains locked
 
 Still in force:
 
@@ -570,7 +676,7 @@ T-1 / T0 / T+1 truth audit
 
 S-1 / S0 / S+1 step audit
 
-9. Current locked status
+10. Current locked status
 
 Step 45 is implemented and frozen.
 
@@ -585,6 +691,8 @@ Step 47B is frozen as the legal location evidence & accountability baseline.
 FG_RECEIVE Location Master Physical Schema Baseline is frozen as a design-layer schema baseline only.
 
 FG_RECEIVE Event Truth Surface Baseline is frozen as a design-layer event-truth baseline only.
+
+FG_RECEIVE Event Truth Physical Schema Baseline is frozen as a design-layer physical-schema baseline only.
 
 Important
 
@@ -606,7 +714,7 @@ location_code remains the main unblock key.
 
 Any future repaired FG_RECEIVE source must still pass full Step 47A admissibility re-evaluation before any unblock decision.
 
-10. One-line summary
+11. One-line summary
 
 Step 40A, Step 45, and Step 46A remain formally implemented and frozen.
-Step 47 remains design-frozen and BLOCKED, Step 47A remains frozen with all four current candidates still NOT_ADMISSIBLE_YET and the admitted source list effectively EMPTY, Step 47B remains frozen as the legal location evidence & accountability baseline under Task Card v2.1, and FG_RECEIVE now also has frozen design-layer baselines for both the Location Master Physical Schema and the Event Truth Surface while remaining NOT auto-admitted.
+Step 47 remains design-frozen and BLOCKED, Step 47A remains frozen with all four current candidates still NOT_ADMISSIBLE_YET and the admitted source list effectively EMPTY, Step 47B remains frozen as the legal location evidence & accountability baseline under Task Card v2.1, and FG_RECEIVE now also has frozen design-layer baselines for the Location Master Physical Schema, the Event Truth Surface, and the Event Truth Physical Schema while remaining NOT auto-admitted.
