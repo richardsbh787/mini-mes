@@ -29,6 +29,8 @@ FG_RECEIVE Event Truth Physical Schema Baseline frozen as design-layer physical-
 
 FG_RECEIVE Resolution Attempt & Evidence Snapshot Physical Schema Baseline frozen as design-layer physical-schema baseline only
 
+FG_RECEIVE Event-Time Location Resolution Runtime Baseline frozen as design-layer runtime semantic baseline only
+
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
 
@@ -57,6 +59,9 @@ FG_RECEIVE Event Truth Physical Schema Baseline is frozen as a design-layer phys
 It is not implementation authorization.
 
 FG_RECEIVE Resolution Attempt & Evidence Snapshot Physical Schema Baseline is frozen as a design-layer physical-schema baseline only.
+It is not implementation authorization.
+
+FG_RECEIVE Event-Time Location Resolution Runtime Baseline is frozen as a design-layer runtime semantic baseline only.
 It is not implementation authorization.
 
 2. Newly frozen step
@@ -777,7 +782,162 @@ correction-path implementation
 
 semantic rewrite of any already-frozen FG_RECEIVE baselines
 
-9. Governance baseline normalization now frozen
+9. Newly frozen design-layer step
+FG_RECEIVE Event-Time Location Resolution Runtime Baseline
+
+Status: Design-layer runtime semantic baseline - formally frozen
+
+Runtime scope
+
+This step freezes only the runtime semantic contract for FG_RECEIVE event-time location resolution.
+
+It does not authorize implementation, schema creation, ORM, service, router, tests, or Step 47 release.
+
+Resolution trigger boundary
+
+A resolution attempt may start only for a FG_RECEIVE event that is eligible for event-time location resolution.
+
+This step does not auto-admit FG_RECEIVE into Step 47 and does not treat runtime resolution eligibility as admitted-source release.
+
+Runtime objects involved
+
+A legal runtime resolution flow may involve only:
+
+one FG_RECEIVE source event context
+
+one trace-only resolution attempt
+
+zero or one immutable evidence snapshot on non-success paths
+
+zero or one final event-truth bind
+
+Frozen success-path clarification
+
+On SUCCESS, exactly one immutable evidence snapshot must exist and final event truth must reference that snapshot.
+
+Ordered runtime contract
+
+A. start attempt
+
+B. gather / freeze evidence as applicable
+
+C. evaluate outcome
+
+D. final truth admission
+
+Also explicit:
+
+on SUCCESS, the evidence snapshot is mandatory before final truth admission
+
+final truth must reference the winning attempt and the mandatory immutable evidence snapshot
+
+on FAILED / AMBIGUOUS / UNRESOLVED, no final truth is created
+
+Outcome classes
+
+The attempt must resolve into exactly one outcome class:
+
+SUCCESS
+
+FAILED
+
+AMBIGUOUS
+
+UNRESOLVED
+
+Success path
+
+On SUCCESS:
+
+the attempt remains trace-only
+
+exactly one immutable evidence snapshot must exist
+
+final event truth may be created only once
+
+final truth must reference the winning attempt
+
+final truth must reference the immutable evidence snapshot
+
+final truth must not absorb, replace, or merge attempt/evidence objects
+
+Non-success path
+
+On FAILED / AMBIGUOUS / UNRESOLVED:
+
+attempt remains trace-only
+
+evidence snapshot may be absent, or may exist only as trace-only evidence if frozen during the attempt
+
+no final truth is created
+
+no fallback convenience bind is allowed
+
+no inferred final bind may be fabricated from live master state
+
+One-final-binding runtime guard
+
+For one FG_RECEIVE event:
+
+final truth is 0-or-1 only
+
+once final truth exists, a later ordinary runtime resolution must not silently create a second final bind
+
+no silent replacement
+
+no silent re-resolve
+
+Separation firewall
+
+attempt != truth
+
+evidence snapshot != live master
+
+event truth may reference but must not absorb
+
+correction path remains separate
+
+if a historical bind is later challenged, remediation must go through an independent correction path, not ordinary runtime resolution
+
+No convenience shortcut rule
+
+Reject the following semantic shortcuts:
+
+turning failed / ambiguous / unresolved attempt into final truth by convenience
+
+using live master state as substitute for frozen evidence snapshot
+
+silently re-running resolution to overwrite existing final truth
+
+treating runtime resolution success as Step 47 admission release
+
+Explicit non-scope
+
+This step does NOT authorize:
+
+implementation
+
+table creation
+
+migration
+
+ORM model
+
+service
+
+router
+
+tests
+
+Step 47 admissibility release
+
+admitted source activation
+
+correction-path implementation
+
+semantic rewrite of already-frozen FG_RECEIVE baselines
+
+10. Governance baseline normalization now frozen
 
 Main handoff baseline normalization has been completed.
 
@@ -814,7 +974,7 @@ docs/handoffs/current_main_handoff.md
 
 before any step work.
 
-10. Review / control discipline remains locked
+11. Review / control discipline remains locked
 
 Still in force:
 
@@ -834,7 +994,7 @@ T-1 / T0 / T+1 truth audit
 
 S-1 / S0 / S+1 step audit
 
-11. Current locked status
+12. Current locked status
 
 Step 45 is implemented and frozen.
 
@@ -853,6 +1013,8 @@ FG_RECEIVE Event Truth Surface Baseline is frozen as a design-layer event-truth 
 FG_RECEIVE Event Truth Physical Schema Baseline is frozen as a design-layer physical-schema baseline only.
 
 FG_RECEIVE Resolution Attempt & Evidence Snapshot Physical Schema Baseline is frozen as a design-layer physical-schema baseline only.
+
+FG_RECEIVE Event-Time Location Resolution Runtime Baseline is frozen as a design-layer runtime semantic baseline only.
 
 Important
 
@@ -874,7 +1036,7 @@ location_code remains the main unblock key.
 
 Any future repaired FG_RECEIVE source must still pass full Step 47A admissibility re-evaluation before any unblock decision.
 
-12. One-line summary
+13. One-line summary
 
 Step 40A, Step 45, and Step 46A remain formally implemented and frozen.
-Step 47 remains design-frozen and BLOCKED, Step 47A remains frozen with all four current candidates still NOT_ADMISSIBLE_YET and the admitted source list effectively EMPTY, Step 47B remains frozen as the legal location evidence & accountability baseline under Task Card v2.1, and FG_RECEIVE now also has frozen design-layer baselines for the Location Master Physical Schema, the Event Truth Surface, the Event Truth Physical Schema, and the Resolution Attempt & Evidence Snapshot Physical Schema while remaining NOT auto-admitted.
+Step 47 remains design-frozen and BLOCKED, Step 47A remains frozen with all four current candidates still NOT_ADMISSIBLE_YET and the admitted source list effectively EMPTY, Step 47B remains frozen as the legal location evidence & accountability baseline under Task Card v2.1, and FG_RECEIVE now also has frozen design-layer baselines for the Location Master Physical Schema, the Event Truth Surface, the Event Truth Physical Schema, the Resolution Attempt & Evidence Snapshot Physical Schema, and the Event-Time Location Resolution Runtime semantic contract while remaining NOT auto-admitted.
