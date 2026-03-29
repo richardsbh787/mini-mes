@@ -27,6 +27,8 @@ FG_RECEIVE Event Truth Surface Baseline frozen as design-layer event-truth basel
 
 FG_RECEIVE Event Truth Physical Schema Baseline frozen as design-layer physical-schema baseline only
 
+FG_RECEIVE Resolution Attempt & Evidence Snapshot Physical Schema Baseline frozen as design-layer physical-schema baseline only
+
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
 
@@ -52,6 +54,9 @@ FG_RECEIVE Event Truth Surface Baseline is frozen as a design-layer event-truth 
 It is not implementation authorization.
 
 FG_RECEIVE Event Truth Physical Schema Baseline is frozen as a design-layer physical-schema baseline only.
+It is not implementation authorization.
+
+FG_RECEIVE Resolution Attempt & Evidence Snapshot Physical Schema Baseline is frozen as a design-layer physical-schema baseline only.
 It is not implementation authorization.
 
 2. Newly frozen step
@@ -619,7 +624,160 @@ correction-path implementation
 
 semantic changes to the already-frozen FG_RECEIVE Event Truth Surface Baseline
 
-8. Governance baseline normalization now frozen
+8. Newly frozen design-layer step
+FG_RECEIVE Resolution Attempt & Evidence Snapshot Physical Schema Baseline
+
+Status: Design-layer physical-schema baseline - formally frozen
+
+Boundary
+
+This patch is handoff-only.
+
+This step preserves all already-frozen FG_RECEIVE event-truth baselines and adds only the minimum physical-schema-layer persistence skeleton for the resolution attempt object and the evidence snapshot object.
+
+Minimum persisted attempt object
+
+FG_RECEIVE resolution attempt is represented by one dedicated minimum persisted trace object.
+
+Semantic grain: one resolution attempt = one attempt object.
+
+This object belongs to trace only.
+
+It is not final truth, not correction truth, and not a live master surface.
+
+Explicit event ownership of attempt
+
+The attempt object must explicitly belong to the FG_RECEIVE event.
+
+Do not leave this as FG_RECEIVE event or source resolution context.
+
+No ambiguous indirect-only ownership wording is allowed in the frozen record.
+
+Minimum persisted evidence snapshot object
+
+FG_RECEIVE location evidence snapshot is represented by one dedicated minimum persisted evidence object.
+
+Semantic grain: one captured evidence body = one immutable evidence snapshot object.
+
+This object is the frozen evidence body referenced by event truth.
+
+It is not a live master lookup result and must not drift with later master change.
+
+Attempt object minimum semantic duties
+
+The attempt object must minimally be able to carry:
+
+attempt identity
+
+explicit link to the FG_RECEIVE event
+
+attempt outcome / result class
+
+whether resolution succeeded / failed / ambiguous / unresolved
+
+timing of the attempt
+
+required trace-only linkage needed to support later audit
+
+Frozen boundary:
+
+attempt object records what this attempt tried and how it ended.
+
+It must not itself become final event truth.
+
+Evidence snapshot object minimum semantic duties
+
+The evidence snapshot object must minimally be able to carry:
+
+evidence snapshot identity
+
+frozen evidence body sufficient to support the final bind basis
+
+capture time / snapshot time
+
+source-of-evidence trace needed for audit
+
+Frozen boundary:
+
+evidence snapshot object records what evidence body was frozen at that time.
+
+It must not become a mutable live pointer to current master state.
+
+Strong immutable evidence rule
+
+Evidence snapshot must be immutable.
+
+Once captured and referenced by final event truth, it must not be overwritten in place, refreshed in place, or silently re-pointed to reflect later master changes.
+
+Frozen addendum
+
+The evidence snapshot must not rely solely on mutable master foreign keys as the evidence body.
+
+Future implementation must preserve immutable evidence content such as original token, scanned value, or mapping-time deterministic bound evidence sufficient to prevent historical evidence drift.
+
+Attempt and evidence separation
+
+Resolution attempt object and evidence snapshot object must remain semantically distinct and separately preservable.
+
+Freeze and preserve:
+
+they must not collapse into one shared semantic object
+
+they must not share one mixed body pretending attempt = evidence
+
+they must not share one identity slot
+
+future schema must not weaken this into one convenience wrapper
+
+No physical-implementation inference
+
+This step freezes semantic separability and independent preservability only.
+
+It does not authorize any concrete physical co-storage, single-table inheritance, merged body, or shared-table implementation reading.
+
+Boundary firewall
+
+attempt != truth
+
+evidence snapshot != live master
+
+failed / ambiguous / unresolved attempts remain trace-only
+
+event truth may reference but must not absorb attempt or evidence snapshot
+
+correction path remains separate
+
+correction must not rewrite evidence snapshot in place
+
+correction must not take over final event truth by disguise
+
+Explicit non-scope
+
+This step does NOT authorize:
+
+implementation
+
+table creation
+
+migration
+
+ORM model
+
+service
+
+router
+
+tests
+
+Step 47 admissibility release
+
+admitted source activation
+
+correction-path implementation
+
+semantic rewrite of any already-frozen FG_RECEIVE baselines
+
+9. Governance baseline normalization now frozen
 
 Main handoff baseline normalization has been completed.
 
@@ -656,7 +814,7 @@ docs/handoffs/current_main_handoff.md
 
 before any step work.
 
-9. Review / control discipline remains locked
+10. Review / control discipline remains locked
 
 Still in force:
 
@@ -676,7 +834,7 @@ T-1 / T0 / T+1 truth audit
 
 S-1 / S0 / S+1 step audit
 
-10. Current locked status
+11. Current locked status
 
 Step 45 is implemented and frozen.
 
@@ -693,6 +851,8 @@ FG_RECEIVE Location Master Physical Schema Baseline is frozen as a design-layer 
 FG_RECEIVE Event Truth Surface Baseline is frozen as a design-layer event-truth baseline only.
 
 FG_RECEIVE Event Truth Physical Schema Baseline is frozen as a design-layer physical-schema baseline only.
+
+FG_RECEIVE Resolution Attempt & Evidence Snapshot Physical Schema Baseline is frozen as a design-layer physical-schema baseline only.
 
 Important
 
@@ -714,7 +874,7 @@ location_code remains the main unblock key.
 
 Any future repaired FG_RECEIVE source must still pass full Step 47A admissibility re-evaluation before any unblock decision.
 
-11. One-line summary
+12. One-line summary
 
 Step 40A, Step 45, and Step 46A remain formally implemented and frozen.
-Step 47 remains design-frozen and BLOCKED, Step 47A remains frozen with all four current candidates still NOT_ADMISSIBLE_YET and the admitted source list effectively EMPTY, Step 47B remains frozen as the legal location evidence & accountability baseline under Task Card v2.1, and FG_RECEIVE now also has frozen design-layer baselines for the Location Master Physical Schema, the Event Truth Surface, and the Event Truth Physical Schema while remaining NOT auto-admitted.
+Step 47 remains design-frozen and BLOCKED, Step 47A remains frozen with all four current candidates still NOT_ADMISSIBLE_YET and the admitted source list effectively EMPTY, Step 47B remains frozen as the legal location evidence & accountability baseline under Task Card v2.1, and FG_RECEIVE now also has frozen design-layer baselines for the Location Master Physical Schema, the Event Truth Surface, the Event Truth Physical Schema, and the Resolution Attempt & Evidence Snapshot Physical Schema while remaining NOT auto-admitted.
