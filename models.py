@@ -615,6 +615,106 @@ class WorkOrderShipment(Base):
     shipped_by = Column(String, nullable=False)
 
 
+class PhysicalLocation(Base):
+    __tablename__ = "physical_location"
+
+    id = Column(Integer, primary_key=True, index=True)
+    location_code = Column(String, nullable=False, unique=True, index=True)
+    location_name = Column(String, nullable=False)
+    status = Column(String, nullable=False, default="ACTIVE", index=True)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+    deactivated_at = Column(DateTime, nullable=True)
+
+
+class LocationLabel(Base):
+    __tablename__ = "location_label"
+
+    id = Column(Integer, primary_key=True, index=True)
+    label_token = Column(String, nullable=False, unique=True, index=True)
+    label_type = Column(String, nullable=False)
+    status = Column(String, nullable=False, default="ACTIVE", index=True)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+    retired_at = Column(DateTime, nullable=True)
+
+
+class LabelLocationMapping(Base):
+    __tablename__ = "label_location_mapping"
+
+    id = Column(Integer, primary_key=True, index=True)
+    location_label_id = Column(Integer, ForeignKey("location_label.id"), nullable=False, index=True)
+    physical_location_id = Column(Integer, ForeignKey("physical_location.id"), nullable=False, index=True)
+    status = Column(String, nullable=False, default="ACTIVE", index=True)
+    effective_from = Column(DateTime, nullable=False, index=True)
+    effective_to = Column(DateTime, nullable=True, index=True)
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class FgReceiveLocationEvidenceSnapshot(Base):
+    __tablename__ = "fg_receive_location_evidence_snapshot"
+
+    id = Column(Integer, primary_key=True, index=True)
+    fg_receive_id = Column(Integer, ForeignKey("work_order_fg_receive.id"), nullable=False, index=True)
+    source_label_token = Column(String, nullable=True, index=True)
+    label_type = Column(String, nullable=True)
+    location_label_id = Column(Integer, ForeignKey("location_label.id"), nullable=True, index=True)
+    label_status = Column(String, nullable=True)
+    label_matched = Column(Boolean, nullable=False, default=False)
+    matched_mapping_id = Column(Integer, ForeignKey("label_location_mapping.id"), nullable=True, index=True)
+    mapping_status = Column(String, nullable=True)
+    matched_location_id = Column(Integer, ForeignKey("physical_location.id"), nullable=True, index=True)
+    matched_location_code = Column(String, nullable=True, index=True)
+    matched_location_status = Column(String, nullable=True)
+    mapping_effective_from = Column(DateTime, nullable=True)
+    mapping_effective_to = Column(DateTime, nullable=True)
+    event_received_at = Column(DateTime, nullable=False, index=True)
+    captured_at = Column(DateTime, nullable=False, default=datetime.utcnow, index=True)
+    evidence_source = Column(String, nullable=False, default="FG_RECEIVE_EVENT_TIME_LOCATION_RESOLUTION")
+    failure_reason = Column(String, nullable=True)
+
+
+class FgReceiveLocationResolutionAttempt(Base):
+    __tablename__ = "fg_receive_location_resolution_attempt"
+
+    id = Column(Integer, primary_key=True, index=True)
+    fg_receive_id = Column(Integer, ForeignKey("work_order_fg_receive.id"), nullable=False, index=True)
+    source_label_token = Column(String, nullable=True, index=True)
+    outcome_class = Column(String, nullable=False, index=True)
+    resolved_location_code = Column(String, nullable=True, index=True)
+    failure_reason = Column(String, nullable=True)
+    evidence_snapshot_id = Column(Integer, ForeignKey("fg_receive_location_evidence_snapshot.id"), nullable=True, index=True)
+    attempted_at = Column(DateTime, nullable=False, default=datetime.utcnow, index=True)
+    completed_at = Column(DateTime, nullable=True, index=True)
+    attempted_by = Column(String, nullable=False)
+
+
+class FgReceiveEventTruth(Base):
+    __tablename__ = "fg_receive_event_truth"
+    __table_args__ = (
+        UniqueConstraint("fg_receive_id", name="uq_fg_receive_event_truth_fg_receive_id"),
+        UniqueConstraint("bound_from_resolution_attempt_id", name="uq_fg_receive_event_truth_attempt_id"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    fg_receive_id = Column(Integer, ForeignKey("work_order_fg_receive.id"), nullable=False, index=True)
+    bound_location_code = Column(String, nullable=False, index=True)
+    bound_from_resolution_attempt_id = Column(
+        Integer,
+        ForeignKey("fg_receive_location_resolution_attempt.id"),
+        nullable=False,
+        index=True,
+    )
+    location_evidence_snapshot_ref = Column(
+        Integer,
+        ForeignKey("fg_receive_location_evidence_snapshot.id"),
+        nullable=False,
+        index=True,
+    )
+    location_bound_at = Column(DateTime, nullable=False, default=datetime.utcnow, index=True)
+
+
 class PackingDetail(Base):
     __tablename__ = "packing_detail"
     __table_args__ = (
