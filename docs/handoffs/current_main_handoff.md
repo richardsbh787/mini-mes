@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.12
+Mini-MES Handoff v2.13
 
-Updated after FG_RECEIVE Step 47A re-admission evaluation baseline freeze
+Updated after FG_RECEIVE Step 47 release decision baseline freeze
 Date: 2026-03-30
 
 1. Frozen mainline snapshot
@@ -34,6 +34,8 @@ FG_RECEIVE Event-Time Location Resolution Runtime Baseline frozen as design-laye
 FG_RECEIVE Event-Time Location Resolution Read Surface Baseline frozen as design-layer read-surface semantic baseline only
 
 FG_RECEIVE Step 47A Re-Admission Evaluation Baseline frozen as design-layer evaluation baseline only
+
+FG_RECEIVE Step 47 Release Decision Baseline frozen as design-layer release-decision baseline only
 
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
@@ -72,6 +74,9 @@ FG_RECEIVE Event-Time Location Resolution Read Surface Baseline is frozen as a d
 It is not implementation authorization.
 
 FG_RECEIVE Step 47A Re-Admission Evaluation Baseline is frozen as a design-layer evaluation baseline only.
+It is not implementation authorization.
+
+FG_RECEIVE Step 47 Release Decision Baseline is frozen as a design-layer release-decision baseline only.
 It is not implementation authorization.
 
 2. Newly frozen step
@@ -1257,7 +1262,170 @@ correction-path implementation
 
 semantic rewrite of already-frozen FG_RECEIVE baselines
 
-12. Governance baseline normalization now frozen
+12. Newly frozen design-layer step
+FG_RECEIVE Step 47 Release Decision Baseline
+
+Status: Design-layer release-decision baseline - formally frozen
+
+Boundary
+
+This patch is handoff-only.
+
+This step freezes only the release-decision contract for FG_RECEIVE after admissibility evaluation has passed.
+
+It does not itself authorize implementation, admitted-source activation, runtime production use, or any write-path release.
+
+Starting precondition
+
+FG_RECEIVE may enter this release-decision baseline only after:
+
+FG_RECEIVE = ADMISSIBLE (evaluation outcome only)
+
+has already been explicitly concluded under the frozen Step 47A re-admission evaluation discipline.
+
+Boundary of meanings
+
+The following meanings must remain strictly separated:
+
+A. admissible in evaluation outcome
+
+This means FG_RECEIVE has passed the Step 47A legal admission standard in evaluation.
+
+It does not itself open Step 47 implementation.
+
+B. release decision pass
+
+This means FG_RECEIVE is approved at the decision layer to proceed toward Step 47 implementation release.
+
+It is still a decision-layer conclusion, not automatic code release by implication.
+
+C. admitted-source activation
+
+This means FG_RECEIVE is actually enabled as an admitted source in implementation / runtime behavior.
+
+This is downstream of release decision and is not granted by this baseline alone.
+
+Release-decision pass criteria
+
+FG_RECEIVE may be judged release-decision PASS only if all of the following are explicitly confirmed:
+
+admissibility evaluation has already passed
+
+the frozen evidence / truth / runtime / read chain remains internally consistent
+
+no unresolved contradiction exists between event truth, attempt / evidence semantics, and Step 47 legal-position discipline
+
+no remaining boundary ambiguity would allow evaluation outcome to be misused as implementation shortcut
+
+release intent is made explicit rather than implied
+
+Frozen addendum
+
+The contradiction check must be grounded against the already-frozen FG_RECEIVE chain and Step 47 legal-position discipline.
+
+It must not be left as free-form subjective comfort judgment or "seems consistent enough" reasoning.
+
+Explicit release-intent rule
+
+No release decision may be inferred merely from:
+
+evaluation passing
+
+complete design chain
+
+read-surface completeness
+
+runtime completeness
+
+implementation readiness
+
+seems-safe-enough reasoning
+
+Frozen clarification
+
+Release intent must be recorded as a distinct release-layer decision record.
+
+It must not be inferred from design completeness or from silence.
+
+No auto-activation rule
+
+Even if release decision is PASS, this step still does not itself activate FG_RECEIVE as admitted-source behavior in implementation / runtime.
+
+Activation must remain a distinct downstream authorization event.
+
+No shortcut rule
+
+This baseline must reject:
+
+equating evaluation PASS with implementation release
+
+equating release decision PASS with admitted-source activation
+
+equating architecture completeness with runtime enablement
+
+equating frozen semantics with permission to code
+
+using correction / read / runtime surfaces as substitute proof of release authorization
+
+Failure discipline
+
+If release-decision PASS conditions are not explicitly and fully confirmed,
+
+the result remains:
+
+FG_RECEIVE release decision = NOT RELEASED YET
+
+This does not revoke admissibility evaluation outcome.
+
+It only means the release gate has not yet been opened.
+
+Output discipline
+
+This baseline allows only decision-layer conclusions such as:
+
+FG_RECEIVE release decision = PASS
+
+or
+
+FG_RECEIVE release decision = NOT RELEASED YET
+
+It must not directly output:
+
+Step 47 implementation released
+
+admitted-source activated
+
+runtime production use enabled
+
+Explicit non-scope
+
+This step does NOT authorize:
+
+implementation
+
+schema / table creation
+
+migration
+
+ORM model
+
+service
+
+router
+
+tests
+
+Step 47 code release
+
+admitted-source activation
+
+runtime production-use authorization
+
+correction-path implementation
+
+semantic rewrite of already-frozen FG_RECEIVE baselines
+
+13. Governance baseline normalization now frozen
 
 Main handoff baseline normalization has been completed.
 
@@ -1294,7 +1462,7 @@ docs/handoffs/current_main_handoff.md
 
 before any step work.
 
-13. Review / control discipline remains locked
+14. Review / control discipline remains locked
 
 Still in force:
 
@@ -1314,7 +1482,7 @@ T-1 / T0 / T+1 truth audit
 
 S-1 / S0 / S+1 step audit
 
-14. Current locked status
+15. Current locked status
 
 Step 45 is implemented and frozen.
 
@@ -1340,6 +1508,8 @@ FG_RECEIVE Event-Time Location Resolution Read Surface Baseline is frozen as a d
 
 FG_RECEIVE Step 47A Re-Admission Evaluation Baseline is frozen as a design-layer evaluation baseline only.
 
+FG_RECEIVE Step 47 Release Decision Baseline is frozen as a design-layer release-decision baseline only.
+
 Important
 
 Do not auto-advance beyond the current locked task without explicit user authorization.
@@ -1360,7 +1530,8 @@ location_code remains the main unblock key.
 
 Any future repaired FG_RECEIVE source must still pass full Step 47A admissibility re-evaluation before any unblock decision.
 
-15. One-line summary
+16. One-line summary
 
 Step 40A, Step 45, and Step 46A remain formally implemented and frozen.
-Step 47 remains design-frozen and BLOCKED, Step 47A remains frozen with all four current candidates still NOT_ADMISSIBLE_YET and the admitted source list effectively EMPTY, Step 47B remains frozen as the legal location evidence & accountability baseline under Task Card v2.1, and FG_RECEIVE now also has frozen design-layer baselines for the Location Master Physical Schema, the Event Truth Surface, the Event Truth Physical Schema, the Resolution Attempt & Evidence Snapshot Physical Schema, the Event-Time Location Resolution Runtime semantic contract, the Event-Time Location Resolution Read Surface semantic contract, and the Step 47A Re-Admission Evaluation contract while remaining NOT auto-admitted.
+Step 40A, Step 45, and Step 46A remain formally implemented and frozen.
+Step 47 remains design-frozen and BLOCKED, Step 47A remains frozen with all four current candidates still NOT_ADMISSIBLE_YET and the admitted source list effectively EMPTY, Step 47B remains frozen as the legal location evidence & accountability baseline under Task Card v2.1, and FG_RECEIVE now also has frozen design-layer baselines for the Location Master Physical Schema, the Event Truth Surface, the Event Truth Physical Schema, the Resolution Attempt & Evidence Snapshot Physical Schema, the Event-Time Location Resolution Runtime semantic contract, the Event-Time Location Resolution Read Surface semantic contract, the Step 47A Re-Admission Evaluation contract, and the Step 47 Release Decision contract while remaining NOT auto-admitted.
