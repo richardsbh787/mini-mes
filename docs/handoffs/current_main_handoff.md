@@ -1,7 +1,7 @@
-Mini-MES Handoff v2.10
+Mini-MES Handoff v2.11
 
-Updated after Step 47B freeze-record cleanup
-Date: 2026-03-28
+Updated after FG_RECEIVE event-time location resolution read-surface baseline freeze
+Date: 2026-03-30
 
 1. Frozen mainline snapshot
 
@@ -30,6 +30,8 @@ FG_RECEIVE Event Truth Physical Schema Baseline frozen as design-layer physical-
 FG_RECEIVE Resolution Attempt & Evidence Snapshot Physical Schema Baseline frozen as design-layer physical-schema baseline only
 
 FG_RECEIVE Event-Time Location Resolution Runtime Baseline frozen as design-layer runtime semantic baseline only
+
+FG_RECEIVE Event-Time Location Resolution Read Surface Baseline frozen as design-layer read-surface semantic baseline only
 
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
@@ -62,6 +64,9 @@ FG_RECEIVE Resolution Attempt & Evidence Snapshot Physical Schema Baseline is fr
 It is not implementation authorization.
 
 FG_RECEIVE Event-Time Location Resolution Runtime Baseline is frozen as a design-layer runtime semantic baseline only.
+It is not implementation authorization.
+
+FG_RECEIVE Event-Time Location Resolution Read Surface Baseline is frozen as a design-layer read-surface semantic baseline only.
 It is not implementation authorization.
 
 2. Newly frozen step
@@ -937,7 +942,188 @@ correction-path implementation
 
 semantic rewrite of already-frozen FG_RECEIVE baselines
 
-10. Governance baseline normalization now frozen
+10. Newly frozen design-layer step
+FG_RECEIVE Event-Time Location Resolution Read Surface Baseline
+
+Status: Design-layer read-surface semantic baseline - formally frozen
+
+Boundary
+
+This patch is handoff-only.
+
+This step freezes only the read-surface semantic contract for FG_RECEIVE event-time location resolution.
+
+It does not authorize implementation, schema creation, ORM, service, router, tests, or Step 47 release.
+
+Read objects in scope
+
+The read surface may expose only the already-frozen resolution-layer objects:
+
+FG_RECEIVE source event identity / context needed for reading
+
+resolution attempt read view
+
+evidence snapshot read view
+
+runtime outcome read view
+
+final event-truth read view where it exists
+
+No correction object is in scope for this baseline.
+
+Read-surface forms
+
+The minimum read surface may include only:
+
+list surface
+
+detail surface
+
+summary surface
+
+This step does not require endpoint naming, table shape, or implementation structure.
+
+List surface baseline
+
+The list surface may read resolution cases / events in a stable, filterable, read-only way.
+
+It may expose only minimum reading fields needed to identify:
+
+FG_RECEIVE event identity
+
+current / latest runtime outcome class
+
+whether final truth exists
+
+whether evidence snapshot exists
+
+attempt / evidence / final-truth linkage presence at read level
+
+timing fields only where needed for audit-friendly ordering
+
+Frozen addendum
+
+Any exposed timing field must preserve source-object clarity.
+
+The read surface must not mix attempt timestamps, evidence snapshot timestamps, and final-truth timestamps into one ambiguous time meaning.
+
+The list surface must not flatten trace and truth into one indistinguishable status blob.
+
+Detail surface baseline
+
+The detail surface may read one FG_RECEIVE resolution case / event in full semantic separation.
+
+It must preserve distinct read sections for:
+
+source event context
+
+attempt object / attempt history in scope
+
+evidence snapshot object(s) in scope
+
+runtime outcome
+
+final event-truth bind where it exists
+
+The detail surface must not pretend:
+
+attempt = truth
+
+evidence snapshot = live master
+
+non-success = final bind
+
+Summary surface baseline
+
+The summary surface may expose read-only counts or grouped visibility for runtime outcomes and final-truth presence.
+
+It may summarize:
+
+SUCCESS / FAILED / AMBIGUOUS / UNRESOLVED counts
+
+with-final-truth / without-final-truth visibility
+
+evidence-snapshot-presence visibility
+
+This summary is visibility only.
+
+It must not imply admission release, correction action, or implementation-side auto-fix.
+
+Read-only firewall
+
+The read surface is strictly read-only.
+
+It must not:
+
+create attempt
+
+create evidence snapshot
+
+create final truth
+
+trigger re-resolution
+
+trigger correction
+
+mutate Step 47 admission state
+
+rewrite or recompute historical truth
+
+Separation firewall in reading
+
+Freeze and preserve:
+
+trace != truth
+
+evidence snapshot != live master
+
+final truth may be shown only where it actually exists
+
+no read-side convenience inference may fabricate final truth from current master state
+
+read-side presentation may show relationships between event truth, attempt, and evidence snapshot, but must not collapse them into one mixed semantic object
+
+No convenience shortcut rule
+
+Reject the following semantic shortcuts:
+
+showing non-success as if it were almost success
+
+deriving final truth from current live master when no final truth exists
+
+hiding absence of evidence snapshot behind current mapping lookup
+
+treating readable runtime data as admitted-source release
+
+treating readable data as permission to correct or re-run resolution
+
+Explicit non-scope
+
+This step does NOT authorize:
+
+implementation
+
+schema / table creation
+
+migration
+
+ORM model
+
+service
+
+router
+
+tests
+
+Step 47 admissibility release
+
+admitted-source activation
+
+correction-path implementation
+
+semantic rewrite of already-frozen FG_RECEIVE baselines
+
+11. Governance baseline normalization now frozen
 
 Main handoff baseline normalization has been completed.
 
@@ -974,7 +1160,7 @@ docs/handoffs/current_main_handoff.md
 
 before any step work.
 
-11. Review / control discipline remains locked
+12. Review / control discipline remains locked
 
 Still in force:
 
@@ -994,7 +1180,7 @@ T-1 / T0 / T+1 truth audit
 
 S-1 / S0 / S+1 step audit
 
-12. Current locked status
+13. Current locked status
 
 Step 45 is implemented and frozen.
 
@@ -1016,6 +1202,8 @@ FG_RECEIVE Resolution Attempt & Evidence Snapshot Physical Schema Baseline is fr
 
 FG_RECEIVE Event-Time Location Resolution Runtime Baseline is frozen as a design-layer runtime semantic baseline only.
 
+FG_RECEIVE Event-Time Location Resolution Read Surface Baseline is frozen as a design-layer read-surface semantic baseline only.
+
 Important
 
 Do not auto-advance beyond the current locked task without explicit user authorization.
@@ -1036,7 +1224,7 @@ location_code remains the main unblock key.
 
 Any future repaired FG_RECEIVE source must still pass full Step 47A admissibility re-evaluation before any unblock decision.
 
-13. One-line summary
+14. One-line summary
 
 Step 40A, Step 45, and Step 46A remain formally implemented and frozen.
-Step 47 remains design-frozen and BLOCKED, Step 47A remains frozen with all four current candidates still NOT_ADMISSIBLE_YET and the admitted source list effectively EMPTY, Step 47B remains frozen as the legal location evidence & accountability baseline under Task Card v2.1, and FG_RECEIVE now also has frozen design-layer baselines for the Location Master Physical Schema, the Event Truth Surface, the Event Truth Physical Schema, the Resolution Attempt & Evidence Snapshot Physical Schema, and the Event-Time Location Resolution Runtime semantic contract while remaining NOT auto-admitted.
+Step 47 remains design-frozen and BLOCKED, Step 47A remains frozen with all four current candidates still NOT_ADMISSIBLE_YET and the admitted source list effectively EMPTY, Step 47B remains frozen as the legal location evidence & accountability baseline under Task Card v2.1, and FG_RECEIVE now also has frozen design-layer baselines for the Location Master Physical Schema, the Event Truth Surface, the Event Truth Physical Schema, the Resolution Attempt & Evidence Snapshot Physical Schema, the Event-Time Location Resolution Runtime semantic contract, and the Event-Time Location Resolution Read Surface semantic contract while remaining NOT auto-admitted.
