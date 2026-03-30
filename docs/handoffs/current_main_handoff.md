@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.11
+Mini-MES Handoff v2.12
 
-Updated after FG_RECEIVE event-time location resolution read-surface baseline freeze
+Updated after FG_RECEIVE Step 47A re-admission evaluation baseline freeze
 Date: 2026-03-30
 
 1. Frozen mainline snapshot
@@ -32,6 +32,8 @@ FG_RECEIVE Resolution Attempt & Evidence Snapshot Physical Schema Baseline froze
 FG_RECEIVE Event-Time Location Resolution Runtime Baseline frozen as design-layer runtime semantic baseline only
 
 FG_RECEIVE Event-Time Location Resolution Read Surface Baseline frozen as design-layer read-surface semantic baseline only
+
+FG_RECEIVE Step 47A Re-Admission Evaluation Baseline frozen as design-layer evaluation baseline only
 
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
@@ -67,6 +69,9 @@ FG_RECEIVE Event-Time Location Resolution Runtime Baseline is frozen as a design
 It is not implementation authorization.
 
 FG_RECEIVE Event-Time Location Resolution Read Surface Baseline is frozen as a design-layer read-surface semantic baseline only.
+It is not implementation authorization.
+
+FG_RECEIVE Step 47A Re-Admission Evaluation Baseline is frozen as a design-layer evaluation baseline only.
 It is not implementation authorization.
 
 2. Newly frozen step
@@ -1123,7 +1128,136 @@ correction-path implementation
 
 semantic rewrite of already-frozen FG_RECEIVE baselines
 
-11. Governance baseline normalization now frozen
+11. Newly frozen design-layer step
+FG_RECEIVE Step 47A Re-Admission Evaluation Baseline
+
+Status: Design-layer evaluation baseline - formally frozen
+
+Boundary
+
+This patch is handoff-only.
+
+This step freezes only the admissibility re-evaluation contract for FG_RECEIVE under the already-frozen Step 47A standard.
+
+It does not authorize Step 47 implementation, admitted-source activation, or any write-path release.
+
+Re-evaluation target
+
+The target of this step is FG_RECEIVE only.
+
+No other source event is re-evaluated in this baseline.
+
+Governing standard
+
+FG_RECEIVE must be re-evaluated strictly against the already-frozen Step 47A six-point legal admission standard:
+
+explicit location_code
+
+resolvable item identity
+
+explicit stock_bucket
+
+explicit stock_uom
+
+signed delta or unambiguous derivation rule
+
+trace identity
+
+Evaluation method
+
+The re-evaluation must use only already-frozen semantics and already-frozen design-layer objects.
+
+No implementation promise, no future convenience assumption, and no will-do-later logic may be counted as pass.
+
+Frozen addendum
+
+Each of the six-point judgments must explicitly cite the already-frozen baseline(s) it relies on.
+
+No default-pass or uncited pass is allowed.
+
+Location evidence rule
+
+For FG_RECEIVE to pass re-evaluation, legal location truth must be demonstrated through the already-frozen FG_RECEIVE chain, including:
+
+event-time resolution path
+
+immutable evidence snapshot basis
+
+final event-truth bind where success exists
+
+no live-master substitution
+
+no convenience inference
+
+Pass/fail discipline
+
+Each of the six points must be judged explicitly as:
+
+PASS
+
+FAIL
+
+No soft-pass, implied-pass, or future-pass wording is allowed.
+
+Candidate-only rule
+
+If FG_RECEIVE passes all six points, this step may conclude only:
+
+FG_RECEIVE is admissible in evaluation outcome.
+
+Frozen clarification
+
+Even a full six-point PASS is still evaluation outcome only.
+
+It does not itself release Step 47 implementation, activate admitted-source behavior, or authorize runtime production use.
+
+Failure discipline
+
+If any one of the six points fails, the result remains:
+
+FG_RECEIVE = NOT_ADMISSIBLE_YET
+
+and the remaining gap must be named explicitly.
+
+No shortcut rule
+
+This step must reject:
+
+counting future implementation as current admissibility
+
+counting live master lookup as frozen evidence
+
+counting runtime possibility as admitted-source release
+
+counting read-surface completeness as write-path legality
+
+Explicit non-scope
+
+This step does NOT authorize:
+
+implementation
+
+schema / table creation
+
+migration
+
+ORM model
+
+service
+
+router
+
+tests
+
+Step 47 implementation release
+
+admitted-source activation
+
+correction-path implementation
+
+semantic rewrite of already-frozen FG_RECEIVE baselines
+
+12. Governance baseline normalization now frozen
 
 Main handoff baseline normalization has been completed.
 
@@ -1160,7 +1294,7 @@ docs/handoffs/current_main_handoff.md
 
 before any step work.
 
-12. Review / control discipline remains locked
+13. Review / control discipline remains locked
 
 Still in force:
 
@@ -1180,7 +1314,7 @@ T-1 / T0 / T+1 truth audit
 
 S-1 / S0 / S+1 step audit
 
-13. Current locked status
+14. Current locked status
 
 Step 45 is implemented and frozen.
 
@@ -1204,6 +1338,8 @@ FG_RECEIVE Event-Time Location Resolution Runtime Baseline is frozen as a design
 
 FG_RECEIVE Event-Time Location Resolution Read Surface Baseline is frozen as a design-layer read-surface semantic baseline only.
 
+FG_RECEIVE Step 47A Re-Admission Evaluation Baseline is frozen as a design-layer evaluation baseline only.
+
 Important
 
 Do not auto-advance beyond the current locked task without explicit user authorization.
@@ -1224,7 +1360,7 @@ location_code remains the main unblock key.
 
 Any future repaired FG_RECEIVE source must still pass full Step 47A admissibility re-evaluation before any unblock decision.
 
-14. One-line summary
+15. One-line summary
 
 Step 40A, Step 45, and Step 46A remain formally implemented and frozen.
-Step 47 remains design-frozen and BLOCKED, Step 47A remains frozen with all four current candidates still NOT_ADMISSIBLE_YET and the admitted source list effectively EMPTY, Step 47B remains frozen as the legal location evidence & accountability baseline under Task Card v2.1, and FG_RECEIVE now also has frozen design-layer baselines for the Location Master Physical Schema, the Event Truth Surface, the Event Truth Physical Schema, the Resolution Attempt & Evidence Snapshot Physical Schema, the Event-Time Location Resolution Runtime semantic contract, and the Event-Time Location Resolution Read Surface semantic contract while remaining NOT auto-admitted.
+Step 47 remains design-frozen and BLOCKED, Step 47A remains frozen with all four current candidates still NOT_ADMISSIBLE_YET and the admitted source list effectively EMPTY, Step 47B remains frozen as the legal location evidence & accountability baseline under Task Card v2.1, and FG_RECEIVE now also has frozen design-layer baselines for the Location Master Physical Schema, the Event Truth Surface, the Event Truth Physical Schema, the Resolution Attempt & Evidence Snapshot Physical Schema, the Event-Time Location Resolution Runtime semantic contract, the Event-Time Location Resolution Read Surface semantic contract, and the Step 47A Re-Admission Evaluation contract while remaining NOT auto-admitted.
