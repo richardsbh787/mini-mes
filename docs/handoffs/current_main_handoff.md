@@ -2227,3 +2227,83 @@ evidence
 truth
 
 stock ledger
+
+26. Step 47A SHIPMENT re-admission evaluation baseline
+
+Status: Design-layer evaluation baseline - formally frozen
+
+Boundary
+
+This patch is handoff-only.
+
+This step freezes only the SHIPMENT Step 47A re-admission evaluation baseline.
+
+It does not authorize code change, schema change, API change, or runtime write-path change.
+
+Evaluation object
+
+SHIPMENT is the evaluation object for Step 47A admitted-source re-admission.
+
+This baseline evaluates SHIPMENT admissibility only against the already-frozen SHIPMENT design-layer chain.
+
+Evaluation dimensions
+
+The SHIPMENT re-admission evaluation must explicitly judge at minimum:
+
+event-time legal ship-from evidence completeness
+
+trace / evidence / final truth separation integrity
+
+whether non-success is prevented from entering final truth
+
+whether no legal ship-from location evidence means no legal-position outbound write
+
+whether later master changes are prevented from rewriting historical truth
+
+whether correction remains independent and outside ordinary resolution
+
+Allowed evaluation outcomes
+
+The allowed evaluation outcomes are exactly:
+
+PASS
+
+NOT_ADMISSIBLE_YET
+
+OUT_OF_SCOPE
+
+Admissibility-only rule
+
+This evaluation checks admissibility only.
+
+It does not decide activation.
+
+It does not decide release.
+
+It does not decide production use.
+
+It does not authorize implementation.
+
+Explicit checks
+
+The SHIPMENT Step 47A evaluation must explicitly check and preserve all of the following:
+
+event-time legal ship-from evidence completeness must be sufficient to support legal ship-from binding
+
+trace, evidence, and final truth must remain semantically distinct
+
+FAILED / AMBIGUOUS / UNRESOLVED or otherwise non-successful outcomes must not become final truth
+
+no legal ship-from location evidence = no legal-position outbound write
+
+later master change, remap, disable, or other master-state change must not rewrite historical SHIPMENT truth
+
+any remediation of historical SHIPMENT truth must use an independent correction path rather than silent re-resolve
+
+Outcome discipline
+
+PASS means SHIPMENT satisfies the frozen Step 47A admissibility evaluation dimensions only.
+
+NOT_ADMISSIBLE_YET means one or more required evaluation dimensions still fails or remains incomplete.
+
+OUT_OF_SCOPE means the evaluation target presented is not a SHIPMENT Step 47A re-admission case within this frozen baseline.
