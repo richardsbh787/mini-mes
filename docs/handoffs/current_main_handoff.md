@@ -2073,3 +2073,71 @@ No silent re-resolve is allowed.
 If historical SHIPMENT event truth later requires remediation, correction must use an independent correction path.
 
 Ordinary runtime resolution must not silently replace or rewrite already-bound shipment_event_truth.
+
+24. Step 47 SHIPMENT event-time ship-from location resolution runtime baseline
+
+Status: Design-layer runtime baseline - formally frozen
+
+Boundary
+
+This patch is handoff-only.
+
+This step freezes only the SHIPMENT event-time ship-from location resolution runtime baseline for Step 47.
+
+It does not authorize code change, schema change, API change, or runtime write-path change.
+
+Runtime classification layer
+
+SHIPMENT event-time ship-from location resolution is the runtime classification layer that determines whether a shipment may legally produce final ship-from location truth and downstream legal outbound position meaning.
+
+Outcome classes
+
+The runtime outcome class must be exactly one of:
+
+SUCCESS
+
+FAILED
+
+AMBIGUOUS
+
+UNRESOLVED
+
+Minimum success conditions
+
+SUCCESS requires a legal ship-from location bind basis at event time.
+
+At minimum, SUCCESS requires:
+
+one winning resolution attempt
+
+one immutable event-time location evidence snapshot
+
+one unique legally bindable ship-from location result
+
+one final truth admission basis consistent with the frozen SHIPMENT event-truth surface and physical-schema baselines
+
+Non-success rule
+
+FAILED / AMBIGUOUS / UNRESOLVED outcomes may remain in trace and evidence only.
+
+Non-success outcomes must not become final truth.
+
+Hard legal-position rule
+
+No legal ship-from location evidence = no legal-position outbound write.
+
+If ship-from location evidence is missing, unresolved, failed, ambiguous, indirect, or convenience-derived, SHIPMENT must not produce a legal outbound position write.
+
+Historical stability rule
+
+Later master change, remap, disable, or other master-state change must not rewrite historical SHIPMENT runtime outcome or final truth.
+
+Historical runtime outcome and final truth remain bound to the event-time winning evidence basis and must not drift with later master state.
+
+Independent correction firewall
+
+If historical SHIPMENT runtime outcome or final truth later needs remediation, correction must use an independent path.
+
+No silent re-resolve is allowed.
+
+Ordinary runtime resolution must not silently replace or rewrite already-bound shipment final truth.
