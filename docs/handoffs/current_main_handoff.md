@@ -2005,3 +2005,71 @@ If historical SHIPMENT event truth later needs remediation, correction must use 
 No silent re-resolve is allowed.
 
 No ordinary runtime retry may silently rewrite already-bound SHIPMENT final truth.
+
+23. Step 47 SHIPMENT event truth physical schema baseline
+
+Status: Design-layer physical-schema baseline - formally frozen
+
+Boundary
+
+This patch is handoff-only.
+
+This step freezes only the minimum physical-schema baseline for SHIPMENT event-truth under Step 47.
+
+It does not authorize code change, schema implementation, API change, or runtime write-path change.
+
+Minimum physical schema skeleton
+
+The minimum physical-schema layer must preserve three semantically distinct persisted objects:
+
+shipment_location_resolution_attempt
+
+shipment_location_evidence_snapshot
+
+shipment_event_truth
+
+shipment_event_truth minimum fields
+
+The minimum shipment_event_truth physical-schema skeleton must preserve:
+
+shipment_id
+
+bound_ship_from_location_code
+
+bound_from_resolution_attempt_id
+
+location_evidence_snapshot_ref
+
+location_bound_at
+
+Minimum uniqueness rules
+
+shipment_event_truth must carry a unique constraint on shipment_id.
+
+shipment_event_truth must carry a unique constraint on bound_from_resolution_attempt_id.
+
+These constraints preserve the one-final-truth-per-shipment rule and prevent one ordinary resolution attempt from silently binding multiple final truths.
+
+Evidence snapshot immutability
+
+shipment_location_evidence_snapshot is an immutable event-time capture.
+
+It must preserve the event-time frozen evidence basis for the ship-from location bind and must not drift with later master change.
+
+Trace / evidence / final-truth separation
+
+shipment_location_resolution_attempt remains trace only.
+
+shipment_location_evidence_snapshot remains evidence only.
+
+shipment_event_truth remains final truth only.
+
+These objects must remain semantically distinct and must not collapse into one mixed object, one ambiguous reference, or one convenience wrapper.
+
+No silent re-resolve / independent correction firewall
+
+No silent re-resolve is allowed.
+
+If historical SHIPMENT event truth later requires remediation, correction must use an independent correction path.
+
+Ordinary runtime resolution must not silently replace or rewrite already-bound shipment_event_truth.
