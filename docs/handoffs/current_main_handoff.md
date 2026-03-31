@@ -1535,3 +1535,41 @@ Any future repaired FG_RECEIVE source must still pass full Step 47A admissibilit
 Step 40A, Step 45, and Step 46A remain formally implemented and frozen.
 Step 40A, Step 45, and Step 46A remain formally implemented and frozen.
 Step 47 remains design-frozen and BLOCKED, Step 47A remains frozen with all four current candidates still NOT_ADMISSIBLE_YET and the admitted source list effectively EMPTY, Step 47B remains frozen as the legal location evidence & accountability baseline under Task Card v2.1, and FG_RECEIVE now also has frozen design-layer baselines for the Location Master Physical Schema, the Event Truth Surface, the Event Truth Physical Schema, the Resolution Attempt & Evidence Snapshot Physical Schema, the Event-Time Location Resolution Runtime semantic contract, the Event-Time Location Resolution Read Surface semantic contract, the Step 47A Re-Admission Evaluation contract, and the Step 47 Release Decision contract while remaining NOT auto-admitted.
+
+17. Step 47 FG_RECEIVE implementation final archival result
+
+Final result
+
+PASS
+
+Review anchor
+
+Combined implementation state only:
+
+base implementation commit:
+bcf0e4879c780249ccff94327cead783fddad17d
+
+verified service correction commit:
+f867eb9
+
+Correction scope
+
+app/services/step47_fg_receive.py only
+
+Correction content
+
+Inserted hard 409 block in execute_fg_receive_step47 immediately after executed_by validation when FG_RECEIVE_STEP47_ADMITTED_SOURCE_ACTIVE is False.
+
+Test result
+
+PYTHONPATH=. pytest tests/test_step47_fg_receive.py -> 8 passed
+
+Frozen boundary remains explicit
+
+admitted-source activation = inactive
+
+runtime production use = unauthorized
+
+implementation completed != activation
+
+activation != production use
