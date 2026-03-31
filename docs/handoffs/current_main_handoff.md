@@ -1813,3 +1813,69 @@ explicit audit wording that implementation != activation
 explicit audit wording that activation != runtime production use
 
 No implied authorization, silent authorization, activation-by-authorization wording, or implementation-by-authorization wording is allowed.
+
+20. Step 47 FG_RECEIVE actual admitted-source activation decision record
+
+Status: Decision record - formally frozen
+
+Actual activation decision result
+
+FG_RECEIVE admitted-source activation = INACTIVE
+
+Basis for decision
+
+This decision is grounded on the frozen state that:
+
+Step 47 FG_RECEIVE Implementation = PASS
+
+FG_RECEIVE Admitted-Source Activation Baseline = Frozen
+
+FG_RECEIVE Runtime Production-Use Authorization Baseline = Frozen
+
+runtime production use remains unauthorized
+
+implementation completed != activation
+
+activation != production use
+
+The actual decision record preserves the currently verified boundary that implementation completion has occurred, but admitted-source activation has not been switched on.
+
+What this decision changes
+
+This decision changes only the explicit decision-layer record of actual admitted-source activation status.
+
+It confirms and freezes the current actual status as INACTIVE.
+
+What this decision does NOT change
+
+This decision does not activate FG_RECEIVE.
+
+This decision does not authorize runtime production use.
+
+This decision does not alter implementation status.
+
+This decision does not alter any schema, API, flag, runtime write path, or historical truth surface.
+
+Explicit independent-control statement
+
+Runtime production use remains independently controlled.
+
+This decision must not be read as runtime production-use authorization, runtime production-use denial by implication beyond the currently frozen unauthorized state, or any collapse of the boundary between activation and production use.
+
+Output and audit discipline
+
+This decision must be recorded only as a decision-layer output such as:
+
+FG_RECEIVE admitted-source activation = INACTIVE
+
+The decision record must preserve:
+
+explicit decision outcome
+
+explicit basis for decision
+
+explicit wording that implementation completed != activation
+
+explicit wording that activation != production use
+
+No implied activation, silent activation, or runtime-production-use inference is allowed from this decision record.
