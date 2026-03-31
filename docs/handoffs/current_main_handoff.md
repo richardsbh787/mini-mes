@@ -2141,3 +2141,89 @@ If historical SHIPMENT runtime outcome or final truth later needs remediation, c
 No silent re-resolve is allowed.
 
 Ordinary runtime resolution must not silently replace or rewrite already-bound shipment final truth.
+
+25. Step 47 SHIPMENT event-time ship-from location resolution read surface baseline
+
+Status: Design-layer read-surface baseline - formally frozen
+
+Boundary
+
+This patch is handoff-only.
+
+This step freezes only the SHIPMENT event-time ship-from location resolution read-surface baseline for Step 47.
+
+It does not authorize code change, schema change, API implementation change, or runtime write-path change.
+
+Minimum read contracts
+
+The minimum SHIPMENT read surface may include only:
+
+list
+
+summary
+
+detail
+
+List baseline
+
+The list surface may expose only minimum case-level visibility needed to read:
+
+latest outcome class
+
+evidence snapshot presence
+
+final truth presence
+
+timing fields needed for stable audit-friendly ordering
+
+Frozen addendum
+
+Timing fields in list must preserve source meaning and must not collapse attempt timing, evidence timing, and final-truth timing into one ambiguous timestamp.
+
+Summary baseline
+
+The summary surface may expose read-only aggregation by:
+
+SUCCESS
+
+FAILED
+
+AMBIGUOUS
+
+UNRESOLVED
+
+It may also summarize evidence-presence visibility and final-truth presence visibility where needed for read-side oversight.
+
+Detail baseline
+
+The detail surface must preserve distinct layering for:
+
+source_event_context
+
+attempt_history
+
+evidence_snapshots
+
+runtime_outcome
+
+final_event_truth
+
+Trace != truth rule
+
+Trace != truth is frozen explicitly at the read surface.
+
+Read presentation must not collapse trace objects, evidence objects, runtime outcome, and final truth into one mixed semantic surface.
+
+Read-only firewall
+
+The SHIPMENT read surface is strictly read-only.
+
+Reads must not mutate:
+
+attempt
+
+evidence
+
+truth
+
+stock ledger
