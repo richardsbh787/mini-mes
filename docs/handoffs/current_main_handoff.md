@@ -2371,3 +2371,81 @@ It does not mean release.
 It does not mean implementation authorization.
 
 It does not mean runtime production use.
+
+28. Step 47 SHIPMENT release decision baseline
+
+Status: Design-layer release-decision baseline - formally frozen
+
+Boundary
+
+This patch is handoff-only.
+
+This step freezes only the SHIPMENT release decision baseline for Step 47.
+
+It does not authorize code change, schema change, API change, or runtime write-path change.
+
+Release decision as an independent layer
+
+SHIPMENT release decision is an explicit independent decision layer downstream of evaluation.
+
+It must not be inferred automatically from design completeness or from evaluation PASS.
+
+Required preconditions
+
+Before any SHIPMENT release decision may be made, all of the following must already be explicitly true:
+
+the SHIPMENT actual re-admission evaluation result is PASS
+
+the frozen SHIPMENT event-truth, physical-schema, runtime, and read-surface chain remains internally consistent
+
+no unresolved contradiction exists across the frozen SHIPMENT admissibility dimensions
+
+release intent is made explicitly at the decision layer rather than implied by silence or readiness language
+
+What a release decision means
+
+A SHIPMENT release decision means only that SHIPMENT is judged decision-layer ready to proceed toward the next downstream release gate for Step 47.
+
+It is a decision-layer conclusion only.
+
+What a release decision does NOT mean
+
+A SHIPMENT release decision does not mean implementation authorization.
+
+A SHIPMENT release decision does not mean activation.
+
+A SHIPMENT release decision does not mean runtime production use authorization.
+
+Evaluation PASS non-automatic rule
+
+SHIPMENT evaluation PASS does not automatically mean implementation authorization.
+
+Evaluation PASS is prerequisite evidence for release decision review only.
+
+Release decision non-automatic rule
+
+SHIPMENT release decision does not automatically authorize activation.
+
+SHIPMENT release decision does not automatically authorize runtime production use.
+
+Output and audit discipline
+
+Release decisions must be recorded only as explicit decision-layer outputs such as:
+
+SHIPMENT release decision = PASS
+
+or
+
+SHIPMENT release decision = NOT RELEASED YET
+
+The release decision record must preserve:
+
+explicit decision outcome
+
+explicit decision basis
+
+explicit wording that evaluation PASS != implementation authorization
+
+explicit wording that release decision != activation
+
+explicit wording that release decision != runtime production use
