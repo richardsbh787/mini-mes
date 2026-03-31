@@ -2307,3 +2307,67 @@ PASS means SHIPMENT satisfies the frozen Step 47A admissibility evaluation dimen
 NOT_ADMISSIBLE_YET means one or more required evaluation dimensions still fails or remains incomplete.
 
 OUT_OF_SCOPE means the evaluation target presented is not a SHIPMENT Step 47A re-admission case within this frozen baseline.
+
+27. Step 47A SHIPMENT actual re-admission evaluation record
+
+Status: Evaluation record - formally frozen
+
+Boundary
+
+This patch is handoff-only.
+
+This step records only the actual SHIPMENT Step 47A re-admission evaluation result against the already-frozen SHIPMENT admissibility dimensions.
+
+It does not authorize code change, schema change, API change, or runtime write-path change.
+
+Actual evaluation result
+
+SHIPMENT = PASS
+
+Evaluation basis
+
+This evaluation assesses SHIPMENT only against the already-frozen admissibility dimensions in the SHIPMENT Event Truth Surface Baseline, SHIPMENT Event Truth Physical Schema Baseline, SHIPMENT Event-Time Ship-From Location Resolution Runtime Baseline, SHIPMENT Event-Time Ship-From Location Resolution Read Surface Baseline, and the frozen SHIPMENT Re-Admission Evaluation Baseline.
+
+Dimension-by-dimension reasoning
+
+event-time legal ship-from evidence completeness = PASS
+
+Reason:
+the frozen SHIPMENT chain requires a legal ship-from bind basis at event time through one winning resolution attempt, one immutable event-time evidence snapshot, one unique legally bindable ship-from result, and one final truth admission basis.
+
+trace / evidence / final truth separation = PASS
+
+Reason:
+the frozen SHIPMENT surface, physical-schema, runtime, and read baselines all preserve semantic separation between shipment_location_resolution_attempt, shipment_location_evidence_snapshot, runtime outcome, and shipment_event_truth.
+
+non-success exclusion from final truth = PASS
+
+Reason:
+the frozen SHIPMENT chain explicitly preserves FAILED / AMBIGUOUS / UNRESOLVED outcomes as trace / evidence only and bars such non-success outcomes from becoming final truth.
+
+no legal ship-from location evidence = no legal-position outbound write = PASS
+
+Reason:
+the frozen SHIPMENT event-truth and runtime baselines explicitly require that missing, unresolved, failed, ambiguous, indirect, or convenience-derived ship-from evidence cannot support a legal outbound position write.
+
+historical truth non-rewrite under later master changes = PASS
+
+Reason:
+the frozen SHIPMENT event-truth and runtime baselines explicitly preserve historical outcome and final truth against later master remap, disable, deactivate, or other master-state change.
+
+independent correction-path discipline = PASS
+
+Reason:
+the frozen SHIPMENT chain explicitly requires any historical remediation to use an independent correction path and rejects silent re-resolve or ordinary runtime overwrite of already-bound final truth.
+
+Evaluation-only clarification
+
+This result is evaluation only.
+
+It does not mean activation.
+
+It does not mean release.
+
+It does not mean implementation authorization.
+
+It does not mean runtime production use.
