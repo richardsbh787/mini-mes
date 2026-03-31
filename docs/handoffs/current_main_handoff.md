@@ -2449,3 +2449,57 @@ explicit wording that evaluation PASS != implementation authorization
 explicit wording that release decision != activation
 
 explicit wording that release decision != runtime production use
+
+29. Step 47 SHIPMENT actual release decision record
+
+Status: Decision record - formally frozen
+
+Boundary
+
+This patch is handoff-only.
+
+This step records only the actual SHIPMENT release decision against the already-frozen SHIPMENT release-decision baseline.
+
+It does not authorize code change, schema change, API change, or runtime write-path change.
+
+Actual release decision result
+
+SHIPMENT release decision = PASS
+
+Decision reasoning
+
+This decision assesses SHIPMENT only against the frozen SHIPMENT release-decision baseline.
+
+The decision is PASS because:
+
+the SHIPMENT actual re-admission evaluation result is already PASS
+
+the frozen SHIPMENT event-truth, physical-schema, runtime, and read-surface chain is internally consistent
+
+no unresolved contradiction is left across the frozen SHIPMENT admissibility dimensions
+
+release intent is stated explicitly here at the decision layer rather than implied from evaluation or design completeness
+
+What this decision changes
+
+This decision changes only the explicit decision-layer record of SHIPMENT release-decision status.
+
+It confirms and freezes the current SHIPMENT release decision result as PASS.
+
+What this decision does NOT change
+
+This decision does not mean implementation authorization.
+
+This decision does not activate SHIPMENT.
+
+This decision does not authorize runtime production use.
+
+This decision does not alter any schema, API, code path, runtime write path, or historical truth surface.
+
+Boundary preservation
+
+Evaluation PASS remains distinct from implementation authorization.
+
+Release decision remains distinct from activation.
+
+Release decision remains distinct from runtime production use.
