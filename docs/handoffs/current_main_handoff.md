@@ -1573,3 +1573,121 @@ runtime production use = unauthorized
 implementation completed != activation
 
 activation != production use
+
+18. Step 47 FG_RECEIVE admitted-source activation baseline
+
+Status: Design-layer activation baseline - formally frozen
+
+Boundary
+
+This patch is handoff-only.
+
+This step freezes only the admitted-source activation baseline for FG_RECEIVE.
+
+It does not authorize runtime production use.
+
+It does not authorize any code change, schema change, API change, flag change, or runtime write-path change.
+
+Locked context
+
+Step 47 FG_RECEIVE Implementation = PASS
+
+Review anchors:
+
+bcf0e4879c780249ccff94327cead783fddad17d
+
+f867eb9
+
+c2abe12
+
+admitted-source activation remains inactive
+
+runtime production use remains unauthorized
+
+implementation completed != activation
+
+activation != production use
+
+Activation as an explicit independent authorization layer
+
+FG_RECEIVE admitted-source activation is a distinct authorization layer downstream of implementation completion and downstream of review pass.
+
+Activation must be decided explicitly.
+
+Activation must not be inferred from implementation completion, review pass, release-decision pass, router presence, service presence, schema completeness, or test pass.
+
+Required preconditions before activation may be switched on
+
+All of the following must be explicitly confirmed before any future activation decision:
+
+1. Step 47 FG_RECEIVE implementation final archival result remains PASS under the anchored reviewed implementation state.
+
+2. The service-layer hard gate preserving inactive admitted-source behavior remains present until an explicit downstream activation decision changes that state.
+
+3. No unresolved contradiction exists between the frozen FG_RECEIVE chain:
+
+implementation baseline
+
+event-time location resolution baseline
+
+event truth baseline
+
+resolution attempt / evidence snapshot baseline
+
+release-decision baseline
+
+4. Activation intent must be explicitly recorded as its own authorization decision and must not be inferred from any prior baseline.
+
+What activation means legally
+
+Activation means only that FG_RECEIVE is switched on as an admitted source at the admitted-source authorization layer for Step 47.
+
+Activation is a legal source-admission state change only.
+
+What activation does NOT mean
+
+Activation does not mean runtime production use is authorized.
+
+Activation does not mean historical events are retroactively legalized.
+
+Activation does not mean correction-path authorization.
+
+Activation does not mean bypass of any frozen truth, evidence, guard, or audit boundary.
+
+Explicit prohibition
+
+Admitted-source activation must not auto-authorize runtime production use.
+
+Runtime production use remains a distinct downstream authorization question and must not be inferred from activation.
+
+Rollback / disable rule
+
+If FG_RECEIVE admitted-source activation is later disabled, that disable action must not rewrite, erase, or silently reinterpret any already-written:
+
+event truth
+
+final truth
+
+stock ledger
+
+Disable / rollback at the activation layer is forward-governance only unless a separate independently authorized correction path is frozen and used.
+
+Output and audit discipline
+
+Activation decisions must be recorded explicitly as decision-layer outputs only, such as:
+
+FG_RECEIVE admitted-source activation = PASS
+
+or
+
+FG_RECEIVE admitted-source activation = INACTIVE
+
+The activation record must preserve:
+
+explicit decision outcome
+
+explicit decision boundary
+
+explicit audit wording that activation != runtime production use
+
+No implied activation, silent activation, or activation-by-implementation wording is allowed.
