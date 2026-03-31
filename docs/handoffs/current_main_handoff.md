@@ -1879,3 +1879,69 @@ explicit wording that implementation completed != activation
 explicit wording that activation != production use
 
 No implied activation, silent activation, or runtime-production-use inference is allowed from this decision record.
+
+21. Step 47 FG_RECEIVE actual runtime production-use authorization decision record
+
+Status: Decision record - formally frozen
+
+Actual runtime production-use authorization decision result
+
+FG_RECEIVE runtime production use = UNAUTHORIZED
+
+Basis for decision
+
+This decision is grounded on the frozen state that:
+
+Step 47 FG_RECEIVE Implementation = PASS
+
+FG_RECEIVE Admitted-Source Activation Baseline = Frozen
+
+FG_RECEIVE Runtime Production-Use Authorization Baseline = Frozen
+
+FG_RECEIVE Actual Admitted-Source Activation Decision = INACTIVE
+
+implementation completed != activation
+
+activation != production use
+
+The actual decision record preserves the currently verified boundary that runtime production use has not been authorized.
+
+What this decision changes
+
+This decision changes only the explicit decision-layer record of actual runtime production-use authorization status.
+
+It confirms and freezes the current actual status as UNAUTHORIZED.
+
+What this decision does NOT change
+
+This decision does not authorize runtime production use.
+
+This decision does not activate FG_RECEIVE.
+
+This decision does not alter implementation status.
+
+This decision does not alter any schema, API, flag, runtime write path, or historical truth surface.
+
+Explicit unauthorized-state statement
+
+Runtime production use remains unauthorized.
+
+This decision must not be read as activation denial by implication beyond the currently frozen inactive activation state, or as any collapse of the boundary between activation and runtime production use.
+
+Output and audit discipline
+
+This decision must be recorded only as a decision-layer output such as:
+
+FG_RECEIVE runtime production use = UNAUTHORIZED
+
+The decision record must preserve:
+
+explicit decision outcome
+
+explicit basis for decision
+
+explicit wording that implementation completed != activation
+
+explicit wording that activation != production use
+
+No implied authorization, silent authorization, or activation-by-runtime-use inference is allowed from this decision record.
