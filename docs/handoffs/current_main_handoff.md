@@ -2503,3 +2503,85 @@ Evaluation PASS remains distinct from implementation authorization.
 Release decision remains distinct from activation.
 
 Release decision remains distinct from runtime production use.
+
+30. Step 47 SHIPMENT implementation authorization baseline
+
+Status: Design-layer implementation-authorization baseline - formally frozen
+
+Boundary
+
+This patch is handoff-only.
+
+This step freezes only the SHIPMENT implementation-authorization baseline for Step 47.
+
+It does not authorize code change, schema change, API change, or runtime write-path change.
+
+Implementation authorization as an independent layer
+
+SHIPMENT implementation authorization is an explicit independent authorization layer downstream of the SHIPMENT release decision.
+
+It must not be inferred automatically from release decision PASS alone.
+
+Required preconditions
+
+Before any SHIPMENT implementation authorization may be granted, all of the following must already be explicitly true:
+
+the SHIPMENT actual release decision result is PASS
+
+the frozen SHIPMENT event-truth, physical-schema, runtime, read-surface, evaluation, and release-decision chain remains internally consistent
+
+no unresolved contradiction exists that would make implementation authorization rely on implied shortcuts
+
+implementation authorization intent is recorded explicitly as its own authorization-layer decision
+
+What implementation authorization means
+
+A SHIPMENT implementation authorization means only that SHIPMENT is authorized at the implementation-authorization layer to proceed toward controlled implementation work for Step 47.
+
+It is an authorization-layer conclusion only.
+
+What implementation authorization does NOT mean
+
+A SHIPMENT implementation authorization does not mean activation.
+
+A SHIPMENT implementation authorization does not mean runtime production use authorization.
+
+A SHIPMENT implementation authorization does not mean that implementation has already been completed.
+
+Release decision non-automatic rule
+
+SHIPMENT release decision PASS does not automatically authorize activation.
+
+SHIPMENT release decision PASS does not automatically authorize runtime production use.
+
+SHIPMENT release decision PASS does not automatically collapse into implementation-side downstream permissions beyond this explicit authorization layer.
+
+Implementation authorization non-automatic rule
+
+SHIPMENT implementation authorization does not itself mean activation.
+
+SHIPMENT implementation authorization does not itself mean runtime production use.
+
+Output and audit discipline
+
+Implementation authorization decisions must be recorded only as explicit authorization-layer outputs such as:
+
+SHIPMENT implementation authorization = PASS
+
+or
+
+SHIPMENT implementation authorization = NOT AUTHORIZED YET
+
+The implementation-authorization record must preserve:
+
+explicit decision outcome
+
+explicit decision basis
+
+explicit wording that release decision PASS != activation
+
+explicit wording that release decision PASS != runtime production use
+
+explicit wording that implementation authorization != activation
+
+explicit wording that implementation authorization != runtime production use
