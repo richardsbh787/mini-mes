@@ -62,6 +62,15 @@ def execute_fg_receive_step47(
     normalized_executed_by = str(payload.executed_by or "").strip()
     if not normalized_executed_by:
         raise HTTPException(status_code=422, detail="executed_by is required")
+    if not FG_RECEIVE_STEP47_ADMITTED_SOURCE_ACTIVE:
+        raise HTTPException(
+            status_code=409,
+            detail=(
+                "FG receive Step 47 implementation exists but execution remains blocked: "
+                "admitted-source activation remains inactive; "
+                "runtime production use remains unauthorized"
+            ),
+        )
 
     fg_receive = db.query(WorkOrderFgReceive).filter(WorkOrderFgReceive.id == fg_receive_id).first()
     if fg_receive is None:
