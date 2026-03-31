@@ -1945,3 +1945,63 @@ explicit wording that implementation completed != activation
 explicit wording that activation != production use
 
 No implied authorization, silent authorization, or activation-by-runtime-use inference is allowed from this decision record.
+
+22. Step 47 SHIPMENT event truth surface baseline
+
+Status: Design-layer event-truth baseline - formally frozen
+
+Boundary
+
+This patch is handoff-only.
+
+This step freezes only the SHIPMENT event-truth surface baseline for Step 47.
+
+It does not authorize implementation, schema change, API change, or runtime write-path change.
+
+Frozen core definition
+
+A legally successful SHIPMENT event must atomically carry one and only one final ship-from location binding truth, with the minimum surface:
+
+bound_ship_from_location_code
+
+bound_from_resolution_attempt_id
+
+location_evidence_snapshot_ref
+
+location_bound_at
+
+Trace / evidence / final-truth separation
+
+Resolution trace remains trace only.
+
+Location evidence remains evidence only.
+
+Final ship-from location bind remains final truth only.
+
+These three layers must remain semantically distinct and must not be collapsed into one mixed surface.
+
+Failed or unresolved resolution rule
+
+FAILED / AMBIGUOUS / UNRESOLVED or otherwise non-successful location resolution may remain in trace and evidence surfaces only.
+
+Such non-successful outcomes must not become final event truth.
+
+Hard legal-position rule
+
+No legal ship-from location evidence = no legal-position outbound write.
+
+If legal ship-from location evidence is missing, unresolved, failed, ambiguous, indirect, or convenience-derived, SHIPMENT must not produce a legal outbound position write.
+
+Later master change protection
+
+Later master change, remap, deactivate, disable, or other master-state change must not rewrite old SHIPMENT event truth.
+
+Historical event truth remains bound to the event-time winning evidence basis and must not drift with later master state.
+
+Correction-path firewall
+
+If historical SHIPMENT event truth later needs remediation, correction must use an independent correction path.
+
+No silent re-resolve is allowed.
+
+No ordinary runtime retry may silently rewrite already-bound SHIPMENT final truth.
