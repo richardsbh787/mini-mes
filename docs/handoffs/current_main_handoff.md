@@ -1691,3 +1691,125 @@ explicit decision boundary
 explicit audit wording that activation != runtime production use
 
 No implied activation, silent activation, or activation-by-implementation wording is allowed.
+
+19. Step 47 FG_RECEIVE runtime production-use authorization baseline
+
+Status: Design-layer runtime production-use authorization baseline - formally frozen
+
+Boundary
+
+This patch is handoff-only.
+
+This step freezes only the runtime production-use authorization baseline for FG_RECEIVE.
+
+It does not authorize activation.
+
+It does not authorize any code change, flag change, schema change, API change, or runtime write-path change.
+
+Locked context
+
+Step 47 FG_RECEIVE Implementation = PASS
+
+FG_RECEIVE Admitted-Source Activation Baseline = Frozen
+
+admitted-source activation remains inactive
+
+runtime production use remains unauthorized
+
+implementation completed != activation
+
+activation != production use
+
+Runtime production-use authorization as an explicit independent authorization layer
+
+FG_RECEIVE runtime production-use authorization is a distinct authorization layer downstream of implementation completion and downstream of admitted-source activation baseline freeze.
+
+Runtime production-use authorization must be decided explicitly.
+
+It must not be inferred from implementation completion.
+
+It must not be inferred from admitted-source activation baseline freeze.
+
+Required preconditions before production use may be authorized
+
+All of the following must be explicitly confirmed before any future runtime production-use authorization decision:
+
+1. Step 47 FG_RECEIVE implementation final archival result remains PASS under the anchored reviewed implementation state.
+
+2. The FG_RECEIVE admitted-source activation baseline remains frozen and the boundary between implementation, activation, and runtime production use remains explicit and non-collapsed.
+
+3. Any future activation decision, if it occurs, must be separately and explicitly decided before runtime production-use authorization may be considered.
+
+4. No unresolved contradiction exists between:
+
+implementation baseline
+
+activation baseline
+
+event-time location resolution baseline
+
+event truth baseline
+
+resolution attempt / evidence snapshot baseline
+
+release-decision baseline
+
+5. Runtime production-use intent must be explicitly recorded as its own authorization decision and must not be inferred from any upstream baseline or prior pass result.
+
+What runtime production-use authorization means operationally
+
+Runtime production-use authorization means only that FG_RECEIVE may be permitted for authorized runtime operational use at the production-use authorization layer.
+
+It is an operational-use authorization only.
+
+What runtime production-use authorization does NOT mean
+
+Runtime production-use authorization does not mean implementation completion is newly granted.
+
+Runtime production-use authorization does not mean admitted-source activation is implied retroactively.
+
+Runtime production-use authorization does not mean historical events are retroactively legalized.
+
+Runtime production-use authorization does not mean correction-path authorization.
+
+Runtime production-use authorization does not mean permission to rewrite or reinterpret already-written truth.
+
+Explicit prohibition
+
+Neither implementation completion nor admitted-source activation automatically authorizes runtime production use.
+
+Runtime production use must remain a distinct downstream authorization question and must be decided explicitly.
+
+Rollback / disable rule
+
+If FG_RECEIVE runtime production-use authorization is later disabled, that disable action must not rewrite, erase, or silently reinterpret any already-written:
+
+event truth
+
+final truth
+
+stock ledger
+
+Disable / rollback at the runtime production-use authorization layer is forward-governance only unless a separate independently authorized correction path is frozen and used.
+
+Output and audit discipline
+
+Runtime production-use authorization decisions must be recorded explicitly as decision-layer outputs only, such as:
+
+FG_RECEIVE runtime production use = AUTHORIZED
+
+or
+
+FG_RECEIVE runtime production use = UNAUTHORIZED
+
+The runtime production-use authorization record must preserve:
+
+explicit decision outcome
+
+explicit decision boundary
+
+explicit audit wording that implementation != activation
+
+explicit audit wording that activation != runtime production use
+
+No implied authorization, silent authorization, activation-by-authorization wording, or implementation-by-authorization wording is allowed.
