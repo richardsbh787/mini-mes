@@ -69,6 +69,179 @@ When designing or modifying flows:
 - avoid turning one focused step into a broad workflow platform
 - keep Starter V1 minimal unless expansion is explicitly approved
 
+## Mini-MES Product Mission — Extreme Simplicity Is the Moat
+Mini-MES must treat extreme simplicity as a core competitive advantage.
+
+### Core mission
+Mini-MES is built for SME industrial users, not enterprise "big and full" software buyers.
+Frontline users should be able to understand core flows in about 10 minutes.
+The product should solve the sharpest operational pain first.
+
+### Product principle
+Extreme simplicity is part of the product moat.
+The system should absorb complexity instead of pushing burden to operators.
+Every new feature or module must be checked against simplicity, usability, and operational value.
+Do not copy large-enterprise MES complexity unless clearly justified.
+
+### Mandatory design rules
+When designing future steps, modules, or surfaces:
+
+1. Keep core frontline flows understandable in about 10 minutes.
+2. Solve the sharpest operational pain before expanding surrounding feature scope.
+3. Prefer backend absorption of complexity over operator-side reconstruction, clicks, or interpretation.
+4. Require each new feature or module to justify simplicity cost, usability impact, and operational value.
+5. Preserve narrow, understandable surfaces even when backend truth and guard logic become more rigorous.
+6. Reject feature growth that makes the product broader but less learnable or less useful.
+
+### Anti-bloat rule
+The following are forbidden unless clearly justified:
+
+- feature bloat that weakens core operational clarity
+- enterprise-style workflow expansion without sharp SME pain justification
+- operator-facing complexity added only because larger MES products have it
+- convenience feature accumulation that dilutes the mainline product
+- broad module expansion without strong operational value
+
+### Design intent
+The purpose of this mission is to keep Mini-MES sharp, understandable, and operationally useful.
+Mini-MES should win by being simple enough to adopt quickly, focused enough to remove real daily pain, and disciplined enough to preserve truth without overwhelming the user.
+
+### Human version
+Mini-MES 不是靠“功能很多”取胜，而是靠“足够简单、上手够快、真正解决现场最痛的问题”取胜。
+复杂度尽量让系统自己吸收，不要转嫁给一线人员。
+
+## Mini-MES Ontology Global Extension — Six-Layer Model
+Mini-MES Ontology is no longer treated as only:
+
+- Object
+- Property
+- Relationship
+- Action
+
+It is globally extended into six layers:
+
+- **T = Type** (object types)
+- **P = Predicate** (judgment / filter predicates)
+- **F = Function** (conversion / normalization / derivation functions)
+- **Agg = Aggregate** (governed aggregates)
+- **Action = Business Action** (guarded business actions)
+- **Role = Authority Boundary** (who may read / approve / execute)
+
+### Global rule
+For future ontology-driven design, especially from Step 46 onward, every new business domain or module should be checked through all six layers:
+
+- T
+- P
+- F
+- Agg
+- Action
+- Role
+
+A design is not considered ontology-complete if it defines only objects and relationships but leaves predicates, functions, aggregates, actions, or authority boundaries outside the model.
+
+### Meaning of each layer
+- **T** defines what business objects exist.
+- **P** defines how the system judges, filters, gates, or classifies reality.
+- **F** defines how quantities, evidence, or semantic meaning are converted / normalized / derived.
+- **Agg** defines governed read-side summaries and grouped truths; aggregates must not be left as ad hoc SQL/report leftovers.
+- **Action** defines legal business operations with guard conditions and write boundaries.
+- **Role** defines authority, approval, read/write boundary, and execution responsibility.
+
+### Mandatory ontology design discipline
+When designing future steps:
+
+1. Do not stop at T / relationship modeling only.
+2. Predicates must be made explicit when business judgment exists.
+3. Functions must be made explicit when conversion / normalization / derivation exists.
+4. Aggregates must be explicitly governed when the business depends on summaries, counts, balances, frequencies, or overdue views.
+5. Actions must be modeled as guarded business actions, not hidden in procedural logic.
+6. Roles must be explicit; authority is part of the semantic model, not an afterthought.
+
+### Frozen-boundary protection
+This AGENTS patch is a global design rule only.
+It does **not** retroactively alter any frozen step semantics.
+It does **not** auto-expand current locked tasks.
+It does **not** authorize implementation by itself.
+All frozen steps remain governed by their own accepted boundaries unless a later freeze record explicitly changes them.
+
+### Anti-fake-ontology rule
+The following are forbidden:
+
+- object-only ontology with missing predicate/function/action/role logic
+- aggregates that exist only as informal report logic outside the model
+- hidden authority decisions not represented in Role
+- convenience inference pretending to be legal ontology truth
+- switching database / graph stack as a substitute for missing semantic design
+
+### Current Mini-MES mapping examples
+Examples of the six layers in the current system include:
+
+**T**
+
+- WorkOrder
+- Material
+- StockLedger
+- InventoryState
+- WipTransfer
+- FgReceive
+- Shipment
+- Complaint
+- CAPA
+
+**P**
+
+- is_shortage
+- is_negative_stock
+- is_final_step
+- is_available_for_next_step
+- is_shadow_batch
+- is_authorized_prebuild
+
+**F**
+
+- qty/uom conversion
+- shortage gap calculation
+- inventory evidence normalization
+- complaint source resolution
+
+**Agg**
+
+- item balance by bucket
+- open shortage count
+- complaint frequency by model/customer
+- CAPA overdue count
+- monthly FG in/out summary
+
+**Action**
+
+- Detect Shortage
+- Open Shadow Case
+- Approve Prebuild
+- Create Complaint
+- Open CAPA
+- Close CAPA
+
+**Role**
+
+- operator
+- supervisor
+- planner
+- store
+- QA
+- manager
+
+### Design intent
+The purpose of this extension is not to force a new database choice.
+The purpose is to ensure Mini-MES ontology becomes executable and governed:
+
+- semantic
+- evidence-linked
+- action-aware
+- aggregate-aware
+- role-aware
+
+This rule should guide future ontology design, especially in later knowledge/read-side layers such as quality, complaint, and CAPA domains.
+
 ## Truth Surface Protection
 Unless the task explicitly requires it, do not mutate:
 - StockLedger
@@ -85,9 +258,127 @@ For each step:
 3. List what this step may read.
 4. List what this step must not touch.
 5. State the S-1 / S0 / S+1 audit briefly.
-6. Implement only within that boundary.
-7. Add focused tests for frozen semantics and no-mutation guarantees.
-8. Return review-ready artifacts only.
+6. Run the Pre-Freeze Crisis Check before any freeze recommendation, implementation authorization, formal final review, or decision to continue the current mainline.
+7. Implement only within that boundary.
+8. Add focused tests for frozen semantics and no-mutation guarantees.
+9. Return review-ready artifacts only.
+
+### Pre-Freeze Crisis Check (Required)
+**Purpose**
+
+Before any step may enter freeze, implementation, implementation authorization, or formal final review, the current owner must run a Pre-Freeze Crisis Check. This check exists to catch forward-looking structural risk that may not be visible inside normal step-local review.
+
+This check does not replace S-1 / S0 / S+1. S-1 / S0 / S+1 asks whether the current step is locally sound in relation to the nearest frozen chain. Pre-Freeze Crisis Check asks whether the current step, if accepted now, is likely to create a future mainline failure, dependency collapse, operator-use break, or freeze pollution later.
+
+**Placement**
+
+Add this section inside the Step Execution Pattern before:
+
+- freeze recommendation
+- implementation authorization
+- formal final review
+- any decision to continue the current mainline
+
+**Maximum Length**
+
+One page maximum. State only the highest-risk forward-looking points and the resulting gate decision.
+
+**Required Six Checks**
+
+1. **Foundation Check**
+   Question: Does this step rely on any upstream truth, master data, admitted source, legal evidence, or runtime prerequisite that is not truly ready yet?
+   Must state:
+   - what upstream foundation this step stands on
+   - whether that foundation is genuinely usable now
+   - what remains missing
+2. **Dependency Chain Check**
+   Question: If this step is accepted now, which downstream steps will rely on it, and what breaks if this step is weaker than assumed?
+   Must state:
+   - immediate downstream dependency chain
+   - highest-cost future failure if current assumptions are wrong
+   - whether delay now is cheaper than repair later
+3. **Reality Intrusion Check**
+   Question: Will factory reality create bypass, shadow flow, verbal override, illegal release, or off-system workaround before the full designed control layer exists?
+   Must state:
+   - likely real-world bypass modes
+   - whether minimum observation should start earlier
+   - what must be visible now even if full control is not yet implemented
+   - earliest step at which minimum observation must begin, even if full control is not yet implemented
+4. **Operator Action Surface Check**
+   Question: Can the operator understand what to do, what not to do, and what to do next when blocked?
+   Must state:
+   - operator-visible action entry
+   - minimum operator action path
+   - operator-visible error exits that must eventually exist
+   Note: Do not force final UI copy here. At this stage, identify the operator-visible error exits and required next-action guidance only.
+5. **Freeze Pollution Check**
+   Question: If this step is wrong, what frozen semantics, handoff records, or upstream interpretations become polluted?
+   Must state:
+   - which frozen layers would be contaminated
+   - whether correction would require an independent correction path
+   - whether the risk is local or chain-wide
+6. **Stop-or-Go Gate**
+   A final explicit gate decision is required.
+   Allowed outputs only:
+   - GO
+   - CONDITIONAL GO
+   - PAUSE
+   - ROLLBACK REVIEW
+
+**Definitions**
+
+GO: Current step may proceed without additional preconditions.
+CONDITIONAL GO: Current step may proceed only after explicitly listed preconditions are met.
+PAUSE: Current mainline must stop until the named issue is resolved or formally bounded.
+ROLLBACK REVIEW: The current issue may invalidate an upstream frozen assumption and requires upstream review before continuing.
+
+**Gate Authority**
+
+Gate decision draft: Qingchen.
+Gate decision confirmation: Ruichen only.
+No gate output is binding without Ruichen's explicit confirmation.
+
+**Required Output Format**
+
+Pre-Freeze Crisis Check
+
+- Current highest risk:
+- Risk level: P0 / P1 / P2
+- Affected scope:
+- Foundation check:
+- Dependency chain check:
+- Reality intrusion check:
+- Operator action surface check:
+- Freeze pollution check:
+- Gate decision draft: GO / CONDITIONAL GO / PAUSE / ROLLBACK REVIEW
+- Preconditions before resume:
+- Gate decision confirmation: Ruichen [confirmed / not yet confirmed]
+
+**Execution Rule**
+
+No freeze recommendation, no implementation authorization, and no formal final review may proceed without this section for:
+
+- any key mainline step
+- any step that becomes a dependency base for multiple downstream steps
+- any step that touches truth admission, legal evidence, identity, availability, reconciliation, or operator-facing blocking flow
+
+**Review Roles**
+
+- Draft: Qingchen
+- Final direction decision: Ruichen
+- Final review confirmation: Qinran
+- Adversarial challenge / counterexample pressure test: Lao Xiao (DeepSeek), when requested
+
+**UI / Operator Error Discipline Link**
+
+For any step with operator-visible failure paths, the Pre-Freeze Crisis Check must identify operator-visible error exits. At freeze stage, the system does not need final Chinese wording yet. But the step must not be treated as operator-ready if it cannot later provide:
+
+- developer/log technical error detail
+- separate operator-facing understandable action guidance
+
+**Current Recorded Application**
+
+If Step 47 admitted source foundation remains not truly ready because `location_code` repair path is not yet formally designed and frozen, then Step 48 and later Starter steps may continue only at design layer and must not enter implementation authorization.
 
 ## Preferred Deliverables
 When finishing a task, provide:
