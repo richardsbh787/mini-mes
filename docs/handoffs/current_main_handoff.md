@@ -45,7 +45,17 @@ Frozen Record - Step47_PF1_Evidence_Surface Baseline
 
 Frozen Record - Step47_PF2_Evidence_Surface Baseline
 
+Frozen Record - Step47_PF3_Evidence_Surface Baseline
+
+Frozen Record - Step47_PF4_Evidence_Surface Baseline
+
 Frozen Record - Step47_PF5_Evidence_Surface Baseline
+
+Frozen Record - Step47_PF6_Evidence_Surface Baseline
+
+Frozen Record - Step47_PF7_Evidence_Surface Baseline
+
+Frozen Record - Step47_PF8_Evidence_Surface Baseline
 
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
@@ -89,7 +99,7 @@ It is not implementation authorization.
 FG_RECEIVE Step 47 Release Decision Baseline is frozen as a design-layer release-decision baseline only.
 It is not implementation authorization.
 
-The Step 47 `location_code` freeze chain now also includes the frozen blocking-preconditions baseline, gate evidence-pack submission contract baseline, and PF-1 / PF-2 / PF-5 evidence-surface baselines.
+The Step 47 `location_code` freeze chain now also includes the frozen blocking-preconditions baseline, gate evidence-pack submission contract baseline, and PF-1 / PF-2 / PF-3 / PF-4 / PF-5 / PF-6 / PF-7 / PF-8 evidence-surface baselines.
 They remain design-layer frozen records only.
 They do not authorize implementation, activation, or runtime production use.
 
@@ -1524,6 +1534,9 @@ FG_RECEIVE Step 47A Re-Admission Evaluation Baseline is frozen as a design-layer
 
 FG_RECEIVE Step 47 Release Decision Baseline is frozen as a design-layer release-decision baseline only.
 
+The Step 47 `location_code` freeze chain also includes the frozen blocking-preconditions baseline, gate evidence-pack submission contract baseline, and PF-1 / PF-2 / PF-3 / PF-4 / PF-5 / PF-6 / PF-7 / PF-8 evidence-surface baselines.
+They remain design-layer frozen records only.
+
 Important
 
 Do not auto-advance beyond the current locked task without explicit user authorization.
@@ -1547,8 +1560,7 @@ Any future repaired FG_RECEIVE source must still pass full Step 47A admissibilit
 16. One-line summary
 
 Step 40A, Step 45, and Step 46A remain formally implemented and frozen.
-Step 40A, Step 45, and Step 46A remain formally implemented and frozen.
-Step 47 remains design-frozen and BLOCKED, Step 47A remains frozen with all four current candidates still NOT_ADMISSIBLE_YET and the admitted source list effectively EMPTY, Step 47B remains frozen as the legal location evidence & accountability baseline under Task Card v2.1, and FG_RECEIVE now also has frozen design-layer baselines for the Location Master Physical Schema, the Event Truth Surface, the Event Truth Physical Schema, the Resolution Attempt & Evidence Snapshot Physical Schema, the Event-Time Location Resolution Runtime semantic contract, the Event-Time Location Resolution Read Surface semantic contract, the Step 47A Re-Admission Evaluation contract, and the Step 47 Release Decision contract while remaining NOT auto-admitted.
+Step 47 remains design-frozen and BLOCKED, Step 47A remains frozen with all four current candidates still NOT_ADMISSIBLE_YET and the admitted source list effectively EMPTY, Step 47B remains frozen as the legal location evidence & accountability baseline under Task Card v2.1, the Step 47 `location_code` freeze chain now also includes the frozen blocking-preconditions baseline, gate evidence-pack submission contract baseline, and PF-1 / PF-2 / PF-3 / PF-4 / PF-5 / PF-6 / PF-7 / PF-8 evidence-surface baselines, and FG_RECEIVE now also has frozen design-layer baselines for the Location Master Physical Schema, the Event Truth Surface, the Event Truth Physical Schema, the Resolution Attempt & Evidence Snapshot Physical Schema, the Event-Time Location Resolution Runtime semantic contract, the Event-Time Location Resolution Read Surface semantic contract, the Step 47A Re-Admission Evaluation contract, and the Step 47 Release Decision contract while remaining NOT auto-admitted.
 
 17. Step 47 FG_RECEIVE implementation final archival result
 
