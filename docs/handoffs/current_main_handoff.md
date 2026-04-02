@@ -2637,3 +2637,116 @@ Boundary preservation
 Implementation authorization remains distinct from activation.
 
 Implementation authorization remains distinct from runtime production use.
+
+32. Frozen Record - Step47_LocationCode_Path Blocking Preconditions Baseline (v4.1)
+
+Status: FROZEN
+Decision: PASS
+Authority Chain: Drafted by 清尘 → 副审通过（老萧 / DeepSeek）→ 终审通过（沁然）→ 睿辰批准冻结
+Scope Type: Design-layer blocking-preconditions freeze only
+
+This record formally freezes **Step47_LocationCode_Path — 审查稿 v4.1** as the governing blocking-preconditions baseline for the `location_code` path under **Step 47 — Inventory Position Truth**.
+
+#### Frozen meaning
+
+From this freeze onward, the blocking-precondition set defined in this baseline becomes the mandatory gate foundation for any future attempt to remove the current Step 47 block related to the `location_code` path.
+
+The frozen blocking-precondition set is:
+
+* PF-1 — 派生规则冻结 + 规则外临时需求最小动作路径 + 路径竞争约束
+* PF-2 — 主表维护责任升级为阻断前提 + SLA + 降级生命周期 + 资源保障与替补机制
+* PF-3 — 主表 / 物理标签 / 现场位置的一致性最低机制 + 日常弱校验
+* PF-4 — 现场压力测试必须量化，不得只做形式验证
+* PF-5 — 阻断解除前必须完成有限范围现实验证 + 无干扰验证
+* PF-6 — design-only 边界必须禁止代码偷渡与实现级文档 / 模板偷渡
+* PF-7 — 必须增加 SME 管理失效检测 + 告警升级 + 自动熔断
+* PF-8 — 阻断解除必须采用渐进式恢复层级 + Level 2 消费边界强制声明
+
+All sub-clauses under PF-1 through PF-8 are frozen together with this record as part of the same blocking-preconditions baseline.
+
+#### What this freeze changes
+
+This freeze changes only one thing:
+
+* It formally establishes PF-1 through PF-8 and their sub-clauses as the **necessary preconditions** that must be satisfied before the Step 47 `location_code` path block may be considered for removal.
+
+#### What this freeze does NOT change
+
+This freeze does **not** mean any of the following:
+
+* admitted source foundation has passed
+* Step 47 downstream has been unlocked
+* implementation authorization has been opened
+* runtime production use has been authorized
+* any admitted-source activation has occurred
+* any code implementation is authorized by this record alone
+
+#### Locked interpretation boundary
+
+The current `location_code` mechanism remains locked as:
+
+* a **candidate real-world baseline**
+* not foundation ready
+* not admitted-source legally ready
+* not sufficient by itself for downstream implementation authorization
+
+This interpretation boundary is frozen and must not drift in later reviews, handoff updates, or implementation discussions.
+
+#### Mandatory future gate discipline
+
+Any future attempt to remove the current Step 47 `location_code` block must submit a gate evidence pack aligned to the frozen baseline and must not skip any required category.
+
+At minimum, the future gate evidence pack must cover:
+
+1. 派生规则正式冻结记录
+2. 规则外临时需求最小动作路径正式冻结记录
+3. 路径竞争约束与量化结果正式冻结记录
+4. 主表维护责任 + SLA + 降级生命周期正式冻结记录
+5. 资源保障、有效替补机制正式冻结记录
+6. 主表 / 标签 / 现场一致性 + 日常弱校验正式冻结记录
+7. 压力测试方案与量化通过标准正式冻结记录
+8. 现实验证、无干扰验证、赶货压力覆盖或受控补足结果记录
+9. design-only 防代码偷渡、防实现级文档偷渡、防模板偷渡正式冻结记录
+10. 管理失效检测 + 告警升级 + 自动熔断 + 熔断豁免约束正式冻结记录
+11. 渐进式恢复层级 + Level 2 消费边界 + Level 2 数据扩散限制正式冻结记录
+12. 清尘 gate decision draft
+13. 睿辰明确 gate confirmation
+
+No gate output is effective without explicit confirmation from 睿辰.
+
+#### Locked measurement note
+
+A specific frozen execution note is recorded for PF-1E:
+
+* the `120%` time-ratio requirement is valid only when supported by **actual measured data**
+* future gate submission must include the **raw measurement data**
+* summary conclusions alone are insufficient
+* estimated or verbal claims of compliance are not acceptable substitutes for measured evidence
+
+#### Continued block status after this freeze
+
+After this freeze, the official status remains:
+
+* Step 47 admitted source foundation = NOT TRULY READY
+* Step 47 continues BLOCKED on the `location_code` path
+* Step 48+ remains design-only where this dependency is implicated
+* implementation authorization remains closed
+
+#### Non-scope
+
+This freeze does not define:
+
+* schema implementation
+* API implementation
+* UI implementation
+* database fields or table design
+* runtime activation logic
+* production-use approval
+* downstream consumption authorization
+* code release or deployment permission
+
+Those remain outside the scope of this record unless separately and explicitly frozen in later independent records.
+
+#### Freeze intent
+
+The intent of this freeze is to lock the **blocking-preconditions baseline** only, so that later discussions about removing the Step 47 `location_code` block cannot bypass, dilute, or silently reinterpret the required preconditions.
