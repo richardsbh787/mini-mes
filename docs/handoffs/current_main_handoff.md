@@ -3265,3 +3265,202 @@ This freeze does not define permission-system implementation, approval workflow 
 Freeze intent
 
 The intent of this freeze is to lock the minimum future PF-2 gate evidence surface only, so that later Step 47 `location_code` unblock review cannot dilute PF-2 sub-clause reviewability, responsibility evidence, SLA evidence, degrade discipline, resource assurance, effective backup requirements, or the distinction between named ownership and reviewable structured coverage.
+
+36. Frozen Record - Step47_PF5_Evidence_Surface Baseline
+
+Status: FROZEN
+Decision: PASS
+Scope Type: Design-layer evidence-surface freeze only
+Dependency Base:
+
+Step47_LocationCode_Path Blocking Preconditions Baseline (v4.1)
+
+Step47_Gate_Evidence_Pack Submission Contract & Review Discipline Baseline
+
+This record freezes the minimum evidence surface for future PF-5 gate submission under the Step 47 `location_code` unblock path.
+
+Boundary
+
+This freeze is handoff-only.
+
+This freeze is design-layer only.
+
+This freeze does not authorize code change, schema change, API change, UI change, runtime logic, workflow automation, activation, or production use.
+
+Frozen PF-5 reviewability rule
+
+Future PF-5 gate submission must remain reviewable separately by sub-clause:
+
+PF-5A
+
+PF-5B
+
+PF-5C
+
+PF-5D
+
+The submission must not collapse all PF-5 material into one blended statement such as PF-5 is basically satisfied.
+
+Frozen PF-5A evidence surface
+
+The minimum evidence surface for PF-5A must make reality-validation scope evidence reviewable.
+
+At minimum, PF-5A submission evidence must make reviewable:
+
+what validation environment or site was used
+
+why it is treated as a representative SME environment or equivalent simulated environment
+
+what operational scope was covered
+
+what behaviors or outcomes were actually observed
+
+PF-5A must not be treated as satisfied by generic claims such as:
+
+we validated it in the factory
+
+the pilot looked fine
+
+the site was representative enough
+
+without reviewable evidence objects.
+
+Frozen PF-5B evidence surface
+
+The minimum evidence surface for PF-5B must make validation-result evidence reviewable.
+
+At minimum, PF-5B submission evidence must make reviewable:
+
+validation scenarios
+
+sample basis or sample count
+
+observed wrong-path behavior
+
+observed mis-selection behavior
+
+observed silent-skip behavior
+
+whether PF-4 quantitative standards were met
+
+what remains unmet, if not passed
+
+PF-5B must not be treated as satisfied by summary-only outcome language such as:
+
+passed overall
+
+operators adapted well
+
+results were acceptable
+
+without reviewable supporting evidence.
+
+Frozen PF-5C evidence surface
+
+The minimum evidence surface for PF-5C must make no-interference validation evidence reviewable.
+
+At minimum, PF-5C submission evidence must make reviewable:
+
+validation period
+
+shift coverage
+
+that operators were not pre-notified as a test audience
+
+that project-team close accompaniment was not used as the primary observation method
+
+what log source, observation source, or equivalent evidence source supports the no-interference claim
+
+what behavior-capture basis was used
+
+PF-5C must not be treated as satisfied by:
+
+accompanied demo-style validation
+
+pre-announced observation exercise
+
+claim of natural behavior without reviewable evidence source
+
+demonstration sessions presented as no-interference validation
+
+Frozen PF-5D evidence surface
+
+The minimum evidence surface for PF-5D must make rush-pressure coverage or controlled-pressure补足 evidence reviewable.
+
+At minimum, PF-5D submission evidence must make reviewable:
+
+whether a naturally occurring rush-pressure condition was observed
+
+if yes, what made it identifiable as rush pressure
+
+if no, what controlled-pressure method was used to compensate
+
+what pressure change was introduced
+
+what behavior difference, if any, was observed before and after the pressure condition
+
+PF-5D must not be treated as satisfied by:
+
+saying there was production pressure
+
+using calm-shift evidence as substitute for rush-pressure evidence
+
+claiming pressure was covered without showing how it was identified or compensated
+
+Frozen PF-5 invalid or non-reviewable submission patterns
+
+Future PF-5 submission may be judged invalid, incomplete, or not reviewable if it contains patterns such as:
+
+pre-notified operator sessions presented as no-interference validation
+
+pass-rate summary without sample basis
+
+PPT-style summary without raw logs, raw observation records, or equivalent reviewable evidence
+
+claim of rush-pressure coverage without identifiable rush-pressure basis
+
+calm-shift results substituted for rush-pressure evidence
+
+blended PF-5 material that prevents sub-clause review
+
+screenshots without traceable source context
+
+pilot went well wording without reviewable evidence objects
+
+Frozen anti-drift meaning
+
+This freeze explicitly preserves the distinction between:
+
+a validation activity happened
+
+and
+
+there is reviewable evidence that reality validation, no-interference validation, and rush-pressure coverage were actually achieved at gate-review quality
+
+This distinction must not drift in later gate submission or review.
+
+This freeze also explicitly preserves the distinction between:
+
+a demonstration or accompanied pilot happened
+
+and
+
+no-interference validation evidence exists
+
+These two meanings must not be treated as equivalent in later gate submission or review.
+
+What this freeze does NOT change
+
+This freeze does not approve unblock.
+
+This freeze does not approve implementation.
+
+This freeze does not approve activation.
+
+This freeze does not approve runtime production use.
+
+This freeze does not define pilot execution logic, log-system implementation, field-test tooling, or runtime validation workflow.
+
+Freeze intent
+
+The intent of this freeze is to lock the minimum future PF-5 gate evidence surface only, so that later Step 47 `location_code` unblock review cannot dilute PF-5 sub-clause reviewability, reality-validation evidence, no-interference validation evidence, rush-pressure coverage or controlled-pressure补足 evidence, or the distinction between a validation activity and gate-review-quality validation evidence.
