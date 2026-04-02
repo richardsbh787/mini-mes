@@ -3058,3 +3058,210 @@ This freeze does not define UI buttons, workflow screens, table fields, or runti
 Freeze intent
 
 The intent of this freeze is to lock the minimum future PF-1 gate evidence surface only, so that later Step 47 `location_code` unblock review cannot dilute PF-1 sub-clause reviewability, raw-evidence requirements, path-competition discipline, or the distinction between path existence and path-winning evidence under real conditions.
+
+35. Frozen Record - Step47_PF2_Evidence_Surface Baseline
+
+Status: FROZEN
+Decision: PASS
+Scope Type: Design-layer evidence-surface freeze only
+Dependency Base:
+
+Step47_LocationCode_Path Blocking Preconditions Baseline (v4.1)
+
+Step47_Gate_Evidence_Pack Submission Contract & Review Discipline Baseline
+
+This record freezes the minimum evidence surface for future PF-2 gate submission under the Step 47 `location_code` unblock path.
+
+Boundary
+
+This freeze is handoff-only.
+
+This freeze is design-layer only.
+
+This freeze does not authorize code change, schema change, API change, UI change, runtime logic, workflow automation, activation, or production use.
+
+Frozen PF-2 reviewability rule
+
+Future PF-2 gate submission must remain reviewable separately by sub-clause:
+
+PF-2A
+
+PF-2B
+
+PF-2C
+
+PF-2D
+
+PF-2E
+
+The submission must not collapse all PF-2 material into one blended statement such as PF-2 is basically satisfied.
+
+Frozen PF-2A evidence surface
+
+The minimum evidence surface for PF-2A must make responsibility-element evidence reviewable.
+
+At minimum, PF-2A submission evidence must make reviewable:
+
+who is responsible for new location creation
+
+who is responsible for location disablement
+
+who is responsible for location attribute change
+
+who is responsible for label-update triggering
+
+who is responsible for exception handling
+
+who is responsible for layout-change synchronization back to the master
+
+This freeze does not define implementation fields, permission tables, workflow configuration, or runtime ownership logic for PF-2A.
+
+PF-2A must not be treated as satisfied by generic statements such as management will handle it or the team already knows who owns this.
+
+Frozen PF-2B evidence surface
+
+The minimum evidence surface for PF-2B must make SLA evidence reviewable.
+
+At minimum, PF-2B submission evidence must make reviewable:
+
+what response-time commitments exist for each required action class
+
+that SLA commitments are stated in a measurable form
+
+that SLA claims are reviewable as defined commitments rather than verbal promises
+
+PF-2B must not be treated as satisfied by:
+
+vague wording such as as soon as possible
+
+informal expectation
+
+non-measurable commitments
+
+general confidence that the team is responsive
+
+Frozen PF-2C evidence surface
+
+The minimum evidence surface for PF-2C must make degrade-path lifecycle, cap, and exit-condition evidence reviewable.
+
+At minimum, PF-2C submission evidence must make reviewable:
+
+when degrade mode is triggered
+
+what minimum action is allowed under degrade mode
+
+whether business flow continues or not
+
+whether the path remains outside admitted-source truth
+
+the usage cap or repeat threshold
+
+the effective period or duration boundary
+
+the closure due point
+
+the exit condition back to the normal path
+
+the lock condition that prevents indefinite reuse
+
+PF-2C must not be treated as satisfied by principle-only language such as degrade is temporary without reviewable evidence objects.
+
+Frozen PF-2D evidence surface
+
+The minimum evidence surface for PF-2D must make resource assurance and backup mechanism evidence reviewable.
+
+At minimum, PF-2D submission evidence must make reviewable:
+
+what backup mechanism exists when the primary responsible role is unavailable
+
+what SLA applies to the backup path
+
+what happens if no effective backup exists
+
+what escalation threshold applies when repeated timeout occurs
+
+what constraint exists on degrade spread when resource assurance is weak or absent
+
+PF-2D must not be treated as satisfied by merely naming a backup person without showing the backup arrangement as a reviewable mechanism.
+
+Frozen PF-2E evidence surface
+
+The minimum evidence surface for PF-2E must make effective backup evidence reviewable.
+
+Effective backup requires reviewable evidence of:
+
+system permission existence
+
+training record existence
+
+minimum executability, not just nominal assignment
+
+The following meanings remain explicit:
+
+a named backup without permission evidence is insufficient
+
+a named backup without training evidence is insufficient
+
+a named backup who cannot actually execute the required maintenance work is insufficient
+
+if effective backup is not demonstrated, the situation must be treated as no effective backup
+
+Frozen PF-2 invalid or non-reviewable submission patterns
+
+Future PF-2 submission may be judged invalid, incomplete, or not reviewable if it contains patterns such as:
+
+role titles without responsibility mapping
+
+SLA numbers without reviewable commitment basis
+
+degrade-path description without cap, exit, or lock conditions
+
+backup names without permission evidence
+
+backup names without training evidence
+
+general business continuity language without bounded degrade discipline
+
+blended PF-2 material that prevents sub-clause review
+
+screenshots without traceable source context
+
+verbal assurance that someone can cover this if needed
+
+Frozen anti-drift meaning
+
+This freeze explicitly preserves the distinction between:
+
+someone is said to be responsible
+
+and
+
+there is reviewable evidence that responsibility, SLA, degrade discipline, resource assurance, and effective backup are actually structured for gate review
+
+This distinction must not drift in later gate submission or review.
+
+This freeze also explicitly preserves the distinction between:
+
+a backup is named
+
+and
+
+an effective backup is evidenced
+
+These two meanings must not be treated as equivalent in later gate submission or review.
+
+What this freeze does NOT change
+
+This freeze does not approve unblock.
+
+This freeze does not approve implementation.
+
+This freeze does not approve activation.
+
+This freeze does not approve runtime production use.
+
+This freeze does not define permission-system implementation, approval workflow implementation, HR process implementation, or runtime escalation logic.
+
+Freeze intent
+
+The intent of this freeze is to lock the minimum future PF-2 gate evidence surface only, so that later Step 47 `location_code` unblock review cannot dilute PF-2 sub-clause reviewability, responsibility evidence, SLA evidence, degrade discipline, resource assurance, effective backup requirements, or the distinction between named ownership and reviewable structured coverage.
