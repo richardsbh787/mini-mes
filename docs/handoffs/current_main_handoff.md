@@ -2750,3 +2750,136 @@ Those remain outside the scope of this record unless separately and explicitly f
 #### Freeze intent
 
 The intent of this freeze is to lock the **blocking-preconditions baseline** only, so that later discussions about removing the Step 47 `location_code` block cannot bypass, dilute, or silently reinterpret the required preconditions.
+
+33. Frozen Record - Step47_Gate_Evidence_Pack Submission Contract & Review Discipline Baseline
+
+Status: FROZEN
+Decision: PASS
+Scope Type: Design-layer gate submission discipline freeze only
+Dependency Base: Step47_LocationCode_Path Blocking Preconditions Baseline (v4.1)
+
+This record freezes the submission contract and review discipline for any future Step 47 `location_code` unblock gate evidence pack.
+
+Boundary
+
+This freeze is handoff-only.
+
+This freeze is design-layer only.
+
+This freeze does not authorize code change, schema change, API change, UI change, runtime logic, workflow automation, activation, or production use.
+
+Frozen submission structure
+
+Any future Step 47 `location_code` unblock gate evidence pack must be submitted by PF category and must preserve the frozen PF-1 through PF-8 review structure.
+
+The submission must not be presented as one blended narrative that prevents itemized review.
+
+For each PF category, the submission must clearly separate:
+
+conclusion statement
+
+raw evidence
+
+exception / limitation note
+
+unmet items
+
+Frozen minimum evidence granularity
+
+Some items may include frozen review conclusions as part of the submission pack.
+
+However, any quantitative, observational, or measurement-based claim must include raw supporting evidence where raw evidence is required by the frozen baseline.
+
+Summary-only submission is insufficient where raw evidence is required.
+
+PF-1E locked measurement rule remains explicit:
+
+PF-1E 120% time-ratio compliance is valid only when supported by raw measurement data.
+
+Conclusion-only submission is insufficient.
+
+Estimated compliance is insufficient.
+
+Verbal assurance is insufficient.
+
+Frozen invalid or non-reviewable submission conditions
+
+A future gate evidence pack may be judged INCOMPLETE or NOT REVIEWABLE / BLOCKED if any of the following occurs:
+
+conclusion without raw evidence where raw evidence is required
+
+screenshots without source context
+
+verbal explanation without frozen record or raw evidence
+
+blended submission across multiple PF categories that prevents itemized review
+
+estimates, intuition, or roughly compliant statements used instead of required measured evidence
+
+evidence that cannot be traced to a stable source
+
+Frozen review chain discipline
+
+The frozen review chain for future gate review is:
+
+清尘 drafts the gate review judgment
+
+老萧（DeepSeek） performs secondary risk review
+
+沁然 performs final review
+
+睿辰 gives explicit final confirmation
+
+No gate output is effective without explicit confirmation from 睿辰.
+
+Frozen allowed gate outputs
+
+The allowed gate result states are frozen as:
+
+PASS
+
+FAIL
+
+INCOMPLETE
+
+BLOCKED
+
+No implementation-oriented output category is introduced by this record.
+
+Frozen anti-drift and anti-shortcut discipline
+
+Single PF satisfaction does not equal unblock approval.
+
+Partial evidence completion does not equal foundation readiness.
+
+Design-layer evidence completion does not equal implementation authorization.
+
+No future reviewer may silently compress multiple PF requirements into one generalized claim of readiness.
+
+Frozen future review output discipline
+
+Any future gate review output must explicitly state:
+
+which PF items are satisfied
+
+which PF items are missing
+
+how they are missing
+
+why current status cannot yet move into unblock decision, if the result is not PASS
+
+What this freeze does NOT change
+
+This freeze does not approve unblock.
+
+This freeze does not approve implementation.
+
+This freeze does not approve activation.
+
+This freeze does not approve runtime production use.
+
+This freeze does not define schema, API, UI, or runtime logic.
+
+Freeze intent
+
+The intent of this freeze is to lock the future gate evidence-pack submission contract and review discipline only, so that later Step 47 `location_code` unblock review cannot bypass PF-by-PF reviewability, raw-evidence requirements, explicit review-chain confirmation, or the frozen design-layer boundary.
