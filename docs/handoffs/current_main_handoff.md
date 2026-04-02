@@ -2883,3 +2883,178 @@ This freeze does not define schema, API, UI, or runtime logic.
 Freeze intent
 
 The intent of this freeze is to lock the future gate evidence-pack submission contract and review discipline only, so that later Step 47 `location_code` unblock review cannot bypass PF-by-PF reviewability, raw-evidence requirements, explicit review-chain confirmation, or the frozen design-layer boundary.
+
+34. Frozen Record - Step47_PF1_Evidence_Surface Baseline
+
+Status: FROZEN
+Decision: PASS
+Scope Type: Design-layer evidence-surface freeze only
+Dependency Base:
+
+Step47_LocationCode_Path Blocking Preconditions Baseline (v4.1)
+
+Step47_Gate_Evidence_Pack Submission Contract & Review Discipline Baseline
+
+This record freezes the minimum evidence surface for future PF-1 gate submission under the Step 47 `location_code` unblock path.
+
+Boundary
+
+This freeze is handoff-only.
+
+This freeze is design-layer only.
+
+This freeze does not authorize code change, schema change, API change, UI change, runtime logic, workflow automation, activation, or production use.
+
+Frozen PF-1 reviewability rule
+
+Future PF-1 gate submission must remain reviewable separately by sub-clause:
+
+PF-1A
+
+PF-1B
+
+PF-1C
+
+PF-1D
+
+PF-1E
+
+The submission must not collapse all PF-1 material into one blended statement such as PF-1 is basically satisfied.
+
+Frozen PF-1A evidence surface
+
+The minimum evidence surface for PF-1A must make the derived-rule freeze evidence reviewable as a stable rule definition rather than a verbal explanation only.
+
+At minimum, PF-1A submission evidence must make reviewable:
+
+what the rule inputs are
+
+what is allowed to be relied on
+
+what is forbidden to be relied on
+
+what happens when the list is empty
+
+what happens when the list is long
+
+how later rule changes do not silently rewrite prior truth meaning
+
+This freeze does not define implementation fields, persistence shape, or runtime behavior for PF-1A.
+
+Frozen PF-1B and PF-1C evidence surface
+
+The minimum evidence surface for PF-1B and PF-1C must make the minimum-action exception path reviewable as an actually defined exception path rather than conceptual flow narration only.
+
+At minimum, PF-1B and PF-1C submission evidence must make reviewable:
+
+the explicit action steps required from the operator
+
+the system response
+
+whether submission continues or not
+
+what non-admitted holding state exists, if continuation is allowed
+
+who closes the loop
+
+when closure is due
+
+how failure to close is retained for review
+
+Future PF-1B and PF-1C submission must not rely only on conceptual flow narration.
+
+Frozen PF-1D evidence surface
+
+The minimum evidence surface for PF-1D must make path competition discipline reviewable.
+
+Future PF-1D submission must show either:
+
+the wrong shortcut path has been structurally blocked
+
+or
+
+the correct minimum-action path is supported by measurable evidence showing it is not losing to the wrong path in real usage conditions
+
+Future PF-1D submission must not claim satisfaction by:
+
+training promise
+
+supervisor reminder
+
+future optimization promise
+
+general usability opinion
+
+Frozen PF-1E evidence surface
+
+The minimum evidence surface for PF-1E freezes the 120% time-ratio discipline as a raw-evidence-required measurement surface.
+
+PF-1E submission must include:
+
+raw measurement data
+
+measurement method
+
+sample basis or sample count
+
+comparison basis between the correct path and the wrong path
+
+observable timing evidence, not conclusion-only wording
+
+enough context to determine whether the result came from no-interference validation or equivalent controlled measurement
+
+The already-frozen meaning remains explicit:
+
+raw measurement data is mandatory
+
+summary conclusion alone is insufficient
+
+estimated compliance is insufficient
+
+verbal assurance is insufficient
+
+Frozen PF-1 invalid or non-reviewable submission patterns
+
+Future PF-1 submission may be judged invalid, incomplete, or not reviewable if it contains patterns such as:
+
+PF-1E conclusion without raw measurement data
+
+theoretical path diagrams without evidence of measured path competition
+
+operator-acceptance claims without no-interference evidence
+
+verbal explanation that the path is simple enough without reviewable evidence objects
+
+mixed PF-1 material that prevents sub-clause review
+
+screenshots without traceable source context
+
+timing claims without sample basis
+
+Frozen anti-drift meaning
+
+This freeze explicitly preserves the distinction between:
+
+a path exists
+
+and
+
+the path has evidence showing it can win against or structurally replace the wrong shortcut path in real conditions
+
+These two meanings must not be treated as equivalent in later gate submission or review.
+
+What this freeze does NOT change
+
+This freeze does not approve unblock.
+
+This freeze does not approve implementation.
+
+This freeze does not approve activation.
+
+This freeze does not approve runtime production use.
+
+This freeze does not define UI buttons, workflow screens, table fields, or runtime behavior.
+
+Freeze intent
+
+The intent of this freeze is to lock the minimum future PF-1 gate evidence surface only, so that later Step 47 `location_code` unblock review cannot dilute PF-1 sub-clause reviewability, raw-evidence requirements, path-competition discipline, or the distinction between path existence and path-winning evidence under real conditions.
