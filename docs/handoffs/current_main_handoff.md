@@ -3478,3 +3478,190 @@ This freeze does not define pilot execution logic, log-system implementation, fi
 Freeze intent
 
 The intent of this freeze is to lock the minimum future PF-5 gate evidence surface only, so that later Step 47 `location_code` unblock review cannot dilute PF-5 sub-clause reviewability, reality-validation evidence, no-interference validation evidence, rush-pressure coverage or controlled-pressure补足 evidence, or the distinction between a validation activity and gate-review-quality validation evidence.
+
+37. Frozen Record - Step47_PF7_Evidence_Surface Baseline
+
+Status: FROZEN
+Decision: PASS
+Scope Type: Design-layer evidence-surface freeze only
+Dependency Base:
+
+Step47_LocationCode_Path Blocking Preconditions Baseline (v4.1)
+
+Step47_Gate_Evidence_Pack Submission Contract & Review Discipline Baseline
+
+This record freezes the minimum evidence surface for future PF-7 gate submission under the Step 47 `location_code` unblock path.
+
+Boundary
+
+This freeze is handoff-only.
+
+This freeze is design-layer only.
+
+This freeze does not authorize code change, schema change, API change, UI change, runtime logic, workflow automation, activation, or production use.
+
+Frozen PF-7 reviewability rule
+
+Future PF-7 gate submission must remain reviewable separately by sub-clause:
+
+PF-7A
+
+PF-7B
+
+PF-7C
+
+PF-7D
+
+The submission must not collapse all PF-7 material into one blended statement such as PF-7 is basically satisfied.
+
+Frozen PF-7A evidence surface
+
+The minimum evidence surface for PF-7A must make management-failure signal coverage evidence reviewable.
+
+At minimum, PF-7A submission evidence must make reviewable:
+
+what signals are being monitored
+
+how those signals map to the frozen PF-7A categories
+
+that the signal set is sufficient to review repeated timeout, repeated exception use, repeated mismatch, repeated mis-selection, repeated degrade concentration, or equivalent management-failure patterns
+
+This freeze does not define implementation fields, runtime detectors, or persistence structures for PF-7A.
+
+PF-7A must not be treated as satisfied by generic claims such as:
+
+the system can detect issues
+
+alerts exist
+
+management will be notified
+
+without reviewable evidence objects tied to the frozen signal classes.
+
+Frozen PF-7B evidence surface
+
+The minimum evidence surface for PF-7B must make alert-positioning evidence reviewable.
+
+At minimum, PF-7B submission evidence must make reviewable:
+
+that alerting is positioned as management-failure detection rather than truth-legalization
+
+that alert existence does not itself make admitted-source use acceptable
+
+that alerting cannot be used as a substitute for satisfying the frozen blocking preconditions
+
+PF-7B must not be treated as satisfied by principle-only wording unless the positioning boundary is reviewable and explicit.
+
+Frozen PF-7C evidence surface
+
+The minimum evidence surface for PF-7C must make alert-escalation and automatic circuit-break evidence reviewable.
+
+At minimum, PF-7C submission evidence must make reviewable:
+
+what yellow, orange, and red escalation meanings are defined
+
+what action threshold exists for each level
+
+what restriction or block is triggered at each level
+
+that circuit-break behavior is defined as automatic rather than dependent on discretionary manual confirmation
+
+what limited exceptions, if any, remain when the highest-level block applies
+
+PF-7C must not be treated as satisfied by:
+
+email-only notification language
+
+dashboard-only visibility language
+
+management-awareness language without defined restriction or block consequence
+
+claims of escalation without reviewable threshold and action linkage
+
+Frozen PF-7D evidence surface
+
+The minimum evidence surface for PF-7D must make circuit-break exemption and override-constraint evidence reviewable.
+
+At minimum, PF-7D submission evidence must make reviewable:
+
+who is permitted to authorize override
+
+what elevated authorization threshold applies
+
+what recorded reason, scope, and recovery-time expectation is required
+
+what visible warning state must remain during override
+
+what time limit applies before automatic reversion
+
+what repeated-override threshold causes escalation into a stricter state
+
+PF-7D must not be treated as satisfied by:
+
+saying management can override if necessary
+
+general emergency language without bounded conditions
+
+undocumented discretionary bypass
+
+override language that lacks traceability, time limit, or automatic reversion
+
+Frozen PF-7 invalid or non-reviewable submission patterns
+
+Future PF-7 submission may be judged invalid, incomplete, or not reviewable if it contains patterns such as:
+
+alerts exist without signal coverage evidence
+
+escalation wording without threshold and action mapping
+
+circuit-break claims without automatic consequence definition
+
+override claims without authorization threshold
+
+override claims without reason, scope, or time-bound traceability
+
+management-awareness language substituted for actual restriction or block evidence
+
+blended PF-7 material that prevents sub-clause review
+
+screenshots without traceable source context
+
+verbal assurance that someone will intervene if it gets serious
+
+Frozen anti-drift meaning
+
+This freeze explicitly preserves the distinction between:
+
+the system can notify
+
+and
+
+there is reviewable evidence that management-failure detection, escalation, automatic circuit-break behavior, and override constraints are structurally defined for gate review
+
+This distinction must not drift in later gate submission or review.
+
+This freeze also explicitly preserves the distinction between:
+
+management may intervene
+
+and
+
+override is bounded, reviewable, time-limited, and non-default
+
+These two meanings must not be treated as equivalent in later gate submission or review.
+
+What this freeze does NOT change
+
+This freeze does not approve unblock.
+
+This freeze does not approve implementation.
+
+This freeze does not approve activation.
+
+This freeze does not approve runtime production use.
+
+This freeze does not define alert-engine implementation, notification tooling, dashboard implementation, or runtime escalation workflow.
+
+Freeze intent
+
+The intent of this freeze is to lock the minimum future PF-7 gate evidence surface only, so that later Step 47 `location_code` unblock review cannot dilute PF-7 sub-clause reviewability, management-failure signal coverage, alert-positioning evidence, escalation and automatic circuit-break evidence, override-constraint evidence, or the distinction between mere notification capability and reviewable structurally bounded management-failure control.
