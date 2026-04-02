@@ -1,7 +1,7 @@
-Mini-MES Handoff v2.13
+Mini-MES Handoff v2.14
 
-Updated after FG_RECEIVE Step 47 release decision baseline freeze
-Date: 2026-03-30
+Updated after Step 47 location_code freeze-chain evidence-surface baseline sync
+Date: 2026-04-02
 
 1. Frozen mainline snapshot
 
@@ -36,6 +36,16 @@ FG_RECEIVE Event-Time Location Resolution Read Surface Baseline frozen as design
 FG_RECEIVE Step 47A Re-Admission Evaluation Baseline frozen as design-layer evaluation baseline only
 
 FG_RECEIVE Step 47 Release Decision Baseline frozen as design-layer release-decision baseline only
+
+Frozen Record - Step47_LocationCode_Path Blocking Preconditions Baseline (v4.1)
+
+Frozen Record - Step47_Gate_Evidence_Pack Submission Contract & Review Discipline Baseline
+
+Frozen Record - Step47_PF1_Evidence_Surface Baseline
+
+Frozen Record - Step47_PF2_Evidence_Surface Baseline
+
+Frozen Record - Step47_PF5_Evidence_Surface Baseline
 
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
@@ -78,6 +88,10 @@ It is not implementation authorization.
 
 FG_RECEIVE Step 47 Release Decision Baseline is frozen as a design-layer release-decision baseline only.
 It is not implementation authorization.
+
+The Step 47 `location_code` freeze chain now also includes the frozen blocking-preconditions baseline, gate evidence-pack submission contract baseline, and PF-1 / PF-2 / PF-5 evidence-surface baselines.
+They remain design-layer frozen records only.
+They do not authorize implementation, activation, or runtime production use.
 
 2. Newly frozen step
 Step 40A - Daily Smart Stock Check / Movement Health Audit Baseline
