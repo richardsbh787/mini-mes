@@ -3876,3 +3876,226 @@ This freeze does not define dashboard implementation, export-control implementat
 Freeze intent
 
 The intent of this freeze is to lock the minimum future PF-8 gate evidence surface only, so that later Step 47 `location_code` unblock review cannot dilute PF-8 sub-clause reviewability, separate-level recovery evidence, anti-cross-level-drift evidence, re-gating requirement evidence, Level 2 consumption-boundary evidence, spillover-restriction evidence, or the distinction between staged restoration wording and separately bounded, separately gated, separately restricted recovery levels.
+
+39. Frozen Record - Step47_PF6_Evidence_Surface Baseline
+
+Status: FROZEN
+Decision: PASS
+Scope Type: Design-layer evidence-surface freeze only
+Dependency Base:
+
+Step47_LocationCode_Path Blocking Preconditions Baseline (v4.1)
+
+Step47_Gate_Evidence_Pack Submission Contract & Review Discipline Baseline
+
+This record freezes the minimum evidence surface for future PF-6 gate submission under the Step 47 `location_code` unblock path.
+
+Boundary
+
+This freeze is handoff-only.
+
+This freeze is design-layer only.
+
+This freeze does not authorize code change, schema change, API change, UI change, runtime logic, workflow automation, activation, or production use.
+
+Frozen PF-6 reviewability rule
+
+Future PF-6 gate submission must remain reviewable separately by sub-clause:
+
+PF-6A
+
+PF-6B
+
+PF-6C
+
+PF-6D
+
+PF-6E
+
+The submission must not collapse all PF-6 material into one blended statement such as PF-6 is basically satisfied.
+
+Frozen PF-6A evidence surface
+
+The minimum evidence surface for PF-6A must make forbidden pre-implementation artifact evidence reviewable.
+
+At minimum, PF-6A submission evidence must make reviewable whether any of the following exist in prohibited form:
+
+directly activatable schema definitions
+
+runnable but undeployed APIs
+
+formed-but-unconnected UI interactions
+
+completed business logic classes held behind flags, disabled paths, or hidden paths
+
+equivalent quasi-implementation artifacts
+
+This freeze does not define implementation fields, code review mechanics, or runtime inspection tooling for PF-6A.
+
+PF-6A must not be treated as satisfied by generic claims such as:
+
+no code has been shipped
+
+nothing is live yet
+
+we only prepared some drafts
+
+without reviewable evidence objects tied to the frozen prohibition classes.
+
+Frozen PF-6B evidence surface
+
+The minimum evidence surface for PF-6B must make allowed design-layer artifact evidence reviewable.
+
+At minimum, PF-6B submission evidence must make reviewable that the claimed materials remain within allowed categories such as:
+
+semantic boundary definition
+
+object relationship definition
+
+entry-condition or gate-condition definition
+
+review questions
+
+risk statements
+
+non-implementation explanatory material
+
+PF-6B must not be treated as satisfied by vague self-labeling such as:
+
+this is only design
+
+this is only conceptual
+
+this is not implementation
+
+unless the artifact set is reviewably bounded to the allowed design-layer categories.
+
+Frozen PF-6C evidence surface
+
+The minimum evidence surface for PF-6C must make anti-near-runnable evidence reviewable.
+
+At minimum, PF-6C submission evidence must make reviewable that future materials do not effectively create:
+
+one switch away from running
+
+one table away from running
+
+one UI wiring step away from running
+
+one deployment step away from running
+
+PF-6C must not be treated as satisfied by wording that denies implementation intent while the material remains near-runnable in substance.
+
+Frozen PF-6D evidence surface
+
+The minimum evidence surface for PF-6D must make anti-implementation-grade-document evidence reviewable.
+
+At minimum, PF-6D submission evidence must make reviewable that future design-only submissions do not cross into implementation-grade specification such as:
+
+field-level schema definition
+
+complete API path, request, or response definition
+
+front-end component interface or state-detail definition
+
+line-by-line pseudocode or equivalent execution script
+
+handoff-grade specification package that can be directly translated into code with minimal further design work
+
+PF-6D must not be treated as satisfied by:
+
+saying it is still documentation
+
+saying there is no code yet
+
+using prose form while still conveying implementation-grade detail
+
+Frozen PF-6E evidence surface
+
+The minimum evidence surface for PF-6E must make anti-template-smuggling evidence reviewable.
+
+At minimum, PF-6E submission evidence must make reviewable that standard templates are not being used to indirectly force implementation-grade detail into the design-only phase.
+
+Reviewable evidence must address whether templates such as:
+
+API design templates
+
+database design templates
+
+front-end interface templates
+
+state-flow templates
+
+equivalent structured design forms
+
+were used, and if used, whether implementation-grade fields were:
+
+left blank
+
+or explicitly marked as deferred until implementation authorization
+
+PF-6E must not be treated as satisfied by:
+
+saying we only followed the standard template
+
+using template structure while fully populating implementation-grade detail
+
+leaving the impression that formality of template use makes the content safe
+
+Frozen PF-6 invalid or non-reviewable submission patterns
+
+Future PF-6 submission may be judged invalid, incomplete, or not reviewable if it contains patterns such as:
+
+not live yet wording without reviewable anti-preimplementation evidence
+
+design-only claims without artifact-boundary evidence
+
+denial of implementation while retaining near-runnable artifacts
+
+documentation that still contains implementation-grade schema, API, UI, or runtime detail
+
+template-based submissions with implementation-grade fields fully populated
+
+blended PF-6 material that prevents sub-clause review
+
+screenshots without traceable source context
+
+verbal assurance that this is still only on paper
+
+Frozen anti-drift meaning
+
+This freeze explicitly preserves the distinction between:
+
+nothing has been deployed
+
+and
+
+there is reviewable evidence that prohibited pre-implementation, near-runnable, implementation-grade, and template-smuggled artifacts are not being used to bypass the frozen design-only boundary
+
+This distinction must not drift in later gate submission or review.
+
+This freeze also explicitly preserves the distinction between:
+
+the material is called design
+
+and
+
+the material is reviewably bounded to non-implementation design-layer content
+
+These two meanings must not be treated as equivalent in later gate submission or review.
+
+What this freeze does NOT change
+
+This freeze does not approve unblock.
+
+This freeze does not approve implementation.
+
+This freeze does not approve activation.
+
+This freeze does not approve runtime production use.
+
+This freeze does not define schema implementation, API implementation, UI implementation, runtime logic, template workflow, or development workflow.
+
+Freeze intent
+
+The intent of this freeze is to lock the minimum future PF-6 gate evidence surface only, so that later Step 47 `location_code` unblock review cannot dilute PF-6 sub-clause reviewability, anti-preimplementation evidence, allowed design-layer artifact boundary evidence, anti-near-runnable evidence, anti-implementation-grade-document evidence, anti-template-smuggling evidence, or the distinction between undeployed material and reviewably bounded non-implementation design-layer content.
