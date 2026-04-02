@@ -4099,3 +4099,184 @@ This freeze does not define schema implementation, API implementation, UI implem
 Freeze intent
 
 The intent of this freeze is to lock the minimum future PF-6 gate evidence surface only, so that later Step 47 `location_code` unblock review cannot dilute PF-6 sub-clause reviewability, anti-preimplementation evidence, allowed design-layer artifact boundary evidence, anti-near-runnable evidence, anti-implementation-grade-document evidence, anti-template-smuggling evidence, or the distinction between undeployed material and reviewably bounded non-implementation design-layer content.
+
+40. Frozen Record - Step47_PF3_Evidence_Surface Baseline
+
+Status: FROZEN
+Decision: PASS
+Scope Type: Design-layer evidence-surface freeze only
+Dependency Base:
+
+Step47_LocationCode_Path Blocking Preconditions Baseline (v4.1)
+
+Step47_Gate_Evidence_Pack Submission Contract & Review Discipline Baseline
+
+This record freezes the minimum evidence surface for future PF-3 gate submission under the Step 47 `location_code` unblock path.
+
+Boundary
+
+This freeze is handoff-only.
+
+This freeze is design-layer only.
+
+This freeze does not authorize code change, schema change, API change, UI change, runtime logic, workflow automation, label printing logic, scan logic, count or stocktake feature design, activation, or production use.
+
+Frozen PF-3 reviewability rule
+
+Future PF-3 gate submission must remain reviewable separately by sub-clause:
+
+PF-3A
+
+PF-3B
+
+PF-3C
+
+The submission must not collapse all PF-3 material into one blended statement such as PF-3 is basically satisfied.
+
+Frozen PF-3A evidence surface
+
+The minimum evidence surface for PF-3A must make master, physical label, and real on-floor physical-location consistency reviewable.
+
+At minimum, PF-3A submission evidence must make reviewable:
+
+the master reference side
+
+the physical label side
+
+the real on-floor or physical location side
+
+the reviewable linkage between master, label, and floor reality
+
+that the evidence shows consistency rather than isolated existence of one side only
+
+PF-3A must preserve the distinction between:
+
+a master exists
+
+and
+
+master, label, and physical consistency is reviewable
+
+PF-3A must not be treated as satisfied by evidence patterns such as:
+
+only label photos with no master linkage
+
+only master lists with no physical consistency evidence
+
+evidence that proves existence of labels but not consistency between master, label, and floor reality
+
+generic claims such as the site is mostly consistent
+
+Frozen PF-3B evidence surface
+
+The minimum evidence surface for PF-3B must make daily weak-check reviewability explicit.
+
+At minimum, PF-3B submission evidence must make reviewable:
+
+what qualifies as weak-check evidence
+
+what establishes trigger basis
+
+what establishes cadence
+
+what establishes scope
+
+that the weak-check mechanism is more than a verbal promise to occasionally check
+
+PF-3B must preserve the distinction between:
+
+someone may check
+
+and
+
+the weak-check mechanism is reviewable
+
+PF-3B must not be treated as satisfied by evidence patterns such as:
+
+only we do spot checks wording with no trigger basis
+
+only a check idea with no reviewable weak-check mechanism
+
+generic or principle-only claims that occasional checks happen
+
+Frozen PF-3C evidence surface
+
+The minimum evidence surface for PF-3C must make weak-check closure quality reviewable.
+
+At minimum, PF-3C submission evidence must make reviewable:
+
+that the weak-check action is light
+
+that the weak-check action is traceable
+
+that the weak-check action is closable
+
+that weak-check findings do not disappear into informal handling
+
+that closure expectation is reviewable rather than implied
+
+PF-3C must not be treated as satisfied by evidence patterns such as:
+
+principle-only statements with no closure trace requirement
+
+informal handling that leaves no reviewable closure basis
+
+general statements that issues will be handled without reviewable closure evidence
+
+Frozen PF-3 invalid or non-reviewable submission patterns
+
+Future PF-3 submission may be judged invalid, incomplete, or not reviewable if it contains patterns such as:
+
+only label photos with no master linkage
+
+only master lists with no physical consistency evidence
+
+only we do spot checks wording with no trigger basis
+
+principle-only statements with no closure trace requirement
+
+evidence that proves existence of labels but not consistency between master, label, and floor reality
+
+evidence that proves a check idea exists but not that the weak-check mechanism is reviewable
+
+blended PF-3 material that prevents sub-clause review
+
+screenshots without traceable source context
+
+Frozen anti-drift meaning
+
+This freeze explicitly preserves the distinction between:
+
+a master exists
+
+and
+
+master, label, and physical consistency is reviewable
+
+This distinction must not drift in later gate submission or review.
+
+This freeze also explicitly preserves the distinction between:
+
+someone may check
+
+and
+
+weak-check mechanism and closure quality are reviewable
+
+These two meanings must not be treated as equivalent in later gate submission or review.
+
+What this freeze does NOT change
+
+This freeze does not approve unblock.
+
+This freeze does not approve implementation.
+
+This freeze does not approve activation.
+
+This freeze does not approve runtime production use.
+
+This freeze does not define label printing authorization, scan-flow authorization, count or stocktake feature authorization, or implementation authorization for Step 47 downstream work.
+
+Freeze intent
+
+The intent of this freeze is to lock the minimum future PF-3 gate evidence surface only, so that later Step 47 `location_code` unblock review cannot dilute PF-3 sub-clause reviewability, master-label-floor consistency evidence, daily weak-check mechanism evidence, weak-check closure-quality evidence, or the distinction between isolated artifacts and reviewable consistency and weak-check discipline.
