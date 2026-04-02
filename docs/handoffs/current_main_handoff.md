@@ -3665,3 +3665,214 @@ This freeze does not define alert-engine implementation, notification tooling, d
 Freeze intent
 
 The intent of this freeze is to lock the minimum future PF-7 gate evidence surface only, so that later Step 47 `location_code` unblock review cannot dilute PF-7 sub-clause reviewability, management-failure signal coverage, alert-positioning evidence, escalation and automatic circuit-break evidence, override-constraint evidence, or the distinction between mere notification capability and reviewable structurally bounded management-failure control.
+
+38. Frozen Record - Step47_PF8_Evidence_Surface Baseline
+
+Status: FROZEN
+Decision: PASS
+Scope Type: Design-layer evidence-surface freeze only
+Dependency Base:
+
+Step47_LocationCode_Path Blocking Preconditions Baseline (v4.1)
+
+Step47_Gate_Evidence_Pack Submission Contract & Review Discipline Baseline
+
+This record freezes the minimum evidence surface for future PF-8 gate submission under the Step 47 `location_code` unblock path.
+
+Boundary
+
+This freeze is handoff-only.
+
+This freeze is design-layer only.
+
+This freeze does not authorize code change, schema change, API change, UI change, runtime logic, workflow automation, activation, or production use.
+
+Frozen PF-8 reviewability rule
+
+Future PF-8 gate submission must remain reviewable separately by sub-clause:
+
+PF-8A
+
+PF-8B
+
+PF-8C
+
+PF-8D
+
+PF-8E
+
+The submission must not collapse all PF-8 material into one blended statement such as PF-8 is basically satisfied.
+
+Frozen PF-8A evidence surface
+
+The minimum evidence surface for PF-8A must make separate-level decision evidence reviewable.
+
+At minimum, PF-8A submission evidence must make reviewable:
+
+that each recovery level is separately defined
+
+that each recovery level is separately decided
+
+that each recovery level separately states what is restored and what remains blocked
+
+that one level's approval is not silently reused as another level's approval
+
+This freeze does not define implementation fields, runtime flags, or release machinery for PF-8A.
+
+PF-8A must not be treated as satisfied by generic claims such as:
+
+recovery will be gradual
+
+we will unlock in stages
+
+internal use first, then broader use
+
+without reviewable evidence objects tied to the separate-level structure.
+
+Frozen PF-8B evidence surface
+
+The minimum evidence surface for PF-8B must make anti-cross-level-drift evidence reviewable.
+
+At minimum, PF-8B submission evidence must make reviewable:
+
+that Level 1 does not perform Level 2 work
+
+that Level 2 does not assume Level 3 authority
+
+that internal use is not being used as a vague umbrella to bypass the frozen level distinctions
+
+that the restored scope at each level is bounded and reviewable
+
+PF-8B must not be treated as satisfied by high-level intention wording without reviewable scope-boundary evidence.
+
+Frozen PF-8C evidence surface
+
+The minimum evidence surface for PF-8C must make re-gating requirement evidence reviewable.
+
+At minimum, PF-8C submission evidence must make reviewable:
+
+that movement from Level 1 to Level 2 requires a fresh gate decision
+
+that movement from Level 2 to Level 3 requires a fresh gate decision
+
+that prior lower-level approval is not treated as inherited approval for a higher level
+
+what decision artifact or reviewable evidence object preserves that fresh-gate requirement
+
+PF-8C must not be treated as satisfied by informal statements such as:
+
+we can probably promote this later
+
+the earlier approval should cover it
+
+once internal use is stable, broader use can follow
+
+Frozen PF-8D evidence surface
+
+The minimum evidence surface for PF-8D must make Level 2 consumption-boundary evidence reviewable.
+
+At minimum, PF-8D submission evidence must make reviewable:
+
+that Level 2 is explicitly marked as internal-reference-only
+
+that Level 2 is not positioned as formal inventory truth
+
+that formal reporting use is excluded
+
+that customer, finance, or audit use is excluded
+
+that cross-system consumption is excluded where required by the frozen PF-8 meaning
+
+that the boundary is expressed as a reviewable restriction, not a soft reminder
+
+PF-8D must not be treated as satisfied by:
+
+hidden or informal disclaimers
+
+documentation-only caveats that are not part of the reviewable boundary
+
+general wording such as users should understand this is unofficial
+
+Frozen PF-8E evidence surface
+
+The minimum evidence surface for PF-8E must make Level 2 data-expansion and spillover-restriction evidence reviewable.
+
+At minimum, PF-8E submission evidence must make reviewable:
+
+what output paths are restricted
+
+that restriction is not limited to API only
+
+that database direct-read, BI direct-connect, scheduled export, manual formal reuse, or equivalent spillover paths are addressed
+
+that any remaining view or export path is auditable
+
+that visible non-formal or reference-only marking remains where applicable
+
+PF-8E must not be treated as satisfied by:
+
+API-only restriction claims
+
+general internal only language
+
+undocumented assumptions that users will not reuse the data formally
+
+vague statements that data should not spread
+
+Frozen PF-8 invalid or non-reviewable submission patterns
+
+Future PF-8 submission may be judged invalid, incomplete, or not reviewable if it contains patterns such as:
+
+staged-recovery wording without separate level-by-level decision evidence
+
+Level 1, Level 2, and Level 3 discussion blended together so that scope cannot be reviewed separately
+
+informal internal use claims without reviewable Level 2 restriction evidence
+
+Level 2 disclaimer claims without reviewable consumption-boundary evidence
+
+API restriction claims without reviewable treatment of other spillover paths
+
+lower-level approval presented as implied higher-level readiness
+
+screenshots without traceable source context
+
+verbal assurance that everyone knows this is not official yet
+
+Frozen anti-drift meaning
+
+This freeze explicitly preserves the distinction between:
+
+something is being restored in stages
+
+and
+
+there is reviewable evidence that each recovery level is separately bounded, separately gated, and separately restricted
+
+This distinction must not drift in later gate submission or review.
+
+This freeze also explicitly preserves the distinction between:
+
+Level 2 is said to be internal
+
+and
+
+Level 2 has reviewable consumption boundaries and spillover restrictions
+
+These two meanings must not be treated as equivalent in later gate submission or review.
+
+What this freeze does NOT change
+
+This freeze does not approve unblock.
+
+This freeze does not approve implementation.
+
+This freeze does not approve activation.
+
+This freeze does not approve runtime production use.
+
+This freeze does not define dashboard implementation, export-control implementation, BI integration implementation, API implementation, or runtime recovery workflow.
+
+Freeze intent
+
+The intent of this freeze is to lock the minimum future PF-8 gate evidence surface only, so that later Step 47 `location_code` unblock review cannot dilute PF-8 sub-clause reviewability, separate-level recovery evidence, anti-cross-level-drift evidence, re-gating requirement evidence, Level 2 consumption-boundary evidence, spillover-restriction evidence, or the distinction between staged restoration wording and separately bounded, separately gated, separately restricted recovery levels.
