@@ -4280,3 +4280,170 @@ This freeze does not define label printing authorization, scan-flow authorizatio
 Freeze intent
 
 The intent of this freeze is to lock the minimum future PF-3 gate evidence surface only, so that later Step 47 `location_code` unblock review cannot dilute PF-3 sub-clause reviewability, master-label-floor consistency evidence, daily weak-check mechanism evidence, weak-check closure-quality evidence, or the distinction between isolated artifacts and reviewable consistency and weak-check discipline.
+
+41. Frozen Record - Step47_PF4_Evidence_Surface Baseline
+
+Status: FROZEN
+Decision: PASS
+Scope Type: Design-layer evidence-surface freeze only
+Dependency Base:
+
+Step47_LocationCode_Path Blocking Preconditions Baseline (v4.1)
+
+Step47_Gate_Evidence_Pack Submission Contract & Review Discipline Baseline
+
+Step47_PF3_Evidence_Surface Baseline
+
+This record freezes the minimum evidence surface for future PF-4 gate submission under the Step 47 `location_code` unblock path.
+
+Boundary
+
+This freeze is handoff-only.
+
+This freeze is design-layer only.
+
+This freeze does not authorize code change, schema change, API change, UI change, runtime logic, workflow automation, test script writing, runtime instrumentation implementation, reporting implementation, dashboard implementation, production test workflow, activation, or production use.
+
+Frozen PF-4 reviewability rule
+
+Future PF-4 gate submission must remain reviewable separately by sub-clause:
+
+PF-4A
+
+PF-4B
+
+The submission must not collapse all PF-4 material into one blended statement such as PF-4 is basically satisfied.
+
+Frozen PF-4A evidence surface
+
+The minimum evidence surface for PF-4A must make pressure-scenario reviewability explicit.
+
+At minimum, PF-4A submission evidence must make reviewable:
+
+what pressure scenarios are in scope
+
+how scenario source is identified
+
+what makes the scenario reviewable rather than anecdotal
+
+what makes the scenario relevant to wrong-path, mis-selection, or bypass risk
+
+PF-4A must not be treated as satisfied by evidence patterns such as:
+
+we tested it
+
+the site said it was fine
+
+pressure was covered
+
+pressure claimed without reviewable scenario basis
+
+training feedback used as substitute for pressure-test evidence
+
+Frozen PF-4B evidence surface
+
+The minimum evidence surface for PF-4B must make quantified pass-criteria reviewability explicit.
+
+At minimum, PF-4B submission evidence must make reviewable:
+
+mis-selection rate
+
+wrong-shortcut or bypass rate
+
+ignore or skip rate
+
+exception-path usage rate where relevant
+
+any other frozen quantitative indicators needed to review whether pressure behavior remains bounded
+
+PF-4B must preserve the distinction between:
+
+people felt it was acceptable
+
+and
+
+quantified error, shortcut, or skip behavior remained within reviewable pass criteria
+
+PF-4B must not be treated as satisfied by evidence patterns such as:
+
+operators felt it was okay instead of quantified behavior evidence
+
+pass-rate conclusion without sample size
+
+conclusion without raw counting basis
+
+summary wording without reviewable quantitative indicators
+
+Frozen quantitative-submission discipline
+
+Future PF-4 quantitative submission must include reviewable evidence for:
+
+sample basis or sample count
+
+measurement method
+
+scenario basis
+
+raw statistics or equivalent raw counting evidence
+
+comparison basis where pre/post or correct/wrong path comparison is claimed
+
+This quantitative submission discipline must remain reviewable and must not be replaced by summary-only conclusions.
+
+Frozen PF-4 invalid or non-reviewable submission patterns
+
+Future PF-4 submission may be judged invalid, incomplete, or not reviewable if it contains patterns such as:
+
+pass-rate conclusion without sample size
+
+conclusion without raw counting basis
+
+operators felt it was okay instead of quantified behavior evidence
+
+training feedback used as substitute for pressure-test evidence
+
+pressure claimed without reviewable scenario basis
+
+summary charts without source context
+
+screenshots without traceable source context
+
+blended PF-4 material that prevents sub-clause review
+
+Frozen anti-drift meaning
+
+This freeze explicitly preserves the distinction between:
+
+a test activity happened
+
+and
+
+pressure-test evidence is reviewable at Gate quality
+
+This distinction must not drift in later gate submission or review.
+
+This freeze also explicitly preserves the distinction between:
+
+people felt it was acceptable
+
+and
+
+quantified error, shortcut, and skip behavior remained within reviewable pass criteria
+
+These two meanings must not be treated as equivalent in later gate submission or review.
+
+What this freeze does NOT change
+
+This freeze does not approve unblock.
+
+This freeze does not approve implementation.
+
+This freeze does not approve activation.
+
+This freeze does not approve runtime production use.
+
+This freeze does not define field-test execution authorization, runtime test rollout authorization, implementation authorization, activation authorization, or production-use authorization.
+
+Freeze intent
+
+The intent of this freeze is to lock the minimum future PF-4 gate evidence surface only, so that later Step 47 `location_code` unblock review cannot dilute PF-4 sub-clause reviewability, pressure-scenario evidence, quantified pass-criteria evidence, quantitative-submission discipline, or the distinction between a test activity and Gate-quality pressure-test evidence.
