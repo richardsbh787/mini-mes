@@ -1,7 +1,7 @@
-Mini-MES Handoff v2.14
+Mini-MES Handoff v2.15
 
-Updated after Step 47 location_code freeze-chain evidence-surface baseline sync
-Date: 2026-04-02
+Updated after Step47 Phase A manual location declaration baseline freeze sync
+Date: 2026-04-03
 
 1. Frozen mainline snapshot
 
@@ -20,6 +20,8 @@ Step 47 design-freeze baseline
 Step 47A frozen admitted source event baseline
 
 Step 47B frozen legal location evidence & accountability baseline
+
+Frozen Record - Step47_PhaseA_ManualLocationDeclaration_Baseline (v2)
 
 FG_RECEIVE Location Master Physical Schema Baseline frozen as design-layer schema baseline only
 
@@ -74,6 +76,10 @@ location_code remains the main unblock key.
 Any future repaired FG_RECEIVE source must still pass full Step 47A admissibility re-evaluation before any unblock decision.
 
 Step 47B is frozen as Step 47B Task Card v2.1 = Design Freeze Baseline.
+
+Step47_PhaseA_ManualLocationDeclaration_Baseline (v2) is frozen as a design-layer baseline only.
+It does not authorize implementation, activation, or runtime production use.
+The existing Step 47 legal chain remains the frozen Phase B scope and remains BLOCKED.
 
 FG_RECEIVE Location Master Physical Schema Baseline is frozen as a design-layer schema baseline only.
 It is not implementation authorization.
@@ -1518,6 +1524,10 @@ Step 47A is frozen as the admitted source event baseline.
 
 Step 47B is frozen as the legal location evidence & accountability baseline.
 
+Step47_PhaseA_ManualLocationDeclaration_Baseline (v2) is frozen as a design-layer baseline only.
+It does not authorize implementation, activation, or runtime production use.
+The existing Step 47 legal chain remains the frozen Phase B scope and remains BLOCKED.
+
 FG_RECEIVE Location Master Physical Schema Baseline is frozen as a design-layer schema baseline only.
 
 FG_RECEIVE Event Truth Surface Baseline is frozen as a design-layer event-truth baseline only.
@@ -1560,7 +1570,7 @@ Any future repaired FG_RECEIVE source must still pass full Step 47A admissibilit
 16. One-line summary
 
 Step 40A, Step 45, and Step 46A remain formally implemented and frozen.
-Step 47 remains design-frozen and BLOCKED, Step 47A remains frozen with all four current candidates still NOT_ADMISSIBLE_YET and the admitted source list effectively EMPTY, Step 47B remains frozen as the legal location evidence & accountability baseline under Task Card v2.1, the Step 47 `location_code` freeze chain now also includes the frozen blocking-preconditions baseline, gate evidence-pack submission contract baseline, and PF-1 / PF-2 / PF-3 / PF-4 / PF-5 / PF-6 / PF-7 / PF-8 evidence-surface baselines, and FG_RECEIVE now also has frozen design-layer baselines for the Location Master Physical Schema, the Event Truth Surface, the Event Truth Physical Schema, the Resolution Attempt & Evidence Snapshot Physical Schema, the Event-Time Location Resolution Runtime semantic contract, the Event-Time Location Resolution Read Surface semantic contract, the Step 47A Re-Admission Evaluation contract, and the Step 47 Release Decision contract while remaining NOT auto-admitted.
+Step 47 remains design-frozen and BLOCKED, Step 47A remains frozen with all four current candidates still NOT_ADMISSIBLE_YET and the admitted source list effectively EMPTY, Step47_PhaseA_ManualLocationDeclaration_Baseline (v2) is now also frozen as the manual Stock Card digitization / operator-declared location design-layer baseline only, the existing Step 47 legal chain remains fully in force as frozen Phase B, Step 47B remains frozen as the legal location evidence & accountability baseline under Task Card v2.1, the Step 47 `location_code` freeze chain now also includes the frozen blocking-preconditions baseline, gate evidence-pack submission contract baseline, and PF-1 / PF-2 / PF-3 / PF-4 / PF-5 / PF-6 / PF-7 / PF-8 evidence-surface baselines, and FG_RECEIVE now also has frozen design-layer baselines for the Location Master Physical Schema, the Event Truth Surface, the Event Truth Physical Schema, the Resolution Attempt & Evidence Snapshot Physical Schema, the Event-Time Location Resolution Runtime semantic contract, the Event-Time Location Resolution Read Surface semantic contract, the Step 47A Re-Admission Evaluation contract, and the Step 47 Release Decision contract while remaining NOT auto-admitted.
 
 17. Step 47 FG_RECEIVE implementation final archival result
 
@@ -4459,3 +4469,191 @@ This freeze does not define field-test execution authorization, runtime test rol
 Freeze intent
 
 The intent of this freeze is to lock the minimum future PF-4 gate evidence surface only, so that later Step 47 `location_code` unblock review cannot dilute PF-4 sub-clause reviewability, pressure-scenario evidence, quantified pass-criteria evidence, quantitative-submission discipline, or the distinction between a test activity and Gate-quality pressure-test evidence.
+
+42. Frozen Record - Step47_PhaseA_ManualLocationDeclaration_Baseline (v2)
+
+Dependency base
+
+Step 47A admitted source event baseline
+
+Step 47B legal location evidence & accountability baseline
+
+Step47_LocationCode_Path Blocking Preconditions Baseline (v4.1)
+
+Step47_Gate_Evidence_Pack Submission Contract & Review Discipline Baseline
+
+Step47_PF1_Evidence_Surface Baseline
+
+Step47_PF2_Evidence_Surface Baseline
+
+Step47_PF3_Evidence_Surface Baseline
+
+Step47_PF4_Evidence_Surface Baseline
+
+Step47_PF5_Evidence_Surface Baseline
+
+Step47_PF6_Evidence_Surface Baseline
+
+Step47_PF7_Evidence_Surface Baseline
+
+Step47_PF8_Evidence_Surface Baseline
+
+This record freezes the minimum design-layer baseline for Step47 Phase A manual Stock Card digitization and operator-declared location handling.
+
+Design-only boundary
+
+This record is design-layer only.
+
+It does not authorize implementation.
+
+It does not authorize schema design implementation.
+
+It does not authorize API implementation.
+
+It does not authorize UI implementation.
+
+It does not authorize runtime logic.
+
+It does not authorize activation.
+
+It does not authorize production use.
+
+Any wording in this record such as system should, system must detect, system should tighten, or system should escalate is frozen only as a design constraint and not as implementation authorization.
+
+Phase split
+
+Phase A = manual Stock Card digitization / operator-declared location layer.
+
+Phase B = scan-backed legal location evidence chain.
+
+The already-frozen Step 47 chain remains fully in force as Phase B.
+
+Phase A does not revoke, downgrade, reinterpret, or weaken Phase B.
+
+Phase A is not legal location truth.
+
+Phase A does not unblock Phase B.
+
+Phase A does not satisfy PF-1 through PF-8 by itself.
+
+Phase A object meaning
+
+Phase A produces only operator-declared location.
+
+Phase A does not produce legal location evidence.
+
+Phase A does not produce legal location truth.
+
+Phase A does not produce admitted-source legality.
+
+Phase A does not produce Phase B bind truth.
+
+A0 / A1 internal operating states
+
+Phase A contains two internal operating states only:
+
+A0 - Bootstrap declaration period
+
+A1 - Controlled declaration stable period
+
+During A0, high-frequency controlled exception use may temporarily exist to carry reality while the declaration layer is still being brought under control.
+
+During A1, controlled selection is restored as the normal path and exception use becomes the secondary path only.
+
+A0 exception-path discipline
+
+Any A0 exception path must include at minimum:
+
+reason code
+
+remark
+
+operator identity
+
+backlog closure mechanism
+
+exit condition
+
+The exception path must not become an unbounded permanent default.
+
+A0 governance / closure discipline
+
+Periodic closure cadence must exist.
+
+Minimum closure-quality requirement must exist.
+
+Repeated under-closure must trigger tightening and/or supervisor review.
+
+Long-running closure failure must trigger governance escalation.
+
+This record freezes those items at principle level only and does not freeze hard numeric thresholds.
+
+Exception-path suppression principle
+
+The exception path must not be easier than the correct path.
+
+Exception-path usage must be reviewable.
+
+Abnormal exception-path concentration must be reviewable.
+
+Reason-code quality and minimum meaningful remark requirement must exist at design level.
+
+This record freezes those items as design-layer principle only and not as implementation-spec detail.
+
+A0 to A1 transition discipline
+
+Transition into A1 requires both:
+
+master/list coverage reaching controlled sufficiency
+
+exception-path usage declining to controlled level over sustained review periods
+
+This record does not freeze hard numeric thresholds for that transition.
+
+Semantic isolation floor
+
+Phase A operator-declared location and Phase B legal location evidence must be forcibly distinguished at the semantic layer and in default API / default consumption paths.
+
+No default read, default query, default display, or default downstream consumption path may treat Phase A declared location as Phase B legal location truth without explicit declaration.
+
+This record freezes the minimum semantic-isolation floor only.
+
+It does not freeze specific physical implementation choices such as field split, table split, view filtering, or other technical implementation shape.
+
+Weak-check compatibility for non-scan / non-label reality
+
+Phase A weak-check must not depend on Phase B infrastructure in order to exist.
+
+Non-label scenarios must still have downgrade weak-check rather than empty control.
+
+Possible weak-check examples may include photo evidence, dual confirmation, or periodic spot-check, but those are non-exclusive examples only and are not frozen as exclusive required implementation choices.
+
+Operator Minimal Action Rule alignment
+
+Phase A exists to support the factory's currently executable minimum action path.
+
+Minimum action must not silently become legal truth.
+
+Temporary transition state must not become permanent default.
+
+Reality-carrying design must still preserve the later upgrade path to Phase B.
+
+What this freeze does NOT change
+
+This record does not modify PF-1 through PF-8.
+
+This record does not modify the gate evidence-pack baseline.
+
+This record does not modify Phase B blocked status.
+
+This record does not modify admitted-source legality.
+
+This record does not open implementation authorization for Phase B.
+
+This record does not reinterpret the existing Step 47 legal chain as already satisfied by declared location.
+
+This record does not weaken the already-frozen Step 47 blocked semantics.
+
+Freeze intent
+
+The intent of this freeze is to lock the minimum Phase A design-layer boundary for manual Stock Card digitization and operator-declared location only, while preserving the already-frozen Step 47 legal-evidence chain as Phase B in full force, preserving semantic isolation between declared location and legal location truth, and preserving the current blocked status until a separately frozen and separately satisfied legal path exists.
