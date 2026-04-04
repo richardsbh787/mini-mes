@@ -1,7 +1,7 @@
-Mini-MES Handoff v2.15
+Mini-MES Handoff v2.16
 
 Updated after Step47 Phase A manual location declaration baseline freeze sync
-Date: 2026-04-03
+Date: 2026-04-04
 
 1. Frozen mainline snapshot
 
