@@ -4657,3 +4657,197 @@ This record does not weaken the already-frozen Step 47 blocked semantics.
 Freeze intent
 
 The intent of this freeze is to lock the minimum Phase A design-layer boundary for manual Stock Card digitization and operator-declared location only, while preserving the already-frozen Step 47 legal-evidence chain as Phase B in full force, preserving semantic isolation between declared location and legal location truth, and preserving the current blocked status until a separately frozen and separately satisfied legal path exists.
+
+43. Frozen Record - Non-Scan Operation Mode Baseline v2
+
+Status: FROZEN WITH FINAL REVIEW NOTES
+Final review result: CONDITIONAL PASS
+Scope Type: design-layer / governance-layer only
+
+This record freezes the governance/design-layer baseline that allows Mini-MES to support a non-scan operating mode as a runnable but downgraded, auditable but not equal-strength mode, without diluting scan-driven truth, traceability strength, audit integrity, or existing frozen boundaries.
+
+Boundary
+
+This freeze is handoff-only.
+
+This freeze is design-layer / governance-layer only.
+
+This freeze is not implementation authorization.
+
+This freeze does not authorize code change, schema change, API change, UI change, automated import, permission expansion, activation, or production use.
+
+Frozen operating-mode baseline
+
+Mini-MES may support Manual-Entry Mode as a valid operating mode.
+
+Manual-Entry Mode is not equivalent to scan-driven mode.
+
+The downgraded characteristics of non-scan operation are frozen at minimum as:
+
+lower traceability strength
+
+lower error-prevention strength
+
+higher audit cost
+
+potentially slower input
+
+lower truth-capture stability
+
+Non-scan mode must not be treated as free-text truth entry.
+
+Manual-entry operation must remain grounded in:
+
+structured fields
+
+explicit selections
+
+explicit validation
+
+explicit confirmation
+
+Non-scan mode must not be represented, consumed, or described as having the same truth strength as scan-driven mode.
+
+The operating-mode framework may distinguish at minimum:
+
+MANUAL
+
+SCAN
+
+HYBRID
+
+V2 tightening points that closed prior blocking issues
+
+V2-1 - Non-scan does not mean no evidence
+
+Every manual-entry submission must carry at least one auditable source-record reference.
+
+Examples may include:
+
+paper record number
+
+handwritten stock-card number
+
+label-photo reference
+
+third-party document number
+
+scanned paper-slip reference
+
+Absence of an auditable source-record reference requires rejection.
+
+Operator memory alone is insufficient.
+
+Oral statement alone is insufficient.
+
+Unanchored free text is insufficient.
+
+V2-2 - No bulk import without evidence
+
+Manual-Entry Mode does not permit evidence-free Excel / CSV / backend bulk import.
+
+Any future allowed import path must:
+
+bind source-record references per row or per batch as explicitly designed
+
+remain quantity-limited / controlled
+
+not bypass confirmation requirements
+
+not bypass audit marking
+
+not bypass mode marking
+
+V2-3 - Mode may not switch silently
+
+Relevant records must carry an explicit mode classification, at minimum MANUAL, SCAN, or HYBRID.
+
+Mode transitions must record:
+
+transition time
+
+operator / actor
+
+reason
+
+Different mode segments must not be silently merged into one same-strength truth chain.
+
+Downstream query / report / audit / legal consumers must be able to recognize the break in evidence strength.
+
+MANUAL must never be silently upgraded into SCAN.
+
+If later scan evidence is added, the original manual segment must remain preserved and distinguishable rather than overwritten.
+
+V2-4 - Boundary against Step 47 Phase A pollution
+
+This baseline defines only the input-discipline and compensation boundary for non-scan operation.
+
+This baseline does not:
+
+replace Step 47 Phase A
+
+relax Step 47 Phase A
+
+rewrite Step 47 Phase A
+
+weaken any existing legal-truth isolation or permanent caveat already frozen for Step 47 Phase A
+
+Overlapping operator-declared content must continue to be reviewed under each frozen boundary independently, with no cross-import or silent reinterpretation.
+
+Final review outcome
+
+DeepSeek / 老萧 second-round review: PASS
+
+Qinran final review: CONDITIONAL PASS
+
+No remaining blocking issues.
+
+Freeze approval is valid only together with Final Review Note A, Final Review Note B, and Final Review Note C below.
+
+Final Review Note A - source-record-reference type control
+
+The acceptable source-record-reference examples listed under V2-1 are not open-ended for implementation expansion.
+
+Any new acceptable source-record-reference type must be added only through a separate review / freeze step.
+
+Implementation must not extend the accepted types on its own.
+
+Final Review Note B - mandatory downstream handling of MANUAL
+
+Any downstream path consuming data marked MANUAL, including query, reporting, audit, and legal-consumption paths, must explicitly recognize and handle that mark.
+
+No downstream consumer may silently treat MANUAL data as equal-strength SCAN data.
+
+Final Review Note C - time-window constraint framework
+
+Manual-Entry Mode must be subject to an input-timeliness constraint.
+
+Overly loose time-window definitions are not allowed.
+
+Anything beyond one full work-shift cycle should be treated as a minimum design trigger reference for extra handling / approval / audit-path consideration.
+
+The exact numeric threshold remains for later independent review / freeze.
+
+Explicit non-scope
+
+This record does not authorize implementation.
+
+This record does not authorize schema.
+
+This record does not authorize API.
+
+This record does not authorize UI.
+
+This record does not authorize automated import.
+
+This record does not authorize permission-model expansion.
+
+This record does not rewrite existing frozen scan-driven truth claims.
+
+This record does not weaken Step 47 Phase A isolation.
+
+This record does not claim that manual-entry truth is equal-strength truth.
+
+Freeze intent
+
+The intent of this freeze is to lock the non-scan operation governance/design-layer baseline only, so that Mini-MES may support Manual-Entry Mode as a runnable but downgraded and auditable mode without diluting scan-driven truth, without permitting evidence-free or silently upgraded manual chains, and without polluting the already-frozen Step 47 Phase A isolation boundary.
