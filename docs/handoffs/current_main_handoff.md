@@ -4851,3 +4851,273 @@ This record does not claim that manual-entry truth is equal-strength truth.
 Freeze intent
 
 The intent of this freeze is to lock the non-scan operation governance/design-layer baseline only, so that Mini-MES may support Manual-Entry Mode as a runnable but downgraded and auditable mode without diluting scan-driven truth, without permitting evidence-free or silently upgraded manual chains, and without polluting the already-frozen Step 47 Phase A isolation boundary.
+
+44. Frozen Record - Flow Governance Baseline v2
+
+Status: FROZEN WITH FINAL REVIEW NOTES
+Final review result: CONDITIONAL PASS
+Scope Type: design-layer / governance-layer only
+
+This record freezes a cross-cutting governance/design-layer baseline requiring that any Mini-MES key business flow formally within governance scope must be explicitly defined as a flow that is decomposed into minimum task units, governed by an explicit state model, controlled by explicit acceptance gates, and recoverable through an explicit failure / exception recovery path.
+
+Purpose
+
+This baseline exists to prevent pseudo-governed flows that can run or record data but cannot clearly state:
+
+what step they are currently in
+
+what counts as pass / fail
+
+what evidence is required
+
+how recovery happens after failure or exception
+
+Boundary
+
+This freeze is handoff-only.
+
+This freeze is design-layer / governance-layer only.
+
+This freeze is not implementation authorization.
+
+This freeze does not authorize code change, workflow engine change, schema change, API change, UI change, runtime free inference, activation, or production use.
+
+Core frozen points
+
+FG-1 - Flow decomposition
+
+Each governed key flow must explicitly define at minimum:
+
+the minimum task units / substeps of the flow
+
+which steps are skippable vs non-skippable
+
+which steps are human actions
+
+which steps are system actions
+
+which steps create truth
+
+which steps create only trace / evidence / evaluation and do not themselves create truth
+
+FG-2 - State model
+
+Each governed key flow must carry an explicit state model.
+
+Binary done / not done is insufficient.
+
+The legal state set must be explicit.
+
+Transition conditions must be explicit.
+
+Forbidden / illegal transitions must be explicit.
+
+Terminal states must be explicitly identified.
+
+The minimum recognizable state coverage must include at least:
+
+not started
+
+in progress
+
+waiting for evidence / confirmation
+
+blocked
+
+failed
+
+completed
+
+cancelled / closed where applicable
+
+Correction / recovery semantics must not be mixed into the original record's ordinary state semantics.
+
+For frozen truth, the system must not express correction by rewriting the original record into corrected or equivalent status.
+
+Correction involving frozen truth must instead use reversal, appended correction records, or a separate correction path.
+
+FG-3 - Acceptance gate
+
+Each governed key flow must explicitly define acceptance gate(s), including at minimum:
+
+what is being checked
+
+what evidence is used
+
+what counts as pass
+
+what counts as fail
+
+who / what role is responsible for confirmation
+
+what changes and what does not change after pass
+
+If confirmation is automatic, the responsible confirmer may be recorded as system or auto-rule.
+
+When system or auto-rule is used, the rule basis / rule identifier should be explicitly defined by the flow design.
+
+FG-4 - Failure / exception recovery path
+
+Each governed key flow must explicitly define its recovery path, including at minimum:
+
+which failures are recoverable
+
+which failures must remain blocked and be escalated
+
+who initiates recovery
+
+which legal state the flow returns to after recovery
+
+whether historical truth is implicated
+
+which cases must use correction / reversal / separate-path handling
+
+Whenever recovery / correction / restoration touches frozen truth, it must not overwrite original values, modify the original frozen-truth terminal meaning, or rewrite the original record into a corrected-state expression.
+
+Frozen-truth correction must follow existing truth discipline through appended records, reversal, or separate correction paths.
+
+FG-5 - No runtime free inference as substitute for frozen flow definition
+
+Runtime free inference must not replace explicit governed flow design.
+
+The system must not be allowed to freely infer at runtime:
+
+task decomposition
+
+current state meaning
+
+pass / fail conditions
+
+recovery action
+
+Governance structure must be explicitly defined first, and only then executed by the system.
+
+FG-6 - No governance claim without the four elements
+
+If a flow does not explicitly define:
+
+flow decomposition
+
+state model
+
+acceptance gate
+
+recovery path
+
+then it must not be represented as:
+
+already governed by Mini-MES
+
+already controllable by Mini-MES
+
+ready for implementation-layer gap-filling by assumption
+
+Scope / applicability
+
+This baseline applies only to key business flows, including at minimum flows that:
+
+write truth
+
+affect inventory / location / quantity
+
+affect authorization / release / blocking decisions
+
+affect traceability-chain integrity
+
+affect exception recovery or accountability paths
+
+This baseline does not automatically extend to:
+
+ordinary query pages
+
+display-only pages
+
+low-risk reminder surfaces
+
+general explanatory UI
+
+Transitional clause
+
+For flows explicitly frozen as:
+
+non-legal-truth
+
+temporary / transitional
+
+strictly isolated
+
+the flow may temporarily lack the full four-element completeness, but only if it explicitly declares:
+
+which governance elements are still missing
+
+what isolation boundary currently protects it
+
+what the intended completion plan is
+
+Such transitional flows must not be represented as already having full governance strength.
+
+This transitional clause does not replace, relax, or rewrite already-frozen boundaries for separately governed chains such as Step 47 Phase A.
+
+Final review outcome
+
+DeepSeek / 老萧 review result: PASS
+
+Qinran final review result: CONDITIONAL PASS
+
+No remaining blocking issues.
+
+Freeze approved only together with Final Review Note A, Final Review Note B, and Final Review Note C below.
+
+Final Review Note A - transitional-clause convergence
+
+Any flow using the transitional clause must record an intended completion milestone when activated.
+
+If that milestone passes without completion, the flow must be resubmitted for review.
+
+No silent extension is allowed.
+
+The transitional clause must not become a permanent exemption path.
+
+Final Review Note B - auto-rule fallback role
+
+Whenever an acceptance step is handled by system or auto-rule, the flow definition must also specify a fallback human role.
+
+If the auto-rule fails or cannot decide, the fallback role must take over confirmation.
+
+The fallback role must not be omitted.
+
+The flow must not be allowed to remain indefinitely stuck because auto-rule ownership was left without fallback.
+
+Final Review Note C - waiting-state timeout principle
+
+Any flow entering a waiting for evidence / confirmation state must include a timeout mechanism.
+
+Infinite waiting is not allowed.
+
+Exact timeout values may be defined in later independent review / freeze.
+
+Implementation may not omit timeout design merely because the exact numeric threshold is not yet frozen.
+
+Explicit non-scope
+
+This record does not authorize implementation.
+
+This record does not authorize workflow engine.
+
+This record does not authorize schema.
+
+This record does not authorize API.
+
+This record does not authorize UI.
+
+This record does not authorize runtime free inference.
+
+This record does not rewrite existing frozen truth discipline.
+
+This record does not weaken reversal / correction / separate-path requirements.
+
+This record does not silently claim that transitional flows already have full governance strength.
+
+Freeze intent
+
+The intent of this freeze is to lock the cross-cutting flow-governance baseline only, so that governed key business flows cannot claim governance strength unless they explicitly define decomposition, state model, acceptance gate, and recovery path, while preserving existing frozen truth-discipline boundaries and preventing transitional flows from being silently treated as fully governed.
