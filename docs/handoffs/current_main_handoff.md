@@ -81,6 +81,7 @@ Step47_PhaseA_ManualLocationDeclaration_Baseline (v2) is frozen as a design-laye
 It does not authorize implementation, activation, or runtime production use.
 The existing Step 47 legal chain remains the frozen Phase B scope and remains BLOCKED.
 Step47_PhaseA_ImplementationAuthorization_Gate Baseline v2 is now CONDITIONAL PASS / FROZEN WITH FINAL REVIEW NOTES; it remains design/governance only, does not authorize production deployment or runtime production use, and independently self-carries both Phase A forbidden legal-strength wording and downstream declared/manual identification obligations.
+Step47_PhaseA_MinimumAuditBaseline is now PASS / FROZEN WITH FINAL REVIEW NOTES; it freezes the minimum audit spine for Phase A declared/manual declarations, preserves no-evidence-no-submit discipline, forbids silent overwrite, and keeps auditability explicitly separate from legal truth.
 
 FG_RECEIVE Location Master Physical Schema Baseline is frozen as a design-layer schema baseline only.
 It is not implementation authorization.
@@ -5519,3 +5520,314 @@ Final Review Note C — 跨文件版本锁定
 
 本基线在 flow-governance 相关约束上，引用的是 Flow Governance Baseline v2（Frozen Date: 2026-04-04）。
 后续若 Flow Governance 基线升级，本基线之语义不随之自动漂移；任何需要对齐的新版本适配，必须通过独立评审与变更记录处理。
+
+46. Frozen Record - Step47_PhaseA_MinimumAuditBaseline
+
+Status: PASS / FROZEN WITH FINAL REVIEW NOTES
+Frozen Date: 2026-04-04
+Layer: Design / Governance Layer Only
+Applies To: Step 47 Phase A declared/manual layer only
+Does Not Apply To: Step 47 Phase B, PF-1 ~ PF-8 legal chain, legal location truth creation, production deployment authorization, runtime production-use authorization
+
+0. Purpose
+
+This record freezes the minimum audit discipline for Step 47 Phase A.
+
+Its purpose is to ensure that every Phase A declared/manual location declaration is:
+
+- auditable,
+- anchored to a meaningful source-record reference,
+- protected against silent overwrite,
+- and kept explicitly separate from legal evidence and legal truth.
+
+This record is a direct upstream satisfaction item for:
+
+- Step47_PhaseA_ImplementationAuthorization_Gate Baseline v2  
+  (Frozen Date: 2026-04-04), especially its minimum audit-discipline requirement.
+
+This record does not itself grant implementation authorization.
+
+1. Position of This Baseline
+
+Step 47 Phase A is the manual Stock Card digitization / operator-declared location layer.
+
+Accordingly, this baseline governs only the auditability of declared/manual data.
+
+It does not mean:
+
+- legal verification,
+- legal evidence sufficiency,
+- legal location truth,
+- or Phase B readiness.
+
+Auditability must not be misread as legal-strength confirmation.
+
+2. Minimum Audit Fields
+
+Every Phase A declaration must preserve, at minimum, the following auditable elements:
+
+- declared_by  
+  who made the declaration
+
+- declared_at  
+  when the declaration was made
+
+- declared_location  
+  what location was declared
+
+- source_record_reference  
+  what business-meaningful source record anchored the declaration
+
+These minimum fields are mandatory.
+
+A Phase A declaration must not be accepted if any required minimum audit field is missing.
+
+2.1 declared_location must remain structured
+
+`declared_location` must be captured through a structured input discipline.  
+It must not degrade into unconstrained free text.
+
+This baseline does not yet define the final implementation shape of that structure, but at minimum it must prevent uncontrolled operator-entered descriptive text from being treated as a valid location declaration.
+
+2.2 source_record_reference must be meaningful and auditable
+
+`source_record_reference` must be business-meaningful and traceable.  
+It must not rely solely on an opaque internal random ID as the only external anchor.
+
+The acceptable minimum source-record-reference discipline at this governance stage must remain aligned with the already frozen:
+
+- Non-Scan Operation Mode Baseline v2
+
+A declaration without auditable `source_record_reference` must be rejected.
+
+3. No Evidence-Free Submission
+
+The following are forbidden for Step 47 Phase A declaration intake:
+
+- declaration without `source_record_reference`
+- evidence-free fallback submission
+- evidence-free bulk import
+- evidence-free “submit now, attach later” normal path
+- silent acceptance of placeholder or dummy source references
+
+If the operator cannot provide the required source-record reference at declaration time, the system must reject the declaration.
+
+No normal-path “later补录” behavior is allowed.
+
+If a future exception path is ever needed, it must be handled only through a separately governed exception path and must not be silently introduced through this baseline.
+
+4. Mutation Decision
+
+For Step 47 Phase A under this baseline:
+
+Modification of an already submitted declaration is allowed only under strict mutation trace discipline.
+
+This applies to correction of fields including `source_record_reference`, provided the original value is preserved and never silently overwritten.
+
+This baseline therefore does not choose append-only-only behavior as the default rule.  
+Instead, it chooses:
+
+- correction is permitted,
+- but only with full trace,
+- and never by erasing the original submitted value.
+
+5. Mutation Trace Discipline
+
+If a submitted Phase A declaration is later corrected, the correction must be captured as an explicit audit event.
+
+At minimum, mutation trace must preserve:
+
+- who made the correction
+- when the correction was made
+- previous value
+- new value
+- the continuing association to the original declaration record
+
+This applies to any auditable correction, including correction of `source_record_reference`.
+
+5.1 Original value must remain preserved
+
+The originally submitted value must never be silently overwritten.
+
+The system must preserve the original submitted value in a way that remains reviewable after correction.
+
+5.2 Mutation trace must remain durably linked
+
+Mutation trace must remain continuously linked to the original declaration record.
+
+That association must not be lost through:
+
+- routine cleanup,
+- archival convenience,
+- implementation simplification,
+- or indirect data mutation.
+
+The association may only end when the record lifecycle itself is lawfully ended under separately governed retention/disposal policy.
+
+6. Silent Overwrite Is Forbidden
+
+No Phase A declaration field governed by this baseline may be silently overwritten after submission.
+
+In particular, the following must never happen without preserved trace:
+
+- replacing `source_record_reference`
+- replacing `declared_location`
+- replacing declaration identity/time fields
+- replacing the current visible value in a way that hides prior submitted value
+
+If correction is allowed, correction must be traceable.  
+If trace is absent, the correction is invalid by governance.
+
+7. Relationship to Operator Minimal Action Rule
+
+This baseline must be implemented in a way that preserves the Operator Minimal Action Rule.
+
+That means:
+
+- fields that can be auto-captured must not be repeatedly hand-entered,
+- source-record references should prefer low-burden capture methods,
+- and operator burden must not be increased merely for audit formality when the same audit anchor can be captured more safely by system assistance.
+
+Preferred capture patterns include, where available:
+
+- default carry-forward from known source step context
+- structured selection
+- scan-assisted capture
+- assisted recognition
+- bounded lookup / selection
+
+This baseline therefore requires audit completeness without treating long manual free-text typing as the preferred design.
+
+8. Relationship to Ontology Layers
+
+This baseline is checked against the ontology control frame as follows:
+
+- T / Truth  
+  Applicable. Audit existence does not create legal truth.
+
+- P / Predicate  
+  Not directly defined here. This baseline does not define business judgment predicates such as pass/fail logic for downstream governance decisions.
+
+- F / Function  
+  Not directly defined here. This baseline does not define transformation or conversion functions.
+
+- Agg / Aggregate  
+  Not directly defined here. This baseline does not define rollups, aggregate views, or summary truth layers.
+
+- Action  
+  Applicable. Declaration action and correction action must remain distinguishable and auditable.
+
+- Role  
+  Applicable. The declaring party and correcting party must remain attributable.
+
+9. Relationship to Flow Governance
+
+This baseline does not replace the broader flow-governance requirements already frozen in:
+
+- Flow Governance Baseline v2 (Frozen Date: 2026-04-04)
+
+This record only freezes the minimum audit discipline that Phase A flow handling must preserve.
+
+Items such as:
+
+- timeout handling for waiting states,
+- broader state model completeness,
+- and recovery-path completeness
+
+remain governed by the applicable flow-governance baseline and are not redefined here.
+
+10. Relationship to Downstream Consumers
+
+Phase A data governed by this baseline remains declared/manual data.
+
+Therefore:
+
+- downstream consumers must not read the existence of these audit fields as legal truth,
+- downstream consumers must not infer legal verification merely because source-record reference exists,
+- and downstream consumers must not consume Phase A declared/manual data at legal-strength by default.
+
+Audit completeness does not erase declared/manual identity.
+
+11. Verification Expectation
+
+This baseline requires that any future design or implementation claiming compliance must include at least one specific, operable verification path, not only principle-level wording.
+
+At minimum, compliance verification must describe one or more concrete methods such as:
+
+- a record-history query path showing original submitted value and later correction trail
+- an audit-log review path showing who changed a declaration and when
+- a linkage check showing that `source_record_reference` is present and remains associated with the original declaration record
+- a rejection-path check showing that declarations without `source_record_reference` cannot be submitted
+
+Purely abstract wording such as “can be checked in audit logs” is insufficient on its own.
+
+12. Hard Baseline Conclusions
+
+The intended frozen conclusions of this baseline are:
+
+1. Every Phase A declaration must carry a minimum audit spine.
+2. No `source_record_reference` means no valid submission.
+3. Evidence-free fallback and evidence-free bulk import are forbidden.
+4. Correction is allowed, but only with full trace.
+5. Original submitted value must remain reviewable.
+6. Auditability does not equal legal truth.
+7. Phase A remains declared/manual and non-legal in strength.
+
+This baseline satisfies the minimum audit discipline precondition required by Step47_PhaseA_ImplementationAuthorization_Gate Baseline v2 (Frozen Date: 2026-04-04, section 3.5).
+
+13. Non-Scope
+
+This record does not define:
+
+- concrete schema
+- field types
+- table layout
+- ORM models
+- API contracts
+- UI layout
+- exact interaction design
+- Phase B legal evidence logic
+- legal resolution attempt logic
+- legal truth creation
+- production deployment authorization
+- runtime production-use authorization
+
+All such items remain outside this record unless separately and explicitly authorized later.
+
+Final Review Notes
+
+Final Review Note A — Default implementation tendency
+
+The default implementation tendency recorded at gate confirmation is:
+correction-with-trace is allowed; silent overwrite is forbidden; original submitted value must remain reviewable. Append-only implementations are also permitted if they preserve equivalent traceability and do not erase prior submitted values.
+
+Final Review Note B — Minimum acceptable forms of source_record_reference
+
+Before any future implementation authorization, the implementation guide must explicitly define the minimum acceptable forms of `source_record_reference`. This list must not be left to implementation-layer discretion and must be independently reviewed and frozen in alignment with Non-Scan Operation Mode Baseline v2.
+
+Final Review Note C — A0 exception-path alignment obligation
+
+The separately governed exception path referenced in Section 3, if later implemented as an A0 path, must explicitly align with this baseline’s `source_record_reference` discipline and must not silently bypass the hard rule that no valid normal-path submission exists without `source_record_reference`.
+
+工厂语言说明
+
+这份基线讲的是：
+工厂先用手工申报位置可以，但系统不能只记“报了一个位置”。它至少要记住：
+
+- 谁报的
+- 几点报的
+- 报的是哪里
+- 根据哪一张单、哪一笔来源记录来报
+
+如果后面发现纸单号填错了，可以改，但不能偷偷把旧资料盖掉。系统一定要看得出：
+
+- 原来填什么
+- 后来改成什么
+- 谁改的
+- 什么时候改的
+
+这样以后仓库、PMC、老板、审计去追，才不会变成“资料看起来有，但根本查不出是谁报、谁改、改过几次”。
+
+这份基线也同时说明：
+有审计痕迹，不代表系统已经法律等级确认位置是真的。
+它只是说明这笔手工申报“可追、可查、不可偷偷改”，不是 Phase B 那种扫码法定证据链。
