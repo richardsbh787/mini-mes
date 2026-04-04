@@ -80,6 +80,7 @@ Step 47B is frozen as Step 47B Task Card v2.1 = Design Freeze Baseline.
 Step47_PhaseA_ManualLocationDeclaration_Baseline (v2) is frozen as a design-layer baseline only.
 It does not authorize implementation, activation, or runtime production use.
 The existing Step 47 legal chain remains the frozen Phase B scope and remains BLOCKED.
+Step47_PhaseA_ImplementationAuthorization_Gate Baseline v2 is now CONDITIONAL PASS / FROZEN WITH FINAL REVIEW NOTES; it remains design/governance only, does not authorize production deployment or runtime production use, and independently self-carries both Phase A forbidden legal-strength wording and downstream declared/manual identification obligations.
 
 FG_RECEIVE Location Master Physical Schema Baseline is frozen as a design-layer schema baseline only.
 It is not implementation authorization.
@@ -5121,3 +5122,400 @@ This record does not silently claim that transitional flows already have full go
 Freeze intent
 
 The intent of this freeze is to lock the cross-cutting flow-governance baseline only, so that governed key business flows cannot claim governance strength unless they explicitly define decomposition, state model, acceptance gate, and recovery path, while preserving existing frozen truth-discipline boundaries and preventing transitional flows from being silently treated as fully governed.
+
+45. Frozen Record - Step47_PhaseA_ImplementationAuthorization_Gate Baseline v2
+
+Status: CONDITIONAL PASS / FROZEN WITH FINAL REVIEW NOTES
+Frozen Date: 2026-04-04
+Layer: Design / Governance Layer Only
+Applies To: Step 47 Phase A only
+Does Not Apply To: Step 47 Phase B, PF-1 ~ PF-8 legal chain, any legal location truth path, production deployment authorization, runtime production-use authorization
+
+Review Chain:
+- Primary review: 清尘 — PASS
+- Secondary review: 老萧（DeepSeek） — PASS
+- Final review: 沁然 — CONDITIONAL PASS / FROZEN WITH FINAL REVIEW NOTES
+- Authority: 睿辰
+
+Review Anchor Note:
+This frozen record attaches only to the Step47_PhaseA_ImplementationAuthorization_Gate Baseline v2 text submitted in this review cycle. If any later-presented text differs from the reviewed v2 body, this freeze does not automatically extend to the differing text and a bounded supplemental review is required.
+
+0. Purpose
+
+This record freezes the minimum authorization gate standard that must be satisfied before Step 47 Phase A may receive any implementation authorization.
+
+This record does not itself grant implementation authorization.
+This record only defines:
+
+- what must already be true before such authorization may be considered,
+- what Phase A implementation authorization may mean if later granted,
+- and what it still must not mean even after authorization.
+
+1. Position of Step 47 Phase A
+
+Step 47 Phase A is the manual Stock Card digitization / operator-declared location layer.
+
+Its frozen role is limited to:
+
+- accepting operator-declared location data,
+- under structured, auditable, explicitly marked non-legal conditions,
+- without claiming, inferring, upgrading into, or substituting for legal location truth.
+
+Phase A is therefore:
+
+- allowed only as a declared-layer operational start layer,
+- explicitly non-equal-strength to scan-driven legal evidence paths,
+- and permanently isolated from Step 47 Phase B legal semantics unless a separate future chain explicitly says otherwise.
+
+2. Gate Nature
+
+Any future Phase A implementation authorization must be treated as an independent authorization layer.
+
+It must not be inferred from:
+
+- Phase A baseline having been frozen,
+- Phase A being operationally useful,
+- A0 / A1 discipline having been defined,
+- Non-Scan mode being allowed in governance,
+- or any claim that “manual-first is the current factory reality.”
+
+None of the above is implementation authorization.
+
+3. Preconditions Before Phase A Implementation Authorization May Be Considered
+
+Phase A implementation authorization may be considered only if all of the following are explicitly satisfied at design/governance level.
+
+3.1 Semantic isolation is already frozen and unambiguous
+
+It must already be explicit that:
+
+- Phase A data is operator-declared location only,
+- Phase A data is not legal location truth,
+- Phase A must not be displayed, consumed, or interpreted as legal/final/resolved location truth,
+- and no downstream layer may silently upgrade Phase A declared data into legal truth.
+
+3.2 Phase A authorization scope is explicitly limited to declared-layer scope
+
+The future authorization candidate must be explicitly limited to:
+
+- declaration capture,
+- declaration auditability,
+- declared-layer state handling,
+- declared-layer read surfaces,
+- and declared-layer governance controls.
+
+The authorization candidate must not include legal-location semantics, legal-resolution semantics, or Phase B substitute semantics.
+
+3.3 Non-Scan governance compatibility is already explicitly preserved
+
+The future authorization candidate must already preserve all applicable frozen Non-Scan governance boundaries, including at minimum:
+
+- MANUAL is allowed only as degraded, auditable, non-equal-strength mode,
+- each manual entry must carry at least one auditable source-record reference,
+- evidence-free submission must be rejected,
+- evidence-free bulk import must not be allowed,
+- mode must be explicit,
+- mode change must not be silent,
+- and MANUAL must not be silently upgraded into SCAN-strength truth.
+
+3.4 Flow governance minimum completeness is explicitly preserved
+
+The future authorization candidate must already declare Phase A’s minimum flow-governance handling, including at minimum:
+
+- flow decomposition boundary,
+- declared-layer state model,
+- acceptance handling boundary,
+- and recovery / escalation boundary.
+
+If any part remains transitional or incomplete, the candidate must explicitly state:
+
+- which element is incomplete,
+- what isolation boundary currently prevents contamination,
+- what completion plan remains pending,
+- and why the remaining incompleteness does not require runtime guesswork.
+
+This clause does not nullify or override the transitional allowance defined in Flow Governance Baseline v2 (Frozen Date: 2026-04-04).
+It only means that any reliance on such transitional allowance must itself be explicit, bounded, reviewable, and non-silent in the authorization package.
+
+Phase A must not use incompleteness as a permanent exemption.
+
+If the Phase A candidate includes A0 / A1 staged handling, the relevant A0 / A1 transition discipline must already be separately frozen before implementation authorization may be considered.
+
+3.5 Minimal audit discipline is already explicitly defined
+
+Before authorization may be considered, Phase A must already have a frozen minimum audit discipline that at least preserves:
+
+- who declared,
+- when declared,
+- what was declared,
+- what source-record reference anchored the declaration,
+- and no silent overwrite.
+
+The minimum source-record-reference discipline, including what counts as an acceptable source-record reference at this governance stage, must follow the already frozen Non-Scan Operation Mode Baseline v2.
+
+If later mutation is allowed, mutation trace discipline must already be explicitly bounded.
+
+3.6 Misuse response / escalation discipline is already explicitly defined
+
+Before authorization may be considered, Phase A must already have a frozen minimum governance response for misuse.
+
+At minimum, that response must explicitly define:
+
+- identifiable misuse types,
+- escalation path,
+- responsible human role(s),
+- and expected response action(s).
+
+At minimum, identifiable misuse types must include cases where:
+
+- declared data is consumed as legal truth,
+- MANUAL mode is hidden, omitted, or silently merged,
+- manual records are accepted without required source-record reference,
+- or declared-layer read surfaces imply legal verification, finality, or resolved legal status.
+
+At minimum, the escalation path must identify which role must be notified or engaged when such misuse is detected.
+
+At minimum, the response action must define one or more bounded actions such as:
+
+- human review,
+- corrective handling,
+- retraining / re-briefing,
+- temporary restriction of the violating operation path,
+- or temporary restriction of the violating operator role or account as separately governed.
+
+Automated disabling or automated circuit-breaker behavior may exist as a future enhancement, but is not required as the minimum form of this discipline.
+
+Without such minimum misuse response discipline, implementation authorization must not be considered ready.
+
+4. Minimum Evidence Package Required Before Authorization Review
+
+A future request to authorize Phase A implementation must provide a bounded evidence package showing that the candidate design preserves the already frozen boundaries.
+
+At minimum, the evidence package must include:
+
+4.1 Scope statement
+
+A clear written statement of:
+
+- what part of Phase A is being authorized for implementation,
+- what is not included,
+- and what remains blocked.
+
+4.2 Declared-vs-legal separation statement
+
+A clear written statement confirming:
+
+- declared-layer only,
+- not legal truth,
+- not legal resolution,
+- not Phase B substitute,
+- not PF-chain relaxation.
+
+4.3 Read / write surface boundary statement
+
+A clear written statement confirming:
+
+- what may be captured,
+- what may be shown,
+- what may be updated if any,
+- and what must never be shown or written.
+
+4.4 Non-Scan compatibility statement
+
+A clear written statement confirming preservation of:
+
+- source-record reference discipline,
+- explicit mode marking,
+- non-equal-strength discipline,
+- no evidence-free bulk path,
+- no silent mode switch,
+- no silent MANUAL-to-SCAN upgrade.
+
+4.5 Governance completeness statement
+
+A clear written statement confirming at least:
+
+- declared-layer state handling,
+- exception / recovery path boundary,
+- timeout handling if any waiting-for-evidence / confirmation state exists,
+- fallback human role if any system/auto-rule handling is involved.
+
+If no waiting-for-evidence / confirmation state exists in the candidate scope, the authorization package must explicitly state not applicable, with reason.
+
+4.6 Non-scope statement
+
+A clear written statement confirming that the authorization request does not seek to authorize:
+
+- Phase B,
+- legal truth creation,
+- legal evidence chain,
+- legal resolution attempt logic,
+- runtime legal binding,
+- or downstream legal consumption.
+
+5. What Phase A Implementation Authorization May Mean If Later Granted
+
+If a separate future decision later passes this gate and grants implementation authorization, that authorization may mean only that implementation may proceed within the explicitly approved declared-layer scope.
+
+At most, such authorization may allow implementation of bounded declared-layer capabilities such as:
+
+- structured manual declaration intake,
+- explicit MANUAL mode handling,
+- source-record-reference-bound submission,
+- minimum audit field capture,
+- bounded declared-layer read surfaces,
+- A0 / A1 declared-layer handling if separately frozen,
+- and declared-layer misuse control hooks.
+
+Even if granted, such authorization still does not mean legal truth authority.
+
+Even if later granted, implementation authorization only permits bounded build activity within approved development / test scope. It does not authorize production deployment, runtime production use, or production governance activation.
+
+6. What Phase A Implementation Authorization Must Not Mean
+
+Even after future implementation authorization is granted, it must not be interpreted as meaning any of the following:
+
+- that Phase A is legal location truth,
+- that Phase A may stand in for Phase B,
+- that PF-1 ~ PF-8 may be weakened, bypassed, or partially reused by convenience,
+- that MANUAL data may be treated as equal-strength to SCAN truth,
+- that source-record-reference discipline may be loosened,
+- that evidence-free import may be allowed,
+- that downstream legal inventory / legal location consumers may use Phase A as legal input,
+- that runtime free inference may fill missing flow/governance elements,
+- or that Phase B implementation authorization has changed in any way.
+
+7. Hard Blocking Conditions
+
+Phase A implementation authorization must not be granted if any of the following remains true.
+
+7.1 Semantic ambiguity remains
+
+If any wording still allows “declared” to be mistaken for:
+
+- verified,
+- resolved,
+- final,
+- admitted,
+- legal,
+- or equivalent legal-strength meaning,
+
+authorization must be blocked.
+
+7.2 Source-record-reference discipline is missing, weakenable, or ungoverned
+
+If the candidate still allows:
+
+- declaration without auditable source-record reference,
+- evidence-free fallback submission,
+- evidence-free batch import,
+- or any unapproved, silent, undocumented, or implementation-layer-defined expansion of acceptable source-record-reference types,
+
+authorization must be blocked.
+
+Any expansion of acceptable source-record-reference types must follow explicit governance approval, including bounded design review and freezing, and must not be introduced silently by implementation convenience.
+
+The acceptable source-record-reference discipline at this stage must remain aligned with the already frozen Non-Scan Operation Mode Baseline v2 unless separately changed by an explicit approved governance record.
+
+7.3 Mode discipline remains incomplete
+
+If MANUAL / SCAN / HYBRID cannot be explicitly distinguished, or if mode change can occur silently, authorization must be blocked.
+
+7.4 Downstream contamination remains possible
+
+If downstream consumers can still receive Phase A data without explicit declared/manual identification, or can consume it as legal truth input, authorization must be blocked.
+
+7.5 Flow-governance minimum handling remains undefined
+
+If declared-layer state handling, exception handling, timeout handling, or recovery boundary remains undefined in a way that lets implementation fill it by runtime guesswork, authorization must be blocked.
+
+7.6 Misuse response remains undefined
+
+If misuse can only be handled by explanation, convention, or training alone, with no explicit governance escalation boundary, authorization must be blocked.
+
+8. Output Discipline of Future Authorization Decision
+
+Any future actual decision on Phase A implementation authorization must be issued as an independent decision record.
+
+That future decision record must explicitly state:
+
+- PASS / FAIL,
+- what exact scope changed,
+- what exact scope did not change,
+- what remains blocked,
+- and what future readers must not over-interpret.
+
+Authorization outcome must never be implied only by:
+
+- code existence,
+- schema existence,
+- UI prototype existence,
+- handoff discussion,
+- or review sentiment.
+
+Only an explicit decision record may change authorization state.
+
+9. Relationship to Step 47 Phase B
+
+This record does not reopen, reinterpret, dilute, or reclassify the frozen Step 47 Phase B legal chain.
+
+In particular:
+
+- Phase B remains independently blocked unless separately changed,
+- PF-1 ~ PF-8 remain fully effective in their own scope,
+- legal evidence chain discipline remains untouched,
+- and no Phase A implementation authorization may be cited as partial evidence that Phase B is now ready.
+
+Phase A and Phase B remain explicitly decoupled.
+
+10. Non-Scope
+
+This record does not authorize or define:
+
+- concrete schema,
+- table names,
+- field types,
+- ORM models,
+- API contracts,
+- UI layouts,
+- workflow engine implementation,
+- runtime production use authorization,
+- admitted-source activation,
+- legal binding execution,
+- legal evidence snapshot implementation,
+- or any legal-location truth production path,
+- production deployment authorization,
+- runtime production-use authorization,
+- or any implied go-live permission.
+
+All such matters remain outside this record unless separately and explicitly authorized later.
+
+11. Frozen Conclusion Intended by This Baseline
+
+The intended frozen conclusion of this baseline is:
+
+Phase A implementation may not even be considered unless its declared-layer-only scope, non-scan degraded-mode discipline, minimum auditability, misuse controls, and flow-governance floor are already explicitly bounded.
+
+And even if later authorized, it still remains:
+
+- non-legal,
+- non-equal-strength,
+- non-Phase-B,
+- and non-self-upgrading.
+
+Final Review Notes
+
+Final Review Note A — Phase A 禁用语义词，本文件自持
+
+Phase A 所有输出标记、状态展示、summary 文案、detail 文案及 API 回应，禁止使用 verified / resolved / final / admitted / legal 等词汇，或其语义等效表达。
+此禁止义务由本基线独立承担并自持，不依赖读者查阅其他冻结文件方能成立。
+
+Final Review Note B — 下游强制识别义务，本文件独立声明
+
+凡消费 Phase A 数据的下游路径，必须显式识别其 declared / manual 身份标记，不得默认以 legal truth 强度消费，不得无标识流入 legal inventory、legal location 或等效 legal-strength 消费面。
+此义务由本基线独立声明，与 Non-Scan Operation Mode Baseline v2 的相关附注并列有效，互不替代。
+
+Final Review Note C — 跨文件版本锁定
+
+本基线在 flow-governance 相关约束上，引用的是 Flow Governance Baseline v2（Frozen Date: 2026-04-04）。
+后续若 Flow Governance 基线升级，本基线之语义不随之自动漂移；任何需要对齐的新版本适配，必须通过独立评审与变更记录处理。
