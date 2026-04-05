@@ -6292,3 +6292,72 @@ Future system design may no longer treat failure as an ungoverned afterthought, 
 
 Factory-Language Explanation
 This freeze means that when the system fails, frontline users must no longer be left to guess whether the problem was caused by wrong input, network or external service issues, or the system itself. They also must not be trapped in a frozen screen until they are forced to shut down and restart. At minimum, the system must make clear what kind of problem this is, whether the user should stop, wait, retry, or escalate, and who is responsible for follow-up.
+
+50. Frozen Record - Global Governance_UI_ErrorLayer_Boundary_Baseline
+
+Frozen Record - Global Governance_UI_ErrorLayer_Boundary_Baseline
+
+Status
+PASS / FROZEN
+
+Scope
+This frozen record locks a supplemental governance boundary for the UI/backend error interface layer.
+It supplements the already frozen Global Governance_FailureHandling_ErrorSourceSeparation_Rule_v2.
+It is not a replacement for the existing failure-handling rule.
+It is not implementation authorization.
+
+This record is governance/design only.
+It does not authorize implementation.
+It does not authorize production deployment.
+It does not authorize runtime production use.
+It does not define specific Chinese operator-facing wording.
+It does not define Streamlit implementation details.
+It does not define API, schema, migration, or runtime mechanics.
+It does not authorize autonomous recovery behavior.
+
+Framing
+Global Governance_FailureHandling_ErrorSourceSeparation_Rule_v2 remains the repo-wide detailed governance anchor for failure source separation, anti-hang discipline, timeout discipline, and technical-detail/operator-guidance separation.
+This record only supplements the UI/backend interface-layer boundaries not already locked there.
+Operator wording approval workflow is out of scope for this frozen record.
+
+Frozen Decision
+Global Governance_UI_ErrorLayer_Boundary_Baseline is frozen as a supplemental governance boundary for the UI/backend error interface layer.
+Future UI-facing error-layer design must inherit this baseline together with Global Governance_FailureHandling_ErrorSourceSeparation_Rule_v2.
+
+Core Freeze Meaning
+
+R1. Root Classification Preservation
+UI layer may translate or reword an error for operator clarity, but must not change the underlying error classification or its actionable meaning. For example, permission / validation / system / external classifications must not be re-presented as a different kind of cause.
+If the UI-layer message effectively changes the error classification or actionable meaning, whether intentionally or not, it must be treated as a governance violation and corrected before the flow is considered compliant.
+
+R2. Guidance-Only, Not Diagnosis Authority
+UI layer may present next-step guidance to the operator, but must not represent itself as the authoritative source of technical diagnosis. The backend technical error remains the sole diagnosis truth for support and development.
+
+R3. Backend Technical Layer Must Remain Intact
+The backend technical error object, including status code and detailed technical reason, must remain preserved and accessible to support/development roles. UI layer may add an operator-facing message, but must not suppress, replace, or overwrite the original backend technical error.
+
+R4. No Automatic Recovery Action Without Governance
+UI layer must not automatically execute retry, redirect, recovery, or state-changing actions unless such actions are explicitly defined and frozen within the corresponding flow's recovery path under the applicable governance baseline.
+
+Non-Scope and Exclusions
+This frozen record does not:
+
+* define specific Chinese operator-facing wording
+* define Streamlit implementation details
+* define API/schema/migration/runtime mechanics
+* change or rewrite the existing FailureHandling_ErrorSourceSeparation_Rule_v2
+* authorize UI implementation
+* authorize autonomous recovery behavior
+
+Boundary Confirmation
+This frozen record is a supplemental UI/backend interface-layer governance baseline only.
+It does not replace the existing failure-handling rule.
+It does not weaken the already frozen governance boundaries on failure source separation, anti-hang handling, timeout discipline, or technical-detail/operator-guidance separation.
+It does not create implementation readiness, activation readiness, production deployment readiness, or runtime production-use authorization.
+
+Readiness Meaning
+This freeze means the repo now holds a stable supplemental governance boundary for the UI/backend error interface layer.
+The UI may help operators understand what to do next, but it may not change what kind of error the system has determined, may not replace backend technical diagnosis truth, and may not take recovery actions on its own unless that recovery path has already been explicitly frozen and governed.
+
+Factory-Language Explanation
+This freeze means the front-end may explain an error in human terms, but must not change what kind of error it really is; the real backend technical cause must remain available for troubleshooting; and the UI must not take recovery actions on its own unless that path has already been explicitly frozen and governed.
