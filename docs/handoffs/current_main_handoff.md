@@ -6125,3 +6125,170 @@ AI must not be the sole decision-maker for any of the above.
    Mini-MES is not hiring “someone who talks well, guesses a lot, but does not follow discipline” to run a factory.
    Mini-MES is first installing fixtures, limiters, inspection points, abnormal isolation, rework routes, and release conditions across the whole line.
    That way, regardless of who performs the work, the system is less likely to drift and less likely to treat wrong things as true.
+
+49. Frozen Record - Global Governance_FailureHandling_ErrorSourceSeparation_Rule_v2
+
+Frozen Record - Global Governance_FailureHandling_ErrorSourceSeparation_Rule_v2
+
+Status
+FROZEN
+
+Scope
+This frozen record locks a repo-wide durable governance rule for failure handling and error-source separation.
+Its purpose is to ensure that future operator-facing flows, blocking flows, recovery paths, and UI-facing error handling are governed by explicit failure classification, explicit anti-hang discipline, and explicit next-action separation, rather than by silent failure, indefinite waiting, forced shutdown, or blame-shifting to frontline operators.
+
+This record is governance/design only.
+It does not authorize implementation.
+It does not authorize production deployment.
+It does not authorize runtime production use.
+It does not by itself retrofit all previously frozen steps.
+It supplements the existing Core Operating Mode and Cross-Cutting Governance Rules in AGENTS.md.
+It does not replace Ontology, Guard V2, GUARD MODE, Operator Minimal Action Rule, T-1/T0/T+1, S-1/S0/S+1, or Flow Governance Baseline v2.
+
+Frozen Decision
+Global Governance - Failure Handling & Error Source Separation Rule (v2) is frozen as a repo-wide durable governance rule.
+All future design of operator-facing flows, blocking flows, recovery paths, and UI-facing error handling must inherit this rule.
+
+Core Freeze Meaning
+
+1. Minimum Failure Classification
+   Failure sources must be classified at least into the following three categories:
+
+* user/input/data-side failure
+* system/code/runtime-side failure
+* external/environment-side failure
+
+External/environment-side failure includes, but is not limited to:
+
+* network instability or disconnection
+* infrastructure failure
+* middleware dependency failure
+* third-party service failure
+* external interface unavailability
+
+No implementation may force a false binary choice between user-side and system-side failure when the reality is mixed or external.
+
+2. Conservative Handling of Mixed or Unclear Failures
+   Where a failure cannot be clearly and safely classified into a single category, the system must handle it conservatively as system-side failure and must preserve full diagnostic context.
+   It is forbidden to downgrade mixed, ambiguous, or externally caused failures into user mistake merely for convenience.
+
+3. Anti-Hang Rule
+   The following are not acceptable as normal failure handling for operator-facing flows:
+
+* hang
+* indefinite waiting
+* no response
+* blocked-without-feedback
+* forced shutdown as normal recovery
+
+If a flow cannot continue, it must enter an explicit state such as blocked, failed, or recoverable, rather than remaining in a silent or ambiguous waiting condition.
+
+4. Timeout and Waiting Discipline
+   Any operator-facing synchronous waiting path must have an explicit timeout ceiling.
+   The recommended ceiling is not more than 30 seconds, while the exact value may be defined per scenario at implementation time.
+   After timeout, the system must automatically enter an explicit blocked or failed state and must provide clear next-action guidance.
+   It is forbidden to rely only on manual refresh, repeated clicking, page reopening, or operator-side cancellation as the normal way to exit waiting.
+
+5. Long-Running Operation Discipline
+   Operations that may take materially longer than a normal synchronous interaction must not trap the operator in prolonged blocking wait.
+   Such operations must provide an asynchronous status-query path or equivalent explicit progress/state mechanism.
+
+6. Operator-Facing Error Separation
+   Developer/log technical detail and operator-facing action guidance must remain separated.
+   Operator-facing error handling must not depend on exposing raw technical detail to frontline users.
+
+Operator-facing errors must not expose unexplained technical details such as:
+
+* exception class names
+* stack traces
+* raw database codes
+* infrastructure/internal diagnostic fragments
+
+unless the operator role is also explicitly approved to perform technical support responsibility under governance.
+
+7. Minimum Guidance Obligation
+   Where a failure is surfaced to an operator, the system must make the following explicit at minimum:
+
+* what kind of failure this is
+* whether the operator can continue or must stop
+* what next action is required
+* who is responsible to follow up where operator action is not sufficient
+
+The operator must not be left to guess whether the issue is caused by data entry, external environment, or system behavior.
+
+8. Recovery-Path Governance
+   Failure paths are part of governed system design, not afterthoughts.
+   Key flows must not define only the happy path while leaving blocked, retry, escalation, or recovery behavior undefined.
+   Flow Governance Baseline v2 recovery-path requirements must be read together with this rule.
+   Any governed recovery path must satisfy both:
+
+* explicit failure-source separation
+* explicit anti-hang discipline
+
+9. Temporary Incompleteness Is Not Permanent Exemption
+   If a step cannot yet implement full recovery behavior due to objective constraints, that incompleteness must not be treated as a permanent exemption.
+   At minimum, the following must still be explicitly defined:
+
+* failure type
+* next required action
+* responsible follow-up side
+* stop condition
+* completion trigger or completion timing for the missing recovery behavior
+
+No flow may remain indefinitely in a "declared but not completed" recovery state without governance tracking.
+
+10. Forward-Looking Applicability and Non-Retroactive Boundary
+    This rule applies to all newly designed operator-facing flows, blocking flows, recovery paths, and UI-facing error layers after this freeze.
+    It does not by itself require immediate retrofit of every previously frozen step.
+    However, previously frozen steps must be assessed against this rule when they later enter:
+
+* implementation-authorization evaluation
+* maintenance redesign
+* reconstruction
+* UI-layer adoption
+* recovery-path completion work
+
+Historical status does not exempt a flow from later failure-handling compliance review when it re-enters active design or authorization gates.
+
+11. No False Promotion to Implementation Readiness
+    This frozen rule does not mean that all existing flows already have compliant recovery implementation.
+    It is forbidden to claim implementation completeness merely because a governance rule now exists.
+    Governance freeze, implementation readiness, activation readiness, production deployment readiness, and runtime production-use authorization remain distinct layers.
+
+12. External/Environment Failure Guidance Principle
+    For operator-facing handling of external/environment-side failure, the system must at minimum make clear:
+
+* that the interruption is caused by an external/environment problem rather than operator mistake
+* the recommended next action, such as wait, retry, or escalate
+* who is responsible to follow up if operator action alone is insufficient
+
+The operator must not be left to decide blindly whether repeated retry is safe.
+
+13. Full Diagnostic Context Minimum Requirement
+    Where this rule requires preservation of full diagnostic context, the minimum expectation includes:
+
+* error occurrence time
+* basis for failure-type judgment
+* relevant input-context summary
+* system-state snapshot at the time of failure
+
+The exact structure may be defined later by implementation, but a single-line generic error message is not sufficient to satisfy this requirement.
+
+Boundary Confirmation
+This frozen record:
+
+* does not create business truth
+* does not authorize service-layer error rewrites by itself
+* does not authorize UI wording implementation by itself
+* does not authorize schema, ORM, API, runtime, or deployment changes by itself
+* does not imply all historical flows are already compliant
+* does not replace Flow Governance Baseline v2
+* does not replace AGENTS Core Operating Mode
+* does not convert governance principle into immediate implementation authorization
+
+Readiness Meaning
+This freeze means the repo now holds a stable top-level governance rule stating that failure handling must be classified, bounded, non-hanging, and operator-guided.
+Future system design may no longer treat failure as an ungoverned afterthought, a silent hole, or a place where frontline operators must guess what happened.
+
+Factory-Language Explanation
+This freeze means that when the system fails, frontline users must no longer be left to guess whether the problem was caused by wrong input, network or external service issues, or the system itself. They also must not be trapped in a frozen screen until they are forced to shut down and restart. At minimum, the system must make clear what kind of problem this is, whether the user should stop, wait, retry, or escalate, and who is responsible for follow-up.
