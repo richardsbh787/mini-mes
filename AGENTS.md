@@ -110,154 +110,53 @@ Mini-MES should win by being simple enough to adopt quickly, focused enough to r
 Mini-MES 不是靠“功能很多”取胜，而是靠“足够简单、上手够快、真正解决现场最痛的问题”取胜。
 复杂度尽量让系统自己吸收，不要转嫁给一线人员。
 
-## Harness / Entrix / Engineering Controllability Governance Rules
+## Cross-Cutting Governance Rules
 
-Top-Level Rule 1 — Stability comes from system control, not AI improvisation
-Mini-MES stability must come from system-defined boundaries, gates, feedback chains, and recovery paths.
-AI improvisation must never be treated as a substitute for governance.
+The following rules supplement the Core Operating Mode.
+They do not replace Ontology, Guard V2, GUARD MODE, Operator Minimal Action Rule, or the T-1/T0/T+1 and S-1/S0/S+1 audit disciplines.
+They add durable cross-cutting governance requirements on controllability, evidence strength, failure handling, AI boundaries, and explicit activation discipline.
 
-Top-Level Rule 2 — A rule is not “effective” unless it enters an execution path
-A critical rule must not be treated as effective merely because it exists in a document, handoff, Task Card, or human memory.
-Before any flow may be claimed as governed or runnable, each critical boundary must enter at least one execution-layer carrier:
+### 1. System Control Over Improvisation
 
-* repo rule
-* process gate
-* interface constraint
-* state validation
-* runtime interception
+System stability must come from explicit control design, not from ad hoc human interpretation, temporary convenience logic, or AI improvisation.
 
-Task Cards, handoff records, and design documents are not execution-layer carriers.
+### 2. Strong-vs-Weak Truth Separation
 
-Top-Level Rule 3 — No external claim before execution-layer entry
-Before a rule enters at least one execution-layer carrier, no party may claim that:
+The system must keep explicit separation between stronger and weaker forms of business meaning, including but not limited to:
 
-* the rule is already effective
-* the boundary is already enforced
-* the flow is already governed
+* trace vs truth
+* declared/manual vs legal/verified
+* reviewable evidence vs convenience inference
+* degraded mode vs normal controlled mode
 
-Top-Level Rule 4 — Every governed key business flow must define four elements
-Any governed key business flow must explicitly define:
+Weaker forms must not be silently promoted into stronger ones.
 
-* flow decomposition
-* state model
-* acceptance gate
-* recovery path
+### 3. Failure Must Be Governed
 
-If any one is missing, the flow must not be claimed as controllable or governance-complete.
+Failure paths are part of system design, not afterthoughts.
+Operator-facing flows must not rely on silent failure, indefinite waiting, or forced shutdown as normal handling.
+Where recovery cannot yet be fully implemented, the failure type, responsible party, and next required action must still be made explicit.
 
-Top-Level Rule 5 — Failure is a default design assumption
-System design must not cover only happy paths.
-All key flows must predefine failure handling, including where applicable:
+### 4. Manual Mode Is Degraded and Auditable
 
-* reject
-* retry
-* fallback
-* timeout
-* escalation
-* correction-with-trace
-* reversal / separate correction path
+Any manual, non-scan, declared, fallback, or degraded operation mode must remain explicitly marked as weaker than controlled legal-strength mode, and must remain auditable.
+Manual convenience must not be disguised as equal-strength system truth.
 
-Implementation layers must not self-add recovery logic without review and freeze.
+### 5. AI Assists but Does Not Govern
 
-Top-Level Rule 6 — Strong evidence and weak evidence must remain separated
-Mini-MES must continue to uphold:
+AI may assist with drafting, analysis, summarization, review support, and implementation acceleration.
+AI must not silently define ontology, upgrade evidence strength, authorize production use, replace governance decisions, or erase required review boundaries.
 
-* trace ≠ truth
-* declared/manual ≠ legal truth
-* auditability ≠ legal truth
-* implementation complete ≠ activated
-* activated ≠ runtime production-use authorized
+### 6. Activation and Production Use Require Explicit Authorization
 
-Weak-layer data must never silently upgrade into strong-layer truth.
+Design completion, implementation completion, review pass, or feature existence do not by themselves authorize activation, production deployment, or runtime production use.
+Such transitions must remain explicitly governed and separately authorized where required by the frozen chain.
 
-Top-Level Rule 7 — Activation and production-use authorization are governance decisions
-Activation and runtime production-use authorization must be granted only through independent governance decision records.
-They must not be inferred from implementation completion, deployment status, test pass, operations action, or product demand.
+### Human Version
 
-Under the current mainline, lawful activation / runtime production-use authorization requires explicit confirmation by Rui Chen as Project Owner.
-
-Top-Level Rule 8 — Manual mode is a controlled degraded mode only
-Manual / Declared / Non-scan modes may exist only as an independent layer that is:
-
-* degraded
-* auditable
-* explicitly marked
-* downstream-recognizable
-
-MANUAL must not be silently packaged as SCAN.
-Phase A must not be silently packaged as Phase B.
-Declared/manual data must not be silently packaged as legal truth.
-
-Top-Level Rule 9 — Governance relationships must become visible
-Mini-MES must not depend long-term on human memory to preserve governance.
-The system should progressively expose:
-
-* frozen baseline status
-* blocked / authorized / activated / runtime-use status
-* truth / trace / declared boundaries
-* acceptance gate positions
-* unresolved governance gaps
-* recovery path existence
-
-Top-Level Rule 10 — Unreviewed artifacts have no mainline legal standing
-Any implementation artifact created without governance review and freeze, including but not limited to:
-
-* recovery logic
-* gate condition
-* state transition
-* truth judgment rule
-* AI-generated content
-
-has legal status: UNREVIEWED.
-
-UNREVIEWED artifacts:
-
-* must not enter the mainline
-* must not be claimed as governed by Mini-MES
-* must not be cited as frozen boundaries by later steps
-
-They must either complete review flow or be explicitly discarded.
-
-Top-Level Rule 11 — AI may assist, but may not decide governance
-AI may assist with:
-
-* explanation
-* prompting
-* anomaly discovery
-* governance-structure reading
-* assisted checking
-* constrained auxiliary drafting
-
-AI must not:
-
-* determine legal truth
-* cross frozen boundaries
-* upgrade manual data
-* rewrite blocked / inactive / unauthorized status
-* rewrite frozen semantics
-* generate new states
-* generate new gate conditions
-* generate new recovery logic
-* generate new truth-judgment rules
-
-Top-Level Rule 12 — AI outputs that affect governance require full human review
-Any AI-generated content involving:
-
-* business rules
-* state transitions
-* gate conditions
-* recovery paths
-* truth judgment
-* evidence-strength classification
-
-must pass the same governance review grade required for human-written content before adoption.
-AI must not be the sole decision-maker for any of the above.
-
-Factory-Language Short Explanation
-The system must not stay stable only because “someone happens to be smart today.”
-Fixtures, limiters, inspection points, abnormal isolation, rework routes, and release conditions must be installed first.
-That way, whether the work is done by a person or by AI, neither can drift freely.
-----------------------------------------------------------------------------------
+系统要稳，不可以靠人临场猜，也不可以靠 AI 自行发挥。
+弱证据不能偷偷当强证据，手工模式不能假装等于正式模式。
+出错时不能假死，启用和上生产也不能因为“已经做出来了”就自动算通过。
 
 ## Mini-MES Ontology Global Extension — Six-Layer Model
 Mini-MES Ontology is no longer treated as only:
