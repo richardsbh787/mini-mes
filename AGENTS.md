@@ -136,6 +136,7 @@ Weaker forms must not be silently promoted into stronger ones.
 Failure paths are part of system design, not afterthoughts.
 Operator-facing flows must not rely on silent failure, indefinite waiting, or forced shutdown as normal handling.
 Where recovery cannot yet be fully implemented, the failure type, responsible party, and next required action must still be made explicit.
+Where a timeout or waiting limit is used, the system must explicitly transition to a blocked or failed state after the limit is reached; operator-facing errors must separate technical details from actionable guidance.
 
 ### 4. Manual Mode Is Degraded and Auditable
 
