@@ -59,6 +59,8 @@ Frozen Record - Step47_PF7_Evidence_Surface Baseline
 
 Frozen Record - Step47_PF8_Evidence_Surface Baseline
 
+Mini-MES Governance Summary - Harness / Entrix / Engineering Controllability Absorbed Principles
+
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
 
@@ -5935,3 +5937,191 @@ This freeze means the mainline now holds a stable rule for how Phase A declared/
 
 Factory-Language Explanation
 This freeze means that from now on, whenever the system shows a hand-declared location, it must clearly say that this is manually declared and not system-confirmed. It cannot be mixed into formal position truth, cannot be shown with misleading labels, and cannot quietly flow into dashboards, summaries, or APIs as if it were already verified.
+
+48. Mini-MES Governance Summary - Harness / Entrix / Engineering Controllability Absorbed Principles
+
+1. Core Position
+   Mini-MES does not rely on AI improvisation to achieve stability.
+   Mini-MES stability must come from system-defined boundaries, gates, feedback chains, and recovery paths.
+
+2. General Principle
+   Whether a system is controllable does not depend on how many rules are written,
+   but on whether those rules:
+
+* can be read
+* can be executed
+* can intercept errors
+* can return failures into recovery paths
+* can prevent weak evidence from contaminating strong truth
+
+3. Long-Term Governance Directions Mini-MES Must Keep
+
+3.1 Rules must not merely exist; they must enter execution paths
+Critical rules must not remain only in documents, handoff records, Task Cards, or human memory.
+Before any flow may be declared “governed” or “runnable,” every critical boundary must enter at least one execution-layer carrier:
+
+* repo rule
+* process gate
+* interface constraint
+* state validation
+* runtime interception
+  Documentation or handoff text alone does not constitute entry into an execution path.
+
+Before a rule has entered at least one execution-layer carrier above, no party may claim externally that the rule is already effective, that the boundary is already enforced, or that the flow is already governed.
+Task Cards, handoff records, and design documents are not execution-layer carriers.
+
+3.2 Every governed key business flow must define four things
+Every governed key business flow must explicitly define:
+
+* flow decomposition
+* state model
+* acceptance gate
+* recovery path
+  If any one of these is missing, the flow must not be claimed as controllable or governance-complete.
+
+At minimum, governed key business flows include:
+
+* flows that write truth
+* flows that affect stock, location, or quantity
+* flows that affect authorization, release, or legal business status
+* flows that introduce correction, reversal, fallback, or human escalation judgment
+
+3.3 Failure is not an exception; it is the default design assumption
+System design must not cover only happy paths.
+All key flows must predefine failure-handling paths, such as:
+
+* reject
+* retry
+* fallback
+* timeout
+* escalation
+* correction-with-trace
+* reversal / separate correction path
+
+All recovery paths must follow the existing Flow Governance Baseline definitions and freeze discipline.
+Implementation layers must not self-add recovery logic without review and freeze.
+
+3.4 Strong evidence and weak evidence must remain permanently separated
+Mini-MES must continue to uphold:
+
+* trace ≠ truth
+* declared/manual ≠ legal truth
+* auditability ≠ legal truth
+* implementation complete ≠ activated
+* activated ≠ runtime production-use authorized
+
+No weak-layer data may silently upgrade into strong-layer truth.
+
+For:
+
+* activated
+* runtime production-use authorized
+
+any status change must be granted through an independent decision record by a legitimate governance role.
+Such status may not be inferred unilaterally by implementation, operations, test outcome, or product request.
+
+Under the current Mini-MES mainline, the legitimate governance role here means a gate decision record explicitly confirmed by Rui Chen (Project Owner).
+Any grant not explicitly confirmed by Rui Chen does not constitute lawful activation or lawful runtime production-use authorization, regardless of whether the source is implementation, operations, test results, or product demand.
+
+3.5 Manual mode may exist only as a controlled degraded mode
+Manual / Declared / Non-scan modes may exist,
+but only as an independent layer that is simultaneously:
+
+* degraded
+* auditable
+* explicitly marked
+* downstream-recognizable
+
+MANUAL must not be silently packaged as SCAN.
+Phase A must not be silently packaged as Phase B.
+Declared/manual data must not be silently packaged as legal truth.
+
+3.6 The system must make key governance relationships visible
+Mini-MES must not depend long-term on human memory to preserve governance.
+Over time, the system should explicitly expose:
+
+* frozen baseline status
+* blocked / authorized / activated / runtime-use status
+* truth / trace / declared boundary
+* acceptance gate position
+* unresolved governance gaps
+* recovery path existence
+
+“Visible” does not mean merely listing documents.
+Future minimum implementation should move toward a governance exposure surface that is readable, checkable, and comparable against current status and gate position.
+
+3.7 Explicit gating for activation and production use
+No feature, flow, or mode may be opened to real production operations before receiving explicit runtime production-use authorization.
+Implementation complete, staging deployment, or integration-test pass do not constitute production-use authorization.
+Production-use authorization must be explicitly granted by an independent governance record.
+
+3.8 Legal status of unreviewed implementation artifacts
+Any implementation artifact created without governance review and without freeze, including but not limited to:
+
+* recovery logic
+* gate condition
+* state transition
+* truth judgment rule
+* AI-generated content
+
+has legal status: UNREVIEWED.
+
+UNREVIEWED artifacts:
+
+* must not enter the mainline
+* must not be claimed externally as governed by Mini-MES
+* must not be cited by later steps as already-frozen boundaries
+
+Once an UNREVIEWED artifact is found, it must either complete review flow or be explicitly discarded.
+It must not be default-adopted on the grounds that “it is already in use.”
+
+4. AI / Automation Usage Boundary
+   AI may be used in Mini-MES for:
+
+* explanation
+* prompting
+* anomaly discovery
+* governance-structure reading
+* assisted checking
+* assisted generation of constrained content
+
+Here, “constrained content” is limited to:
+
+* format conversion
+* summary restatement
+* field-mapping suggestion
+* document draft generation
+* auxiliary expression that does not alter governance decisions or business semantics
+
+AI must not:
+
+* determine legal truth by itself
+* cross frozen boundaries by itself
+* upgrade manual data by itself
+* rewrite blocked / inactive / unauthorized status by itself
+* rewrite frozen semantics by itself
+* generate new states by itself
+* generate new gate conditions by itself
+* generate new recovery logic by itself
+* generate new truth-judgment rules by itself
+
+Anomalies found by AI must not directly trigger business actions.
+If correction, state transition, gate handling, evidence-strength judgment, or business release is involved, the matter must follow predefined escalation paths or require human confirmation.
+
+4.1 Human-review red line for AI outputs
+Any AI-generated content involving:
+
+* business rules
+* state transitions
+* gate conditions
+* recovery paths
+* truth judgment
+* evidence-strength classification
+
+must pass the same governance review grade required for human-written content before adoption.
+AI must not be the sole decision-maker for any of the above.
+
+5. Factory-Language Explanation
+   Mini-MES is not hiring “someone who talks well, guesses a lot, but does not follow discipline” to run a factory.
+   Mini-MES is first installing fixtures, limiters, inspection points, abnormal isolation, rework routes, and release conditions across the whole line.
+   That way, regardless of who performs the work, the system is less likely to drift and less likely to treat wrong things as true.
