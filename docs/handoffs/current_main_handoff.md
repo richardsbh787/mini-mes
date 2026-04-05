@@ -5831,3 +5831,107 @@ The separately governed exception path referenced in Section 3, if later impleme
 这份基线也同时说明：
 有审计痕迹，不代表系统已经法律等级确认位置是真的。
 它只是说明这笔手工申报“可追、可查、不可偷偷改”，不是 Phase B 那种扫码法定证据链。
+
+47. Frozen Record - Step47_PhaseA_ReadSurfaceSeparation
+
+Status
+FROZEN
+
+Scope
+This frozen record locks the read-surface separation discipline for Step 47 Phase A declared/manual location data.
+Its purpose is to ensure that any list, detail, summary, or API read surface that exposes Phase A declared/manual data cannot present that data as legal location truth, verified truth, system-confirmed location truth, or any substitute for the blocked Phase B legal evidence chain.
+
+This record is design/governance only.
+It does not authorize implementation.
+It does not authorize production deployment.
+It does not authorize runtime production use.
+It does not activate any admitted source.
+It does not weaken, replace, or reinterpret the blocked Phase B chain or PF-1 ~ PF-8.
+
+Frozen Decision
+Step47_PhaseA_ReadSurfaceSeparation is frozen as a design-layer read-semantics baseline.
+All downstream read surfaces that expose Phase A declared/manual location data must preserve explicit identity separation, explicit strength separation, and explicit non-legal-truth separation.
+
+Core Freeze Meaning
+
+1. Identity Separation
+   Phase A data must always be expressed as declared/manual data.
+   It must not be named, grouped, labeled, or displayed in a way that causes downstream users or systems to naturally interpret it as legal truth, verified truth, resolved truth, bound truth, or system-confirmed location truth.
+
+2. Mandatory Explicit Marking
+   Any read surface that displays Phase A data, including list, detail, summary, and API responses, must carry clear and non-ambiguous marking equivalent in meaning to “manual declaration” / “not confirmed”.
+   No read surface may rely only on color, icon, badge, sort order, placement, faint styling, or shorthand notation to carry this identity.
+   No unmarked display is allowed.
+   Each Phase A record, or the row that carries it, must have its own explicit marking. A page-level or screen-level general disclaimer is not sufficient by itself.
+
+3. Naming / Label / Field Anti-Swap Rule
+   Phase A data must not be exposed under labels, field names, titles, or headings that imply confirmed truth, including but not limited to “current location”, “system location”, “confirmed location”, “bound location”, or equivalent expressions.
+   It must also not be exposed under neutral unconstrained labels that a normal user would naturally read as confirmed truth, including but not limited to “location”, “bin”, “storage location”, or equivalent unlabeled expressions.
+   Any exposed naming must preserve a clear qualifier such as declared, manual, 手工申报, 未确认, or an equivalent explicit limiting term.
+   `declared_location` must not be silently re-exposed downstream as `location` without the qualifier.
+   API responses that return Phase A declared/manual location data must use the field name `declared_location` or another equally explicit qualified term. The bare field name `location`, or any unqualified synonym, is prohibited for Phase A data even when `data_strength` is present.
+
+4. Layered Read-Surface Discipline
+   4.1 List Surface
+   List surfaces may display declared/manual records, but each displayed record must carry explicit declared/manual identity marking.
+
+4.2 Detail Surface
+Detail surfaces may display the declared/manual record together with its minimum audit spine, including `declared_by`, `declared_at`, `declared_location`, and `source_record_reference`.
+Detail surfaces must not add any legal-strength or verified-strength wording.
+
+4.3 Summary Surface
+Summary surfaces must not include Phase A data.
+Any future proposal to include Phase A data in summary surfaces must follow the exception process defined in section 8.1.
+Even where an exception is separately approved later, Phase A data must still be explicitly marked as manual / unverified, must remain separated from legal / verified data, and must not be merged into a single formal result as if both carried equal strength.
+Phase A data must not be default-pushed to management as a formal decision basis.
+
+5. API Read-Surface Obligation
+   API read surfaces are fully inside this baseline and may not be exempted on the theory that UI can add badges later.
+   Whenever an API response returns Phase A data, each returned Phase A record must carry an explicit strength marker at record-field level.
+   That marker must use the field name `data_strength`.
+   Its value must be `declared_manual`.
+   This value is frozen here as single-meaning and not open to implementation-side expansion.
+   No API may return Phase A data as raw location semantics without this record-level strength marking.
+   `data_strength` must not exist only as top-level metadata while the individual record can be separated from it downstream.
+   If Phase A data is returned as an array, each record in the array must contain its own `data_strength` field. Collection-level or parent-object metadata is not a substitute.
+
+6. No Semantic Promotion
+   No read surface may present Phase A data as:
+
+* legal truth
+* verified truth
+* system-confirmed location truth
+* admitted source activation result
+* Phase B substitute
+
+7. Phase B Firewall
+   This baseline does not create an alternative path for Phase B.
+   It is forbidden to justify the use of Phase A data as a legal or critical decision basis on the ground that Phase B is not yet ready.
+   Any future proposal to use Phase A data beyond declared/manual read semantics must be handled as a separate governance matter and must not be smuggled through this frozen record.
+
+8. Governance Reservation Clauses
+   8.1 Summary Exception Reservation
+   Any future proposal to allow summary surfaces to include Phase A data must go through separate governance review and freeze.
+   “Business demand” is not sufficient authorization.
+   Implementation teams and product requesters may not decide this by themselves.
+
+8.2 data_strength Expansion Reservation
+Any future proposal to expand the allowed value set of `data_strength` must go through separate design review and freeze.
+Implementation teams may not introduce new enum values by themselves.
+
+Boundary Confirmation
+This frozen record:
+
+* does not create new execution truth
+* does not create legal source truth
+* does not authorize write-surface changes
+* does not authorize schema, ORM, API, UI, service, or test implementation by itself
+* does not reopen already-frozen upstream truths
+* does not contaminate the blocked Phase B chain
+* does not weaken PF-1 ~ PF-8
+
+Readiness Meaning
+This freeze means the mainline now holds a stable rule for how Phase A declared/manual data may be read and displayed without misleading operators, planners, supervisors, managers, dashboards, reports, APIs, or downstream consumers into treating it as legal-strength position truth.
+
+Factory-Language Explanation
+This freeze means that from now on, whenever the system shows a hand-declared location, it must clearly say that this is manually declared and not system-confirmed. It cannot be mixed into formal position truth, cannot be shown with misleading labels, and cannot quietly flow into dashboards, summaries, or APIs as if it were already verified.
