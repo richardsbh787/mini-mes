@@ -1,7 +1,7 @@
-Mini-MES Handoff v2.16
+Mini-MES Handoff v2.17
 
-Updated after Step47 Phase A manual location declaration baseline freeze sync
-Date: 2026-04-04
+Updated after 2026-04-05 governance freeze sync for failure-handling / UI error-layer boundaries and AGENTS alignment
+Date: 2026-04-05
 
 1. Frozen mainline snapshot
 
@@ -61,6 +61,10 @@ Frozen Record - Step47_PF8_Evidence_Surface Baseline
 
 Mini-MES Governance Summary - Harness / Entrix / Engineering Controllability Absorbed Principles
 
+Frozen Record - Global Governance_FailureHandling_ErrorSourceSeparation_Rule_v2
+
+Frozen Record - Global Governance_UI_ErrorLayer_Boundary_Baseline
+
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
 
@@ -84,6 +88,9 @@ It does not authorize implementation, activation, or runtime production use.
 The existing Step 47 legal chain remains the frozen Phase B scope and remains BLOCKED.
 Step47_PhaseA_ImplementationAuthorization_Gate Baseline v2 is now CONDITIONAL PASS / FROZEN WITH FINAL REVIEW NOTES; it remains design/governance only, does not authorize production deployment or runtime production use, and independently self-carries both Phase A forbidden legal-strength wording and downstream declared/manual identification obligations.
 Step47_PhaseA_MinimumAuditBaseline is now PASS / FROZEN WITH FINAL REVIEW NOTES; it freezes the minimum audit spine for Phase A declared/manual declarations, preserves no-evidence-no-submit discipline, forbids silent overwrite, and keeps auditability explicitly separate from legal truth.
+Global Governance_FailureHandling_ErrorSourceSeparation_Rule_v2 is now FROZEN; it locks repo-wide failure classification, anti-hang discipline, timeout-to-blocked/failed handling, and technical-detail versus operator-guidance separation as a durable governance rule only.
+Global Governance_UI_ErrorLayer_Boundary_Baseline is now PASS / FROZEN; it supplements the failure-handling governance anchor by freezing UI/backend error-layer boundaries for root-classification preservation, guidance-only UI role, intact backend technical error retention, and no autonomous recovery without separately frozen governance.
+AGENTS Cross-Cutting Governance Rule 3 is aligned to the frozen failure-handling governance baseline only; this is repo-rule alignment only and not implementation, activation, deployment, or runtime production-use authorization.
 
 FG_RECEIVE Location Master Physical Schema Baseline is frozen as a design-layer schema baseline only.
 It is not implementation authorization.
