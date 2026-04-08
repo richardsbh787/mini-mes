@@ -1,7 +1,7 @@
-Mini-MES Handoff v2.17
+Mini-MES Handoff v2.18
 
-Updated after 2026-04-05 governance freeze sync for failure-handling / UI error-layer boundaries and AGENTS alignment
-Date: 2026-04-05
+Updated after 2026-04-08 handoff-only warning-closure insertion for Auth Identity Binding A-Class approval carrier lock and Starter Package commercial material boundary closure
+Date: 2026-04-08
 
 1. Frozen mainline snapshot
 
@@ -6368,3 +6368,57 @@ The UI may help operators understand what to do next, but it may not change what
 
 Factory-Language Explanation
 This freeze means the front-end may explain an error in human terms, but must not change what kind of error it really is; the real backend technical cause must remain available for troubleshooting; and the UI must not take recovery actions on its own unless that path has already been explicitly frozen and governed.
+
+51. Supplementary Entry A - Auth Identity Binding A-Class Approval Carrier Lock
+
+Background
+This entry closes the warning item from the final review result of Auth Identity Binding A/B/C Determination v1: the phrase "Ruichen written approval" was accepted in principle, but its approval carrier format was not yet defined, which creates future dispute risk.
+
+Frozen Content
+For A-Class to be formally established, both conditions below are mandatory, with no exception:
+
+1. Carrier requirement
+The approval must be recorded in one of the following independently citable forms:
+- A versioned handoff body entry (for example: "Handoff vX.XX, Section N")
+- An independent Decision Record that includes date, decision-maker, and decision scope
+
+2. Qinran confirmation
+After Ruichen's approval is recorded, Qinran must explicitly confirm that carrier in the same round or a subsequent round before A-Class is formally established.
+
+Explicitly Forbidden
+None of the following count as valid A-Class approval and none may be cited by any later step as evidence that A-Class has been established:
+- Oral approval, including short chat acknowledgements such as "okay", "agreed", or "can", without a formal carrier
+- Implied approval inferred from surrounding context
+- Qingchen unilateral declaration, with or without design material
+- Any intermediate conclusion not confirmed by Qinran
+
+Timing Constraint
+The A-Class carrier must be completed before Submission Implementation may be unblocked.
+Until the carrier is completed and Qinran confirms it, Submission Implementation remains BLOCKED and any attempted unblock is invalid.
+
+52. Supplementary Entry B - Starter Package Commercial Material Boundary Closure
+
+Background
+This entry closes the two warning items from the final review result of Starter_Package - Package Boundary Definition v3:
+1. the handling choice for blocked candidates was not yet tightened enough
+2. the plug-and-play definition lacked an explicit reverse exclusion statement
+
+Frozen Content B-1 - Default handling rule for blocked candidates
+During Phase A trial-run and in all Starter Package external commercial materials, any blocked candidate capability must be excluded by default and may not be handled through disclosure as an alternative default.
+Reason: SME customers do not operate in MES governance language, and technical disclosure such as "this capability is blocked" creates more commercial misunderstanding risk than exclusion.
+
+Exception Path
+If Ruichen explicitly decides in writing that a specific blocked candidate may be disclosed, that decision must be recorded in the corresponding handoff version and confirmed by Qinran before it is valid.
+Without that record, exclusion remains mandatory.
+
+Frozen Content B-2 - Reverse exclusion statement for plug-and-play
+In all Starter Package external materials, delivery descriptions, sales language, and internal reference documents, plug-and-play refers only to modular composability at the commercial or deployment layer.
+
+The following are not part of the plug-and-play scope and must not be described, promised, or implied under plug-and-play language:
+- governance rules
+- review flow
+- state machine
+- any frozen boundary constraint
+- any gate condition
+
+This reverse exclusion statement applies to all Starter Package external scenarios, including but not limited to sales demos, delivery proposals, trial-run agreements, and customer communication materials.
