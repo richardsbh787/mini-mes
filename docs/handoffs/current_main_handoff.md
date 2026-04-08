@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.23
+Mini-MES Handoff v2.24
 
-Updated after 2026-04-08 handoff-only insertion for Step47 PhaseA implementation phasing transitional identity and emergency capture freeze
+Updated after 2026-04-08 handoff-only insertion for Step47 PhaseA reconciliation completion and plant-manager escalation resolution freeze
 Date: 2026-04-08
 
 1. Frozen mainline snapshot
@@ -90,6 +90,7 @@ Step47_PhaseA_ImplementationAuthorization_Gate Baseline v2 is now CONDITIONAL PA
 Step47_PhaseA_MinimumAuditBaseline is now PASS / FROZEN WITH FINAL REVIEW NOTES; it freezes the minimum audit spine for Phase A declared/manual declarations, preserves no-evidence-no-submit discipline, forbids silent overwrite, and keeps auditability explicitly separate from legal truth.
 Step47_PhaseA_ActorRecognition_NarrowForm_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA actor recognition narrow form is frozen as external trusted identity domain only, Step47 PhaseA-specific allow-list / actor registry is not admitted as the recognition form, submission remains BLOCKED if no qualified external trusted identity domain is available, and this record does not authorize implementation, unblock submission, or establish A-class.
 Step47_PhaseA_ImplementationPhasing_TransitionalIdentityAndEmergencyCapture is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; the existing actor-recognition narrow form remains external trusted identity domain only, this record creates only a separate transitional governance layer for trial-stage operability, transitional local attribution is allowed only as attribution trace and emergency continuity capture is allowed only as an explicitly isolated path, every emergency record must reconcile within 7 calendar days and overdue records must escalate to plant manager while remaining visible on governance / management dashboard, sunset / expiry discipline remains the earlier of formal closeout of the 2026-12-07 trial-run with mandatory A/B/C re-determination or 12 months from freeze date, and this record does not authorize implementation, release, activation, or runtime production use.
+Step47_PhaseA_ReconciliationCompletionAndPlantManagerEscalationResolution is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; this card closes only W1/W2 from the already-frozen Step47_PhaseA_ImplementationPhasing_TransitionalIdentityAndEmergencyCapture record, preserves the 7-calendar-day reconciliation rule, plant-manager escalation trigger, dashboard visibility rule, and sunset / expiry discipline unchanged, freezes the minimum definition of `reconciliation_complete`, freezes the allowed plant-manager action set and forbidden actions, and does not reopen actor recognition, trial-stage attribution, or emergency-path admission.
 Global Governance_FailureHandling_ErrorSourceSeparation_Rule_v2 is now FROZEN; it locks repo-wide failure classification, anti-hang discipline, timeout-to-blocked/failed handling, and technical-detail versus operator-guidance separation as a durable governance rule only.
 Global Governance_UI_ErrorLayer_Boundary_Baseline is now PASS / FROZEN; it supplements the failure-handling governance anchor by freezing UI/backend error-layer boundaries for root-classification preservation, guidance-only UI role, intact backend technical error retention, and no autonomous recovery without separately frozen governance.
 AGENTS Cross-Cutting Governance Rule 3 is aligned to the frozen failure-handling governance baseline only; this is repo-rule alignment only and not implementation, activation, deployment, or runtime production-use authorization.
@@ -7261,3 +7262,258 @@ But before the real gate is fully built and stable, the factory may use a guarde
 Anyone using that side gate must leave a clear name, time, device, and supervisor trace.
 If the witness is missing or the network is down, the record can still be captured, but it must wear a bright emergency label and be cleaned up later.
 The side gate is temporary, cannot pretend to be the real gate, and cannot stay forever without later cleanup, expiry control, and re-determination.
+
+58. Frozen Record - Step47_PhaseA_ReconciliationCompletionAndPlantManagerEscalationResolution
+
+Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+Layer: Governance / Design Only
+Scope: Step 47 Phase A only
+Nature: Narrow implementation-level closure-definition rule for overdue emergency-record reconciliation and plant-manager escalation resolution
+
+Goal
+Define the implementation-level minimum closure rules for W1 and W2, so the already-frozen transitional governance record does not become operationally hollow.
+
+Locked dependency
+This frozen record stands on the already-frozen:
+`Step47_PhaseA_ImplementationPhasing_TransitionalIdentityAndEmergencyCapture`
+(commit anchor: `8afff77`)
+
+Input
+
+* Final Review Warning W1: "reconciliation complete" was not yet tightly defined
+* Final Review Warning W2: plant-manager escalation disposition path was not yet defined
+
+Output
+This frozen record defines only:
+
+1. the minimum definition of `reconciliation_complete` for emergency records
+2. the allowed plant-manager post-escalation actions
+3. the minimum audit/result fields each action must leave behind
+4. the dashboard visibility rule after escalation actions
+5. what remains unresolved after this step and is explicitly out of scope
+
+Locked Objective
+Do not reopen actor recognition, trial-stage attribution, emergency-path admission, 7-calendar-day deadline, plant-manager escalation trigger, dashboard visibility principle, or sunset/expiry discipline.
+This frozen record closes only the two warnings left open by the final review of the already-frozen transitional governance record.
+
+Allowed writes
+
+* handoff/design text only
+* one narrow implementation-level rule set for W1/W2
+* explicit result-state language for reconciliation closure and escalation outcome
+
+Allowed reads
+
+* `AGENTS.md`
+* current `docs/handoffs/current_main_handoff.md`
+* the already-frozen Step47 Phase A transitional governance record
+* relevant upstream Step47 / Phase A frozen boundaries already in handoff
+
+Forbidden touches
+
+* no change to existing frozen actor-recognition narrow-form choice
+* no change to 7-calendar-day rule
+* no change to plant-manager escalation trigger
+* no weakening of dashboard visibility discipline
+* no extension or weakening of sunset/expiry discipline
+* no implementation authorization
+* no schema design
+* no API contract
+* no UI copy
+* no runtime behavior
+* no expansion into general identity / permission / HR registry design
+
+S-1 / S0 / S+1
+
+S-1 Previous Frozen Step Context
+The floor is the already-frozen `Step47_PhaseA_ImplementationPhasing_TransitionalIdentityAndEmergencyCapture` record.
+That record already locked:
+
+* transitional attribution is not formal actor recognition
+* emergency path is isolated, visible, and non-silent
+* 7-day reconciliation deadline
+* plant-manager escalation
+* dashboard visibility
+* sunset/expiry discipline
+
+S0 Current Step Boundary Check
+This step is a narrow implementation-level closure-definition step.
+It defines:
+
+* what counts as reconciliation complete
+* who may confirm it
+* what minimum fields must exist at completion
+* whether completion is mutable
+* what plant manager may do after escalation
+* what each plant-manager action means in record terms
+* when an escalated record may leave the active dashboard
+
+It does not define:
+
+* stronger identity infrastructure
+* external trusted domain rollout
+* A-class admission
+* code behavior
+* production release
+
+S+1 Next-Step Dependency Check
+Downstream implementation will need a single-meaning answer to:
+
+* when an emergency record stops being open
+* whether supervisor confirmation alone closes it
+* what minimum audit fields make closure valid
+* whether closure remains editable
+* whether plant manager may approve / extend / reject / escalate higher
+* what audit result and state each action leaves
+* when the record may disappear from the active dashboard
+
+If this is not frozen now, future implementation will guess.
+
+Pre-Freeze Crisis Check
+
+* Current highest risk:
+  the 7-day rule exists on paper but becomes meaningless if "complete" and "post-escalation outcome" remain undefined
+* Risk level:
+  P1
+* Affected scope:
+  emergency-record closure discipline, dashboard aging logic, audit integrity, plant-manager workload
+* Foundation check:
+  the transitional governance record is already frozen; this step stands on that frozen base and closes only W1/W2
+* Dependency chain check:
+  if W1/W2 remain loose, implementation may create fake closure, endless escalation backlog, hidden dashboard disappearance, or inconsistent management visibility
+* Reality intrusion check:
+  factories may mark records "done" with no real resolution, or let plant-manager escalations pile up with no actionable exit
+* Operator action surface check:
+  operators should not see new burden here; closure logic should stay supervisor/manager side, not frontline side
+* Freeze pollution check:
+  low if kept narrow; high if this step drifts into identity redesign or implementation authorization
+* Gate decision draft:
+  CONDITIONAL GO
+* Preconditions before resume:
+  keep scope limited to W1/W2 only; no identity-domain redesign; no runtime authorization language
+* Gate decision confirmation:
+  Ruichen [confirmed]
+
+Minimum rule frozen by this record
+
+A. Reconciliation complete - minimum completion definition
+A record may be marked `reconciliation_complete = true` only when all of the following minimum conditions are satisfied:
+
+1. `confirmer_role` is explicitly recorded and must be either:
+
+   * `supervisor`, or
+   * `plant_manager`
+
+2. `confirmed_by` must be explicitly recorded.
+
+3. `confirmed_at` must be system-generated and recorded.
+
+4. `reconciliation_result` must be explicitly recorded.
+
+5. `follow_up_evidence_reference` may be optional, but if follow-up evidence exists (for example later external identity binding or other later supporting evidence), the reference should be recorded.
+
+6. Once marked complete, the completion record must be immutable to direct editing.
+   Any later change must go through a separate correction-with-trace path; silent overwrite is forbidden.
+
+B. Plant-manager escalation - allowed actions and forbidden actions
+If an emergency record remains unresolved after the frozen 7-calendar-day window and reaches plant-manager escalation, the implementation-level design must allow only the following post-escalation actions:
+
+* `approve_and_close`
+* `extend_deadline`
+* `reject_and_require_reopen`
+* `escalate_higher`
+
+The following are explicitly forbidden:
+
+* silent close
+* reason-less rejection
+* silent ignore
+* any action that removes the escalation trail
+
+Each allowed action must record at minimum:
+
+* `action_by`
+* `action_role`
+* `action_at`
+* `action_reason`
+* `new_state`
+
+Additional required meaning per action:
+
+* `approve_and_close` = plant manager accepts the record as sufficiently resolved and closes it
+* `extend_deadline` = plant manager extends the reconciliation window and must record a new explicit deadline
+* `reject_and_require_reopen` = plant manager rejects the current closure attempt and forces the record back into active handling
+* `escalate_higher` = plant manager pushes the case to a higher governance authority and the higher-level target must be explicitly recorded
+
+C. Dashboard visibility rule after escalation
+Escalated records must remain visible on the active governance / management dashboard unless and until:
+
+* `state = closed`, and
+* `reconciliation_complete = true`
+
+Therefore:
+
+* `extend_deadline` does not remove dashboard visibility
+* `reject_and_require_reopen` does not remove dashboard visibility
+* `escalate_higher` does not remove dashboard visibility
+* only true closed completion may remove the record from the active dashboard surface
+
+Acceptance Criteria
+
+* `reconciliation_complete` has a minimum frozen definition with explicit confirmer role, confirmer identity, system-generated timestamp, recorded result, and immutability-after-confirmation rule
+* the allowed confirmer role is restricted to `supervisor` or `plant_manager` only
+* closure does not allow silent overwrite after completion; later change requires correction-with-trace
+* plant-manager escalation has an explicit allowed action set
+* plant-manager escalation explicitly forbids silent close, reason-less rejection, and silent ignore
+* each allowed plant-manager action has explicit minimum audit consequences
+* dashboard visibility rule is explicit and single-meaning
+* only `state = closed` with `reconciliation_complete = true` may remove the record from the active dashboard
+* no wording weakens existing frozen 7-day escalation rule
+* no wording weakens existing frozen sunset/expiry rule
+* no wording upgrades transitional/emergency records into formal trusted actor recognition
+* no code/runtime/schema/API/UI changes are introduced in this step
+
+Remarks
+Main design choice to prefer:
+
+* keep reconciliation completion minimal but auditable
+* keep plant-manager actions few and explicit
+* keep dashboard visibility rule strict and non-disappearing
+* do not create a large exception-management workflow platform
+
+Approval Chain
+
+* Draft: Qingchen
+* Secondary review: Lao Xiao (DeepSeek)
+* Final review: Qinran
+
+Final Review Notes
+W1. `escalate_higher` requires recording the higher-level target, but the higher-level action set is not yet defined. A later implementation-level card must either define the higher-level allowed action set or explicitly disable `escalate_higher` where no higher governance authority actually exists.
+
+Business Logic Confirmation / Factory Floor Scenario
+
+Scenario A - The 7-day deadline is reached, but the supervisor only says verbally that it was handled
+This does not count as complete. The system must record who confirmed it, what role they had, the system-generated time, and the result.
+Otherwise the record cannot be treated as `reconciliation_complete`.
+
+Scenario B - The supervisor later finds the confirmation was wrong
+The old record cannot be directly overwritten.
+A correction-with-trace path must be used, preserving both the original confirmation trace and the later correction trace.
+
+Scenario C - The record passes 7 days and escalates to the plant manager
+The plant manager cannot simply close it quietly and cannot reject it without a reason.
+The plant manager may act only through the four explicit actions and must leave actor, time, reason, and new state.
+
+Scenario D - The plant manager extends the deadline
+The record must not disappear from the dashboard.
+As long as it is not truly `closed` and `reconciliation_complete` is not yet true, it must remain visible on the active dashboard.
+
+Scenario E - True closure
+The record may leave the active dashboard only when it is `closed` and `reconciliation_complete = true`.
+
+Factory-language explanation
+This card only fixes the cleanup rule for overdue emergency records.
+It defines what counts as truly settled, who is allowed to sign it off, what the plant manager may do after escalation, and when a record is allowed to leave the dashboard.
+
+Plainly:
+this prevents people from clicking "done" casually, and it prevents overdue records from disappearing without a real trace.
