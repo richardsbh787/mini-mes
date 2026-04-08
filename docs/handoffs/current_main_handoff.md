@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.19
+Mini-MES Handoff v2.20
 
-Updated after 2026-04-08 handoff-only insertion for Auth Identity Binding Actual Determination Output Template
+Updated after 2026-04-08 handoff-only insertion for Ruichen Gate Decision Confirmation on Step47 PhaseA server-side identity binding minimum enabling step
 Date: 2026-04-08
 
 1. Frozen mainline snapshot
@@ -6581,3 +6581,62 @@ Factory-Language Meaning
 This frozen entry does not decide whether the gate key already exists.
 It freezes the inspection form that must be used when checking for that key.
 Without this form, different reviewers could claim different conclusions from the same repo state.
+
+54. Formal Record - Ruichen Gate Decision Confirmation
+
+Target: Step47_PhaseA - Server-Side Identity Binding Minimum Enabling Step
+Carrier Type: Decision Record
+Status: PASS WITH WARNINGS ABSORBED / FORMALLY CONFIRMED
+
+Decision
+Ruichen gate decision confirmation = CONFIRMED
+
+Decision Scope
+This confirmation applies only to:
+Step47_PhaseA - Server-Side Identity Binding Minimum Enabling Step
+
+Confirmed Meaning
+Ruichen confirms that this task card may proceed to the next governance/design-text-only stage as a narrowly bounded C-class minimum enabling step.
+
+This confirmation means only:
+- the step may proceed as a governance/design-text-only task
+- the scope remains strictly limited to Step47 PhaseA submission identity binding
+- the step remains a minimum enabling step only
+
+This confirmation does NOT mean:
+- Submission Implementation is unblocked
+- A-class has been established
+- implementation is authorized
+- a general auth subsystem is approved
+- any role / permission / SSO expansion is approved
+- any cross-module identity mechanism is approved
+- any code-level or schema-level design output is authorized
+
+Locked Boundaries
+The following boundaries remain mandatory and unchanged:
+- no user database
+- no password storage
+- no authentication logic expansion
+- no session management
+- no role system
+- no permission model
+- no SSO integration
+- no general-purpose authentication middleware
+- no reusable request-interceptor
+- no cross-module identity resolution mechanism
+- scope limited to Step47 PhaseA submission only
+- client-provided actor field may not become authoritative identity source
+- operator burden must not increase
+- after enabling-step freeze and later implementation, a new A / B / C determination is still required before any submission unblock discussion
+- that future A / B / C re-determination must use the already-frozen Auth Identity Binding Actual Determination Output Template
+
+Decision Discipline
+This confirmation is a gate confirmation only.
+It does not replace later secondary review, final review, freeze, implementation review, or any later A / B / C re-determination.
+
+Factory-Language Meaning
+This record means:
+the factory is allowed to design the smallest possible lock core for this one gate only.
+It does not mean the gate is open.
+It does not mean the whole security building may be constructed.
+It does not mean the current client-provided name field has become acceptable as formal identity truth.
