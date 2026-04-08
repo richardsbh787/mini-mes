@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.21
+Mini-MES Handoff v2.22
 
-Updated after 2026-04-08 handoff-only insertion for Step47 PhaseA server-side identity binding minimum enabling step frozen design-output baseline
+Updated after 2026-04-08 handoff-only insertion for Step47 PhaseA actor recognition narrow-form freeze
 Date: 2026-04-08
 
 1. Frozen mainline snapshot
@@ -88,6 +88,7 @@ It does not authorize implementation, activation, or runtime production use.
 The existing Step 47 legal chain remains the frozen Phase B scope and remains BLOCKED.
 Step47_PhaseA_ImplementationAuthorization_Gate Baseline v2 is now CONDITIONAL PASS / FROZEN WITH FINAL REVIEW NOTES; it remains design/governance only, does not authorize production deployment or runtime production use, and independently self-carries both Phase A forbidden legal-strength wording and downstream declared/manual identification obligations.
 Step47_PhaseA_MinimumAuditBaseline is now PASS / FROZEN WITH FINAL REVIEW NOTES; it freezes the minimum audit spine for Phase A declared/manual declarations, preserves no-evidence-no-submit discipline, forbids silent overwrite, and keeps auditability explicitly separate from legal truth.
+Step47_PhaseA_ActorRecognition_NarrowForm_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA actor recognition narrow form is frozen as external trusted identity domain only, Step47 PhaseA-specific allow-list / actor registry is not admitted as the recognition form, submission remains BLOCKED if no qualified external trusted identity domain is available, and this record does not authorize implementation, unblock submission, or establish A-class.
 Global Governance_FailureHandling_ErrorSourceSeparation_Rule_v2 is now FROZEN; it locks repo-wide failure classification, anti-hang discipline, timeout-to-blocked/failed handling, and technical-detail versus operator-guidance separation as a durable governance rule only.
 Global Governance_UI_ErrorLayer_Boundary_Baseline is now PASS / FROZEN; it supplements the failure-handling governance anchor by freezing UI/backend error-layer boundaries for root-classification preservation, guidance-only UI role, intact backend technical error retention, and no autonomous recovery without separately frozen governance.
 AGENTS Cross-Cutting Governance Rule 3 is aligned to the frozen failure-handling governance baseline only; this is repo-rule alignment only and not implementation, activation, deployment, or runtime production-use authorization.
@@ -6812,3 +6813,196 @@ the lock-core drawing is now formally approved for this one gate only.
 It is not an open-gate order.
 It is not a security-building permit.
 It does not make client-provided actor text acceptable as formal identity truth.
+
+56. Frozen Record - Step47_PhaseA_ActorRecognition_NarrowForm_Freeze
+
+Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+
+Purpose
+
+Freeze the Step47 PhaseA actor recognition narrow form as external trusted identity domain only, define the minimum trust requirement, define rejection behavior on identity-binding failure, lock the relation to existing actor-like fields, and preserve that this record does not create implementation authorization, submission unblock, or A-class establishment.
+
+Frozen Scope
+
+This record freezes only the narrow recognition-form decision and its immediate binding discipline for Step47 PhaseA submission identity binding.
+
+This record freezes:
+
+1. the exclusive recognition-form choice
+2. the minimum trust requirement for the external trusted identity domain
+3. the failure behavior when valid external identity is absent
+4. the prohibition on fallback / downgrade / mixed-authority interpretation
+5. the relation between authoritative binding and existing actor-like fields
+6. the availability/block discipline
+7. the explicit non-effect boundary
+
+This record does not freeze:
+
+* implementation details
+* schema / ORM / API / runtime logic
+* user database
+* password / token / session logic
+* role / permission / SSO
+* repo-wide auth redesign
+* cross-module identity mechanism
+* submission implementation authorization
+* A-class establishment
+
+Frozen Choice
+
+The Step47 PhaseA actor recognition narrow form is frozen as:
+
+external trusted identity domain only
+
+The following is explicitly rejected as the recognition form for this freeze:
+
+Step47 PhaseA-specific allow-list / actor registry
+
+No dual-track recognition-form model is admitted by this freeze.
+
+Minimum Trust Requirement for External Trusted Identity Domain
+
+The external trusted identity domain must satisfy all of the following minimum requirements:
+
+1. It must be backed by a mechanism that makes client-side forgery infeasible within the deployment environment.
+2. It must provide a stable, non-repudiable, auditable actor identifier.
+3. The identifier must be suitable for authoritative server-side binding into `declared_by` and for long-term audit traceability.
+4. Plain client-settable sources are prohibited.
+
+The following are explicitly not acceptable as qualifying external trusted identity domains:
+
+* plain forgeable HTTP headers
+* unsigned tokens
+* gateway headers that the client can directly control or inject
+* any external API that merely returns a string but lacks anti-forgery guarantees
+
+The concrete implementation carrier of the external trusted identity domain must be explicitly recorded in handoff and must not be left blank.
+
+Examples of potentially qualifying carriers, if separately documented and deployment-credible, may include:
+
+* a mutually trusted proxy
+* a client-uninfluenceable sidecar
+* a server-internal context set before request routing
+* another mechanism of equivalent anti-forgery and audit strength
+
+Recognition Rule
+
+`declared_by` may only be bound from the authoritative actor identity resolved server-side from the external trusted identity domain.
+
+The injected actor identity must be:
+
+* non-empty
+* format-valid
+* recognizable
+* stable
+* auditable
+
+The injected actor identity must also satisfy the Step47 PhaseA known valid actor check, as governed separately under a minimal bounded rule set. That check may reference a simple governed allow-list / registry, but that governed object must not expand into a full auth subsystem.
+
+The following must not be treated as authoritative actor identity:
+
+* display name
+* nickname
+* free-text operator name
+* session id
+* unstable temporary identifiers
+
+Failure Behavior
+
+If the external trusted identity domain:
+
+* provides no identity
+* provides an empty identity
+* provides an invalid-format identity
+* provides an unrecognizable identity
+* provides an identity that fails the known valid actor check
+
+then the Step47 PhaseA submission must be rejected at the identity-binding layer.
+
+The following are explicitly forbidden:
+
+* fallback to client-provided actor fields
+* default actor substitution
+* silent acceptance
+* partial binding
+* deferred repair after acceptance
+
+Injection Relation
+
+Authoritative actor identity may enter `declared_by` only through the server-side injection point.
+
+Any actor-like field present in client payload must not become an authority source.
+
+Mixed-authority interpretation is forbidden.
+
+The following are explicitly forbidden:
+
+* using the external domain first and then falling back to client fields on failure
+* taking one part from the external domain and another part from client fields
+* concatenating external-domain identity with client-supplied fields to form the final authoritative actor
+* any other-source fallback when external identity binding fails
+
+Only two outcomes are permitted:
+
+1. valid external identity binding succeeds
+2. submission is rejected
+
+Relation to Existing Actor-Like Fields
+
+If existing payload / request / legacy surfaces contain `operator`, `actor`, `user`, `declared_by`, or other actor-like fields, those fields:
+
+* may be rejected
+* may be ignored
+* may remain only as non-authoritative noise input
+
+But they must not:
+
+* participate in authoritative recognition
+* participate in fallback
+* participate in completion /补齐
+* participate in concatenation / 拼接
+* overwrite the authoritative `declared_by`
+
+Availability / Block Discipline
+
+This freeze does not obligate Mini-MES to deploy an external trusted identity domain immediately.
+
+However, if no qualified and available external trusted identity domain exists in the active environment, Step47 PhaseA submission remains BLOCKED.
+
+No downgrade path is admitted merely because the external domain is not yet deployed or not available.
+
+Non-Effect Boundary
+
+This record:
+
+* is not an implementation task card
+* does not authorize code / schema / API / middleware implementation
+* does not unblock submission implementation
+* does not constitute implementation authorization
+* does not constitute A-class establishment
+* does not replace future implementation review
+* does not remove the requirement that implementation must later re-enter the frozen A/B/C judgment path
+
+Final Review Notes
+
+W1
+
+The governance ownership and change path for the known valid actor check is not frozen by this record. Any future implementation-level card must elevate this from a note into a hard prerequisite and must not leave expansion power to the implementer.
+
+W2
+
+The timing requirement for recording the concrete external identity-domain carrier into handoff is not frozen by this record. Any future implementation-level card must elevate this into a hard prerequisite and must require that the carrier be recorded in handoff before implementation-level work may open.
+
+Factory-Language Explanation
+
+This freeze answers only one question: whose identity the system is allowed to treat as valid.
+
+Factory-language version:
+The system now only recognizes the person coming from the external trusted gate system.
+If the gate does not produce a valid person, the submission is rejected.
+The system is not allowed to switch to handwritten names, client-entered names, local temporary lists, or mixed patch-up methods.
+
+In plain factory terms:
+the guard only trusts the central gate record;
+if the gate cannot identify the person, the form is not accepted;
+the system must not let people write their own name on a slip and pass anyway.
