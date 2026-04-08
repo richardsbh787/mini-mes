@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.22
+Mini-MES Handoff v2.23
 
-Updated after 2026-04-08 handoff-only insertion for Step47 PhaseA actor recognition narrow-form freeze
+Updated after 2026-04-08 handoff-only insertion for Step47 PhaseA implementation phasing transitional identity and emergency capture freeze
 Date: 2026-04-08
 
 1. Frozen mainline snapshot
@@ -89,6 +89,7 @@ The existing Step 47 legal chain remains the frozen Phase B scope and remains BL
 Step47_PhaseA_ImplementationAuthorization_Gate Baseline v2 is now CONDITIONAL PASS / FROZEN WITH FINAL REVIEW NOTES; it remains design/governance only, does not authorize production deployment or runtime production use, and independently self-carries both Phase A forbidden legal-strength wording and downstream declared/manual identification obligations.
 Step47_PhaseA_MinimumAuditBaseline is now PASS / FROZEN WITH FINAL REVIEW NOTES; it freezes the minimum audit spine for Phase A declared/manual declarations, preserves no-evidence-no-submit discipline, forbids silent overwrite, and keeps auditability explicitly separate from legal truth.
 Step47_PhaseA_ActorRecognition_NarrowForm_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA actor recognition narrow form is frozen as external trusted identity domain only, Step47 PhaseA-specific allow-list / actor registry is not admitted as the recognition form, submission remains BLOCKED if no qualified external trusted identity domain is available, and this record does not authorize implementation, unblock submission, or establish A-class.
+Step47_PhaseA_ImplementationPhasing_TransitionalIdentityAndEmergencyCapture is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; the existing actor-recognition narrow form remains external trusted identity domain only, this record creates only a separate transitional governance layer for trial-stage operability, transitional local attribution is allowed only as attribution trace and emergency continuity capture is allowed only as an explicitly isolated path, every emergency record must reconcile within 7 calendar days and overdue records must escalate to plant manager while remaining visible on governance / management dashboard, sunset / expiry discipline remains the earlier of formal closeout of the 2026-12-07 trial-run with mandatory A/B/C re-determination or 12 months from freeze date, and this record does not authorize implementation, release, activation, or runtime production use.
 Global Governance_FailureHandling_ErrorSourceSeparation_Rule_v2 is now FROZEN; it locks repo-wide failure classification, anti-hang discipline, timeout-to-blocked/failed handling, and technical-detail versus operator-guidance separation as a durable governance rule only.
 Global Governance_UI_ErrorLayer_Boundary_Baseline is now PASS / FROZEN; it supplements the failure-handling governance anchor by freezing UI/backend error-layer boundaries for root-classification preservation, guidance-only UI role, intact backend technical error retention, and no autonomous recovery without separately frozen governance.
 AGENTS Cross-Cutting Governance Rule 3 is aligned to the frozen failure-handling governance baseline only; this is repo-rule alignment only and not implementation, activation, deployment, or runtime production-use authorization.
@@ -7006,3 +7007,257 @@ In plain factory terms:
 the guard only trusts the central gate record;
 if the gate cannot identify the person, the form is not accepted;
 the system must not let people write their own name on a slip and pass anyway.
+
+57. Frozen Record - Step47_PhaseA_ImplementationPhasing_TransitionalIdentityAndEmergencyCapture
+
+Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+Layer: Governance / Design Only
+Scope: Step 47 Phase A only
+Nature: Transitional implementation-phasing rule for trial-stage operability under SME factory reality
+Trial-run anchor: 2026-12-07
+
+Purpose
+This frozen record exists to preserve both sides at the same time:
+
+1. the already-frozen actor-recognition narrow form remains external trusted identity domain only; and
+2. Step47 Phase A trial-stage operation in SME factory reality must remain usable under limited identity infrastructure and intermittent network failure.
+
+This record therefore does not weaken, reinterpret, or replace the already-frozen narrow-form actor-recognition choice.
+It introduces only a separately-governed transitional implementation-phasing layer for trial-stage operability, continuity capture, and post-event audit discipline.
+
+Locked prerequisite interpretation
+A. The already-frozen Step47_PhaseA_ActorRecognition_NarrowForm_Freeze remains unchanged:
+
+* actor recognition remains external trusted identity domain only
+* Phase A-specific allow-list / actor registry is not admitted as the recognition form
+* lack of qualified external trusted identity domain still means formal identity-recognition success is not established
+* this record does not reopen or soften that frozen choice
+
+B. This record governs only how the system may behave during trial-stage operation before a qualified external trusted identity domain is actually available and stable in SME reality.
+
+C. This record does not authorize implementation by itself.
+A separate implementation authorization decision is still required.
+
+Frozen choice 1 - Transitional local attribution source is allowed, but is not actor recognition
+During the defined trial-stage window, the system may allow a governed transitional local attribution source for Phase A submission-related capture, provided all such usage is explicitly classified as transitional attribution trace only.
+
+Allowed transitional local attribution examples:
+
+* tablet local login using factory operator ID / employee number
+* shared device session plus operator selection witnessed by supervisor
+* fixed system login account with declared operator name captured separately
+* supervisor-confirmed operator selection on a controlled terminal
+
+Hard rule:
+These sources may support local attribution trace and operational continuity only.
+They do not count as external trusted identity recognition.
+They do not satisfy the already-frozen actor-recognition narrow form.
+They do not create A-class identity strength.
+They must not be described, surfaced, or consumed as if formal trusted actor recognition has succeeded.
+
+If supervisor witness is required, the system must capture the supervisor identifier separately and through a distinct action or independently attributable confirmation.
+A simple operator self-select with a "witnessed" checkbox is not sufficient.
+If required witness is missing, the record must not proceed as a witnessed transitional local attribution record. It may be captured only under the separately marked emergency continuity path, must carry `witness_missing = true`, and must later receive supervisor confirmation.
+
+Required minimum trace fields for any transitional local attribution use:
+
+* attribution_mode
+* local_login_account
+* declared_operator_identifier
+* declared_operator_name if available
+* witness_supervisor_identifier if applicable
+* witness_missing if applicable
+* capture_device_id or terminal_id
+* captured_at
+* capture_reason
+* source_record_reference
+* trial_stage_flag = true
+
+Frozen choice 2 - Emergency continuity capture path is allowed, but must be isolated from normal identity-passed submission semantics
+If external identity infrastructure, network path, or dependent trust path is unavailable during live operation, the system may expose a separate emergency continuity capture path for Phase A.
+
+This emergency path exists to avoid off-system paper drift and Excel-only fallback.
+It is allowed only as an explicitly isolated capture path, not as a silent bypass of the formal identity-binding result.
+
+Hard requirements:
+
+* emergency path must be explicitly separate from the normal path
+* every emergency record must carry `emergency_override = true`
+* every emergency record must capture `override_reason`
+* every emergency record must capture `authorizing_supervisor_identifier` when available under the failure condition
+* every emergency record must capture `authorizing_time`
+* every emergency record must capture terminal/device identity if available
+* every emergency record must remain visibly marked as emergency-captured
+* emergency-captured data must not be silently upgraded into identity-passed normal submission truth
+* post-event review / reconciliation obligation must be explicit and mandatory
+* unresolved emergency records must remain visible to audit / follow-up surfaces
+* every emergency record must be reconciled within `7 calendar days`
+* unresolved emergency records after that period must escalate to `plant manager`
+* unresolved emergency records after that period must remain visible on a governance / management dashboard
+* no emergency record may be silently aged out without resolution
+
+Allowed emergency trigger examples:
+
+* trusted upstream identity path unavailable
+* network outage
+* controlled local terminal unable to reach identity dependency
+* other explicitly classified continuity-threatening failures approved by governance
+
+Forbidden pattern:
+No invisible bypass, no silent fallback, no hidden success path, no pretending that formal identity binding passed when it did not.
+
+Frozen choice 3 - Known-valid actor checking in trial stage must stay lightweight and must not become a heavy static administrative registry
+For the trial-stage transitional path, known-valid actor discipline may exist, but it must stay lightweight and operationally maintainable in SME conditions.
+
+Allowed lightweight validity bases include:
+
+* active local system account
+* active operator ID present in current local roster / shift roster
+* supervisor-witnessed operator declaration on a controlled device
+* minimally governed local account table
+
+Not allowed:
+
+* heavy manual HR-style allow-list maintenance as the default operating model
+* a separate Phase A static actor registry that must be continuously hand-maintained by PMC or admin
+* identity-validity rules that create excessive day-to-day factory blocking for ordinary shift substitution reality
+
+Hard rule:
+Trial-stage known-valid checking is for minimum operability discipline only.
+It is not equivalent to formal trusted actor recognition.
+Auditability and post-event accountability remain more important here than heavy pre-blocking bureaucracy.
+
+Frozen choice 4 - Transitional operability does not change final target
+The final target remains:
+external trusted identity domain only for formal actor recognition.
+
+Therefore:
+
+* transitional local attribution is temporary
+* emergency continuity capture is temporary
+* lightweight trial-stage validity checking is temporary
+* none of them may be re-labeled as the final solution
+* none of them may be used to claim that the external trusted identity requirement has been satisfied
+* none of them may silently become permanent by implementation drift
+
+Frozen choice 5 - Sunset and expiry discipline
+This transitional governance expires on the earlier of:
+(a) formal closeout of the 2026-12-07 trial-run, at which point explicit A/B/C re-determination is mandatory; or
+(b) 12 months from the date of this freeze.
+
+After expiration, transitional and emergency capture modes must be disabled unless a separate extension is explicitly approved and frozen by a new governance record.
+No implementation or factory practice may treat these modes as auto-renewing or indefinitely carried forward.
+If an extension is requested, the extension record must explicitly state why a qualified external trusted identity domain is still unavailable and why continued transitional operation remains necessary.
+
+Required governance output for every implementation based on this record
+Any future implementation proposal using this record must explicitly define:
+
+1. the exact trial-stage attribution modes admitted
+2. the exact emergency path entry conditions
+3. the exact post-event reconciliation deadline
+4. the exact review owner for unresolved emergency records
+5. the exact read-surface visibility for emergency and transitional records
+6. the exact operator-facing blocked/error exits
+7. the exact metrics / counters for emergency usage frequency
+8. the exact stop condition or sunset condition for transitional mode
+
+Minimum review discipline for emergency / transitional records
+A future implementation based on this record must ensure:
+
+* emergency and transitional records are queryable
+* they remain distinguishable from formally identity-passed records
+* they can be counted, reviewed, and escalated
+* repeated use can be surfaced to management
+* unresolved records cannot disappear from operational view
+
+Suggested minimum governance metrics:
+
+* emergency capture count by day / week / month
+* emergency capture count by device / station
+* emergency capture count by supervisor
+* aged unresolved emergency records
+* transitional local attribution usage rate
+* percentage of records still not backed by qualified trusted identity path
+
+Hard non-scope
+This record does not:
+
+* alter the already-frozen actor-recognition narrow-form choice
+* authorize implementation
+* authorize production deployment
+* authorize runtime production use
+* declare transitional local attribution equal to formal identity recognition
+* create a permanent fallback architecture
+* establish Phase A as A-class identity strength
+* remove the need for separate release / activation / implementation decisions
+* define final schema, API contract, UI copy, or timeout values
+* authorize silent auto-conversion from emergency/transitional records into legal-strength identity truth
+
+Cross-boundary protection
+This record must not contaminate:
+
+* the existing Phase B legal-evidence chain
+* the already-frozen distinction between declared/manual truth and legal truth
+* the already-frozen rule that hidden bypasses and convenience inference are forbidden
+* the broader identity-governance target for later stronger trust infrastructure
+
+Pre-Freeze Crisis Check
+
+* Current highest risk:
+  trial-stage operability collapses in SME factories if no governed transitional path exists before external trusted identity infrastructure is realistically available
+* Risk level:
+  P0
+* Affected scope:
+  Step47 Phase A trial usability, operator compliance, off-system bypass risk, audit continuity
+* Foundation check:
+  external trusted identity domain is the frozen final recognition target, but many SME trial sites will not have it ready by the trial window
+* Dependency chain check:
+  without a transitional layer, operators will revert to paper / Excel / verbal reporting, which weakens later trace, review, and confidence in Mini-MES trial adoption
+* Reality intrusion check:
+  likely bypass modes include paper notes, WhatsApp instructions, verbal supervisor approval, delayed Excel backfill, and shared-login usage without trace
+* Operator action surface check:
+  operators need a simple visible path: normal submission if available, emergency capture if identity path fails, and explicit next-step guidance for supervisor follow-up
+* Freeze pollution check:
+  if transitional capture is mislabeled as formal actor recognition, it pollutes identity semantics and weakens the already-frozen narrow-form baseline
+* Gate decision draft:
+  CONDITIONAL GO
+* Preconditions before resume:
+  keep narrow-form recognition freeze untouched; isolate transitional path semantically; forbid silent upgrade; require explicit reconciliation discipline; enforce sunset / expiry discipline
+* Gate decision confirmation:
+  Ruichen [confirmed]
+
+Final Review Notes
+W1. The minimum definition of "reconciliation complete" is not yet narrowed enough. The later implementation-level card must explicitly define the minimum completion standard, including who confirms and what exact record/state must exist after completion.
+W2. The allowed disposition path after escalation to plant manager is not yet defined. The later implementation-level card must explicitly define what actions the plant manager may take after escalation and what record consequence each action creates.
+
+Business Logic Confirmation / Factory Floor Scenario
+
+Scenario A - No enterprise identity domain yet
+A small factory uses shared tablets and simple operator IDs.
+The system may still capture who declared the action and which supervisor witnessed it, but this must remain transitional attribution trace only, not formal trusted actor recognition.
+
+Scenario B - Network outage during live production
+The normal trusted path is unavailable.
+The system may open an emergency continuity capture path so the factory does not go fully off-system.
+But the record must remain visibly marked as emergency-captured, must later be reconciled within the defined window, and must not silently age into permanence.
+
+Scenario C - Shift substitution / temporary operator swap
+A worker is absent and another worker fills in.
+The system must not depend on a heavy static admin-maintained allow-list that blocks ordinary factory substitution reality.
+A lightweight local validity basis plus supervisor witness is acceptable during the trial stage, but still not equal to formal trusted recognition.
+
+Scenario D - Supervisor witness authenticity
+If supervisor witness is required, the system cannot accept a fake "witnessed" checkbox operated by the same operator.
+Witness must be separately attributable; otherwise the record must fall into the emergency path and remain pending later supervisor confirmation.
+
+Scenario E - Trial mode must not live forever
+The factory may use the guarded side gate during the trial window, but the side gate must not become a permanent hidden main gate.
+At trial closeout or by the expiry limit, the system must stop and re-determine whether the operation remains C-class transitional only or is eligible for stronger classification.
+
+Factory-language explanation
+This record means:
+the main front gate is still the real gate, and we are not changing that.
+But before the real gate is fully built and stable, the factory may use a guarded side gate for trial running.
+Anyone using that side gate must leave a clear name, time, device, and supervisor trace.
+If the witness is missing or the network is down, the record can still be captured, but it must wear a bright emergency label and be cleaned up later.
+The side gate is temporary, cannot pretend to be the real gate, and cannot stay forever without later cleanup, expiry control, and re-determination.
