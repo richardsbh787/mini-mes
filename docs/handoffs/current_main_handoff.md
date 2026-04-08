@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.18
+Mini-MES Handoff v2.19
 
-Updated after 2026-04-08 handoff-only warning-closure insertion for Auth Identity Binding A-Class approval carrier lock and Starter Package commercial material boundary closure
+Updated after 2026-04-08 handoff-only insertion for Auth Identity Binding Actual Determination Output Template
 Date: 2026-04-08
 
 1. Frozen mainline snapshot
@@ -6422,3 +6422,162 @@ The following are not part of the plug-and-play scope and must not be described,
 - any gate condition
 
 This reverse exclusion statement applies to all Starter Package external scenarios, including but not limited to sales demos, delivery proposals, trial-run agreements, and customer communication materials.
+
+53. Frozen Entry - Auth Identity Binding Actual Determination Output Template
+
+Status
+PASS / FROZEN
+
+Purpose
+This template locks the mandatory output format for the actual A / B / C determination under Step47 PhaseA, so that the determination result is independently reviewable, evidence-backed, and resistant to ambiguity, shortcut reasoning, or governance drift.
+
+Scope
+- Step47 PhaseA only
+- Determination-output discipline only
+
+Non-Scope
+- No implementation authorization
+- No Submission unblock
+- No auth expansion
+- No role / permission / SSO design expansion
+- No direct A / B / C determination result
+
+Frozen Template
+
+1. Record Header
+The following fields are mandatory and must not be blank:
+- Determination Date: [YYYY-MM-DD]
+- Determined By: [Name / Role]
+- Frozen Handoff Version / Date: [e.g. handoff v2.18 / 2026-04-08]
+
+Additional mandatory rule:
+Determined By must be Qingchen, or a person explicitly authorized by Ruichen in writing.
+No other role may issue the determination.
+
+All determination outputs must be evaluated against the recorded Frozen Handoff Version / Date named in the Record Header.
+A determination that does not identify its governing frozen handoff version is invalid.
+
+2. Determination Result
+Choose exactly one result only:
+- A
+- B
+- C
+
+No mixed result is allowed.
+No ambiguous wording is allowed.
+
+3. Inspected Repo Evidence
+The following sections are mandatory for all A / B / C results, with no exception.
+
+3.1 Inspected Files
+List the main inspected files.
+
+3.2 Inspected Functions / Classes / Dependency Points
+List the main inspected functions, classes, dependency points, or equivalent repo surfaces where applicable.
+
+3.3 Inspection Scope Explanation
+Provide a short explanation of what was checked and why those paths were inspected.
+
+3.4 Candidate Assessment by Inspected Surface
+For each main inspected surface, state why it does or does not constitute a reusable server-side identity binding pattern.
+The explanation must include at least one concrete reason tied to code behavior or governance definition.
+
+Examples of acceptable reasoning include:
+- accepts client-provided declared_by
+- not referenced in any frozen approval record
+- produces no stable auditable identifier
+- only supports logging context rather than declared_by binding
+
+Statements such as "does not fit", "not reusable", or other vague conclusions without concrete reasoning are invalid.
+
+Mandatory discipline:
+Even when no candidate pattern is found, the inspected files / functions must still be listed to demonstrate the scope of inspection.
+Statements such as "checked already" or "nothing found" without listed inspection paths are invalid.
+
+4. Approval-Form Check for A
+This section is mandatory for all A / B / C results and must not be left blank.
+
+4.1 Candidate Pattern Found?
+State one of:
+- Yes
+- No
+
+4.2 Approval-Form Status
+If a candidate pattern exists, explicitly state whether it already satisfies the approval-form requirement defined in Auth Identity Binding Prerequisite v2.
+
+A valid written carrier is limited to:
+- a frozen governance record
+- an explicit handoff body entry
+- an independent Decision Record
+
+The following do not count:
+- informal chat
+- verbal approval
+- implied approval
+- unrecorded interpretation
+
+Mandatory fixed text for B or C results:
+"After inspection, no approved pattern exists that satisfies the approval-form requirement of Prerequisite v2."
+
+This sentence is mandatory and may not be omitted, implied, or replaced by cross-reference to another section.
+
+5. Reusability Conclusion
+State separately and explicitly whether the candidate is:
+
+5.1 Technically Present
+- Yes / No
+
+Mandatory definition:
+"Technically Present" means the mechanism is implemented, reachable, and capable of producing a non-null, stable, auditable identifier suitable for declared_by use in Step47 PhaseA submission identity binding.
+Proof of concept code, placeholders, incomplete stubs, unreachable code, or non-functional surfaces do not count as technically present.
+
+5.2 Governance-Approved
+- Yes / No
+
+5.3 Reusable for Step47 PhaseA Submission Identity Binding
+- Yes / No
+
+Mandatory discipline:
+Code existence does not equal A.
+Technical suitability does not equal governance approval.
+A result may be A only if the candidate is both technically present and already satisfies the approval-form requirement of Prerequisite v2.
+
+6. Non-Scope Confirmation
+The following must be explicitly confirmed:
+- No auth expansion is authorized
+- No role / permission / SSO expansion is authorized
+- No unblock effect is created by this template
+- No unblock effect is created by inspection alone
+- No implementation authorization is created by this determination output alone
+
+7. Mandatory Next Action
+7.1 If Result = A
+State:
+- Ruichen written approval in a valid written carrier is still required if not already completed in the required form
+- Qinran confirmation is required
+- Submission Implementation remains BLOCKED until the full A-chain is complete
+
+7.2 If Result = B
+State:
+- No approved reusable pattern exists
+- Submission Implementation remains BLOCKED
+
+7.3 If Result = C
+State:
+- A minimal enabling step may be proposed
+- The enabling step must be strictly limited to the minimal necessary for Step47 PhaseA submission identity binding
+- No expansion into role / permission / SSO is permitted
+
+Mandatory fixed text for C:
+"The follow-up enabling step must be limited to the minimal capability required for Step47 PhaseA submission identity binding and must not expand into a role / permission / SSO subsystem or any auth capability beyond that scope."
+
+8. Final Statement
+Provide one short closing statement that:
+- confirms the result is exactly one of A / B / C
+- confirms the determination is evidence-backed
+- confirms no implementation or unblock authorization is created by this output alone
+
+Factory-Language Meaning
+This frozen entry does not decide whether the gate key already exists.
+It freezes the inspection form that must be used when checking for that key.
+Without this form, different reviewers could claim different conclusions from the same repo state.
