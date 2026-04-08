@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.20
+Mini-MES Handoff v2.21
 
-Updated after 2026-04-08 handoff-only insertion for Ruichen Gate Decision Confirmation on Step47 PhaseA server-side identity binding minimum enabling step
+Updated after 2026-04-08 handoff-only insertion for Step47 PhaseA server-side identity binding minimum enabling step frozen design-output baseline
 Date: 2026-04-08
 
 1. Frozen mainline snapshot
@@ -6640,3 +6640,175 @@ the factory is allowed to design the smallest possible lock core for this one ga
 It does not mean the gate is open.
 It does not mean the whole security building may be constructed.
 It does not mean the current client-provided name field has become acceptable as formal identity truth.
+
+55. Frozen Design-Output Baseline - Step47_PhaseA Server-Side Identity Binding Minimum Enabling Step v1
+
+Status
+PASS WITH WARNINGS ABSORBED / FROZEN
+
+Locked Objective
+Define the narrowest possible server-side identity-binding design for Step47 PhaseA submission, so that authoritative submission actor identity no longer comes from client-provided actor text.
+
+Chosen Minimum Enabling Direction
+The minimum enabling direction is:
+
+one trusted upstream-injected actor identity source, consumed only inside Step47 PhaseA submission through one Step47-scoped dependency function.
+
+This baseline does not choose:
+- user database
+- password login
+- auth session
+- role system
+- permission model
+- SSO
+- general authentication middleware
+- cross-module identity resolution
+
+Authoritative Actor Source
+The authoritative actor source shall be:
+
+one pre-established trusted upstream actor identity value, injected before the request reaches Step47 PhaseA submission handling.
+
+Frozen meaning:
+- the actor identity is server-side bound
+- Mini-MES does not trust a raw client-entered actor field as authoritative source
+- the upstream trust source must be outside the ordinary client payload
+- the source must be stable enough to produce one non-empty auditable actor identifier for submission use
+
+Additional mandatory trust-boundary rule:
+The trusted upstream source must be bound to a mechanism that makes client-side forgery infeasible within the deployment environment.
+
+Acceptable trust shapes may include:
+- a mutually authenticated internal proxy
+- a sidecar or equivalent internal component that the client cannot directly influence
+- a server-internal context set before request routing
+
+Plain unsigned HTTP headers that any client can set are not acceptable.
+A header-based approach is acceptable only if additional protection exists such that the client cannot forge that identity value.
+
+Frozen clarification:
+"server-internal context set before request routing" means only a context injected before the request enters application routing, by the deployment layer or infrastructure layer.
+It does not include application code writing or rewriting context during route handling.
+
+This baseline intentionally freezes the source class only:
+- trusted upstream-injected actor identity source
+
+This baseline does not yet freeze:
+- exact proxy/gateway product
+- exact deployment product choice
+
+Allowed Retrieval Shape
+Mini-MES may later realize this enabling step only through:
+
+one Step47-PhaseA-scoped minimal dependency function that reads the trusted upstream actor identity source and returns one authoritative actor identifier for submission use.
+
+Frozen boundary:
+- the function is Step47 PhaseA submission scoped only
+- it is not a reusable global auth hook
+- it is not a general current-user framework
+- it is not a cross-module identity service
+
+Additional mandatory governance rule:
+The exact header name, or equivalent injection point, must be documented in the handoff before implementation.
+It must remain consistent across all Step47 PhaseA submission endpoints.
+It may not be chosen arbitrarily by implementers at coding time without governance visibility.
+
+Client-Provided Actor Field Rule
+Client-provided actor fields such as:
+- declared_by
+- executed_by
+- equivalent payload actor strings
+
+must not become authoritative identity source.
+
+Frozen rule:
+- for authoritative identity, such fields must be rejected or ignored
+- they must not be treated as fallback authority
+- they must not be merged with server-side identity
+- they must not create dual-source interpretation
+
+Preferred narrow reading:
+- authoritative identity comes from the trusted upstream-injected source only
+- client payload actor text is not legal authority
+
+Minimum Failure Discipline
+If the trusted upstream actor identity source is:
+- absent
+- blank
+- structurally invalid
+- not present in the trusted expected channel
+
+then Step47 PhaseA submission must remain blocked at the identity-binding layer.
+
+Frozen meaning:
+- no fallback to client-provided actor text
+- no default actor
+- no convenience bypass
+- no "accept first, clarify later" identity handling
+
+Additional mandatory format rule:
+The identity value must satisfy a simple frozen format discipline:
+- non-empty
+- printable
+- no control characters
+- stable enough to identify the same actor consistently across comparable requests
+
+The exact format may be finalized at implementation time,
+but before code is written it must:
+- be documented in handoff
+- be drafted by Qingchen
+- be confirmed by Qinran
+
+Operator Minimal Action Rule Preservation
+This enabling design must not increase operator burden.
+
+Therefore the design must preserve:
+- no new login step for operators at this stage
+- no role selection by operators
+- no extra manual identity input by operators
+- no requirement that operator reconstruct identity context manually
+
+System complexity must be absorbed above or behind the Step47 PhaseA submission surface.
+
+Explicit Non-Scope
+This design output does not authorize or define:
+- user table
+- credential storage
+- password verification
+- token issuance
+- session lifecycle
+- role matrix
+- permission engine
+- SSO integration
+- general middleware
+- reusable request interceptor
+- cross-module auth rollout
+- broader current-user platform
+- submission unblock
+- A-class establishment
+
+Downstream Discipline
+Even if this minimum enabling step is later frozen and implemented:
+- Submission Implementation still remains BLOCKED until a new A / B / C determination is performed
+- that later determination must use the already-frozen Auth Identity Binding Actual Determination Output Template
+- no one may infer A-class merely because a narrow server-side actor source now exists technically
+
+Current Preferred Interpretation
+At this governance/design-text-only stage, the narrowest acceptable path appears to be:
+
+trusted upstream-injected actor identity source + Step47-local minimal dependency function
+
+This is narrower than:
+- fixed system identity for all submissions
+- general auth middleware
+- user database introduction
+- shared cross-module identity framework
+
+Because it can bind one authoritative actor source for this one submission surface without expanding Mini-MES into a broader auth system.
+
+Factory-Language Meaning
+This frozen design-output baseline means:
+the lock-core drawing is now formally approved for this one gate only.
+It is not an open-gate order.
+It is not a security-building permit.
+It does not make client-provided actor text acceptable as formal identity truth.
