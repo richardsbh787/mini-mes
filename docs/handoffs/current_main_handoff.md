@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.30
+Mini-MES Handoff v2.31
 
-Updated after 2026-04-09 handoff-only freeze patch for Step47 PhaseA known-valid-actor owner / approval-path governance
+Updated after 2026-04-09 handoff-only freeze patch for CommercialPackage_Starter_Pro_ModuleBoundary_Freeze
 Date: 2026-04-09
 
 1. Frozen mainline snapshot
@@ -77,6 +77,8 @@ Frozen Record - Global Governance_UI_ErrorLayer_Boundary_Baseline
 
 Frozen Record - BOM Compare Read-Only Module - Independent BOM Difference Analysis
 
+Frozen Record - CommercialPackage_Starter_Pro_ModuleBoundary_Freeze
+
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
 
@@ -110,6 +112,7 @@ Step47_PhaseA_ReconciliationCompletionAndPlantManagerEscalationResolution is now
 Global Governance_FailureHandling_ErrorSourceSeparation_Rule_v2 is now FROZEN; it locks repo-wide failure classification, anti-hang discipline, timeout-to-blocked/failed handling, and technical-detail versus operator-guidance separation as a durable governance rule only.
 Global Governance_UI_ErrorLayer_Boundary_Baseline is now PASS / FROZEN; it supplements the failure-handling governance anchor by freezing UI/backend error-layer boundaries for root-classification preservation, guidance-only UI role, intact backend technical error retention, and no autonomous recovery without separately frozen governance.
 BOM Compare Read-Only Module is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES as an independent read-only analysis module; it remains outside Step 47 / Phase A / Phase B frozen chains, does not authorize BOM maintenance / release / approval / write-path opening, and is not implementation-ready if truth-bearing BOM sources would require an isolated read-only view / snapshot that is not separately approved and documented in handoff.
+CommercialPackage_Starter_Pro_ModuleBoundary_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Starter / Pro / Optional package-layer boundary is now frozen as separate from governance layer, modules may remain plug-and-play and customer-configurable only at the commercial/deployment scoping layer, package inclusion does not alter freeze status, blocked status, or implementation authorization, design-only / blocked content may not be sold as implementation-ready merely because a customer asks for it, and this record does not authorize implementation or pricing commitments.
 AGENTS Cross-Cutting Governance Rule 3 is aligned to the frozen failure-handling governance baseline only; this is repo-rule alignment only and not implementation, activation, deployment, or runtime production-use authorization.
 
 FG_RECEIVE Location Master Physical Schema Baseline is frozen as a design-layer schema baseline only.
@@ -1583,6 +1586,11 @@ FG_RECEIVE Step 47 Release Decision Baseline is frozen as a design-layer release
 The Step 47 `location_code` freeze chain also includes the frozen blocking-preconditions baseline, gate evidence-pack submission contract baseline, and PF-1 / PF-2 / PF-3 / PF-4 / PF-5 / PF-6 / PF-7 / PF-8 evidence-surface baselines.
 They remain design-layer frozen records only.
 
+Starter / Pro / Optional package-layer boundary is now frozen as a commercial-layer boundary only.
+Package layer remains separate from governance layer, modules may be plug-and-play and customer-configurable only at the commercial/deployment scoping layer, and package inclusion does not alter freeze status, blocked status, or implementation authorization.
+Design-only / blocked content may not be sold as implementation-ready merely because a customer asks for it.
+This record does not authorize implementation or pricing commitments.
+
 Important
 
 Do not auto-advance beyond the current locked task without explicit user authorization.
@@ -1606,7 +1614,7 @@ Any future repaired FG_RECEIVE source must still pass full Step 47A admissibilit
 16. One-line summary
 
 Step 40A, Step 45, and Step 46A remain formally implemented and frozen.
-Step 47 remains design-frozen and BLOCKED, Step 47A remains frozen with all four current candidates still NOT_ADMISSIBLE_YET and the admitted source list effectively EMPTY, Step47_PhaseA_ManualLocationDeclaration_Baseline (v2) remains frozen as the manual Stock Card digitization / operator-declared location design-layer baseline only, Step47_PhaseA_ActorRecognition_NarrowForm_Freeze, Step47_PhaseA_KnownValidActor_Governance_Freeze, Step47_PhaseA_ExternalTrustedIdentityDomain_Carrier_Freeze, Step47_PhaseA_KnownValidActor_Owner_ApprovalPath_Freeze, and Step47_PhaseA_ImplementationOpeningPrerequisite_Freeze are also now frozen as design/governance-layer baselines only, the existing Step 47 legal chain remains fully in force as frozen Phase B, Step 47B remains frozen as the legal location evidence & accountability baseline under Task Card v2.1, the Step 47 `location_code` freeze chain now also includes the frozen blocking-preconditions baseline, gate evidence-pack submission contract baseline, and PF-1 / PF-2 / PF-3 / PF-4 / PF-5 / PF-6 / PF-7 / PF-8 evidence-surface baselines, and FG_RECEIVE now also has frozen design-layer baselines for the Location Master Physical Schema, the Event Truth Surface, the Event Truth Physical Schema, the Resolution Attempt & Evidence Snapshot Physical Schema, the Event-Time Location Resolution Runtime semantic contract, the Event-Time Location Resolution Read Surface semantic contract, the Step 47A Re-Admission Evaluation contract, and the Step 47 Release Decision contract while remaining NOT auto-admitted.
+Step 47 remains design-frozen and BLOCKED, Step 47A remains frozen with all four current candidates still NOT_ADMISSIBLE_YET and the admitted source list effectively EMPTY, Step47_PhaseA_ManualLocationDeclaration_Baseline (v2) remains frozen as the manual Stock Card digitization / operator-declared location design-layer baseline only, Step47_PhaseA_ActorRecognition_NarrowForm_Freeze, Step47_PhaseA_KnownValidActor_Governance_Freeze, Step47_PhaseA_ExternalTrustedIdentityDomain_Carrier_Freeze, Step47_PhaseA_KnownValidActor_Owner_ApprovalPath_Freeze, and Step47_PhaseA_ImplementationOpeningPrerequisite_Freeze are also now frozen as design/governance-layer baselines only, the existing Step 47 legal chain remains fully in force as frozen Phase B, Step 47B remains frozen as the legal location evidence & accountability baseline under Task Card v2.1, the Step 47 `location_code` freeze chain now also includes the frozen blocking-preconditions baseline, gate evidence-pack submission contract baseline, and PF-1 / PF-2 / PF-3 / PF-4 / PF-5 / PF-6 / PF-7 / PF-8 evidence-surface baselines, Starter / Pro / Optional package-layer boundary is now also frozen as a commercial-layer boundary separate from governance layer and does not change any step freeze / blocked / implementation status, and FG_RECEIVE now also has frozen design-layer baselines for the Location Master Physical Schema, the Event Truth Surface, the Event Truth Physical Schema, the Resolution Attempt & Evidence Snapshot Physical Schema, the Event-Time Location Resolution Runtime semantic contract, the Event-Time Location Resolution Read Surface semantic contract, the Step 47A Re-Admission Evaluation contract, and the Step 47 Release Decision contract while remaining NOT auto-admitted.
 
 17. Step 47 FG_RECEIVE implementation final archival result
 
@@ -8452,3 +8460,154 @@ This record exists to freeze:
 * which update paths are legally admitted
 
 It does not authorize implementation or use by itself.
+
+64. Frozen Record - CommercialPackage_Starter_Pro_ModuleBoundary_Freeze
+
+Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+Scope Type: Handoff-only commercial package boundary freeze
+
+Reference Base:
+
+* `docs/handoffs/current_main_handoff.md` as the active main baseline
+* the frozen total blueprint document as the package skeleton anchor, currently preserved in the active baseline as `Starter Final Blueprint = Step 46–63`, `Full Continuation Blueprint = Step 64–65`, `Step 66 = Optional / Phase 2+`, and `Step 67–69 = Quality / Complaint / CAPA line`
+
+This record freezes only the commercial package-layer boundary, package terminology discipline, and package-to-governance separation for Starter / Pro / Optional module assembly.
+
+Boundary
+
+This freeze is handoff-only.
+
+This freeze is commercial/governance-layer only.
+
+This freeze does not:
+
+* set prices
+* define quotations
+* authorize implementation
+* authorize runtime production use
+* rewrite step business semantics
+* rewrite frozen governance boundaries
+* convert design-only content into implementation scope
+
+Frozen layer separation
+
+Commercial package layer and governance / baseline layer must remain explicitly separate.
+
+Starter / Pro / Optional package wording belongs to the commercial/module assembly layer.
+
+It does not carry authority to rewrite:
+
+* frozen truth semantics
+* frozen evidence boundaries
+* frozen guard / audit / approval rules
+* blocked / design-only / implementation-authorized status of any step
+
+Frozen package skeleton anchor
+
+The package skeleton anchor follows the frozen total blueprint structure:
+
+* Starter-aligned default commercial skeleton = Step 46–63
+* Full / Pro-aligned default extension skeleton = Step 64–65
+* Step 66 = Optional / Phase 2+
+* Step 67–69 = selectable quality / complaint / CAPA expansion line
+
+This package skeleton is a commercial packaging anchor only.
+
+It is not a readiness statement.
+
+It is not a statement that every step in that range is implemented or implementation-ready.
+
+Package inclusion does not alter step status
+
+Package inclusion does not alter a step’s freeze, blocked, design-only, or implementation-authorized status.
+
+Example preservation:
+Step 47 remains governed by its own frozen records.
+Step 47 remains design-frozen and blocked regardless of any broader Starter-side package skeleton reference.
+
+No package mapping may be used to create business pressure to unblock a blocked step.
+
+Three explicit non-equalities
+
+Package inclusion does not equal:
+
+* implementation authorization
+* freeze completion
+* runtime production-use authorization
+
+Customer-configurable module rule
+
+Modules may be plug-and-play and customer-configurable at the commercial / deployment scoping layer.
+
+Customers may select, omit, combine, or expand modules according to customer need.
+
+However, customer selection does not gain authority to rewrite frozen governance or frozen step status.
+
+Optional selection rule
+
+Optional modules may be added to Starter or Pro packages independently, unless a specific optional module has a documented dependency on a Pro-only or otherwise separately required step.
+
+Any such dependency must be explicitly recorded in handoff.
+
+No unstated dependency may be invented by sales, product, or implementation side.
+
+Customer-request boundary rule
+
+No customer packaging request may override the frozen status of a step.
+
+Design-only, blocked, or implementation-not-authorized steps may not be offered as implementation-ready merely because a customer requests them.
+
+If such a step is discussed commercially, it must be explicitly labeled as:
+
+* design-only
+* blocked
+* subject to future freeze / future authorization
+
+No commercial promise may silently convert design-layer content into implementation scope.
+
+Plug-and-play clarification
+
+Plug-and-play here refers to commercial packaging and deployment scoping.
+
+It does not mean runtime toggling that bypasses governance, frozen boundaries, truth discipline, data discipline, or approval discipline.
+
+Future terminology discipline
+
+Future sales material, handoff text, Task Cards, review text, or internal planning language that uses Starter / Pro / Optional terminology must follow this frozen package-boundary rule.
+
+No separate uncontrolled package vocabulary may be created.
+
+What this freeze changes
+
+This freeze changes only one thing:
+it formally freezes the commercial package-layer boundary and the rule that package flexibility may exist only above, and never in place of, frozen governance boundaries.
+
+What this freeze does not change
+
+This freeze does not:
+
+* finalize quotations
+* approve implementation
+* approve runtime production use
+* unblock blocked steps
+* convert design-only content into delivery-ready scope
+* rewrite any already-frozen step meaning
+
+Final Review Notes
+
+A. The Starter package skeleton range does not mean every step within Step 46–63 is implementation-ready. Each step’s own freeze / blocked / implementation status remains governed by its own handoff record.
+
+B. Any future Step 67 / 68 / 69 internal dependency must be explicitly recorded when those steps are formally opened in handoff. Until such dependency records exist, no external promise may assume full independent selectability.
+
+Freeze intent
+
+The intent of this freeze is to let Mini-MES remain commercially flexible and customer-configurable without allowing customer demand, sales pressure, or packaging language to rewrite frozen governance or step-status reality.
+
+This record exists only to freeze:
+
+* package-layer vocabulary
+* package-to-governance separation
+* package flexibility boundary
+* the prohibition on using customer demand to bypass frozen status
+
+It does not authorize implementation or pricing by itself.
