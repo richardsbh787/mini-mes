@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.32
+Mini-MES Handoff v2.33
 
-Updated after 2026-04-09 handoff-only freeze patch for Step47_PhaseA_EscalateHigher_ActionSet_DisableRule_Freeze
+Updated after 2026-04-09 handoff-only freeze patch for Handoff_StructureRefactor_ArchiveSplit_Freeze
 Date: 2026-04-09
 
 1. Frozen mainline snapshot
@@ -81,6 +81,8 @@ Frozen Record - CommercialPackage_Starter_Pro_ModuleBoundary_Freeze
 
 Frozen Record - Step47_PhaseA_EscalateHigher_ActionSet_DisableRule_Freeze
 
+Frozen Record - Handoff_StructureRefactor_ArchiveSplit_Freeze
+
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
 
@@ -116,6 +118,7 @@ Global Governance_UI_ErrorLayer_Boundary_Baseline is now PASS / FROZEN; it suppl
 BOM Compare Read-Only Module is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES as an independent read-only analysis module; it remains outside Step 47 / Phase A / Phase B frozen chains, does not authorize BOM maintenance / release / approval / write-path opening, and is not implementation-ready if truth-bearing BOM sources would require an isolated read-only view / snapshot that is not separately approved and documented in handoff.
 CommercialPackage_Starter_Pro_ModuleBoundary_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Starter / Pro / Optional package-layer boundary is now frozen as separate from governance layer, modules may remain plug-and-play and customer-configurable only at the commercial/deployment scoping layer, package inclusion does not alter freeze status, blocked status, or implementation authorization, design-only / blocked content may not be sold as implementation-ready merely because a customer asks for it, and this record does not authorize implementation or pricing commitments.
 Step47_PhaseA_EscalateHigher_ActionSet_DisableRule_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; this record closes only the open governance gap around `escalate_higher`, `escalate_higher` is not a default-open governance action, higher-level authority must be explicitly recorded in handoff or else `escalate_higher` remains disabled, higher-level authority cannot be inferred from org chart, title, seniority, or local habit, unresolved records must remain visible with periodic review discipline when higher-level escalation is disabled, and this record does not authorize implementation, unblock Step 47, or legalize transitional truth.
+Handoff_StructureRefactor_ArchiveSplit_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; handoff structure layering is now frozen, `docs/handoffs/current_main_handoff.md` remains the active main baseline / main cockpit page, future topic archive files and a future freeze index may exist only as support layers, archive split does not rewrite meaning, weaken freeze strength, or permit silent deletion, and this record does not itself execute archive migration.
 AGENTS Cross-Cutting Governance Rule 3 is aligned to the frozen failure-handling governance baseline only; this is repo-rule alignment only and not implementation, activation, deployment, or runtime production-use authorization.
 
 FG_RECEIVE Location Master Physical Schema Baseline is frozen as a design-layer schema baseline only.
@@ -1575,6 +1578,12 @@ Higher-level authority must be explicitly recorded in handoff or else `escalate_
 Higher-level authority cannot be inferred from org chart, title, seniority, or local habit.
 When higher-level escalation is disabled, unresolved records must remain visible with periodic review discipline.
 This record does not authorize implementation, unblock Step 47, or legalize transitional truth.
+Handoff_StructureRefactor_ArchiveSplit_Freeze is frozen as a handoff structure/governance-layer baseline only.
+Handoff structure layering is now frozen.
+`docs/handoffs/current_main_handoff.md` remains the active main baseline / main cockpit page.
+Future topic archive files and a future freeze index may exist only as support layers.
+Archive split does not rewrite meaning, weaken freeze strength, or permit silent deletion.
+This record does not itself execute archive migration.
 
 FG_RECEIVE Location Master Physical Schema Baseline is frozen as a design-layer schema baseline only.
 
@@ -1623,7 +1632,7 @@ Any future repaired FG_RECEIVE source must still pass full Step 47A admissibilit
 16. One-line summary
 
 Step 40A, Step 45, and Step 46A remain formally implemented and frozen.
-Step 47 remains design-frozen and BLOCKED, Step 47A remains frozen with all four current candidates still NOT_ADMISSIBLE_YET and the admitted source list effectively EMPTY, Step47_PhaseA_ManualLocationDeclaration_Baseline (v2) remains frozen as the manual Stock Card digitization / operator-declared location design-layer baseline only, Step47_PhaseA_ActorRecognition_NarrowForm_Freeze, Step47_PhaseA_KnownValidActor_Governance_Freeze, Step47_PhaseA_ExternalTrustedIdentityDomain_Carrier_Freeze, Step47_PhaseA_KnownValidActor_Owner_ApprovalPath_Freeze, Step47_PhaseA_ImplementationOpeningPrerequisite_Freeze, and Step47_PhaseA_EscalateHigher_ActionSet_DisableRule_Freeze are also now frozen as design/governance-layer baselines only, `escalate_higher` is not default-open and remains disabled unless higher-level authority is explicitly recorded in handoff, unresolved records must remain visible with periodic review discipline where higher-level escalation is disabled, the existing Step 47 legal chain remains fully in force as frozen Phase B, Step 47B remains frozen as the legal location evidence & accountability baseline under Task Card v2.1, the Step 47 `location_code` freeze chain now also includes the frozen blocking-preconditions baseline, gate evidence-pack submission contract baseline, and PF-1 / PF-2 / PF-3 / PF-4 / PF-5 / PF-6 / PF-7 / PF-8 evidence-surface baselines, Starter / Pro / Optional package-layer boundary is now also frozen as a commercial-layer boundary separate from governance layer and does not change any step freeze / blocked / implementation status, and FG_RECEIVE now also has frozen design-layer baselines for the Location Master Physical Schema, the Event Truth Surface, the Event Truth Physical Schema, the Resolution Attempt & Evidence Snapshot Physical Schema, the Event-Time Location Resolution Runtime semantic contract, the Event-Time Location Resolution Read Surface semantic contract, the Step 47A Re-Admission Evaluation contract, and the Step 47 Release Decision contract while remaining NOT auto-admitted.
+Step 47 remains design-frozen and BLOCKED, Step 47A remains frozen with all four current candidates still NOT_ADMISSIBLE_YET and the admitted source list effectively EMPTY, Step47_PhaseA_ManualLocationDeclaration_Baseline (v2) remains frozen as the manual Stock Card digitization / operator-declared location design-layer baseline only, Step47_PhaseA_ActorRecognition_NarrowForm_Freeze, Step47_PhaseA_KnownValidActor_Governance_Freeze, Step47_PhaseA_ExternalTrustedIdentityDomain_Carrier_Freeze, Step47_PhaseA_KnownValidActor_Owner_ApprovalPath_Freeze, Step47_PhaseA_ImplementationOpeningPrerequisite_Freeze, and Step47_PhaseA_EscalateHigher_ActionSet_DisableRule_Freeze are also now frozen as design/governance-layer baselines only, `escalate_higher` is not default-open and remains disabled unless higher-level authority is explicitly recorded in handoff, unresolved records must remain visible with periodic review discipline where higher-level escalation is disabled, the existing Step 47 legal chain remains fully in force as frozen Phase B, Step 47B remains frozen as the legal location evidence & accountability baseline under Task Card v2.1, the Step 47 `location_code` freeze chain now also includes the frozen blocking-preconditions baseline, gate evidence-pack submission contract baseline, and PF-1 / PF-2 / PF-3 / PF-4 / PF-5 / PF-6 / PF-7 / PF-8 evidence-surface baselines, Starter / Pro / Optional package-layer boundary is now also frozen as a commercial-layer boundary separate from governance layer and does not change any step freeze / blocked / implementation status, handoff structure layering is now also frozen while `docs/handoffs/current_main_handoff.md` remains the active main baseline / main cockpit page and any future topic archive files or future freeze index may exist only as support layers without rewriting meaning or permitting silent deletion, and FG_RECEIVE now also has frozen design-layer baselines for the Location Master Physical Schema, the Event Truth Surface, the Event Truth Physical Schema, the Resolution Attempt & Evidence Snapshot Physical Schema, the Event-Time Location Resolution Runtime semantic contract, the Event-Time Location Resolution Read Surface semantic contract, the Step 47A Re-Admission Evaluation contract, and the Step 47 Release Decision contract while remaining NOT auto-admitted.
 
 17. Step 47 FG_RECEIVE implementation final archival result
 
@@ -8785,3 +8794,171 @@ This record exists only to freeze:
 * the unresolved fallback discipline when higher-level escalation is unavailable
 
 It does not authorize implementation or legal truth by itself.
+
+66. Frozen Record - Handoff_StructureRefactor_ArchiveSplit_Freeze
+
+Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+Scope Type: Handoff-only structure freeze
+
+Reference Base:
+
+* `docs/handoffs/current_main_handoff.md` as the active main baseline
+
+This record freezes only the structural layering rule for future handoff maintenance, archive split, and freeze-index support.
+
+Boundary
+
+This freeze is handoff-only.
+
+This freeze is structure/governance-layer only.
+
+This freeze does not:
+
+* execute archive migration
+* rewrite frozen semantics
+* delete frozen records
+* replace the active main baseline
+* authorize silent restructuring without trace
+
+Frozen three-layer structure
+
+Future handoff structure may be layered into three roles:
+
+1. Main anchor page
+2. Frozen topic archive files
+3. Freeze index / navigation file
+
+This freeze governs only their role separation and update discipline.
+
+Main anchor page rule
+
+`docs/handoffs/current_main_handoff.md` remains the active main baseline.
+
+Its minimum preserved role is:
+
+* active main baseline
+* current version anchor
+* frozen mainline snapshot
+* currently effective locked-status summary
+* current open warnings / governance gaps
+* current next-step queue / current main progression anchor
+* one-line legal/effect sync lines for already-frozen records
+* explicit pointers to any split-out frozen bodies
+
+It must not be treated as an unlimited full archive warehouse forever.
+
+But it also must not lose its active-main-baseline role.
+
+Frozen topic archive rule
+
+Future frozen topic archive files may be created to preserve stable, longer frozen bodies grouped by domain, chain, or module.
+
+They may reduce main-handoff bloat.
+
+They may not:
+
+* replace the active main baseline
+* weaken freeze meaning
+* silently change wording strength
+* drop status wording
+* drop final review notes where applicable
+
+Freeze index rule
+
+A future freeze index / navigation file may be created.
+
+Its allowed role is:
+
+* list frozen records
+* point to current location
+* indicate status / chain / next-step anchor
+
+It may not replace formal freeze text.
+
+Archive-split non-equivalence rule
+
+Archive split does not equal:
+
+* semantic rewrite
+* weakening of freeze strength
+* permission to delete frozen text without trace
+* change of active-main-baseline role
+
+Minimum preservation rule for split-out movement
+
+Any future split-out archive movement must:
+
+* be documented in handoff
+* preserve traceability
+* preserve status wording
+* preserve final review notes where applicable
+* avoid orphaning older frozen records
+
+Main-handoff minimum retention rule
+
+If archive split happens in the future, `current_main_handoff.md` must still retain at minimum:
+
+* version header
+* main snapshot
+* current locked-status block
+* current active queue
+* one-line freeze sync lines
+* explicit pointer to moved frozen bodies
+
+Anti-deletion / anti-compression rule
+
+File length alone does not justify:
+
+* deleting an effective frozen record
+* compressing away critical boundary wording
+* dropping warnings
+* dropping final review notes
+* making future review unable to find where a frozen record went
+
+Pointer-update rule
+
+If any split-out archive later receives a correction, erratum, or version update, the corresponding pointer in the active main handoff must be synchronously updated.
+
+That pointer update is itself a governed update and must preserve traceability.
+
+No silent pointer drift is allowed.
+
+Freeze-index update rule
+
+If a future freeze index is created, each newly admitted frozen record must synchronously update that index.
+
+No silent lagging index is allowed.
+
+What this freeze changes
+
+This freeze changes only one thing:
+it formally freezes how the handoff may later be structurally layered without weakening already-frozen records.
+
+What this freeze does not change
+
+This freeze does not:
+
+* move records by itself
+* create archive files by itself
+* create the index by itself
+* rewrite any already-frozen text
+* reduce any already-frozen review strength
+
+Final Review Notes
+
+A. If any split-out archive later receives a correction, erratum, or version update, the corresponding pointer in the active main handoff must be synchronously updated. That pointer update is itself a governed update and must preserve traceability.
+
+B. If a future freeze index is created, each newly admitted frozen record must synchronously update that index. The index must not silently lag behind the actual frozen state.
+
+Freeze intent
+
+The intent of this freeze is to stop future handoff growth from collapsing into one oversized mixed-purpose file while also preventing "cleanup" from becoming silent semantic weakening.
+
+This record exists only to freeze:
+
+* the role of the main anchor page
+* the allowed role of topic archive files
+* the allowed role of a freeze index
+* the non-deletion, non-rewrite, and trace-preserving rule for future archive split
+
+It does not authorize migration or semantic change by itself.
