@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.27
+Mini-MES Handoff v2.28
 
-Updated after 2026-04-09 handoff-only insertion for Step47 PhaseA known-valid-actor governance freeze
+Updated after 2026-04-09 handoff-only insertion for Step47 PhaseA external trusted identity-domain carrier freeze
 Date: 2026-04-09
 
 1. Frozen mainline snapshot
@@ -96,6 +96,7 @@ Step47_PhaseA_ImplementationAuthorization_Gate Baseline v2 is now CONDITIONAL PA
 Step47_PhaseA_MinimumAuditBaseline is now PASS / FROZEN WITH FINAL REVIEW NOTES; it freezes the minimum audit spine for Phase A declared/manual declarations, preserves no-evidence-no-submit discipline, forbids silent overwrite, and keeps auditability explicitly separate from legal truth.
 Step47_PhaseA_ActorRecognition_NarrowForm_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA actor recognition narrow form is frozen as external trusted identity domain only, Step47 PhaseA-specific allow-list / actor registry is not admitted as the recognition form, submission remains BLOCKED if no qualified external trusted identity domain is available, and this record does not authorize implementation, unblock submission, or establish A-class.
 Step47_PhaseA_KnownValidActor_Governance_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA known-valid-actor governance is now frozen as a narrow governed admission-check object, it is not an identity source and does not replace the already-frozen external trusted identity-domain binding rule, implementation-level opening remains BLOCKED unless governance owner / approval authority / governed update path are explicitly recorded in handoff, and this record does not authorize implementation, unblock submission, or establish A-class.
+Step47_PhaseA_ExternalTrustedIdentityDomain_Carrier_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA external trusted identity-domain carrier is now frozen as a governed carrier-class landing point, it does not replace the already-frozen external trusted identity-domain rule, implementation-level opening remains BLOCKED unless carrier class / environment scope / trust-boundary statement / governed change discipline are explicitly recorded in handoff, and this record does not authorize implementation, unblock submission, or establish A-class.
 Step47_PhaseA_ImplementationOpeningPrerequisite_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA implementation-level opening prerequisites are now frozen, implementation-level card remains BLOCKED unless governed ownership / change path for the `known valid actor` check is explicitly recorded in handoff and the concrete external trusted identity-domain carrier is explicitly recorded in handoff, and this record does not authorize implementation, unblock submission, or establish A-class.
 Step47_PhaseA_ImplementationPhasing_TransitionalIdentityAndEmergencyCapture is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; the existing actor-recognition narrow form remains external trusted identity domain only, this record creates only a separate transitional governance layer for trial-stage operability, transitional local attribution is allowed only as attribution trace and emergency continuity capture is allowed only as an explicitly isolated path, every emergency record must reconcile within 7 calendar days and overdue records must escalate to plant manager while remaining visible on governance / management dashboard, sunset / expiry discipline remains the earlier of formal closeout of the 2026-12-07 trial-run with mandatory A/B/C re-determination or 12 months from freeze date, and this record does not authorize implementation, release, activation, or runtime production use.
 Step47_PhaseA_ReconciliationCompletionAndPlantManagerEscalationResolution is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; this card closes only W1/W2 from the already-frozen Step47_PhaseA_ImplementationPhasing_TransitionalIdentityAndEmergencyCapture record, preserves the 7-calendar-day reconciliation rule, plant-manager escalation trigger, dashboard visibility rule, and sunset / expiry discipline unchanged, freezes the minimum definition of `reconciliation_complete`, freezes the allowed plant-manager action set and forbidden actions, and does not reopen actor recognition, trial-stage attribution, or emergency-path admission.
@@ -8056,3 +8057,216 @@ The gate system tells us who the person is.
 This governed list tells us whether that person is allowed to do this Step47 action.
 Who owns that list, who approves changes, and how the list changes must be written down first.
 The implementer is not allowed to secretly edit the list, invent temporary bypasses, or turn it into a larger auth system.
+
+62. Frozen Record - Step47_PhaseA_ExternalTrustedIdentityDomain_Carrier_Freeze
+
+Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+
+Purpose
+
+Freeze the governance boundary of the Step47 PhaseA external trusted identity-domain carrier: which concrete carrier class is governed, what trust boundary it assumes, how carrier change is governed, and what the implementer is forbidden to switch or infer alone.
+
+This record exists only to freeze the carrier landing point of the already-frozen `external trusted identity domain only` rule. It does not authorize implementation.
+
+Frozen Scope
+
+This record freezes only:
+
+1. the governed carrier meaning
+2. single-carrier / environment-scope discipline
+3. required handoff recording fields for the carrier
+4. carrier change discipline
+5. the prohibition on implementer-selected substitution / mixing / fallback
+6. the relation to the already-frozen external trusted identity-domain rule
+7. the blocking rule if carrier prerequisites are missing
+8. the explicit non-effect boundary
+
+This record does **not** freeze:
+
+* implementation details
+* runtime logic
+* schema / ORM / API / middleware
+* user database
+* password / token / session logic
+* role / permission / SSO
+* repo-wide auth redesign
+* cross-module identity mechanism
+* submission unblock
+* implementation authorization
+* A-class establishment
+
+Frozen Purpose
+
+This freeze governs only the concrete carrier-class landing point of the already-frozen `external trusted identity domain only` rule.
+
+It exists to answer only:
+
+* which concrete trusted carrier class Step47 PhaseA is allowed to consume
+* what trust boundary that carrier assumes
+* whether multiple carrier classes may coexist
+* how carrier change must be governed
+* what the implementer is forbidden to switch or infer on their own
+
+Governed Carrier Meaning
+
+The governed carrier is frozen as:
+
+* the concrete trusted carrier class through which the externally authenticated actor identity reaches Step47 PhaseA
+* not the identity domain itself
+* not the valid-actor governed object
+* not a user database
+* not an auth subsystem
+* not a repo-wide identity abstraction
+* not a multi-source chooser controlled by implementer convenience
+
+It may answer only one narrow question:
+
+**through which explicitly governed trusted carrier class the already-authenticated external actor identity is delivered into the authoritative binding path for Step47 PhaseA**
+
+Single-Carrier Discipline
+
+Before any implementation-level card may open, handoff must explicitly record **one governed carrier class** for the active environment scope.
+
+Allowed governance shape:
+
+* one carrier class for the active environment, or
+* if environment separation is explicitly needed, one carrier class per clearly named environment scope recorded in handoff
+
+Forbidden:
+
+* open-ended `proxy or sidecar or server-context, implementer decides later`
+* silent coexistence of multiple carrier classes in the same active scope
+* fallback from one carrier class to another by runtime convenience
+* mixed-carrier interpretation
+
+If multiple environments are recorded, each environment must have:
+
+* explicit scope name
+* explicit carrier class
+* explicit statement that cross-environment mixing is forbidden
+
+Required Handoff Record for Carrier
+
+The handoff record for the governed carrier must explicitly state, at minimum:
+
+* the governed carrier class
+* the environment scope it applies to
+* the trust boundary assumption for that carrier
+* the point at which the trusted identity becomes consumable by Step47 PhaseA
+* that client-controlled fields are outside the trusted carrier boundary
+* that implementers may not substitute another carrier without governed change
+
+The carrier record must not be:
+
+* blank
+* implicit
+* inferred from code
+* inferred from deployment habit
+* left to implementer interpretation
+
+Relation to External Trusted Identity Rule
+
+This record does not reopen the already-frozen rule that Step47 PhaseA actor recognition must come from **external trusted identity domain only**.
+
+This card freezes only the carrier landing point of that rule.
+
+The frozen order remains:
+
+1. actor identity is authenticated by the external trusted identity domain
+2. that identity reaches Step47 PhaseA only through the governed carrier class recorded in handoff
+3. the bound actor is then checked against the governed valid-actor object
+4. if any prior step fails, submission is rejected
+
+Therefore:
+
+* carrier is transport path of trusted identity into the binding path
+* carrier is not a fallback identity source
+* carrier is not permission logic
+* carrier is not valid-actor governance
+
+Carrier Change Discipline
+
+Any change to the governed carrier must follow an explicitly governed update path recorded in handoff.
+
+A governed carrier change includes at minimum:
+
+* carrier-class replacement
+* trust-boundary replacement
+* producer-side mechanism replacement
+* consumer entry-path replacement
+* environment-scope reassignment
+* change from single-carrier to multi-environment-carrier model
+
+Such change must not be made by:
+
+* implementer convenience
+* deployment shortcut
+* temporary header substitution
+* emergency hotfix without governed record
+
+If the carrier materially changes and handoff is not first updated through governed review, the carrier prerequisite is **not satisfied**.
+
+Boundary Against Carrier Expansion
+
+This governed carrier freeze must remain narrow.
+
+It must not silently expand into:
+
+* full IAM design
+* SSO rollout design
+* gateway product-selection architecture
+* generic proxy framework governance
+* repo-wide identity transport standard
+* cross-module identity bus
+
+If future needs go beyond this narrow carrier meaning, that must become a **new separately governed freeze**, not a silent expansion of this card.
+
+Blocking Rule
+
+If any of the following is missing:
+
+* explicit governed carrier class
+* explicit environment scope
+* explicit trust-boundary statement
+* explicit governed change discipline
+
+then:
+
+* the external identity-domain carrier prerequisite remains **UNSATISFIED**
+* any Step47 PhaseA implementation-level card that depends on it remains **BLOCKED**
+* no implementer may fill the missing anchor by local decision, runtime fallback, or code-first interpretation
+
+Non-Effect Boundary
+
+This record:
+
+* does not authorize implementation
+* does not unblock submission
+* does not establish A-class
+* does not define schema / ORM / API / runtime logic
+* does not authorize auth redesign
+* does not authorize multi-source runtime fallback
+* does not authorize repo-wide identity transport standardization
+* does not replace future implementation review
+* does not remove the requirement that later implementation must re-enter frozen A/B/C judgment
+
+Final Review Notes
+
+W1
+
+This record requires a trust-boundary statement, but does not itself freeze the minimum content floor of that statement. Any later handoff filling or implementation-level card must not leave the trust-boundary explanation too weak to show why clients cannot forge the carrier.
+
+W2
+
+This record allows explicitly governed multi-environment carrier recording, but does not itself freeze whether adding a new environment scope is always treated as a governed carrier change event. Any later implementation-level card or handoff change discipline that relies on multi-environment scope must explicitly close that gap.
+
+Factory-Language Explanation
+
+This freeze does not decide who the person is, and it does not decide who has permission.
+It freezes only which trusted line the identity comes through.
+
+Factory-language version:
+The gate system tells us who the person is.
+The valid-actor rule tells us whether that person may do this Step47 action.
+This card freezes which trusted line carries that identity into the system.
+If that line is not clearly written down, implementers are not allowed to guess, switch lines, or mix multiple lines just to make it run.
