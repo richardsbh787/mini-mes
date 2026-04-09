@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.28
+Mini-MES Handoff v2.29
 
-Updated after 2026-04-09 handoff-only insertion for Step47 PhaseA external trusted identity-domain carrier freeze
+Updated after 2026-04-09 handoff-only version-sync patch for Step47 PhaseA known-valid-actor and identity-carrier snapshot alignment
 Date: 2026-04-09
 
 1. Frozen mainline snapshot
@@ -60,6 +60,10 @@ Frozen Record - Step47_PF7_Evidence_Surface Baseline
 Frozen Record - Step47_PF8_Evidence_Surface Baseline
 
 Frozen Record - Step47_PhaseA_ActorRecognition_NarrowForm_Freeze
+
+Frozen Record - Step47_PhaseA_KnownValidActor_Governance_Freeze
+
+Frozen Record - Step47_PhaseA_ExternalTrustedIdentityDomain_Carrier_Freeze
 
 Frozen Record - Step47_PhaseA_ImplementationOpeningPrerequisite_Freeze
 
@@ -1552,6 +1556,8 @@ Step47_PhaseA_ManualLocationDeclaration_Baseline (v2) is frozen as a design-laye
 It does not authorize implementation, activation, or runtime production use.
 The existing Step 47 legal chain remains the frozen Phase B scope and remains BLOCKED.
 Step47_PhaseA_ActorRecognition_NarrowForm_Freeze is frozen as a design/governance-layer baseline only.
+Step47_PhaseA_KnownValidActor_Governance_Freeze is frozen as a design/governance-layer baseline only.
+Step47_PhaseA_ExternalTrustedIdentityDomain_Carrier_Freeze is frozen as a design/governance-layer baseline only.
 Step47_PhaseA_ImplementationOpeningPrerequisite_Freeze is frozen as a design/governance-layer baseline only.
 
 FG_RECEIVE Location Master Physical Schema Baseline is frozen as a design-layer schema baseline only.
@@ -1596,7 +1602,7 @@ Any future repaired FG_RECEIVE source must still pass full Step 47A admissibilit
 16. One-line summary
 
 Step 40A, Step 45, and Step 46A remain formally implemented and frozen.
-Step 47 remains design-frozen and BLOCKED, Step 47A remains frozen with all four current candidates still NOT_ADMISSIBLE_YET and the admitted source list effectively EMPTY, Step47_PhaseA_ManualLocationDeclaration_Baseline (v2) remains frozen as the manual Stock Card digitization / operator-declared location design-layer baseline only, Step47_PhaseA_ActorRecognition_NarrowForm_Freeze and Step47_PhaseA_ImplementationOpeningPrerequisite_Freeze are also now frozen as design/governance-layer baselines only, the existing Step 47 legal chain remains fully in force as frozen Phase B, Step 47B remains frozen as the legal location evidence & accountability baseline under Task Card v2.1, the Step 47 `location_code` freeze chain now also includes the frozen blocking-preconditions baseline, gate evidence-pack submission contract baseline, and PF-1 / PF-2 / PF-3 / PF-4 / PF-5 / PF-6 / PF-7 / PF-8 evidence-surface baselines, and FG_RECEIVE now also has frozen design-layer baselines for the Location Master Physical Schema, the Event Truth Surface, the Event Truth Physical Schema, the Resolution Attempt & Evidence Snapshot Physical Schema, the Event-Time Location Resolution Runtime semantic contract, the Event-Time Location Resolution Read Surface semantic contract, the Step 47A Re-Admission Evaluation contract, and the Step 47 Release Decision contract while remaining NOT auto-admitted.
+Step 47 remains design-frozen and BLOCKED, Step 47A remains frozen with all four current candidates still NOT_ADMISSIBLE_YET and the admitted source list effectively EMPTY, Step47_PhaseA_ManualLocationDeclaration_Baseline (v2) remains frozen as the manual Stock Card digitization / operator-declared location design-layer baseline only, Step47_PhaseA_ActorRecognition_NarrowForm_Freeze, Step47_PhaseA_KnownValidActor_Governance_Freeze, Step47_PhaseA_ExternalTrustedIdentityDomain_Carrier_Freeze, and Step47_PhaseA_ImplementationOpeningPrerequisite_Freeze are also now frozen as design/governance-layer baselines only, the existing Step 47 legal chain remains fully in force as frozen Phase B, Step 47B remains frozen as the legal location evidence & accountability baseline under Task Card v2.1, the Step 47 `location_code` freeze chain now also includes the frozen blocking-preconditions baseline, gate evidence-pack submission contract baseline, and PF-1 / PF-2 / PF-3 / PF-4 / PF-5 / PF-6 / PF-7 / PF-8 evidence-surface baselines, and FG_RECEIVE now also has frozen design-layer baselines for the Location Master Physical Schema, the Event Truth Surface, the Event Truth Physical Schema, the Resolution Attempt & Evidence Snapshot Physical Schema, the Event-Time Location Resolution Runtime semantic contract, the Event-Time Location Resolution Read Surface semantic contract, the Step 47A Re-Admission Evaluation contract, and the Step 47 Release Decision contract while remaining NOT auto-admitted.
 
 17. Step 47 FG_RECEIVE implementation final archival result
 
