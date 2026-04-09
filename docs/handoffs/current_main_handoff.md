@@ -1,7 +1,7 @@
 Mini-MES Handoff v2.24
 
-Updated after 2026-04-08 handoff-only insertion for Step47 PhaseA reconciliation completion and plant-manager escalation resolution freeze
-Date: 2026-04-08
+Updated after 2026-04-09 handoff-only insertion for Step47 PhaseA implementation-opening prerequisite freeze
+Date: 2026-04-09
 
 1. Frozen mainline snapshot
 
@@ -89,6 +89,7 @@ The existing Step 47 legal chain remains the frozen Phase B scope and remains BL
 Step47_PhaseA_ImplementationAuthorization_Gate Baseline v2 is now CONDITIONAL PASS / FROZEN WITH FINAL REVIEW NOTES; it remains design/governance only, does not authorize production deployment or runtime production use, and independently self-carries both Phase A forbidden legal-strength wording and downstream declared/manual identification obligations.
 Step47_PhaseA_MinimumAuditBaseline is now PASS / FROZEN WITH FINAL REVIEW NOTES; it freezes the minimum audit spine for Phase A declared/manual declarations, preserves no-evidence-no-submit discipline, forbids silent overwrite, and keeps auditability explicitly separate from legal truth.
 Step47_PhaseA_ActorRecognition_NarrowForm_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA actor recognition narrow form is frozen as external trusted identity domain only, Step47 PhaseA-specific allow-list / actor registry is not admitted as the recognition form, submission remains BLOCKED if no qualified external trusted identity domain is available, and this record does not authorize implementation, unblock submission, or establish A-class.
+Step47_PhaseA_ImplementationOpeningPrerequisite_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA implementation-level opening prerequisites are now frozen, implementation-level card remains BLOCKED unless governed ownership / change path for the `known valid actor` check is explicitly recorded in handoff and the concrete external trusted identity-domain carrier is explicitly recorded in handoff, and this record does not authorize implementation, unblock submission, or establish A-class.
 Step47_PhaseA_ImplementationPhasing_TransitionalIdentityAndEmergencyCapture is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; the existing actor-recognition narrow form remains external trusted identity domain only, this record creates only a separate transitional governance layer for trial-stage operability, transitional local attribution is allowed only as attribution trace and emergency continuity capture is allowed only as an explicitly isolated path, every emergency record must reconcile within 7 calendar days and overdue records must escalate to plant manager while remaining visible on governance / management dashboard, sunset / expiry discipline remains the earlier of formal closeout of the 2026-12-07 trial-run with mandatory A/B/C re-determination or 12 months from freeze date, and this record does not authorize implementation, release, activation, or runtime production use.
 Step47_PhaseA_ReconciliationCompletionAndPlantManagerEscalationResolution is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; this card closes only W1/W2 from the already-frozen Step47_PhaseA_ImplementationPhasing_TransitionalIdentityAndEmergencyCapture record, preserves the 7-calendar-day reconciliation rule, plant-manager escalation trigger, dashboard visibility rule, and sunset / expiry discipline unchanged, freezes the minimum definition of `reconciliation_complete`, freezes the allowed plant-manager action set and forbidden actions, and does not reopen actor recognition, trial-stage attribution, or emergency-path admission.
 Global Governance_FailureHandling_ErrorSourceSeparation_Rule_v2 is now FROZEN; it locks repo-wide failure classification, anti-hang discipline, timeout-to-blocked/failed handling, and technical-detail versus operator-guidance separation as a durable governance rule only.
@@ -7517,3 +7518,117 @@ It defines what counts as truly settled, who is allowed to sign it off, what the
 
 Plainly:
 this prevents people from clicking "done" casually, and it prevents overdue records from disappearing without a real trace.
+
+59. Frozen Record - Step47_PhaseA_ImplementationOpeningPrerequisite_Freeze
+
+Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+
+Purpose
+
+Freeze the implementation-opening prerequisites required before any future Step47 PhaseA implementation-level card may open, specifically:
+
+1. governed ownership / change-path discipline for the `known valid actor` check
+2. explicit handoff recording of the concrete external trusted identity-domain carrier
+
+This record exists only to convert those preconditions into hard opening requirements. It does not authorize implementation.
+
+Frozen Scope
+
+This record freezes only:
+
+1. the governance prerequisite for the `known valid actor` check
+2. the carrier-recording prerequisite for the external trusted identity domain
+3. the blocking rule if either prerequisite is missing
+4. the explicit non-effect boundary
+
+This record does **not** freeze:
+
+* implementation details
+* runtime logic
+* schema / ORM / API / middleware
+* user database
+* role / permission / SSO
+* repo-wide auth redesign
+* cross-module identity mechanism
+* submission unblock
+* implementation authorization
+* A-class establishment
+
+Frozen Purpose
+
+This freeze exists only to convert prior review warnings into **hard implementation-opening prerequisites**.
+
+Known Valid Actor Governance Prerequisite
+
+Before any Step47 PhaseA implementation-level card may open:
+
+1. the `known valid actor` check must have an explicitly governed ownership model
+2. the governing owner / approver path must be explicitly recorded in handoff
+3. the implementer must not gain discretionary power to add, remove, reinterpret, or expand valid actors
+4. any change to the governed valid-actor set must follow an explicit governed update path recorded in handoff
+5. the governed object may be minimal, but must not expand into:
+
+   * user database
+   * role / permission system
+   * general-purpose auth subsystem
+   * repo-wide identity layer
+
+External Identity-Domain Carrier Recording Prerequisite
+
+Before any Step47 PhaseA implementation-level card may open:
+
+1. the concrete carrier of the external trusted identity domain must be explicitly recorded in handoff
+2. that carrier record must not be blank, implicit, or left to implementer inference
+3. implementation-level work must not open while the carrier remains unspecified
+
+Examples of acceptable carrier-class recording, if separately governed and deployment-credible, may include:
+
+* a mutually trusted proxy
+* a client-uninfluenceable sidecar
+* a server-internal context set before request routing
+* another separately governed mechanism of equivalent trust strength
+
+Blocking Rule
+
+If either of the following is missing:
+
+* governed ownership / change path for `known valid actor`
+* explicit handoff record of the concrete external identity-domain carrier
+
+then:
+
+* Step47 PhaseA implementation-level card must remain **BLOCKED**
+* no implementation-opening claim is valid
+* no implementer may fill the gap by local discretion, temporary convention, or code-first interpretation
+
+Non-Effect Boundary
+
+This record:
+
+* does not authorize implementation
+* does not unblock submission
+* does not establish A-class
+* does not define runtime logic
+* does not define schema / ORM / API / middleware
+* does not authorize auth redesign
+* does not permit implementer-owned actor-registry growth
+* does not remove the requirement that any later implementation must still re-enter the frozen A/B/C judgment path
+
+Final Review Notes
+
+W1
+
+The trigger threshold for governed updates to the `known valid actor` path is not frozen by this record. This warning does not block freeze, but any later implementation-level card must not treat update triggering as open-ended implementer discretion.
+
+Factory-Language Explanation
+
+This freeze does not install the gate system.
+It only writes down two things that must already be settled before construction may start:
+
+1. who has authority over the valid-actor rule
+2. which gate line the system is actually connected to
+
+Factory-language version:
+Before construction starts, the team must first write down who controls the valid-operator rule, and which trusted gate source is being used.
+If either one is still unclear, implementation cannot open.
+The implementer is not allowed to guess, improvise, or build first and explain later.
