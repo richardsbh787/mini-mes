@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.29
+Mini-MES Handoff v2.30
 
-Updated after 2026-04-09 handoff-only version-sync patch for Step47 PhaseA known-valid-actor and identity-carrier snapshot alignment
+Updated after 2026-04-09 handoff-only freeze patch for Step47 PhaseA known-valid-actor owner / approval-path governance
 Date: 2026-04-09
 
 1. Frozen mainline snapshot
@@ -65,6 +65,8 @@ Frozen Record - Step47_PhaseA_KnownValidActor_Governance_Freeze
 
 Frozen Record - Step47_PhaseA_ExternalTrustedIdentityDomain_Carrier_Freeze
 
+Frozen Record - Step47_PhaseA_KnownValidActor_Owner_ApprovalPath_Freeze
+
 Frozen Record - Step47_PhaseA_ImplementationOpeningPrerequisite_Freeze
 
 Mini-MES Governance Summary - Harness / Entrix / Engineering Controllability Absorbed Principles
@@ -101,6 +103,7 @@ Step47_PhaseA_MinimumAuditBaseline is now PASS / FROZEN WITH FINAL REVIEW NOTES;
 Step47_PhaseA_ActorRecognition_NarrowForm_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA actor recognition narrow form is frozen as external trusted identity domain only, Step47 PhaseA-specific allow-list / actor registry is not admitted as the recognition form, submission remains BLOCKED if no qualified external trusted identity domain is available, and this record does not authorize implementation, unblock submission, or establish A-class.
 Step47_PhaseA_KnownValidActor_Governance_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA known-valid-actor governance is now frozen as a narrow governed admission-check object, it is not an identity source and does not replace the already-frozen external trusted identity-domain binding rule, implementation-level opening remains BLOCKED unless governance owner / approval authority / governed update path are explicitly recorded in handoff, and this record does not authorize implementation, unblock submission, or establish A-class.
 Step47_PhaseA_ExternalTrustedIdentityDomain_Carrier_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA external trusted identity-domain carrier is now frozen as a governed carrier-class landing point, it does not replace the already-frozen external trusted identity-domain rule, implementation-level opening remains BLOCKED unless carrier class / environment scope / trust-boundary statement / governed change discipline are explicitly recorded in handoff, and this record does not authorize implementation, unblock submission, or establish A-class.
+Step47_PhaseA_KnownValidActor_Owner_ApprovalPath_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA known-valid-actor owner / approval-path governance is now frozen, governance owner and approval authority must be explicitly recorded in handoff, effective change event minimum floor and governed update path are now frozen, same-person self-initiate / self-approve remains forbidden by default, and this record does not authorize implementation, unblock submission, or establish A-class.
 Step47_PhaseA_ImplementationOpeningPrerequisite_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA implementation-level opening prerequisites are now frozen, implementation-level card remains BLOCKED unless governed ownership / change path for the `known valid actor` check is explicitly recorded in handoff and the concrete external trusted identity-domain carrier is explicitly recorded in handoff, and this record does not authorize implementation, unblock submission, or establish A-class.
 Step47_PhaseA_ImplementationPhasing_TransitionalIdentityAndEmergencyCapture is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; the existing actor-recognition narrow form remains external trusted identity domain only, this record creates only a separate transitional governance layer for trial-stage operability, transitional local attribution is allowed only as attribution trace and emergency continuity capture is allowed only as an explicitly isolated path, every emergency record must reconcile within 7 calendar days and overdue records must escalate to plant manager while remaining visible on governance / management dashboard, sunset / expiry discipline remains the earlier of formal closeout of the 2026-12-07 trial-run with mandatory A/B/C re-determination or 12 months from freeze date, and this record does not authorize implementation, release, activation, or runtime production use.
 Step47_PhaseA_ReconciliationCompletionAndPlantManagerEscalationResolution is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; this card closes only W1/W2 from the already-frozen Step47_PhaseA_ImplementationPhasing_TransitionalIdentityAndEmergencyCapture record, preserves the 7-calendar-day reconciliation rule, plant-manager escalation trigger, dashboard visibility rule, and sunset / expiry discipline unchanged, freezes the minimum definition of `reconciliation_complete`, freezes the allowed plant-manager action set and forbidden actions, and does not reopen actor recognition, trial-stage attribution, or emergency-path admission.
@@ -1558,6 +1561,7 @@ The existing Step 47 legal chain remains the frozen Phase B scope and remains BL
 Step47_PhaseA_ActorRecognition_NarrowForm_Freeze is frozen as a design/governance-layer baseline only.
 Step47_PhaseA_KnownValidActor_Governance_Freeze is frozen as a design/governance-layer baseline only.
 Step47_PhaseA_ExternalTrustedIdentityDomain_Carrier_Freeze is frozen as a design/governance-layer baseline only.
+Step47_PhaseA_KnownValidActor_Owner_ApprovalPath_Freeze is frozen as a design/governance-layer baseline only.
 Step47_PhaseA_ImplementationOpeningPrerequisite_Freeze is frozen as a design/governance-layer baseline only.
 
 FG_RECEIVE Location Master Physical Schema Baseline is frozen as a design-layer schema baseline only.
@@ -1602,7 +1606,7 @@ Any future repaired FG_RECEIVE source must still pass full Step 47A admissibilit
 16. One-line summary
 
 Step 40A, Step 45, and Step 46A remain formally implemented and frozen.
-Step 47 remains design-frozen and BLOCKED, Step 47A remains frozen with all four current candidates still NOT_ADMISSIBLE_YET and the admitted source list effectively EMPTY, Step47_PhaseA_ManualLocationDeclaration_Baseline (v2) remains frozen as the manual Stock Card digitization / operator-declared location design-layer baseline only, Step47_PhaseA_ActorRecognition_NarrowForm_Freeze, Step47_PhaseA_KnownValidActor_Governance_Freeze, Step47_PhaseA_ExternalTrustedIdentityDomain_Carrier_Freeze, and Step47_PhaseA_ImplementationOpeningPrerequisite_Freeze are also now frozen as design/governance-layer baselines only, the existing Step 47 legal chain remains fully in force as frozen Phase B, Step 47B remains frozen as the legal location evidence & accountability baseline under Task Card v2.1, the Step 47 `location_code` freeze chain now also includes the frozen blocking-preconditions baseline, gate evidence-pack submission contract baseline, and PF-1 / PF-2 / PF-3 / PF-4 / PF-5 / PF-6 / PF-7 / PF-8 evidence-surface baselines, and FG_RECEIVE now also has frozen design-layer baselines for the Location Master Physical Schema, the Event Truth Surface, the Event Truth Physical Schema, the Resolution Attempt & Evidence Snapshot Physical Schema, the Event-Time Location Resolution Runtime semantic contract, the Event-Time Location Resolution Read Surface semantic contract, the Step 47A Re-Admission Evaluation contract, and the Step 47 Release Decision contract while remaining NOT auto-admitted.
+Step 47 remains design-frozen and BLOCKED, Step 47A remains frozen with all four current candidates still NOT_ADMISSIBLE_YET and the admitted source list effectively EMPTY, Step47_PhaseA_ManualLocationDeclaration_Baseline (v2) remains frozen as the manual Stock Card digitization / operator-declared location design-layer baseline only, Step47_PhaseA_ActorRecognition_NarrowForm_Freeze, Step47_PhaseA_KnownValidActor_Governance_Freeze, Step47_PhaseA_ExternalTrustedIdentityDomain_Carrier_Freeze, Step47_PhaseA_KnownValidActor_Owner_ApprovalPath_Freeze, and Step47_PhaseA_ImplementationOpeningPrerequisite_Freeze are also now frozen as design/governance-layer baselines only, the existing Step 47 legal chain remains fully in force as frozen Phase B, Step 47B remains frozen as the legal location evidence & accountability baseline under Task Card v2.1, the Step 47 `location_code` freeze chain now also includes the frozen blocking-preconditions baseline, gate evidence-pack submission contract baseline, and PF-1 / PF-2 / PF-3 / PF-4 / PF-5 / PF-6 / PF-7 / PF-8 evidence-surface baselines, and FG_RECEIVE now also has frozen design-layer baselines for the Location Master Physical Schema, the Event Truth Surface, the Event Truth Physical Schema, the Resolution Attempt & Evidence Snapshot Physical Schema, the Event-Time Location Resolution Runtime semantic contract, the Event-Time Location Resolution Read Surface semantic contract, the Step 47A Re-Admission Evaluation contract, and the Step 47 Release Decision contract while remaining NOT auto-admitted.
 
 17. Step 47 FG_RECEIVE implementation final archival result
 
@@ -8276,3 +8280,175 @@ The gate system tells us who the person is.
 The valid-actor rule tells us whether that person may do this Step47 action.
 This card freezes which trusted line carries that identity into the system.
 If that line is not clearly written down, implementers are not allowed to guess, switch lines, or mix multiple lines just to make it run.
+
+63. Frozen Record - Step47_PhaseA_KnownValidActor_Owner_ApprovalPath_Freeze
+
+Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+Scope Type: Design/governance-layer freeze only
+Dependency Base:
+
+* Step47_PhaseA_ActorRecognition_NarrowForm_Freeze
+* Step47_PhaseA_KnownValidActor_Governance_Freeze
+* Step47_PhaseA_ExternalTrustedIdentityDomain_Carrier_Freeze
+* Step47_PhaseA_ImplementationOpeningPrerequisite_Freeze
+
+This record freezes only the governance owner / approval authority / effective change event / governed update path boundary for the Step47 PhaseA `known valid actor` admission-check object.
+
+Boundary
+
+This freeze is handoff-only.
+
+This freeze is design/governance-layer only.
+
+This freeze does not authorize:
+
+* implementation
+* implementation-level opening
+* submission unblock
+* A-class establishment
+* identity-source replacement
+* carrier implementation
+* user DB / password / token / session / role / permission / SSO expansion
+* runtime production use
+
+Frozen meaning
+
+From this freeze onward, the Step47 PhaseA `known valid actor` object may remain only a governed admission-check object.
+
+It is not an identity source.
+
+It does not replace the already-frozen external trusted identity-domain rule.
+
+This record freezes who governs that object, who approves changes to that object, what minimum changes count as effective governance changes, and which update paths are legally admitted.
+
+Governance owner freeze
+
+The `known valid actor` governance owner must be explicitly recorded in handoff as a governed object.
+
+It must not be left to:
+
+* implementation choice
+* runtime configuration habit
+* local verbal designation
+* operator assumption
+* developer convenience
+
+Minimum recording rule:
+the handoff record must contain at least a long-term traceable role title.
+A person name may be added as supplementary detail, but role title is the minimum required floor.
+
+Approval authority freeze
+
+The approval authority for `known valid actor` changes must be explicitly recorded in handoff as a governed object.
+
+It must not be replaced by:
+
+* owner convenience
+* implementer judgment
+* verbal supervisor consent
+* chat consent
+* runtime default behavior
+
+Minimum recording rule:
+the handoff record must contain at least a long-term traceable role title.
+A person name may be added as supplementary detail, but role title is the minimum required floor.
+
+Effective change event minimum floor freeze
+
+Any change that can alter admission meaning, admission applicability, governance validity, or approval meaning must be treated as an effective change event.
+
+At minimum, effective change events include:
+
+* adding a new actor
+* removing an actor
+* deactivating an actor
+* reactivating an actor
+* changing the governed binding to the external trusted identity domain
+* changing applicable environment scope
+* changing applicable plant scope
+* changing other bounded usage scope
+* changing governance owner
+* changing approval authority
+* adding a new temporary exception, including its scope, duration, approver, and exit condition
+* changing a temporary exception's scope, duration, approver, expiry, or exit condition
+* removing a temporary exception
+* closing a temporary exception
+
+No such change may be disguised as ordinary maintenance, informal cleanup, convenience correction, or non-governed operational adjustment.
+
+Governed update path freeze
+
+Any effective change event must go through an explicitly governed update path recorded in handoff.
+
+The following are not admitted as a legal governed update path:
+
+* chat approval
+* verbal approval
+* spreadsheet / Excel / side-list maintenance
+* config hot edit
+* implementer-side default value
+* local temporary list
+* `use first, document later`
+* runtime convenience override
+* undocumented emergency carry-forward
+
+Same-person rule freeze
+
+Default rule:
+the same actor may not both initiate and finally approve the same change event.
+
+No self-initiate / self-approve path is admitted by default.
+
+Structural dual-role narrow exception
+
+If SME reality later requires the same person to structurally hold both governance owner and approval authority roles, that arrangement must be frozen in a separate later record.
+
+No such later record may silently imply self-approval.
+
+Any future freeze that allows same-person structural dual-role must explicitly reaffirm that the same person may not approve their own change request in the same event.
+
+What this freeze changes
+
+This freeze changes only one thing:
+it formally freezes the owner / approval / effective-change / governed-update-path governance boundary for the Step47 PhaseA `known valid actor` object.
+
+What this freeze does not change
+
+This freeze does not:
+
+* change actor recognition narrow form
+* change the external trusted identity-domain rule
+* convert the known valid actor object into an identity source
+* authorize implementation
+* unblock submission
+* establish A-class
+* authorize carrier implementation
+* authorize runtime production use
+
+Locked interpretation boundary
+
+The `known valid actor` object remains:
+
+* an admission-check object only
+* not an identity source
+* not a substitute for external trusted identity-domain recognition
+* not an implementation authorization shortcut
+
+Final Review Notes
+
+A. When governance owner and approval authority are recorded in handoff, the minimum required granularity is a long-term traceable role title. A person name may be added as supplementary detail.
+
+B. Adding a new temporary exception must record exit condition together with scope, duration, and approver. A temporary exception must not be opened without a defined exit condition.
+
+Freeze intent
+
+The intent of this freeze is to prevent Step47 PhaseA from drifting into `someone manages the list, so the list is usable` logic.
+
+This record exists to freeze:
+
+* who governs the list
+* who approves the list
+* what changes legally count as governance changes
+* which update paths are legally admitted
+
+It does not authorize implementation or use by itself.
