@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.26
+Mini-MES Handoff v2.27
 
-Updated after 2026-04-09 handoff-only insertion for BOM Compare Read-Only Module independent difference-analysis freeze
+Updated after 2026-04-09 handoff-only insertion for Step47 PhaseA known-valid-actor governance freeze
 Date: 2026-04-09
 
 1. Frozen mainline snapshot
@@ -95,6 +95,7 @@ The existing Step 47 legal chain remains the frozen Phase B scope and remains BL
 Step47_PhaseA_ImplementationAuthorization_Gate Baseline v2 is now CONDITIONAL PASS / FROZEN WITH FINAL REVIEW NOTES; it remains design/governance only, does not authorize production deployment or runtime production use, and independently self-carries both Phase A forbidden legal-strength wording and downstream declared/manual identification obligations.
 Step47_PhaseA_MinimumAuditBaseline is now PASS / FROZEN WITH FINAL REVIEW NOTES; it freezes the minimum audit spine for Phase A declared/manual declarations, preserves no-evidence-no-submit discipline, forbids silent overwrite, and keeps auditability explicitly separate from legal truth.
 Step47_PhaseA_ActorRecognition_NarrowForm_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA actor recognition narrow form is frozen as external trusted identity domain only, Step47 PhaseA-specific allow-list / actor registry is not admitted as the recognition form, submission remains BLOCKED if no qualified external trusted identity domain is available, and this record does not authorize implementation, unblock submission, or establish A-class.
+Step47_PhaseA_KnownValidActor_Governance_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA known-valid-actor governance is now frozen as a narrow governed admission-check object, it is not an identity source and does not replace the already-frozen external trusted identity-domain binding rule, implementation-level opening remains BLOCKED unless governance owner / approval authority / governed update path are explicitly recorded in handoff, and this record does not authorize implementation, unblock submission, or establish A-class.
 Step47_PhaseA_ImplementationOpeningPrerequisite_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA implementation-level opening prerequisites are now frozen, implementation-level card remains BLOCKED unless governed ownership / change path for the `known valid actor` check is explicitly recorded in handoff and the concrete external trusted identity-domain carrier is explicitly recorded in handoff, and this record does not authorize implementation, unblock submission, or establish A-class.
 Step47_PhaseA_ImplementationPhasing_TransitionalIdentityAndEmergencyCapture is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; the existing actor-recognition narrow form remains external trusted identity domain only, this record creates only a separate transitional governance layer for trial-stage operability, transitional local attribution is allowed only as attribution trace and emergency continuity capture is allowed only as an explicitly isolated path, every emergency record must reconcile within 7 calendar days and overdue records must escalate to plant manager while remaining visible on governance / management dashboard, sunset / expiry discipline remains the earlier of formal closeout of the 2026-12-07 trial-run with mandatory A/B/C re-determination or 12 months from freeze date, and this record does not authorize implementation, release, activation, or runtime production use.
 Step47_PhaseA_ReconciliationCompletionAndPlantManagerEscalationResolution is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; this card closes only W1/W2 from the already-frozen Step47_PhaseA_ImplementationPhasing_TransitionalIdentityAndEmergencyCapture record, preserves the 7-calendar-day reconciliation rule, plant-manager escalation trigger, dashboard visibility rule, and sunset / expiry discipline unchanged, freezes the minimum definition of `reconciliation_complete`, freezes the allowed plant-manager action set and forbidden actions, and does not reopen actor recognition, trial-stage attribution, or emergency-path admission.
@@ -7877,3 +7878,181 @@ Factory-Language Explanation
 这是一台 **只准看、不准动** 的比对机器。
 看完发现有差异，要改，就走正式变更流程；
 不能在这里按按钮把系统主线改掉。
+
+61. Frozen Record - Step47_PhaseA_KnownValidActor_Governance_Freeze
+
+Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+
+Purpose
+
+Freeze the governance boundary of the Step47 PhaseA `known valid actor` check: who governs it, who approves changes, how governed updates occur, and what the implementer is forbidden to decide alone.
+
+This record exists only to freeze governance ownership / change-path discipline for the `known valid actor` admission-check object. It does not authorize implementation.
+
+Frozen Scope
+
+This record freezes only:
+
+1. the governed-object meaning of the `known valid actor` check
+2. governance ownership
+3. approval authority
+4. governed update-path discipline
+5. the prohibition on implementer-owned expansion or reinterpretation
+6. the relation to the already-frozen external trusted identity-domain rule
+7. the blocking rule if governance prerequisites are missing
+8. the explicit non-effect boundary
+
+This record does **not** freeze:
+
+* implementation details
+* runtime logic
+* schema / ORM / API / middleware
+* user database
+* password / token / session logic
+* role / permission / SSO
+* repo-wide auth redesign
+* cross-module identity mechanism
+* submission unblock
+* implementation authorization
+* A-class establishment
+
+Frozen Purpose
+
+This freeze governs only the ownership and governed change path of the Step47 PhaseA `known valid actor` check.
+
+It exists to answer only:
+
+* who has authority over the valid-actor set
+* who approves changes
+* what minimum governed update path must exist
+* what the implementer is forbidden to decide alone
+
+Governed Object Meaning
+
+The `known valid actor` governed object is frozen as:
+
+* a minimal governed allow-list / registry for Step47 PhaseA submission purposes only
+* not a general user directory
+* not a role / permission system
+* not an SSO object
+* not a repo-wide identity layer
+* not a reusable cross-module auth foundation
+
+It may answer only one narrow question:
+
+**whether the externally bound actor identity is presently admitted as a valid Step47 PhaseA submitter under governed business control**
+
+Governance Ownership
+
+Before any implementation-level card may rely on the `known valid actor` check, handoff must explicitly record:
+
+* the governance owner of the valid-actor set
+* the approval authority for additions / removals / status changes
+* the bounded business purpose of the set
+* the fact that implementers have no ownership authority over valid-actor scope
+
+The implementer must not:
+
+* create actors by local discretion
+* approve actors by convenience
+* reinterpret actor eligibility in code
+* silently widen the governed object into a broader identity model
+
+Governed Change Path
+
+Any addition, removal, disablement, re-enablement, or scope reinterpretation of the valid-actor set must follow an explicitly governed update path recorded in handoff.
+
+At minimum, the update path must define:
+
+* who may request a change
+* who may approve a change
+* where the governed record lives
+* what constitutes an effective change event
+* that implementers may not bypass the path by temporary code logic, hidden config, or local emergency convention
+
+If no governed update path is explicitly recorded, the valid-actor governance prerequisite is **not satisfied**.
+
+Boundary Against Auth Expansion
+
+This governed object must remain narrow.
+
+It must not expand into:
+
+* user database
+* login account system
+* password management
+* token issuance
+* role hierarchy
+* permission matrix
+* SSO / IAM integration layer
+* cross-module actor governance platform
+
+If future needs go beyond the narrow valid-actor-set meaning, that must become a **new separately governed module / freeze**, not a silent expansion of this object.
+
+Relation to External Trusted Identity Domain
+
+This record does not replace the already-frozen rule that Step47 PhaseA actor recognition must come from **external trusted identity domain only**.
+
+The valid-actor governed object does **not** become the recognition source.
+
+The frozen order remains:
+
+1. actor identity is authoritatively bound from the external trusted identity domain
+2. the bound identity is then checked against the governed valid-actor set
+3. if the actor is not admitted by that governed set, submission is rejected
+
+Therefore:
+
+* the valid-actor set is an admission check only
+* it is not an identity source
+* it must not be used as fallback when external identity binding fails
+
+Blocking Rule
+
+If any of the following is missing:
+
+* explicit governance owner
+* explicit approval authority
+* explicit governed update path
+* explicit bounded-object meaning
+
+then:
+
+* the `known valid actor` governance prerequisite remains **UNSATISFIED**
+* any Step47 PhaseA implementation-level card that depends on it remains **BLOCKED**
+* no implementer may fill the missing governance by local decision or code-first interpretation
+
+Non-Effect Boundary
+
+This record:
+
+* does not authorize implementation
+* does not unblock submission
+* does not establish A-class
+* does not define schema / ORM / API / runtime logic
+* does not authorize a user database
+* does not authorize role / permission / SSO design
+* does not authorize cross-module auth governance
+* does not replace future implementation review
+* does not remove the requirement that later implementation must re-enter frozen A/B/C judgment
+
+Final Review Notes
+
+W1
+
+This record requires that the governed update path define what constitutes an effective change event, but it does not itself freeze the minimum evidentiary floor for such an event. Any future implementation-level card must not leave effective-change definition open to informal oral convention or implementer discretion.
+
+W2
+
+This record does not freeze whether governance owner and approval authority may be held by the same person. Any future implementation-level card that relies on this governed object must explicitly decide that question and, if same-person dual holding is allowed, must define compensating visibility or control discipline.
+
+Factory-Language Explanation
+
+This freeze does not decide who the person is - the external trusted gate already does that.
+This freeze decides only whether that identified person is allowed to press the Step47 PhaseA submission button.
+
+Factory-language version:
+The gate system tells us who the person is.
+This governed list tells us whether that person is allowed to do this Step47 action.
+Who owns that list, who approves changes, and how the list changes must be written down first.
+The implementer is not allowed to secretly edit the list, invent temporary bypasses, or turn it into a larger auth system.
