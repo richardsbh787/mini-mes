@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.25
+Mini-MES Handoff v2.26
 
-Updated after 2026-04-09 handoff-only version-sync patch for Step47 PhaseA actor-recognition and implementation-opening prerequisite snapshot alignment
+Updated after 2026-04-09 handoff-only insertion for BOM Compare Read-Only Module independent difference-analysis freeze
 Date: 2026-04-09
 
 1. Frozen mainline snapshot
@@ -69,6 +69,8 @@ Frozen Record - Global Governance_FailureHandling_ErrorSourceSeparation_Rule_v2
 
 Frozen Record - Global Governance_UI_ErrorLayer_Boundary_Baseline
 
+Frozen Record - BOM Compare Read-Only Module - Independent BOM Difference Analysis
+
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
 
@@ -98,6 +100,7 @@ Step47_PhaseA_ImplementationPhasing_TransitionalIdentityAndEmergencyCapture is n
 Step47_PhaseA_ReconciliationCompletionAndPlantManagerEscalationResolution is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; this card closes only W1/W2 from the already-frozen Step47_PhaseA_ImplementationPhasing_TransitionalIdentityAndEmergencyCapture record, preserves the 7-calendar-day reconciliation rule, plant-manager escalation trigger, dashboard visibility rule, and sunset / expiry discipline unchanged, freezes the minimum definition of `reconciliation_complete`, freezes the allowed plant-manager action set and forbidden actions, and does not reopen actor recognition, trial-stage attribution, or emergency-path admission.
 Global Governance_FailureHandling_ErrorSourceSeparation_Rule_v2 is now FROZEN; it locks repo-wide failure classification, anti-hang discipline, timeout-to-blocked/failed handling, and technical-detail versus operator-guidance separation as a durable governance rule only.
 Global Governance_UI_ErrorLayer_Boundary_Baseline is now PASS / FROZEN; it supplements the failure-handling governance anchor by freezing UI/backend error-layer boundaries for root-classification preservation, guidance-only UI role, intact backend technical error retention, and no autonomous recovery without separately frozen governance.
+BOM Compare Read-Only Module is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES as an independent read-only analysis module; it remains outside Step 47 / Phase A / Phase B frozen chains, does not authorize BOM maintenance / release / approval / write-path opening, and is not implementation-ready if truth-bearing BOM sources would require an isolated read-only view / snapshot that is not separately approved and documented in handoff.
 AGENTS Cross-Cutting Governance Rule 3 is aligned to the frozen failure-handling governance baseline only; this is repo-rule alignment only and not implementation, activation, deployment, or runtime production-use authorization.
 
 FG_RECEIVE Location Master Physical Schema Baseline is frozen as a design-layer schema baseline only.
@@ -7638,3 +7641,239 @@ Factory-language version:
 Before construction starts, the team must first write down who controls the valid-operator rule, and which trusted gate source is being used.
 If either one is still unclear, implementation cannot open.
 The implementer is not allowed to guess, improvise, or build first and explain later.
+
+60. Frozen Record - BOM Compare Read-Only Module - Independent BOM Difference Analysis
+
+Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+Decision: PASS WITH WARNINGS
+Scope Type: Independent read-only module governance freeze only
+Position: Outside Step 47 / Phase A / Phase B frozen chains
+
+This record formally freezes **BOM Compare Read-Only Module - Independent BOM Difference Analysis** as an independent, read-only analysis module under the current main handoff discipline. The current main handoff anchor remains `docs/handoffs/current_main_handoff.md`, and Step 47 remains design-frozen and blocked; this record does not join or modify that chain.
+
+Frozen meaning
+
+From this freeze onward, BOM Compare Read-Only Module is locked as:
+
+* an independent read-only analysis tool
+* outside Step 47 / Phase A / Phase B frozen chains
+* not a BOM maintenance, BOM release, BOM approval, or BOM control module
+* not a downstream truth-change trigger
+* not a precedent to weaken any existing frozen governance, frozen truth surface, or frozen boundary
+
+This module may compare two BOM versions or BOM snapshots and show read-only difference categories such as:
+
+* added material
+* removed material
+* quantity change
+* UOM change
+* clearly identifiable material replacement
+
+What this freeze changes
+
+This freeze changes only one thing:
+
+* it formally allows BOM difference analysis to exist as an **independent read-only module boundary**, subject to the frozen restrictions below
+
+What this freeze does NOT change
+
+This freeze does **not** mean any of the following:
+
+* BOM maintenance is authorized
+* BOM release is authorized
+* BOM approval is authorized
+* BOM change-order execution is authorized
+* work-order / routing / stock / ledger truth may be changed
+* Step 47 scope is expanded
+* Phase A or Phase B scope is reopened
+* any existing frozen truth surface may be reinterpreted
+* any downstream automation may consume this module as a change instruction
+* any write path is opened
+
+Frozen module naming rule
+
+The module name must preserve read-only meaning.
+
+Allowed naming direction includes:
+
+* BOM Compare Read-Only
+* BOM Compare Tool
+* BOM Difference Viewer
+
+Forbidden naming direction includes:
+
+* BOM Management
+* BOM Editor
+* BOM Control
+* BOM Release Center
+* any naming that implies write authority, approval authority, or operational control
+
+Frozen read boundary
+
+The module may read only the minimum BOM comparison inputs required for comparison.
+
+If existing BOM source tables already carry release / approved / active truth meaning, this module must **not** directly expose those truth-bearing raw tables as its user-facing comparison source.
+
+If such truth-bearing BOM tables are the only source, an isolated read-only view or snapshot must be **pre-approved and documented in handoff before this module may be implemented**.
+
+This frozen record does **not** authorize creation of such isolation surfaces.
+If the required isolation surface does not already exist and is not separately governed and approved, this module remains **not implementation-ready**.
+
+Frozen write boundary
+
+Allowed writes:
+
+* technical logs strictly needed for system operation only
+
+Forbidden writes / forbidden mutations:
+
+* BOM master data
+* BOM version state
+* release state
+* approval state
+* work-order state
+* routing state
+* stock state
+* ledger state
+* audit state
+* reconciliation state
+* activation state
+* production-use authorization state
+* any existing frozen truth surface
+* any implied new legal truth meaning
+
+Frozen output boundary
+
+The module output is read-only reference output only.
+
+The module result must be explicitly labeled:
+
+**Reference only. Does not constitute engineering change authority, release authority, approved BOM truth, or downstream execution instruction.**
+
+Difference results must not be consumable as automatic change instructions.
+
+This module’s output must not be used by any automated process as the sole origin of:
+
+* BOM mutation
+* release
+* approval
+* downstream truth change
+* inventory change
+* work-order change
+
+Any BOM change must go through an independent governance path outside this module.
+
+Frozen implementation discipline
+
+This module must be read-only by implementation discipline, not only by wording.
+
+Preferred implementation direction:
+
+* read-only DB connection, or
+* read-only service account, or
+* equivalent physical no-write control
+
+If current infrastructure constraints prevent physical read-only isolation at this stage, the minimum allowed fallback is:
+
+* application-level write prevention only
+* no repository or service methods that perform write
+* explicit integration tests proving no writes occur
+* any write attempt must be blocked by code-path design and verified by tests
+
+If fallback is used, continued use of a write-capable database account is tolerated only if unavoidable under current infrastructure, and must be recorded as a constrained technical limitation rather than treated as equal-strength to physical read-only.
+
+Any future infrastructure upgrade should move this module to physical read-only isolation.
+
+Frozen anti-expansion rule
+
+Future write features must not be added inside this module namespace.
+
+Any future write-capable function must be treated as a completely new module under:
+
+* separate governance
+* separate review
+* separate freeze
+
+This module must not evolve by silent expansion into:
+
+* BOM maintenance
+* BOM release
+* BOM approval
+* BOM change-order execution
+* WO/BOM rebinding
+* inventory or MRP recalculation
+* truth-surface mutation
+* any Step 47 support-path expansion
+* any governance shortcut
+
+Frozen acceptance meaning
+
+This freeze confirms all of the following:
+
+1. the module is independent and outside Step 47 / Phase A / Phase B frozen chains
+2. the module is read-only in governance meaning
+3. the module is read-only in implementation discipline
+4. no existing frozen truth surface is allowed to be mutated, reinterpreted, or reopened
+5. user-facing results must be explicitly marked as reference-only and non-authoritative
+6. no automated downstream process may consume this module result as the sole change origin
+7. if BOM source is truth-bearing, isolated read-only view / snapshot discipline must be pre-approved and documented before implementation begins
+8. this record does not authorize creation of new isolation surfaces
+9. naming, UI wording, and API wording must preserve compare / read-only / reference-only meaning only
+10. any future write-capable expansion must become a new separately governed module
+11. permission model must remain minimum-read only and must not auto-bind to frontline execution roles
+12. implementation tests must explicitly verify zero business writes
+13. if physical read-only cannot yet be achieved, fallback application-level write prevention and zero-write integration tests are mandatory
+
+Final Review Notes
+
+Final Review Note A - mixed-status comparison warning
+
+If a future implementation allows published-vs-draft comparison, the output should visibly mark that unpublished content is included and that the result does not constitute approved-change basis.
+
+Final Review Note B - export governance not yet opened
+
+If export is later proposed, the export opening condition must be separately governed at implementation-level card stage. This freeze does not authorize implementers to add export by convenience.
+
+Non-scope
+
+This freeze does not define:
+
+* implementation files
+* DB schema creation
+* isolation-view creation
+* API endpoint details
+* UI component details
+* export opening
+* permission-role implementation
+* infrastructure refactor
+* any write-capable extension
+* any downstream operational instruction flow
+
+Freeze intent
+
+The intent of this freeze is to lock one narrow thing only:
+
+**Mini-MES may have a BOM difference-analysis tool, but only as an independent, read-only, zero-pollution module that cannot be used to dilute existing governance or to smuggle in write authority.**
+
+Factory-Language Explanation
+
+这个模块就是把两份 BOM 摆在一起，看哪里不同。
+
+它只准做三件事：
+
+* 看有没有加料
+* 看有没有删料
+* 看用量或单位有没有变
+
+它不准做的事更重要：
+
+* 不准顺手改 BOM
+* 不准顺手放行版本
+* 不准顺手影响工单、库存、现场执行
+* 不准变成“看到差异就直接下指令”的入口
+
+工厂语言讲白一点：
+
+这是一台 **只准看、不准动** 的比对机器。
+看完发现有差异，要改，就走正式变更流程；
+不能在这里按按钮把系统主线改掉。
