@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.31
+Mini-MES Handoff v2.32
 
-Updated after 2026-04-09 handoff-only freeze patch for CommercialPackage_Starter_Pro_ModuleBoundary_Freeze
+Updated after 2026-04-09 handoff-only freeze patch for Step47_PhaseA_EscalateHigher_ActionSet_DisableRule_Freeze
 Date: 2026-04-09
 
 1. Frozen mainline snapshot
@@ -79,6 +79,8 @@ Frozen Record - BOM Compare Read-Only Module - Independent BOM Difference Analys
 
 Frozen Record - CommercialPackage_Starter_Pro_ModuleBoundary_Freeze
 
+Frozen Record - Step47_PhaseA_EscalateHigher_ActionSet_DisableRule_Freeze
+
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
 
@@ -113,6 +115,7 @@ Global Governance_FailureHandling_ErrorSourceSeparation_Rule_v2 is now FROZEN; i
 Global Governance_UI_ErrorLayer_Boundary_Baseline is now PASS / FROZEN; it supplements the failure-handling governance anchor by freezing UI/backend error-layer boundaries for root-classification preservation, guidance-only UI role, intact backend technical error retention, and no autonomous recovery without separately frozen governance.
 BOM Compare Read-Only Module is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES as an independent read-only analysis module; it remains outside Step 47 / Phase A / Phase B frozen chains, does not authorize BOM maintenance / release / approval / write-path opening, and is not implementation-ready if truth-bearing BOM sources would require an isolated read-only view / snapshot that is not separately approved and documented in handoff.
 CommercialPackage_Starter_Pro_ModuleBoundary_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Starter / Pro / Optional package-layer boundary is now frozen as separate from governance layer, modules may remain plug-and-play and customer-configurable only at the commercial/deployment scoping layer, package inclusion does not alter freeze status, blocked status, or implementation authorization, design-only / blocked content may not be sold as implementation-ready merely because a customer asks for it, and this record does not authorize implementation or pricing commitments.
+Step47_PhaseA_EscalateHigher_ActionSet_DisableRule_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; this record closes only the open governance gap around `escalate_higher`, `escalate_higher` is not a default-open governance action, higher-level authority must be explicitly recorded in handoff or else `escalate_higher` remains disabled, higher-level authority cannot be inferred from org chart, title, seniority, or local habit, unresolved records must remain visible with periodic review discipline when higher-level escalation is disabled, and this record does not authorize implementation, unblock Step 47, or legalize transitional truth.
 AGENTS Cross-Cutting Governance Rule 3 is aligned to the frozen failure-handling governance baseline only; this is repo-rule alignment only and not implementation, activation, deployment, or runtime production-use authorization.
 
 FG_RECEIVE Location Master Physical Schema Baseline is frozen as a design-layer schema baseline only.
@@ -1566,6 +1569,12 @@ Step47_PhaseA_KnownValidActor_Governance_Freeze is frozen as a design/governance
 Step47_PhaseA_ExternalTrustedIdentityDomain_Carrier_Freeze is frozen as a design/governance-layer baseline only.
 Step47_PhaseA_KnownValidActor_Owner_ApprovalPath_Freeze is frozen as a design/governance-layer baseline only.
 Step47_PhaseA_ImplementationOpeningPrerequisite_Freeze is frozen as a design/governance-layer baseline only.
+Step47_PhaseA_EscalateHigher_ActionSet_DisableRule_Freeze is frozen as a design/governance-layer baseline only.
+`escalate_higher` is not a default-open governance action.
+Higher-level authority must be explicitly recorded in handoff or else `escalate_higher` remains disabled.
+Higher-level authority cannot be inferred from org chart, title, seniority, or local habit.
+When higher-level escalation is disabled, unresolved records must remain visible with periodic review discipline.
+This record does not authorize implementation, unblock Step 47, or legalize transitional truth.
 
 FG_RECEIVE Location Master Physical Schema Baseline is frozen as a design-layer schema baseline only.
 
@@ -1614,7 +1623,7 @@ Any future repaired FG_RECEIVE source must still pass full Step 47A admissibilit
 16. One-line summary
 
 Step 40A, Step 45, and Step 46A remain formally implemented and frozen.
-Step 47 remains design-frozen and BLOCKED, Step 47A remains frozen with all four current candidates still NOT_ADMISSIBLE_YET and the admitted source list effectively EMPTY, Step47_PhaseA_ManualLocationDeclaration_Baseline (v2) remains frozen as the manual Stock Card digitization / operator-declared location design-layer baseline only, Step47_PhaseA_ActorRecognition_NarrowForm_Freeze, Step47_PhaseA_KnownValidActor_Governance_Freeze, Step47_PhaseA_ExternalTrustedIdentityDomain_Carrier_Freeze, Step47_PhaseA_KnownValidActor_Owner_ApprovalPath_Freeze, and Step47_PhaseA_ImplementationOpeningPrerequisite_Freeze are also now frozen as design/governance-layer baselines only, the existing Step 47 legal chain remains fully in force as frozen Phase B, Step 47B remains frozen as the legal location evidence & accountability baseline under Task Card v2.1, the Step 47 `location_code` freeze chain now also includes the frozen blocking-preconditions baseline, gate evidence-pack submission contract baseline, and PF-1 / PF-2 / PF-3 / PF-4 / PF-5 / PF-6 / PF-7 / PF-8 evidence-surface baselines, Starter / Pro / Optional package-layer boundary is now also frozen as a commercial-layer boundary separate from governance layer and does not change any step freeze / blocked / implementation status, and FG_RECEIVE now also has frozen design-layer baselines for the Location Master Physical Schema, the Event Truth Surface, the Event Truth Physical Schema, the Resolution Attempt & Evidence Snapshot Physical Schema, the Event-Time Location Resolution Runtime semantic contract, the Event-Time Location Resolution Read Surface semantic contract, the Step 47A Re-Admission Evaluation contract, and the Step 47 Release Decision contract while remaining NOT auto-admitted.
+Step 47 remains design-frozen and BLOCKED, Step 47A remains frozen with all four current candidates still NOT_ADMISSIBLE_YET and the admitted source list effectively EMPTY, Step47_PhaseA_ManualLocationDeclaration_Baseline (v2) remains frozen as the manual Stock Card digitization / operator-declared location design-layer baseline only, Step47_PhaseA_ActorRecognition_NarrowForm_Freeze, Step47_PhaseA_KnownValidActor_Governance_Freeze, Step47_PhaseA_ExternalTrustedIdentityDomain_Carrier_Freeze, Step47_PhaseA_KnownValidActor_Owner_ApprovalPath_Freeze, Step47_PhaseA_ImplementationOpeningPrerequisite_Freeze, and Step47_PhaseA_EscalateHigher_ActionSet_DisableRule_Freeze are also now frozen as design/governance-layer baselines only, `escalate_higher` is not default-open and remains disabled unless higher-level authority is explicitly recorded in handoff, unresolved records must remain visible with periodic review discipline where higher-level escalation is disabled, the existing Step 47 legal chain remains fully in force as frozen Phase B, Step 47B remains frozen as the legal location evidence & accountability baseline under Task Card v2.1, the Step 47 `location_code` freeze chain now also includes the frozen blocking-preconditions baseline, gate evidence-pack submission contract baseline, and PF-1 / PF-2 / PF-3 / PF-4 / PF-5 / PF-6 / PF-7 / PF-8 evidence-surface baselines, Starter / Pro / Optional package-layer boundary is now also frozen as a commercial-layer boundary separate from governance layer and does not change any step freeze / blocked / implementation status, and FG_RECEIVE now also has frozen design-layer baselines for the Location Master Physical Schema, the Event Truth Surface, the Event Truth Physical Schema, the Resolution Attempt & Evidence Snapshot Physical Schema, the Event-Time Location Resolution Runtime semantic contract, the Event-Time Location Resolution Read Surface semantic contract, the Step 47A Re-Admission Evaluation contract, and the Step 47 Release Decision contract while remaining NOT auto-admitted.
 
 17. Step 47 FG_RECEIVE implementation final archival result
 
@@ -8611,3 +8620,168 @@ This record exists only to freeze:
 * the prohibition on using customer demand to bypass frozen status
 
 It does not authorize implementation or pricing by itself.
+
+65. Frozen Record - Step47_PhaseA_EscalateHigher_ActionSet_DisableRule_Freeze
+
+Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+Scope Type: Design/governance-layer freeze only
+
+Dependency Base:
+
+* Step47_PhaseA_ImplementationPhasing_TransitionalIdentityAndEmergencyCapture
+* Step47_PhaseA_ReconciliationCompletionAndPlantManagerEscalationResolution
+
+This record freezes only the higher-level action boundary, disable rule, and unresolved fallback discipline for `escalate_higher` within the Step47 PhaseA escalation chain.
+
+Boundary
+
+This freeze is handoff-only.
+
+This freeze is design/governance-layer only.
+
+This freeze does not authorize:
+
+* implementation
+* implementation-level opening
+* blocked-status removal
+* admitted-source activation
+* runtime production use
+* actor-recognition rewrite
+* known-valid-actor rewrite
+* carrier rewrite
+* truth-path legalization
+
+Default-closed rule
+
+`escalate_higher` is not a default-open action.
+
+It is admitted only if a higher-level governance authority is explicitly recorded in handoff.
+
+If no such higher-level authority is explicitly recorded, `escalate_higher` is disabled and not available.
+
+No inference rule
+
+Higher-level governance authority must not be inferred from:
+
+* organization chart
+* seniority
+* title
+* local habit
+* verbal expectation
+* "someone above plant manager"
+
+Minimum recording rule for higher-level authority
+
+If higher-level governance authority is admitted, the handoff record must explicitly state at minimum:
+
+* the exact role and/or named person
+* the authority scope
+* the exact allowed action set
+* the exact forbidden action set
+* the trace / reason / time / visibility discipline
+
+General phrases such as:
+
+* higher management
+* senior leadership
+* upper management
+* company side
+  are insufficient.
+
+Allowed-action narrowness rule
+
+Any admitted higher-level authority may act only within a narrow governance boundary.
+
+Allowed actions may include actions such as:
+
+* require additional review
+* require explicit closure deadline
+* require visible management record
+* require stricter follow-up / escalation
+* suspend unresolved transitional use
+
+No allowed action may be interpreted as a free-form authority to rewrite frozen governance boundaries.
+
+Forbidden-action floor
+
+At minimum, higher-level authority must not use `escalate_higher` to:
+
+* rewrite the actor-recognition rule
+* rewrite the known-valid-actor rule
+* authorize implementation
+* remove blocked status
+* convert a transitional path into a legal-truth path
+* rewrite frozen sunset / expiry discipline
+
+Three explicit non-equalities
+
+`escalate_higher` does not equal:
+
+* free management override
+* implementation-authorization shortcut
+* truth legalization path
+
+Disabled-path unresolved fallback rule
+
+If `escalate_higher` is disabled and a case remains unresolved after plant-manager escalation:
+
+* the record must remain visible as unresolved on the governance / management dashboard
+* no silent aging is allowed
+* no silent closure is allowed
+* no disappearance is allowed
+* a mandatory periodic review discipline must exist
+* the designated review role must be explicitly recorded in handoff
+
+No-time-passage resolution rule
+
+Time passage alone does not constitute implied resolution.
+
+An unresolved record remains unresolved until a separately admitted governance action closes it.
+
+Suspend-action minimum discipline
+
+If `suspend unresolved transitional use` is included in a higher-level allowed action set, the handoff record must minimally preserve:
+
+* explicit reason
+* traceable action record
+* continued unresolved visibility after suspension
+* recovery only through a governed update path
+
+What this freeze changes
+
+This freeze changes only one thing:
+it formally freezes whether `escalate_higher` exists, how it may be admitted, what it may do, and what must happen when it is disabled and unresolved cases remain open.
+
+What this freeze does not change
+
+This freeze does not:
+
+* reopen actor recognition
+* reopen known valid actor
+* reopen carrier governance
+* authorize implementation
+* unblock Step 47
+* legalize transitional truth
+* define a whole-company management hierarchy
+
+Final Review Notes
+
+A. The mandatory periodic review discipline must include a non-empty minimum trigger floor in handoff. A vague "periodic review" statement is insufficient; the concrete minimum interval/trigger is to be set by Ruichen.
+
+B. If `suspend unresolved transitional use` is admitted, its minimum discipline must include explicit reason + trace, continued unresolved visibility after suspension, and recovery only through a governed update path.
+
+Freeze intent
+
+The intent of this freeze is to prevent two governance failure modes:
+
+* "whoever is higher may decide anything"
+* "if no higher level exists, unresolved cases slowly disappear"
+
+This record exists only to freeze:
+
+* the action boundary of `escalate_higher`
+* the default-disabled rule
+* the minimum recording rule for higher-level authority
+* the unresolved fallback discipline when higher-level escalation is unavailable
+
+It does not authorize implementation or legal truth by itself.
