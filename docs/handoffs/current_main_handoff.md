@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.37
+Mini-MES Handoff v2.38
 
-Updated after 2026-04-10 handoff-only freeze patch for Step47_PhaseA_ActualCarrier_Recording_Freeze
+Updated after 2026-04-10 handoff-only freeze patch for Step47_PhaseA_OpeningRecheck_Freeze
 Date: 2026-04-10
 
 1. Frozen mainline snapshot
@@ -89,6 +89,8 @@ Frozen Record - Step47_PhaseA_ActualOwner_Approver_Recording_Freeze
 
 Frozen Record - Step47_PhaseA_ActualCarrier_Recording_Freeze
 
+Frozen Record - Step47_PhaseA_OpeningRecheck_Freeze
+
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
 
@@ -130,6 +132,7 @@ Global Governance_P-Series_PlantFit_Practicality_Audit_Rule_v1 is now PASS WITH 
 Step47_PhaseA_Carrier_W2_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA Carrier W2 is now frozen as a narrow governance-only record, it locks carrier definition separation, environment-scope minimum rule, governed update path with emergency change allowance, multi-environment isolation discipline, and mandatory handoff update / A-B-C re-determination / annual review discipline, it includes final-review-note tightening on emergency-change maximum duration and minimum cross-environment misuse detection path, and it does not authorize implementation, submission opening, or A-class establishment.
 Step47_PhaseA_ActualOwner_Approver_Recording_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA Actual Owner / Approver Recording is now frozen as a narrow governance-only record, it locks actual owner minimum recording, actual approver / approval authority minimum recording, owner / approver separation, proxy / temporary delegation discipline, change-triggered handoff update / A-B-C re-determination / annual review discipline, and permanent separation from carrier / A-class / implementation-opening, it includes final-review-note tightening on identifiable-role traceability, proxy duration hard upper bound, and minimum escalation-path form, and it does not authorize implementation, submission opening, or A-class establishment.
 Step47_PhaseA_ActualCarrier_Recording_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA Actual Carrier Recording is now frozen as a narrow governance-only record, it locks minimum actual-carrier recording, environment-scope recording, temporary/emergency carrier recording, permanent separation from owner / approver / valid-actor / A-class / implementation-opening, change-triggered handoff update / A-B-C re-determination / annual review discipline, and ambiguity-blocking discipline for Opening re-check, it includes final-review-note tightening on minimum trust-boundary reference form and minimum rollback / normalization path form, and it does not authorize implementation, submission opening, or A-class establishment.
+Step47_PhaseA_OpeningRecheck_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA Opening re-check is now frozen as a narrow governance-only record, it locks Opening re-check as a governance re-check layer only, minimum prerequisite re-check scope across known-valid-actor governance, carrier recording, actual owner / approver recording, and actual carrier recording, temporary/emergency carrier expiry and rollback-execution re-check discipline, no-auto-pass discipline, re-check-layer-only output discipline, separate-decision-record discipline, and downstream non-equality discipline, it includes final-review-note tightening on ambiguity-removal judgment responsibility and decision-record timing / review-chain discipline, and it does not authorize implementation, submission opening, A-class establishment, or runtime production use.
 
 FG_RECEIVE Location Master Physical Schema Baseline is frozen as a design-layer schema baseline only.
 It is not implementation authorization.
@@ -10042,3 +10045,276 @@ This record enters the frozen chain only together with the explicit gate confirm
 
 Non-scope reaffirmation
 This record remains governance-only and does not authorize implementation, submission opening, or A-class establishment.
+
+71. Frozen Record - Step47_PhaseA_OpeningRecheck_Freeze
+
+Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+Scope Type: Handoff-only governance freeze
+Secondary review: PASS WITH WARNINGS
+Final review: PASS WITH WARNINGS
+Gate decision confirmation: Ruichen CONFIRMED
+
+Purpose
+This record freezes the narrow governance boundary for Step47 PhaseA Opening re-check, so the project may re-check whether the already-frozen opening prerequisites are now actually recorded and bounded strongly enough that a later implementation-opening decision may be considered, without turning this re-check itself into implementation authorization, submission opening, A-class establishment, or runtime production-use authorization.
+
+This record is governance-only.
+It does not authorize implementation.
+It does not unlock submission.
+It does not establish A-class.
+It does not replace carrier governance, owner / approver governance, or valid-actor governance.
+
+Locked Objective
+This record freezes only the following:
+
+1. Opening re-check nature as a governance re-check layer only
+2. minimum prerequisite re-check scope
+3. no-auto-pass discipline
+4. re-check-layer-only PASS / NOT READY / BLOCKED output discipline
+5. separate decision-record discipline for the actual Opening re-check result
+6. downstream non-equality discipline after re-check
+7. ambiguity / expiry / contradiction / off-record dependency blocking discipline
+
+Non-scope
+This record does not:
+
+* authorize implementation
+* authorize implementation-opening PASS
+* authorize submission opening
+* establish A-class
+* authorize runtime production use
+* rewrite actor-recognition narrow form
+* rewrite known-valid-actor governance
+* rewrite carrier governance
+* rewrite owner / approver governance
+* define implementation-level card content
+* define runtime logic, schema, API, UI, middleware, or service behavior
+
+S-1 / S0 / S+1
+
+S-1
+
+* `Step47_PhaseA_ImplementationOpeningPrerequisite_Freeze` already locked that implementation-level opening remains blocked unless governed ownership / change path for `known valid actor` and the concrete external trusted identity-domain carrier are explicitly recorded in handoff.
+* `Step47_PhaseA_KnownValidActor_Owner_ApprovalPath_Freeze` already froze owner / approval authority / governed update path for the `known valid actor` object.
+* `Step47_PhaseA_Carrier_W2_Freeze` already froze carrier definition separation, environment scope minimum rule, governed update path, isolation discipline, and annual review discipline.
+* `Step47_PhaseA_ActualOwner_Approver_Recording_Freeze` and `Step47_PhaseA_ActualCarrier_Recording_Freeze` already froze the actual recording layer.
+* This record must stand on those records and re-check them only; it must not reopen or weaken them.
+
+S0
+
+* freeze Opening re-check as a governance re-check layer only
+* freeze what minimum prerequisites must be re-checked
+* freeze what outputs Opening re-check may and may not produce
+* freeze what conditions keep the opening state blocked
+* do not collapse re-check into implementation-opening meaning
+
+S+1
+
+* a separately governed implementation-opening decision step, if and only if a later actual Opening re-check decision record lawfully concludes PASS
+* no direct jump from this freeze to implementation work
+
+Pre-Freeze Crisis Check
+
+* Current highest risk:
+  after actual owner / approver and actual carrier recording have been frozen, the project may be tempted to say "the prerequisites are basically there, so implementation can start," collapsing re-check into opening authorization
+* Risk level:
+  P0
+* Affected scope:
+  Step47 PhaseA opening discipline, implementation-boundary cleanliness, later audit defensibility
+* Foundation check:
+  the upstream prerequisite chain is now materially richer, but that does not itself prove opening readiness; this record must preserve re-check as a separate layer
+* Dependency chain check:
+  if this record is weak, the next step may treat prerequisite completion, actual recording, and implementation-opening as one merged conclusion
+* Reality intrusion check:
+  likely bypass modes include "good enough" language, informal project pressure, customer pressure, and technical readiness being mistaken for governance readiness
+* Operator action surface check:
+  no frontline operator action should be created here; this is a governance gate only
+* Freeze pollution check:
+  high if this record leaks into implementation-opening or submission-opening language
+* Gate decision draft:
+  CONDITIONAL GO
+* Preconditions before resume:
+  keep Opening re-check as re-check only; outputs must not exceed re-check-layer meaning
+* Gate decision confirmation:
+  Ruichen [confirmed]
+
+Frozen Body
+
+1. Opening Re-check Nature Rule
+Opening re-check is a governance re-check layer only.
+It exists only to re-check whether the already-frozen opening prerequisites are now actually recorded, bounded, and internally non-contradictory strongly enough that a later implementation-opening decision may be considered.
+
+Opening re-check is not:
+
+* implementation authorization
+* implementation-opening PASS
+* submission opening
+* A-class establishment
+* runtime production-use authorization
+
+2. Minimum Re-check Scope Rule
+Opening re-check must review at minimum:
+
+* whether the `known valid actor` governed object has explicit governance owner, approval authority, and governed update path recorded in handoff
+* whether the concrete external trusted identity-domain carrier is explicitly recorded in handoff
+* whether carrier environment scope is explicitly bounded
+* whether actual owner / approver recording exists in governed form
+* whether actual carrier recording exists in governed form
+* whether any temporary or emergency carrier has expired without governed follow-up
+* whether any recorded rollback / normalization path for a temporary or emergency carrier has actually been executed where due
+* whether any of the above remains missing, ambiguous, expired, contradictory, or dependent on informal memory / chat / local habit
+
+3. No Auto-Pass Rule
+The following do not by themselves make Opening re-check pass:
+
+* existence of carrier-class governance
+* existence of actual owner / approver recording
+* existence of actual carrier recording
+* technical feasibility
+* likely implementation path
+* project urgency
+* review sentiment
+* "basically ready" wording
+
+4. Minimum PASS Preconditions for Re-check Layer
+Opening re-check may conclude only that re-check status is PASS if all of the following are explicitly true:
+
+* required prerequisite records exist in handoff
+* their meanings remain mutually consistent
+* no prerequisite still depends on informal memory, chat, verbal convention, or implementer-side inference
+* no blocked ambiguity remains around carrier identity, carrier scope, governance owner, approval authority, or governed change path
+* no current record collapses declared recording into implementation-opening meaning
+* no temporary or emergency carrier remains expired without governed follow-up
+* no due rollback / normalization obligation remains unexecuted without governed explanation
+
+5. Failure / Blocking Discipline
+If any required item is:
+
+* missing
+* ambiguous
+* expired without governed follow-up
+* internally contradictory
+* dependent on informal / off-record explanation
+* still open to implementer-side inference
+
+then Opening re-check must not pass.
+
+Allowed non-pass outcomes may include only narrow governance meanings such as:
+
+* `Opening re-check = NOT READY YET`
+* `Opening re-check = BLOCKED`
+
+This record must not output implementation-layer meanings.
+
+6. Output Discipline Rule
+Opening re-check may output only re-check-layer conclusions such as:
+
+* `Opening re-check = PASS`
+* `Opening re-check = NOT READY YET`
+* `Opening re-check = BLOCKED`
+
+It must not output:
+
+* implementation authorized
+* submission may open
+* A-class established
+* runtime production use authorized
+
+7. Ruichen Confirmation Rule
+Even if Opening re-check reaches a draft PASS conclusion, that conclusion must be explicitly confirmed by Ruichen and recorded in handoff before any implementation-opening discussion may proceed.
+
+No draft PASS, review sentiment, or informal agreement may substitute for this confirmation.
+
+8. Separate Decision Record Rule
+The actual conclusion of Opening re-check must be recorded as a separate decision record in handoff.
+
+That separate decision record must:
+
+* cite this frozen baseline
+* state the actual result as PASS / NOT READY YET / BLOCKED
+* list which prerequisites were satisfied
+* list which prerequisites, if any, remain unsatisfied
+* preserve the non-equality that Opening re-check result does not itself authorize implementation, submission opening, A-class establishment, or runtime production use
+
+9. Downstream Non-Equality Rule
+Even if `Opening re-check = PASS`:
+
+* implementation authorization is still separate
+* submission opening is still separate
+* A-class is still separate
+* runtime production use is still separate
+
+No downstream step may infer those meanings automatically from this re-check.
+
+Acceptance Criteria
+Review against the following:
+
+1. whether Opening re-check is explicitly frozen as a governance re-check layer only
+2. whether minimum re-check scope explicitly includes known-valid-actor governance, carrier recording, actual owner / approver recording, and actual carrier recording
+3. whether temporary / emergency carrier expiry and rollback execution are explicitly included in re-check scope
+4. whether "record exists" is not allowed to auto-equal "opening ready"
+5. whether PASS conditions require explicit record existence + consistency + no off-record dependency + no implementer inference gap
+6. whether missing / ambiguous / contradictory / expired prerequisite state explicitly blocks re-check PASS
+7. whether Ruichen confirmation is explicitly required before any implementation-opening discussion may proceed from a draft PASS conclusion
+8. whether the actual re-check result is required to be written later as a separate decision record in handoff
+9. whether outputs are limited to re-check-layer meanings only
+10. whether downstream non-equalities remain explicit and hard
+11. whether the record remains governance-only and does not leak into implementation authorization
+
+Factory Usability Check / Factory Mini-Check
+Minimum check:
+
+* does this record prevent project pressure from turning "almost ready" into "go build now"?
+* does it keep the re-check narrow enough that no frontline burden is added?
+* if later someone asks why opening was still blocked, can the answer point to a concrete missing / ambiguous prerequisite instead of vague caution?
+* does it also catch the practical case where a temporary carrier should already have been rolled back but was not?
+* is this record helping the project keep the gate honest, or just adding one more abstract review phrase?
+
+Business Logic Confirmation / Corresponding Factory Floor Scenario
+This record is not "start development," and it is not "the door is now open."
+It freezes a narrow but easy-to-abuse middle layer.
+
+The upstream records have already frozen:
+
+* who actually owns the governed object
+* who may approve
+* which carrier is actually active
+
+But "those things are written down" does not mean "implementation-opening may now proceed."
+
+Factory-language explanation:
+
+before talking about opening the door, the project must first re-check whether the door frame, lock, key, carrier path, and responsibility records are all really in place and not just "basically there."
+
+This record blocks the most common drift sentence:
+
+"the conditions are basically complete, so let's just start."
+
+It also covers a very real floor/project problem:
+
+if a temporary emergency carrier has already expired, or it should already have rolled back to the normal carrier but did not, the re-check still cannot pass.
+
+So this record prevents the project from claiming opening readiness while the real operating line is still hanging on a temporary path.
+
+Final Review Notes
+
+W1
+For any later actual Opening re-check decision record, removal of blocked ambiguity must be explicitly confirmed by Qinran in the final review layer.
+It must not be self-declared by implementers or inferred unilaterally by Qingchen.
+
+W2
+The actual Opening re-check conclusion must be submitted as a separate decision record before any next Task Card that depends on Opening re-check may proceed.
+That separate decision record must go through the full review chain:
+
+* Qingchen draft
+* Lao Xiao secondary review
+* Qinran final review
+* Ruichen explicit confirmation
+
+No delayed record, no skipped review layer, and no direct entry by convenience is allowed.
+
+W3
+The previously open gate-confirmation gap is now closed.
+This record enters the frozen chain only together with the explicit gate confirmation already recorded above.
+
+Non-scope reaffirmation
+This record remains governance-only and does not authorize implementation, submission opening, A-class establishment, or runtime production use.
