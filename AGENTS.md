@@ -159,6 +159,250 @@ Such transitions must remain explicitly governed and separately authorized where
 弱证据不能偷偷当强证据，手工模式不能假装等于正式模式。
 出错时不能假死，启用和上生产也不能因为“已经做出来了”就自动算通过。
 
+## Global Governance - P-Series PlantFit Practicality Audit Rule v1
+
+Review carry-forward for this repo-wide governance insertion:
+
+* Secondary review: PASS
+* Final review: PASS WITH WARNINGS
+* Freeze status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+
+Purpose
+This rule introduces the P-series audit lens as a permanent cross-cutting governance rule for Mini-MES, to prevent architecture, freeze text, flow design, recovery-path design, and future implementation-opening conditions from becoming logically elegant but operationally unusable on the shopfloor.
+
+Why this rule exists
+Mini-MES is not intended to become a heavyweight enterprise system that is formally complete but unable to help when the shopfloor is under pressure.
+
+The system must preserve frozen governance, truth, evidence, audit, and approval boundaries, but it must also remain usable under real-world factory conditions where interruptions, missing people, incomplete tooling, unstable discipline, temporary trade-offs, and emergency continuity needs do occur.
+
+This rule exists to stop paper-perfect but field-unusable design drift.
+
+Core rule
+The P-series is a permanent horizontal review lens alongside, and not replacing:
+
+* Ontology
+* Guard V2
+* GUARD MODE
+* Operator Minimal Action Rule
+* T-1 / T0 / T+1
+* S-1 / S0 / S+1
+
+Any key Task Card, frozen baseline, governed flow, operator-facing rule set, recovery path, trace discipline, deferred reconciliation rule, or implementation-opening prerequisite must pass not only the T-series and S-series lenses, but also the P-series lens.
+
+If T passes and S passes but P fails, the item is not considered practically fit for advancement unless an explicit override is granted under the override rule defined in this rule.
+
+P-1 definition
+P-1 checks whether the proposed design depends on unrealistic factory preconditions.
+
+Mandatory review questions
+
+1. Does this design assume the constant availability of a specific role, supervisor, approver, or ideal operator that may not reliably exist on the actual shopfloor?
+2. Does this design assume tools, terminals, labels, scanners, network quality, discipline level, or master-data completeness that are not yet realistically established?
+3. Does this design assume extra time, extra manpower, or management attention that a live production floor may not actually have?
+4. Does this design quietly depend on perfect compliance before it becomes usable?
+
+PASS definition
+P-1 passes only if the design can still operate under realistic factory conditions without depending on ideal staffing, ideal discipline, ideal tooling, or ideal data completeness.
+
+FAIL definition
+P-1 fails if the design only works under idealized staffing, idealized discipline, idealized tooling, or idealized data conditions.
+
+Required correction direction
+When P-1 fails, the design must be narrowed, simplified, staged, or made more resilient to real factory conditions before advancement.
+
+Plant-fit reviewer rule
+When P-1 fails, the design cannot advance unless a designated plant-fit reviewer explicitly confirms that the proposed narrowing is sufficient for real factory use.
+
+Plant-fit reviewer designation must be completed before the first P-series review is triggered.
+The reviewer must not be appointed ad hoc only after a P-fail already occurs.
+The reviewer should be a production manager, manufacturing lead, or experienced supervisor-level reviewer with actual shopfloor familiarity.
+Exact named person / role assignment should be recorded separately in handoff or equivalent governed record.
+If no plant-fit reviewer has been designated when a P-fail item arises, the item must escalate directly to Ruichen.
+
+Minimum plant-fit reviewer record requirement
+The review record must include, at minimum:
+
+* reviewer role
+* reviewer scope of authority for the reviewed item
+* reviewed item name / version / date
+* short conclusion: sufficient / not sufficient for real factory use
+* key practical reason
+* whether disagreement remains between design intent and shopfloor practicality
+
+Disagreement escalation rule
+If disagreement remains between design intent and shopfloor practicality, the matter must be escalated to Ruichen for final decision.
+
+P0 definition
+P0 checks whether the design remains operable at the moment of execution on the shopfloor.
+
+Mandatory review questions
+
+1. Who exactly performs this step at the real shopfloor moment?
+2. Does this rule add extra operator action, extra approval waiting, or extra friction that may cause bypass behavior?
+3. When an exception occurs, can the operation continue through a governed degraded path, or does the rule simply dead-stop the floor?
+4. Is the rule forcing the shopfloor to satisfy design elegance, instead of helping the shopfloor preserve control with minimal action?
+5. Can the same control objective be achieved with fewer operator actions?
+
+PASS definition
+P0 passes only if the flow can be executed by real shopfloor actors with manageable action burden, without predictable bypass pressure, and without unnecessary dead-stop behavior in common exception scenarios.
+
+FAIL definition
+P0 fails if:
+
+* the design introduces unnecessary operator burden
+* the design creates predictable bypass pressure
+* the design dead-stops common exception scenarios without a governed fallback
+* the design protects formal neatness at the cost of real operational continuity
+
+Required correction direction
+When P0 fails, the design must be simplified, decomposed, or re-routed toward a lower-friction controlled path that preserves minimum truth and audit discipline without freezing the live operation unnecessarily.
+
+Lower-friction controlled path examples
+Examples of lower-friction controlled paths include:
+
+* a supervisor-witnessed declaration with later reconciliation
+* a photo-based evidence capture
+* a simple dropdown selection instead of free-text typing
+
+Such paths must still preserve auditability and must not become an unbounded bypass.
+
+Independent review rule against Operator Minimal Action Rule
+P0 review and Operator Minimal Action Rule review are independent.
+If both are triggered, both findings must be recorded separately and both corrections must be confirmed separately.
+P0 pass does not automatically mean Operator Minimal Action Rule pass.
+Operator Minimal Action Rule pass does not automatically mean P0 pass.
+
+P+1 definition
+P+1 checks whether allowed real-world flexibility can still be closed back into a controlled, auditable, and understandable state afterward.
+
+Mandatory review questions
+
+1. If the floor uses a controlled workaround, can the system still capture what happened afterward?
+2. Can the event still be traced, reconciled, reviewed, and corrected without overwriting frozen truth improperly?
+3. Does the workaround preserve boundary separation between truth, evidence, audit trace, and approval?
+4. Can a later reviewer still understand what happened, why it happened, who did it, and what remains unresolved?
+
+PASS definition
+P+1 passes only if the allowed practical flexibility can still be closed into a recoverable, traceable, reviewable, and bounded post-event state.
+
+FAIL definition
+P+1 fails if the design allows practical bypass or emergency continuation but leaves behind ambiguity, untraceable actions, overwritten truth, or unrecoverable audit gaps.
+
+Required correction direction
+When P+1 fails, the design must add a governed recovery path, trace discipline, deferred reconciliation rule, or explicit unresolved-state handling before advancement.
+
+Recursive practicality rule
+Any recovery path, trace discipline, deferred reconciliation rule added to satisfy P+1 must itself be reviewed under the P-series before acceptance. Otherwise, Mini-MES risks fixing one impracticality with another.
+
+Hard governance rule
+T-series guards truth discipline.
+S-series guards sequence discipline.
+P-series guards plant-fit discipline.
+
+Therefore:
+
+* T fail = truth risk, cannot advance
+* S fail = sequence / dependency risk, cannot advance
+* P fail = plant-fit / practicality risk, cannot advance unless an explicit override is granted under the override rule below
+
+No key item may be considered ready if it is semantically clean but operationally unrealistic.
+
+Override rule
+A P-series failure may be overridden only by a written decision from Ruichen.
+
+Override trigger condition
+Override may be considered only when:
+
+* business necessity is explicit
+* T-series and S-series boundaries are still preserved
+* the plant-fit shortfall is known and consciously accepted
+* normal correction is not feasible in the needed timeframe
+
+Minimum written approval form
+The override record must state:
+
+* the exact reviewed item
+* the exact business justification
+* the specific plant-fit shortfall being temporarily accepted
+* the agreed risk acceptance
+* the allowed scope of the override
+* the allowed duration of the override
+* the required follow-up review timing
+
+Default review discipline
+The override must be documented in handoff and must be re-reviewed within a defined period.
+Default re-review period: within 3 months from the written override approval date, unless the override record explicitly defines a different start date.
+
+Override boundary
+Override is an exception path only. It must not be treated as proof that the design is plant-fit, and it must not silently convert a P-failed design into a generally approved design.
+
+Relationship to existing Mini-MES principles
+This rule strengthens, and does not weaken, the following already-established directions:
+
+* Operator Minimal Action Rule remains active
+* Frozen governance and truth/evidence/approval boundaries remain non-negotiable
+* Controlled flexibility is allowed only where boundaries are preserved
+* Design-layer completeness does not automatically mean field readiness
+* Shopfloor usability is not optional polish; it is part of controllability
+
+Minimum application requirement
+From this rule onward, every future key Task Card / freeze candidate / major governed flow should include an explicit plant-fit check section, at minimum covering:
+
+1. real actor availability
+2. action burden
+3. exception survivability
+4. post-event recoverability
+5. whether operators would realistically use the flow
+
+Recommended review prompt
+For every future key design item, reviewers should ask:
+
+"Can this still run on a bad day in a real factory, without destroying truth and without forcing the floor into paralysis?"
+
+Non-scope
+This rule does not:
+
+* authorize any implementation
+* weaken existing frozen truth/evidence/approval boundaries
+* allow convenience inference where explicit governed records are required
+* replace T-series or S-series
+* guarantee that every exception path is open by default
+* justify uncontrolled shopfloor freedom
+
+This rule only freezes the governance requirement that practicality / plant-fit must be reviewed explicitly and must be able to block advancement when a design is too idealized for real factory use, unless a documented override is granted under this same rule.
+
+Factory Usability Check
+Minimum check:
+
+* Will operators feel this is troublesome?
+* Will supervisors skip it because it is too complicated?
+* When the floor is under stress, is there a governed workaround path?
+* After the workaround, can the account / record still be closed cleanly?
+* Is this rule helping the floor, or punishing the floor?
+
+Business Logic Confirmation / Corresponding Factory Floor Scenario
+This rule does not exist to loosen the system, and it does not allow the floor to do whatever it wants.
+
+It establishes a new hard gate:
+from now on, no card, no flow, and no rule may be judged only by whether the logic looks clean. It must also be judged by whether it can still run on the day the factory is under pressure.
+
+A real factory is not an office.
+On a real day, someone is absent, material is short, the network is unstable, a supervisor is busy, a machine is stuck, or a customer is pushing.
+If a rule only works in calm conditions, but not in battle conditions, then it is not a good system rule no matter how elegant it looks.
+
+This rule adds three practical closures:
+
+1. If design says "I already simplified it," but the floor says "it is still impractical," there must be a plant-fit reviewer to close that gap first; if the disagreement remains, it escalates to Ruichen.
+2. If someone tries to repair an impractical path by inventing a new and even more complicated paper path, that new recovery path must also pass the P-series.
+3. If business urgency is real, a P-fail item is not automatically dead forever, but it may move only through Ruichen's written override, with explicit reason, scope, duration, and re-review timing.
+
+Factory-language explanation
+Mini-MES must hold two things at the same time:
+first, truth must not be corrupted;
+second, the shopfloor must not be written into paralysis.
+
+A system that protects boundaries while still letting the floor stay alive under pressure is the system Mini-MES actually wants.
+
 ## Mini-MES Ontology Global Extension — Six-Layer Model
 Mini-MES Ontology is no longer treated as only:
 
