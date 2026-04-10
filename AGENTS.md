@@ -12,6 +12,7 @@ Always work under:
 - Operator Minimal Action Rule
 - T-1/T0/T+1 Truth Audit
 - S-1/S0/S+1 Step Development Audit
+- P-1/P0/P+1 PlantFit / Practicality Audit
 
 ### Meaning of the mode
 - **Ontology** = model business reality as objects, properties, relations, truth surfaces, rules, and guarded actions.
