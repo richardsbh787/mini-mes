@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.36
+Mini-MES Handoff v2.37
 
-Updated after 2026-04-10 handoff-only freeze patch for Step47_PhaseA_ActualOwner_Approver_Recording_Freeze
+Updated after 2026-04-10 handoff-only freeze patch for Step47_PhaseA_ActualCarrier_Recording_Freeze
 Date: 2026-04-10
 
 1. Frozen mainline snapshot
@@ -87,6 +87,8 @@ Frozen Record - Global Governance_P-Series_PlantFit_Practicality_Audit_Rule_v1
 
 Frozen Record - Step47_PhaseA_ActualOwner_Approver_Recording_Freeze
 
+Frozen Record - Step47_PhaseA_ActualCarrier_Recording_Freeze
+
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
 
@@ -127,6 +129,7 @@ AGENTS Cross-Cutting Governance Rule 3 is aligned to the frozen failure-handling
 Global Governance_P-Series_PlantFit_Practicality_Audit_Rule_v1 is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; the P-series PlantFit / Practicality Audit rule is now frozen as a permanent cross-cutting governance lens alongside T-series and S-series without replacing existing governance lenses, it tightens plant-fit reviewer designation timing, preserves independent P0 versus Operator Minimal Action Rule review, fixes override re-review timing to the written override approval date unless another start date is explicitly recorded, and it does not authorize implementation.
 Step47_PhaseA_Carrier_W2_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA Carrier W2 is now frozen as a narrow governance-only record, it locks carrier definition separation, environment-scope minimum rule, governed update path with emergency change allowance, multi-environment isolation discipline, and mandatory handoff update / A-B-C re-determination / annual review discipline, it includes final-review-note tightening on emergency-change maximum duration and minimum cross-environment misuse detection path, and it does not authorize implementation, submission opening, or A-class establishment.
 Step47_PhaseA_ActualOwner_Approver_Recording_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA Actual Owner / Approver Recording is now frozen as a narrow governance-only record, it locks actual owner minimum recording, actual approver / approval authority minimum recording, owner / approver separation, proxy / temporary delegation discipline, change-triggered handoff update / A-B-C re-determination / annual review discipline, and permanent separation from carrier / A-class / implementation-opening, it includes final-review-note tightening on identifiable-role traceability, proxy duration hard upper bound, and minimum escalation-path form, and it does not authorize implementation, submission opening, or A-class establishment.
+Step47_PhaseA_ActualCarrier_Recording_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA Actual Carrier Recording is now frozen as a narrow governance-only record, it locks minimum actual-carrier recording, environment-scope recording, temporary/emergency carrier recording, permanent separation from owner / approver / valid-actor / A-class / implementation-opening, change-triggered handoff update / A-B-C re-determination / annual review discipline, and ambiguity-blocking discipline for Opening re-check, it includes final-review-note tightening on minimum trust-boundary reference form and minimum rollback / normalization path form, and it does not authorize implementation, submission opening, or A-class establishment.
 
 FG_RECEIVE Location Master Physical Schema Baseline is frozen as a design-layer schema baseline only.
 It is not implementation authorization.
@@ -9780,6 +9783,262 @@ Final Review Notes
 * Final Review Note A: identifiable-role traceability requirement is now part of the operative rule text.
 * Final Review Note B: any single proxy validity period must not exceed 90 calendar days unless Ruichen provides explicit written approval for a longer period recorded in handoff.
 * Final Review Note C: minimum escalation-path form is now part of the operative rule text.
+
+Non-scope reaffirmation
+This record remains governance-only and does not authorize implementation, submission opening, or A-class establishment.
+
+70. Frozen Record - Step47_PhaseA_ActualCarrier_Recording_Freeze
+
+Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+Scope Type: Handoff-only governance freeze
+Secondary review: PASS
+Final review: PASS WITH WARNINGS
+Gate decision confirmation: Ruichen CONFIRMED
+
+Purpose
+This record freezes the narrow governance boundary for Step47 PhaseA actual carrier recording, locking the minimum identifiable recording of the actual carrier now in force, its environment scope, its effective status, its temporary / emergency discipline where applicable, and its permanent separation from owner / approver / valid-actor / A-class / implementation-opening.
+
+This record is governance-only.
+It does not authorize implementation.
+It does not unlock submission.
+It does not establish A-class.
+It does not replace carrier-class governance, owner / approver governance, or valid-actor governance.
+
+Locked Objective
+This record freezes only the following:
+
+1. actual carrier minimum recording boundary
+2. environment-scope recording boundary
+3. temporary / emergency carrier recording discipline
+4. permanent separation from owner / approver / valid-actor / A-class / implementation-opening
+5. actual-carrier change discipline including handoff update + A / B / C re-determination + annual review
+6. ambiguity / expiry / inconsistency blocking discipline for Opening re-check
+
+Non-scope
+This record does not:
+
+* authorize implementation
+* authorize submission opening
+* authorize runtime production use
+* establish A-class
+* rewrite carrier-class choice
+* rewrite owner / approver recording
+* rewrite known-valid-actor governance
+* expand into auth / SSO / role / permission / middleware / identity-system design
+* define header names, field names, runtime injection code, or environment-isolation implementation
+
+S-1 / S0 / S+1
+
+S-1
+
+* Carrier W2 already froze carrier definition separation, environment-scope minimum rule, governed update path with emergency change allowance, multi-environment isolation discipline, and mandatory handoff update / A-B-C re-determination / annual review discipline.
+* Actual Owner / Approver Recording already froze actual owner / approver recording and permanent separation from carrier semantics.
+* This record must not collapse those lanes.
+
+S0
+
+* perform a narrow governance freeze for actual carrier recording only
+* lock minimum actual-carrier recording content, temporary/emergency recording discipline, and Opening re-check blocking discipline
+* do not expand into implementation or identity-system design
+
+S+1
+
+* Opening re-check
+
+Pre-Freeze Crisis Check
+
+* Current highest risk:
+  carrier-class governance and W2 closure already exist, but without a frozen "what is the actual carrier now" rule, later opening discussion may drift into assumption, chat memory, or technical convenience
+* Risk level:
+  P1
+* Affected scope:
+  carrier governance continuity, Opening re-check quality, future implementation-opening judgment
+* Foundation check:
+  upstream carrier-class / environment / trust-boundary disciplines are already frozen; this step stands on them and must not reopen them
+* Dependency chain check:
+  if actual carrier is not frozen explicitly now, later opening review may accept "some proxy exists" or "the infra team will decide" as if it were already recorded truth
+* Reality intrusion check:
+  likely bypass modes include informal gateway switching, emergency carrier staying too long, and multi-environment claims without real isolation
+* Operator action surface check:
+  frontline operators should gain no extra burden from this record; this is a governance-recording closure step
+* Freeze pollution check:
+  medium if this record drifts into implementation readiness; low if kept strictly at governance-recording layer
+* Gate decision draft:
+  CONDITIONAL GO
+* Preconditions before resume:
+  keep this record limited to actual recording only; do not reopen carrier class choice, owner / approver recording, or implementation-opening
+* Gate decision confirmation:
+  Ruichen [confirmed]
+
+Frozen Body
+
+1. Actual Carrier Minimum Recording Rule
+Actual carrier must be recorded as an identifiable governed carrier object.
+It must not be left as vague wording such as:
+
+* proxy
+* gateway
+* header path
+* system-side identity line
+
+without bounded carrier meaning.
+
+Minimum acceptable actual-carrier record must include at minimum:
+
+* actual carrier identity / carrier object
+* carrier class
+* environment scope
+* effective date or intended effective date
+* status as one of: primary / temporary-emergency / retired
+* trust-boundary statement reference
+* whether single-carrier mode or approved multi-environment mode applies
+
+The actual carrier identity / carrier object may be a handoff-defined carrier object or another stable carrier identifier.
+The exact implementation form is not frozen here.
+
+2. Minimum Trust-Boundary Reference Form
+`trust-boundary statement reference` must point to a frozen handoff rule or frozen handoff clause.
+A descriptive sentence alone is not sufficient.
+Generic wording such as "system handles it" or equivalent free-form description does not satisfy this requirement.
+
+3. Environment-Scope Recording Rule
+If environment scope is not explicitly governably separated, the actual carrier may be recorded only in single-carrier mode.
+No document may claim actual multi-environment carrier readiness unless the already-frozen Carrier W2 conditions are actually satisfied and recorded.
+
+4. Temporary / Emergency Carrier Recording Rule
+If a temporary or emergency carrier is in use, the record must additionally include:
+
+* trigger reason
+* start date / time
+* expiry date or explicit expiry condition
+* responsible review path
+* rollback / normalization path
+
+If no expiry date or explicit expiry condition is recorded, the temporary carrier is invalid for governance purposes.
+
+Temporary / emergency carrier must not silently become permanent actual carrier.
+
+5. Minimum Rollback / Normalization Path Form
+`rollback / normalization path` must include at minimum:
+
+* recovery target
+* recovery trigger condition or time point
+* identifiable executing role
+
+Generic wording such as "restore normal state" or equivalent unbounded description is not sufficient.
+
+6. Permanent Separation Rule
+Actual carrier recording:
+
+* does not equal owner recording
+* does not equal approver recording
+* does not equal valid-actor governance
+* does not equal A-class establishment
+* does not equal implementation-opening
+* does not equal submission-opening readiness
+
+The following are explicitly forbidden:
+
+* claiming owner / approver validity solely because actual carrier is recorded
+* claiming valid-actor governance is satisfied solely because actual carrier is recorded
+* claiming A-class solely because actual carrier is recorded
+* claiming implementation-opening readiness solely because actual carrier is recorded
+* mixing actual-carrier recording into owner / approver / valid-actor meaning or vice versa
+
+7. Change Trigger Rule
+Any actual-carrier change that affects:
+
+* active environment scope
+* temporary / emergency state
+* effective active carrier
+
+must trigger all of the following:
+
+* mandatory handoff update
+* new A / B / C re-determination
+* annual review continuation or re-scheduling
+
+No such change may remain only in local memory, informal practice, chat, or implementation convenience.
+
+8. Ambiguity Blocking Rule
+If actual carrier record is:
+
+* missing
+* ambiguous
+* expired without governed follow-up
+* inconsistent with recorded environment scope
+* inconsistent with trust-boundary statement reference
+
+then actual carrier recording remains UNSATISFIED and Opening re-check must not pass by convenience.
+
+Acceptance Criteria
+Review against the following:
+
+1. whether actual carrier is frozen as an identifiable governed object rather than vague technical wording
+2. whether minimum actual-carrier record includes carrier identity / object, carrier class, environment scope, effective date, status, trust-boundary statement reference, and single-carrier vs approved multi-environment mode
+3. whether unclear environment scope explicitly forces single-carrier mode
+4. whether temporary / emergency carrier recording requires trigger, start, expiry, responsible review path, and rollback / normalization path
+5. whether absence of expiry date or explicit expiry condition makes a temporary carrier invalid for governance purposes
+6. whether minimum trust-boundary reference form is explicitly tightened to frozen handoff rule / clause reference only
+7. whether minimum rollback / normalization path form is explicitly tightened to recovery target + trigger/time point + identifiable executing role
+8. whether actual carrier recording remains permanently separate from owner / approver / valid-actor / A-class / implementation-opening
+9. whether any active-carrier change explicitly triggers handoff update + A/B/C re-determination + annual review discipline
+10. whether missing / ambiguous / expired / inconsistent actual-carrier recording explicitly blocks Opening re-check readiness
+11. whether the record remains governance-only and does not leak into implementation authorization
+
+Factory Usability Check / Factory Mini-Check
+Minimum check:
+
+* if the project only really has one usable carrier path today, does this record honestly allow single-carrier recording instead of pretending multi-environment maturity?
+* if emergency carrier switching is needed, does this record allow bounded temporary recording instead of forcing off-record bypass?
+* if the team later reviews the setup, can they see which carrier was active, since when, under what scope, and whether it already expired?
+* is this record helping the project preserve control, or just adding abstract words without making the actual carrier state readable?
+
+Business Logic Confirmation / Corresponding Factory Floor Scenario
+This record is not about deciding who the person is, and it is not about deciding who approved something.
+Those were frozen separately already.
+
+This record addresses a narrower and more grounded question:
+
+Which actual carrier is really in effect now?
+
+Factory-language explanation:
+
+* who the person is, is one matter
+* who approved, is another matter
+* which governed carrier path is actually active now, is a third matter
+
+This record freezes that third matter.
+
+The real project / factory failure patterns are not lack of abstract architecture language.
+They are these:
+
+* everyone says "there is a carrier," but nobody can say exactly which one is actually active
+* a temporary / emergency carrier is put in place, but nobody records when it expires or how it returns
+* environment scope is vague, yet people start talking as if multi-environment readiness already exists
+* Opening re-check moves forward based on chat memory, assumption, or technical convenience
+
+So this record is not freezing abstract wording.
+It freezes a few hard operating truths:
+
+* the actual carrier must have an identifiable recorded object
+* the active environment scope must be explicit
+* a temporary carrier must have expiry and rollback discipline
+* ambiguity, inconsistency, or expiry must block Opening re-check rather than be explained away later
+
+If this record is frozen correctly, later Opening re-check will not rest on verbal convention, remembered context, or "the infra side probably knows."
+
+Final Review Notes
+
+W1
+The minimum acceptable form of `trust-boundary statement reference` is now tightened into the operative rule text: it must point to a frozen handoff rule or frozen handoff clause, and descriptive wording alone is insufficient.
+
+W2
+The minimum acceptable form of `rollback / normalization path` is now tightened into the operative rule text: it must include recovery target, recovery trigger condition or time point, and identifiable executing role; generic wording alone is insufficient.
+
+W3
+The previously open gate-confirmation gap is now closed.
+This record enters the frozen chain only together with the explicit gate confirmation already recorded above.
 
 Non-scope reaffirmation
 This record remains governance-only and does not authorize implementation, submission opening, or A-class establishment.
