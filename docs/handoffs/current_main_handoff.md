@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.35
+Mini-MES Handoff v2.36
 
-Updated after 2026-04-10 handoff-only freeze patch for Step47_PhaseA_Carrier_W2_Freeze
+Updated after 2026-04-10 handoff-only freeze patch for Step47_PhaseA_ActualOwner_Approver_Recording_Freeze
 Date: 2026-04-10
 
 1. Frozen mainline snapshot
@@ -85,6 +85,8 @@ Frozen Record - Handoff_StructureRefactor_ArchiveSplit_Freeze
 
 Frozen Record - Global Governance_P-Series_PlantFit_Practicality_Audit_Rule_v1
 
+Frozen Record - Step47_PhaseA_ActualOwner_Approver_Recording_Freeze
+
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
 
@@ -124,6 +126,7 @@ Handoff_StructureRefactor_ArchiveSplit_Freeze is now PASS WITH WARNINGS / FROZEN
 AGENTS Cross-Cutting Governance Rule 3 is aligned to the frozen failure-handling governance baseline only; this is repo-rule alignment only and not implementation, activation, deployment, or runtime production-use authorization.
 Global Governance_P-Series_PlantFit_Practicality_Audit_Rule_v1 is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; the P-series PlantFit / Practicality Audit rule is now frozen as a permanent cross-cutting governance lens alongside T-series and S-series without replacing existing governance lenses, it tightens plant-fit reviewer designation timing, preserves independent P0 versus Operator Minimal Action Rule review, fixes override re-review timing to the written override approval date unless another start date is explicitly recorded, and it does not authorize implementation.
 Step47_PhaseA_Carrier_W2_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA Carrier W2 is now frozen as a narrow governance-only record, it locks carrier definition separation, environment-scope minimum rule, governed update path with emergency change allowance, multi-environment isolation discipline, and mandatory handoff update / A-B-C re-determination / annual review discipline, it includes final-review-note tightening on emergency-change maximum duration and minimum cross-environment misuse detection path, and it does not authorize implementation, submission opening, or A-class establishment.
+Step47_PhaseA_ActualOwner_Approver_Recording_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA Actual Owner / Approver Recording is now frozen as a narrow governance-only record, it locks actual owner minimum recording, actual approver / approval authority minimum recording, owner / approver separation, proxy / temporary delegation discipline, change-triggered handoff update / A-B-C re-determination / annual review discipline, and permanent separation from carrier / A-class / implementation-opening, it includes final-review-note tightening on identifiable-role traceability, proxy duration hard upper bound, and minimum escalation-path form, and it does not authorize implementation, submission opening, or A-class establishment.
 
 FG_RECEIVE Location Master Physical Schema Baseline is frozen as a design-layer schema baseline only.
 It is not implementation authorization.
@@ -9503,6 +9506,280 @@ Final Review Notes
 
 * Final Review Note A: minimum acceptable cross-environment misuse detection path is now part of the operative rule text.
 * Final Review Note B: any single emergency change validity period must not exceed 30 calendar days unless Ruichen provides explicit written approval for a longer period recorded in handoff.
+
+Non-scope reaffirmation
+This record remains governance-only and does not authorize implementation, submission opening, or A-class establishment.
+
+69. Frozen Record - Step47_PhaseA_ActualOwner_Approver_Recording_Freeze
+
+Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+Scope Type: Handoff-only governance freeze
+Secondary review: PASS
+Final review: PASS WITH WARNINGS
+
+Purpose
+This record freezes the narrow governance boundary for Step47 PhaseA actual owner / actual approver / approval authority recording, locking minimum identifiable recording requirements, vacancy handling, separation discipline, proxy / temporary delegation discipline, change traceability and review discipline, and permanent separation from carrier / A-class / implementation-opening.
+
+This record is governance-only. It does not authorize implementation, does not unlock submission, does not establish A-class, and does not replace valid-actor or carrier governance.
+
+Locked Objective
+This record freezes only the following:
+
+1. actual owner minimum recording boundary;
+2. actual approver / approval authority minimum recording boundary;
+3. separation discipline between owner and approver;
+4. proxy / temporary delegation discipline;
+5. owner / approver change discipline including handoff update + A / B / C re-determination + annual review;
+6. permanent separation from carrier / A-class / implementation-opening.
+
+Non-scope
+This record does not:
+
+* authorize implementation;
+* open runtime production use;
+* satisfy A-class;
+* replace carrier governance;
+* replace valid-actor governance;
+* grant submission-opening readiness;
+* expand into permissions-system or org-chart-system design.
+
+S-1 / S0 / S+1
+S-1
+
+* owner / approval-path governance was already frozen at concept / path level, but actual recording discipline still required a narrow freeze;
+* carrier W2 was already frozen separately and must not be mixed into owner / approver recording;
+* escalate_higher was already narrowed and must not be re-expanded through vague approver recording;
+* P-Series is active and this record must remain plant-fit under P-1 / P0 / P+1.
+
+S0
+
+* perform a narrow governance freeze for actual owner / approver recording only;
+* lock minimum identifiable recording, vacancy handling, proxy discipline, and change / review discipline;
+* do not expand into implementation, permissions-system, or org-chart-system design.
+
+S+1
+
+* Actual carrier recording;
+* Opening re-check.
+
+Pre-Freeze Crisis Check
+This record must prevent the following failure patterns:
+
+1. assuming the floor naturally has stable, explicit, long-term owner / approver designation discipline while in reality there is turnover, vacancy, and shift substitution;
+2. making owner / approver change so process-heavy that supervisors and managers can only rely on oral approval, substitute signature, or later patching;
+3. allowing proxy / temporary delegation without expiry, trace, confirmation, or review, so later audit cannot reconstruct responsibility.
+
+Frozen Body
+
+1. Actual Owner Minimum Recording Rule
+   Actual owner must be recorded as an identifiable role or person.
+   Generic labels such as "management", "supervisor", "team", or other non-specific umbrella descriptions are not sufficient as the final owner record.
+
+Minimum acceptable owner record must include:
+
+* identifiable owner object;
+* scope of ownership;
+* effective date or intended effective date;
+* whether the owner is primary, backup, or temporary.
+
+Owner vacancy is allowed only if the record also includes one of the following:
+
+* a designated backup owner; or
+* an explicit escalation path.
+
+Owner vacancy must not remain blank without governed fallback.
+
+Final Review Note A - identifiable-role traceability requirement
+If a role name is used as the recorded owner or approver object, the record must also include the method for determining who actually held that role at the relevant time.
+A role label must not stand alone as a valid record if later reviewer reconstruction of the acting person is impossible.
+
+2. Actual Approver / Approval Authority Minimum Recording Rule
+   Actual approver must be recorded as:
+
+* a specific person; or
+* a clearly defined approval group with governed scope.
+
+Actual approver must not be recorded as a vague open-ended class such as "management can approve" or "someone senior can approve".
+
+Minimum acceptable approver record must include:
+
+* identifiable approver object;
+* approval scope;
+* effective date or intended effective date;
+* whether the approver is primary, backup, or temporary;
+* whether approval is individual or group-based.
+
+Approval authority must be explicitly scoped.
+It must not be treated as unlimited upward discretion, general management convenience, or implicit status-based power.
+
+3. Owner / Approver Separation Rule
+   Owner and approver must be recorded separately.
+   They must not be collapsed into one field, one concept, or one implied record.
+
+Owner and approver may be the same person only if all of the following are explicitly recorded:
+
+* same-person condition is declared;
+* reason is recorded;
+* approval scope remains bounded;
+* additional audit discipline is declared.
+
+Same-person owner/approver condition must not be treated as silent default.
+
+4. Additional Audit Discipline for Same-Person Condition
+   If owner and approver are the same person, the record must declare at least one additional audit control, such as:
+
+* second-person review; or
+* scheduled sampling / periodic audit review.
+
+Self-proposal and self-approval without any additional audit discipline is not allowed as an unbounded default path.
+
+5. Permanent Separation from Carrier / A-Class / Implementation-Opening
+   Actual owner / approver recording:
+
+* does not equal carrier validity;
+* does not equal A-class establishment;
+* does not equal implementation-opening authorization;
+* does not equal submission-opening readiness.
+
+The following are explicitly forbidden:
+
+* claiming carrier validity solely because owner / approver is recorded;
+* claiming A-class solely because owner / approver is recorded;
+* claiming implementation-opening readiness solely because owner / approver is recorded;
+* mixing owner / approver recording into carrier recording or vice versa.
+
+6. Proxy / Temporary Delegation Rule
+   Temporary proxy owner or proxy approver is allowed only under governed recording.
+
+Every proxy record must include, at minimum:
+
+* original owner / approver identity;
+* proxy identity;
+* proxy scope;
+* reason;
+* start date;
+* expiry date or explicit expiry condition;
+* whether post-event confirmation is required.
+
+All proxy approval actions must be marked as `proxy_action` or equivalent governed proxy marker.
+
+Proxy arrangement must not remain open-ended.
+
+Final Review Note B - proxy duration hard upper bound
+Any single proxy validity period must not exceed 90 calendar days, unless Ruichen provides explicit written approval for a longer period and the extended period is recorded in handoff.
+
+7. Proxy Expiry and Recovery Discipline
+   Proxy delegation must have an explicit validity period.
+   After expiry:
+
+* original authority must automatically resume; or
+* a new governed authorization must be recorded before continuation.
+
+Unrecorded oral proxy, ad hoc substitute approval, or habit-based temporary delegation is invalid for governance purposes and must not be treated as a valid approval record.
+
+If the original approver remains available, post-event confirmation must be recorded where required by the proxy record.
+
+8. Owner / Approver Change Recording Discipline
+   Any change to owner or approver, including:
+
+* person replacement;
+* role replacement;
+* approval-scope adjustment;
+* proxy activation affecting approval path;
+
+must trigger all of the following:
+* mandatory handoff record update;
+* new A / B / C re-determination;
+* annual review scheduling / continuation.
+
+No owner / approver change may remain only in local memory, informal habit, verbal instruction, or chat.
+
+Final Review Note C - minimum escalation-path form
+If owner vacancy fallback uses an escalation path rather than a backup owner, the escalation path must include at minimum:
+
+* identifiable escalation target;
+* escalation trigger condition;
+* expected response discipline.
+
+Generic wording such as "ask management" or "report to supervisor" is not sufficient.
+
+9. Annual Review Rule
+   All recorded owner / approver records must be reviewed at least once every 12 months.
+
+Unless a narrower frozen record later specifies a more precise role, the annual review must be executed by:
+
+* the designated plant-fit reviewer; or
+* Ruichen directly if no designated plant-fit reviewer is available or recorded.
+
+Minimum annual review record must include:
+
+* reviewer role / name;
+* review date;
+* reviewed owner / approver set;
+* whether each recorded owner / approver remains valid;
+* whether any record should be removed, narrowed, replaced, or re-blocked;
+* whether a new A / B / C re-determination is required.
+
+Acceptance Criteria
+Review against the following:
+
+1. whether actual owner is locked as an identifiable object rather than vague umbrella wording;
+2. whether owner vacancy is allowed only with backup owner or explicit escalation path;
+3. whether actual approver / approval authority is locked as a specific person or clearly defined approval group with bounded scope;
+4. whether owner and approver must be recorded separately rather than collapsed into one field;
+5. whether same-person owner/approver is allowed only with explicit declaration and additional audit discipline;
+6. whether proxy / temporary delegation must be traced, time-bounded, marked as `proxy_action`, restored or re-authorized after expiry, and kept within the hard upper bound;
+7. whether owner / approver change must trigger handoff update + A / B / C re-determination + annual review;
+8. whether owner / approver recording remains permanently separate from carrier / A-class / implementation-opening;
+9. whether the record remains governance-only and does not leak into implementation authorization, submission opening, or org-chart expansion;
+10. whether the record remains plant-fit under P-Series.
+
+Factory Usability Check / Factory Mini-Check
+Minimum check:
+
+* if owner is temporarily vacant, does this record allow backup owner or escalation path instead of dead-stopping the responsibility record?
+* if a manager is away or a supervisor is overloaded, does this record allow governed proxy instead of forcing oral substitute approval?
+* if SME staffing makes owner and approver the same person, does this record at least require extra audit instead of silently accepting self-loop approval?
+* after proxy use, can later reviewers still see who acted as proxy, for how long, and whether recovery happened on time?
+* is this record helping the floor write down the real responsibility chain, or pretending the factory already has enterprise-level management discipline?
+
+Business Logic Confirmation / Corresponding Factory Floor Scenario
+This record is not about technical identity recognition, and it is not about which carrier path brought identity into the system.
+Those were frozen separately already.
+
+This record addresses a more grounded question:
+
+Who is actually responsible, who may actually approve, and how temporary substitution is governed without relying on oral habit?
+
+Factory-language explanation:
+
+* who the person is, is one matter;
+* which carrier path brought the identity in, is another matter;
+* whether that person is the actual responsible owner or actual approver for this governed context, is a third matter.
+
+This record freezes that third matter.
+
+The real factory failure patterns are not lack of concepts. They are these:
+
+* one supervisor says today that he can approve, another person substitutes tomorrow, and no formal record matches either event;
+* owner becomes vacant, everyone "knows who to ask," but no governed record exists;
+* proxy is used, but nobody can later tell for how long, whether it expired, or whether anyone confirmed it afterward.
+
+So this record is not freezing elegant approval theory.
+It is freezing a few hard factory truths:
+
+* responsible owner cannot be recorded as vague air;
+* approver cannot be assumed from job-title habit;
+* proxy may exist only with trace, duration, expiry, and recoverability;
+* once changed, the record must be updated, re-determined, and reviewed, not carried only by chat memory.
+
+If this record is frozen correctly, later Actual carrier recording and Opening re-check will not rest on oral assumption, substitute habit, or blurred responsibility.
+
+Final Review Notes
+
+* Final Review Note A: identifiable-role traceability requirement is now part of the operative rule text.
+* Final Review Note B: any single proxy validity period must not exceed 90 calendar days unless Ruichen provides explicit written approval for a longer period recorded in handoff.
+* Final Review Note C: minimum escalation-path form is now part of the operative rule text.
 
 Non-scope reaffirmation
 This record remains governance-only and does not authorize implementation, submission opening, or A-class establishment.
