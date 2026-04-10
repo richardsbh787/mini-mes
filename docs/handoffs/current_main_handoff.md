@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.34
+Mini-MES Handoff v2.35
 
-Updated after 2026-04-10 handoff-only freeze patch for Global Governance_P-Series_PlantFit_Practicality_Audit_Rule_v1
+Updated after 2026-04-10 handoff-only freeze patch for Step47_PhaseA_Carrier_W2_Freeze
 Date: 2026-04-10
 
 1. Frozen mainline snapshot
@@ -123,6 +123,7 @@ Step47_PhaseA_EscalateHigher_ActionSet_DisableRule_Freeze is now PASS WITH WARNI
 Handoff_StructureRefactor_ArchiveSplit_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; handoff structure layering is now frozen, `docs/handoffs/current_main_handoff.md` remains the active main baseline / main cockpit page, future topic archive files and a future freeze index may exist only as support layers, archive split does not rewrite meaning, weaken freeze strength, or permit silent deletion, and this record does not itself execute archive migration.
 AGENTS Cross-Cutting Governance Rule 3 is aligned to the frozen failure-handling governance baseline only; this is repo-rule alignment only and not implementation, activation, deployment, or runtime production-use authorization.
 Global Governance_P-Series_PlantFit_Practicality_Audit_Rule_v1 is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; the P-series PlantFit / Practicality Audit rule is now frozen as a permanent cross-cutting governance lens alongside T-series and S-series without replacing existing governance lenses, it tightens plant-fit reviewer designation timing, preserves independent P0 versus Operator Minimal Action Rule review, fixes override re-review timing to the written override approval date unless another start date is explicitly recorded, and it does not authorize implementation.
+Step47_PhaseA_Carrier_W2_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA Carrier W2 is now frozen as a narrow governance-only record, it locks carrier definition separation, environment-scope minimum rule, governed update path with emergency change allowance, multi-environment isolation discipline, and mandatory handoff update / A-B-C re-determination / annual review discipline, it includes final-review-note tightening on emergency-change maximum duration and minimum cross-environment misuse detection path, and it does not authorize implementation, submission opening, or A-class establishment.
 
 FG_RECEIVE Location Master Physical Schema Baseline is frozen as a design-layer schema baseline only.
 It is not implementation authorization.
@@ -9213,3 +9214,295 @@ first, truth must not be corrupted;
 second, the shopfloor must not be written into paralysis.
 
 A system that protects boundaries while still letting the floor stay alive under pressure is the system Mini-MES actually wants.
+
+68. Frozen Record - Step47_PhaseA_Carrier_W2_Freeze
+
+Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+Scope Type: Handoff-only governance freeze
+Secondary review: PASS
+Final review: PASS WITH WARNINGS
+
+Purpose
+This record freezes the narrow governance boundary for the Step47 PhaseA external trusted identity-domain carrier at W2 level, covering carrier definition, environment scope discipline, governed update path with emergency change allowance, multi-environment isolation discipline, and mandatory recording / re-review discipline, while preserving permanent separation from owner, approver, A-class recognition, and implementation-opening.
+
+This record is governance-only. It does not authorize implementation, does not unlock submission, does not establish A-class, and does not replace owner / approver / valid-actor governance.
+
+Locked Objective
+This record freezes only the following:
+
+1. carrier definition and permanent separation semantics;
+2. environment scope minimum rule;
+3. governed update path, including emergency change allowance;
+4. multi-environment isolation discipline;
+5. mandatory handoff update + A / B / C re-determination + annual review discipline.
+
+Non-scope
+This record does not:
+
+* authorize implementation;
+* open runtime production use;
+* satisfy A-class;
+* replace owner / approver recording;
+* replace valid-actor governance;
+* declare multi-environment support by default;
+* grant submission-opening readiness.
+
+S-1 / S0 / S+1
+S-1
+
+* carrier-class landing point was already frozen, but environment scope, update path, isolation, and recording discipline still required W2 closure;
+* owner / approver path was already frozen separately and must not be mixed into carrier semantics;
+* P-Series is active and this record must remain plant-fit under P-1 / P0 / P+1.
+
+S0
+
+* perform a narrow governance freeze for Carrier W2 only;
+* lock environment scope rule, emergency change path, isolation rule, and mandatory recording / re-review rule;
+* do not expand into implementation or full identity-system design.
+
+S+1
+
+* Actual owner / approver recording;
+* Actual carrier recording;
+* Opening re-check.
+
+Pre-Freeze Crisis Check
+This record must prevent the following failure patterns:
+
+1. pretending the factory has clear environment separation when it does not;
+2. writing governed update path so rigidly that emergency carrier change can only happen through rule bypass;
+3. claiming multi-environment support when technical isolation is not real;
+4. allowing environment scope changes to remain unrecorded, making later review impossible.
+
+Frozen Body
+
+1. Carrier Definition and Permanent Separation Freeze
+   Carrier in Step47 PhaseA is the governed transport path through which the external trusted identity-domain information is carried into the system.
+
+Carrier is not:
+
+* the identity domain itself;
+* the valid-actor object;
+* the owner;
+* the approver;
+* the A-class recognition;
+* the implementation-opening decision.
+
+Carrier existence alone:
+
+* does not satisfy A-class;
+* does not authorize implementation;
+* does not unlock submission;
+* does not bypass any frozen prerequisite;
+* does not replace owner / approver / valid-actor governance.
+
+The following are explicitly forbidden in this freeze:
+
+* equating carrier with owner or approver;
+* interpreting carrier technical presence as A-class establishment;
+* claiming implementation-opening readiness based solely on carrier recording;
+* treating multi-environment carrier support as a default capability rather than a separately governed exception.
+
+2. Environment Scope Minimum Rule
+   Multi-environment carrier support is allowed only where environment scope is clear, distinguishable, and governably reviewable.
+
+Environment scope is considered not clear if any of the following applies:
+
+* the factory cannot reliably distinguish dev / staging / production or equivalent operating environments;
+* the same devices, runtime entry points, or identity path are used interchangeably without governed distinction;
+* operators or supervisors have no practical way to confirm the current environment;
+* handoff contains no explicit environment list or environment-identification method;
+* cross-environment misuse cannot be detected with at least a governed review path.
+
+If environment scope is not clear:
+
+* multi-environment carrier support is not allowed;
+* only a single governed carrier class may be recorded;
+* no document may claim multi-environment carrier readiness.
+
+Any future request for multi-environment support requires all of the following:
+
+* explicit environment isolation evidence;
+* explicit environment identification method;
+* explicit operator / supervisor confirmation method;
+* explicit cross-environment misuse detection path;
+* separate governance review before approval.
+
+Final Review Note A - minimum acceptable cross-environment misuse detection path
+The cross-environment misuse detection path must include at least one operable verification method, such as environment-marker comparison, configuration-source verification, or scheduled cross-check review.
+Annual review alone is not sufficient as the sole detection path.
+
+3. Governed Update Path with Emergency Change Allowance
+   Carrier governed update path must include both:
+
+* a normal governed update path;
+* an emergency change allowance.
+
+Normal governed update path
+Normal non-emergency carrier change must follow governed review and recording before becoming effective.
+
+Emergency change trigger condition
+Emergency change may be used only when all of the following are true:
+
+* there is a live operational need that cannot wait for the normal path;
+* failing to change would materially block or destabilize live operation;
+* the temporary change can still be bounded and recorded;
+* the change does not claim A-class establishment or implementation-opening.
+
+Mandatory emergency record
+Every emergency change must record, at minimum:
+
+* change actor;
+* timestamp;
+* reason;
+* affected carrier scope;
+* temporary validity period;
+* intended follow-up disposition.
+
+Emergency change discipline
+
+* the maximum validity period must be explicitly set;
+* if no specific period is approved, the default validity period is 7 calendar days;
+* the maximum validity period must not exceed a reasonable business window;
+* after expiry, the system must either auto-revert or require explicit re-approval before continued use;
+* silent permanent replacement is forbidden;
+* no emergency path may become a hidden permanent production carrier through inactivity or lack of follow-up.
+
+Emergency change is a controlled degradation path only. It is not a shortcut to permanent approval.
+
+Final Review Note B - hard upper bound for emergency change duration
+Any single emergency change validity period must not exceed 30 calendar days, unless Ruichen provides explicit written approval for a longer period and the extended period is recorded in handoff.
+
+4. Multi-Environment Isolation Discipline
+   If multi-environment carrier support is approved, each environment must have its own carrier configuration stored independently.
+
+The runtime environment must read only its own configuration.
+
+Isolation is considered insufficient / failed if any of the following applies:
+
+* one environment can read or apply another environment's carrier configuration;
+* test and production rely on the same effective carrier path without governed separation;
+* configuration storage is shared in a way that allows silent cross-environment substitution;
+* cross-environment misuse cannot be detected or reconstructed afterward.
+
+If isolation is insufficient or failed:
+
+* multi-environment support remains blocked;
+* the system must stay in single-carrier mode;
+* no document may claim multi-environment carrier readiness;
+* no implementation or review text may treat partial isolation as good enough without separate governance approval.
+
+5. Environment Scope Recording, Re-Determination, and Annual Review Discipline
+   Any of the following events must trigger the full discipline below:
+
+* addition of a new environment;
+* removal of an existing environment;
+* modification of an existing environment scope;
+* carrier change that affects environment binding or environment interpretation.
+
+Mandatory actions on trigger
+The trigger event must cause all of the following:
+
+1. mandatory handoff record update;
+2. new A / B / C re-determination;
+3. annual review scheduling / continuation.
+
+Minimum handoff record requirement
+The handoff update must include, at minimum:
+
+* changed environment item;
+* effective date or intended effective date;
+* nature of the change;
+* affected carrier scope;
+* responsible review path;
+* whether multi-environment support remains valid or is re-blocked.
+
+No environment-scope change may remain only in local memory, runtime convention, informal practice, or chat.
+
+Annual review rule
+All recorded environment scopes must be reviewed at least once every 12 months.
+
+Annual review execution role
+Unless a narrower frozen record later specifies a more precise role, the annual review must be executed by:
+
+* the designated plant-fit reviewer; or
+* Ruichen directly if no designated plant-fit reviewer is available or recorded.
+
+Minimum annual review record form
+The annual review record must include, at minimum:
+
+* reviewer role / name;
+* review date;
+* reviewed environment scope set;
+* whether current carrier/environment mapping remains valid;
+* whether any environment should be removed, narrowed, or re-blocked;
+* whether a new A / B / C re-determination is required.
+
+6. Trust-Boundary Minimum Discipline
+   This record freezes only the minimum trust-boundary requirement:
+
+* carrier must be treated as a governed transport path, not a user-claim surface;
+* carrier input must not be accepted as trusted merely because it exists technically;
+* trust-boundary statement must remain explicit and non-forgeability-oriented;
+* detailed implementation shape may remain for later governed work, but non-forgeability direction must not be weakened.
+
+Acceptance Criteria
+Review against the following:
+
+1. whether carrier is permanently separated from owner / approver / valid-actor / A-class / implementation-opening;
+2. whether carrier existence alone is explicitly written as insufficient for A-class and implementation-opening;
+3. whether unclear environment scope explicitly forces fallback to single-carrier mode;
+4. whether emergency change allowance has trigger condition, default validity, record requirement, expiry discipline, and hard upper bound;
+5. whether failed isolation explicitly blocks multi-environment support;
+6. whether environment change explicitly triggers mandatory handoff update + A / B / C re-determination + annual review;
+7. whether annual review role and minimum record form are explicitly stated;
+8. whether the record remains governance-only and does not leak into implementation readiness;
+9. whether the record remains plant-fit under P-Series.
+
+Factory Usability Check / Factory Mini-Check
+Minimum check:
+
+* if the factory does not truly have clear environment separation, does this record honestly fall back to single-carrier mode?
+* if the floor must temporarily change gateway / carrier, does this record allow a controlled temporary path instead of forcing bypass?
+* if test and production are easy to mix, does this record clearly say "no isolation, no multi-environment claim"?
+* after carrier or environment-scope change, can later reviewers still see who changed it, why, and when it must be re-reviewed?
+* is this record helping the floor preserve control, or pretending the factory already has enterprise-level environment governance?
+
+Business Logic Confirmation / Corresponding Factory Floor Scenario
+This record is not about deciding who is responsible, and it is not about deciding who approved something.
+It is about a more basic question:
+
+Through which governed path does the external trusted identity enter the system?
+
+Factory-language explanation:
+
+* who the person is, is one matter;
+* who approved, is another matter;
+* which transport path / gate carries that identity into the system, is a separate matter.
+
+Carrier W2 exists to lock that third matter first.
+
+The real factory failure patterns are not about elegant wording. They are these:
+
+* the factory does not actually separate environments clearly, but documents pretend it does;
+* gateway / carrier must be changed urgently, and the floor cannot wait for a full normal approval path;
+* test and production share one carrier path and eventually contaminate the live chain;
+* environment scope changes, but nobody updates handoff and nobody can explain the real state later.
+
+So this record is not freezing abstract architecture words.
+It is freezing a few hard factory truths:
+
+* if environments are not clearly distinguishable, do not pretend multi-environment support exists;
+* temporary change is allowed only with trace, time limit, and re-review;
+* if isolation is not real, nobody may claim isolation succeeded;
+* if carrier or environment scope changes, the system must re-record and re-determine, not rely on chat memory or local habit.
+
+If this record is frozen correctly, later Actual carrier recording will not rest on verbal convention, assumed practice, or technical luck.
+
+Final Review Notes
+
+* Final Review Note A: minimum acceptable cross-environment misuse detection path is now part of the operative rule text.
+* Final Review Note B: any single emergency change validity period must not exceed 30 calendar days unless Ruichen provides explicit written approval for a longer period recorded in handoff.
+
+Non-scope reaffirmation
+This record remains governance-only and does not authorize implementation, submission opening, or A-class establishment.
