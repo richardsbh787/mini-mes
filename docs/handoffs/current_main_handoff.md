@@ -138,6 +138,7 @@ Step47_PhaseA_ImplementationOpening_ActualDecision_v1 is now PASS WITH WARNINGS 
 Implementation Result Record - Step47 PhaseA Declared/Manual Read Surface is now PASS / INSERTED WITH RUICHEN GATE CONFIRMATION; it records implementation result commit `f7fd056901bfa6a9bbe9c210f9852aaebddbe2dc` for the separate Step47 PhaseA declared/manual read surface, confirms mandatory contract markers `data_strength = "declared_manual"` and `is_legal_truth = false`, preserves `declared_location` naming, marks test records with `is_test_data = true`, records contract-level misuse blocking, Literal-constrained `data_strength`, and dev/test-only route exposure guard, carries forward the merge-side reminder that Operator Minimal Action Rule review record and P-Series review record must be archived before merge, includes non-blocking implementation notes on review basis and naming stability, and it does not authorize submission opening, staging opening, legal truth effect, admitted-source activation, or any PhaseB opening.
 Review Record - Operator Minimal Action Rule Check - Step47 PhaseA Declared/Manual Read Surface is now PASS / INSERTED WITH RUICHEN GATE CONFIRMATION; it records Operator Minimal Action Rule review against `Implementation Result Record - Step47 PhaseA Declared/Manual Read Surface`, confirms that at the current API/service-layer and dev/test boundary the implementation adds no new operator input steps, no new scan steps, and no new shopfloor decision burden, preserves the boundary that this conclusion applies only to the current dev/test read-surface scope and does not automatically extend to staging, production, UI/report presentation, correctness re-approval, submission opening, legal truth effect, admitted-source activation, or any PhaseB opening, and carries forward the non-blocking note that future UI/report-stage review should use a clearer trigger standard around whether operators must actively interpret `data_strength` or `is_legal_truth`.
 Review Record - P-Series PlantFit / Practicality Check - Step47 PhaseA Declared/Manual Read Surface is now PASS / INSERTED WITH RUICHEN GATE CONFIRMATION; it records P-Series PlantFit / Practicality review against `Implementation Result Record - Step47 PhaseA Declared/Manual Read Surface`, confirms that at the current API/service/contract-layer and dev/test boundary the implementation is plant-fit because it reduces likely shopfloor misreading without adding frontline complexity, preserves the boundary that this conclusion applies only to the current API/service/contract layer and current dev/test scope and does not automatically extend to UI, reporting, staging, or production, carries forward the fixed naming requirement for `declared_location`, and records that any future staging/production deployment, UI/report usage, or naming change must trigger a new P-Series review rather than being treated as a cosmetic follow-on.
+Implementation Result Record - Step47 PhaseA Declared/Manual Intake Skeleton is now PASS / INSERTED WITH RUICHEN GATE CONFIRMATION; it records implementation result commit `ac6742f505e4b1044253eeed51b9098b973af097` for the separate Step47 PhaseA declared/manual intake skeleton, confirms a single-record create-only dev/test path with mandatory audit spine, records that created records carry `data_strength = "declared_manual"` and `is_legal_truth = false`, preserves `declared_location` naming, records server-side `declared_by` sourcing, system-generated `declared_at`, anti-bulk enforcement, explicit overwrite/correction misuse rejection, and dev/test-only exposure guard, carries forward the unchanged boundary that raw technical status codes may remain in backend/dev/log documentation while future operator-facing UI messages must use plain factory language and next-action guidance, preserves the merge-side reminder that Operator Minimal Action Rule review record and P-Series review record must be archived before merge, and it does not authorize submission opening, staging opening, legal truth effect, admitted-source activation, any PhaseB opening, or any correction-path opening.
 
 FG_RECEIVE Location Master Physical Schema Baseline is frozen as a design-layer schema baseline only.
 It is not implementation authorization.
@@ -10910,3 +10911,104 @@ This review does not mean
 * legal truth effect
 * admitted-source activation
 * PhaseB opening
+
+Implementation Result Record - Step47 PhaseA Declared/Manual Intake Skeleton
+
+Final review result: PASS
+Ruichen Gate Confirmation: CONFIRMED
+Authority layer: Handoff-only implementation result record
+
+Commit
+`ac6742f505e4b1044253eeed51b9098b973af097`
+
+Exact files changed
+
+* `app/api/v2/step47_phasea_declared_manual_intake.py`
+* `app/services/step47_phasea_declared_manual_intake.py`
+* `app/schemas/step47_phasea_declared_manual_intake.py`
+* `tests/test_step47_phasea_declared_manual_intake.py`
+
+Implementation meaning
+
+* separate Step47 PhaseA declared/manual intake skeleton implemented
+* single-record, create-only dev/test path
+* mandatory audit spine enforced
+* created records carry:
+  `data_strength = "declared_manual"`
+  `is_legal_truth = false`
+* location-related field remains `declared_location`
+* client-side identity and timestamp input are blocked
+* bulk payloads are blocked
+* overwrite/correction misuse is explicitly rejected
+* non-dev/test exposure is blocked
+
+Anti-bulk handling
+
+* only one JSON object payload is accepted
+* array request body returns `422`
+* explicit message:
+  `Step 47 Phase A declared/manual intake accepts one record only and rejects bulk or array payloads`
+* no bulk create or import route was added
+
+Declared_by handling
+
+* `declared_by` is sourced only from server-side dependency `get_step47_phasea_declared_manual_authenticated_identity`
+* any client-supplied `declared_by` is explicitly rejected with `422`
+
+Declared_at handling
+
+* `declared_at` is never accepted from the request body
+* any client-supplied `declared_at` is explicitly rejected with `422`
+* stored timestamp is system-generated by the existing `Step47PhaseADeclaredManualSource` model default at create time
+
+Overwrite/correction misuse handling
+
+* misuse fields such as `overwrite_target_id` and `correction_target_id` are explicitly checked on the intake endpoint
+* misuse returns `409` with a clear create-only rejection message
+
+Dev/test-only exposure
+
+* route is available only when:
+  `MINI_MES_ENV` is `dev`, `development`, or `test`
+  and `STEP47_PHASEA_DECLARED_MANUAL_INTAKE_ENABLED` is explicitly enabled
+* otherwise returns `404` with:
+  `Step 47 Phase A declared/manual intake is unavailable outside the approved dev/test boundary.`
+
+Language-layer rule unchanged
+
+* technical status codes may remain in backend/dev/log documentation
+* operator-facing UI messages must not expose raw codes such as 422, 404, or 409
+* any future operator-facing wording must use plain factory language and next-action guidance
+
+Non-scope confirmed
+
+* no submission path opened
+* no staging path opened
+* no production-like path opened
+* no admitted-source activation opened
+* no PhaseB path opened
+* no legal-truth path opened
+* no correction path opened
+
+Tests run
+
+* `python -m pytest tests/test_step47_phasea_declared_manual_intake.py`
+* result: `8 passed`
+
+Boundary unchanged
+
+* no submission opening
+* no staging opening
+* no legal truth effect
+* no admitted-source activation
+* no PhaseB opening
+* no correction-path opening
+
+Merge-side reminder
+
+* Operator Minimal Action Rule review record must be archived before merge
+* P-Series review record must be archived before merge
+
+Non-blocking implementation note
+
+* this implementation review was accepted based on Codex implementation summary plus Lao Xiao secondary review, without independent line-by-line diff verification by Qinran
