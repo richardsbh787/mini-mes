@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.39
+Mini-MES Handoff v2.40
 
-Updated after 2026-04-10 handoff-only decision-record patch for Step47_PhaseA_OpeningRecheck_ActualDecision_v1
+Updated after 2026-04-10 handoff-only decision-record patch for Step47_PhaseA_ImplementationOpening_ActualDecision_v1
 Date: 2026-04-10
 
 1. Frozen mainline snapshot
@@ -134,6 +134,7 @@ Step47_PhaseA_ActualOwner_Approver_Recording_Freeze is now PASS WITH WARNINGS / 
 Step47_PhaseA_ActualCarrier_Recording_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA Actual Carrier Recording is now frozen as a narrow governance-only record, it locks minimum actual-carrier recording, environment-scope recording, temporary/emergency carrier recording, permanent separation from owner / approver / valid-actor / A-class / implementation-opening, change-triggered handoff update / A-B-C re-determination / annual review discipline, and ambiguity-blocking discipline for Opening re-check, it includes final-review-note tightening on minimum trust-boundary reference form and minimum rollback / normalization path form, and it does not authorize implementation, submission opening, or A-class establishment.
 Step47_PhaseA_OpeningRecheck_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA Opening re-check is now frozen as a narrow governance-only record, it locks Opening re-check as a governance re-check layer only, minimum prerequisite re-check scope across known-valid-actor governance, carrier recording, actual owner / approver recording, and actual carrier recording, temporary/emergency carrier expiry and rollback-execution re-check discipline, no-auto-pass discipline, re-check-layer-only output discipline, separate-decision-record discipline, and downstream non-equality discipline, it includes final-review-note tightening on ambiguity-removal judgment responsibility and decision-record timing / review-chain discipline, and it does not authorize implementation, submission opening, A-class establishment, or runtime production use.
 Step47_PhaseA_OpeningRecheck_ActualDecision_v1 is now PASS WITH WARNINGS / DECISION RECORD CONFIRMED; Step47 PhaseA Opening re-check actual decision is now recorded as PASS at re-check layer only, it confirms that the already-frozen opening prerequisites are re-check-satisfied at the governance re-check layer, includes Qinran-confirmed ambiguity-clearance discipline, carries an explicit boundary that item F is confirmed only against the recorded handoff state and must be re-reviewed if later unrecorded emergency-carrier or overdue-rollback facts are discovered, uses the explicit record identifier Step47_PhaseA_OpeningRecheck_ActualDecision_v1 for downstream citation, and it does not authorize implementation, implementation-opening PASS, submission opening, A-class establishment, or runtime production use.
+Step47_PhaseA_ImplementationOpening_ActualDecision_v1 is now PASS WITH WARNINGS / DECISION RECORD CONFIRMED; Step47 PhaseA implementation-opening actual decision is now recorded as PASS for the manual / declared layer only, it authorizes implementation work only within the already-frozen Step47 PhaseA governance boundaries, limited to coding and unit/integration testing in development/test environments only, preserves permanent non-equality from submission opening, A-class, runtime production use, admitted-source activation, legal location truth effect, and PhaseB dependency, includes final-review-note tightening on development/test environment classification responsibility, minimum implementation review-gate trigger before merge, and explicit Ruichen confirmation discipline, and it does not authorize staging or production-like deployment, submission opening, A-class establishment, runtime production use, admitted-source activation, or legal location truth effect.
 
 FG_RECEIVE Location Master Physical Schema Baseline is frozen as a design-layer schema baseline only.
 It is not implementation authorization.
@@ -10482,3 +10483,231 @@ This card is important not because it says PASS, but because it prevents later p
 
 It also preserves a practical floor reality:
 if a temporary emergency carrier later turns out to have expired, or should already have rolled back but did not, that part must be re-opened and re-reviewed rather than hidden behind this PASS record.
+
+Decision Record - Step47_PhaseA_ImplementationOpening_ActualDecision_v1
+
+Status: PASS WITH WARNINGS / DECISION RECORD CONFIRMED
+Layer: Governance / Decision Layer Only
+Secondary review: PASS WITH WARNINGS
+Final review: PASS WITH WARNINGS
+Ruichen decision confirmation: CONFIRMED
+
+Depends on
+
+* `Frozen Record - Step47_PhaseA_ImplementationOpeningPrerequisite_Freeze`
+* `Frozen Record - Step47_PhaseA_ImplementationAuthorization_Gate`
+* `Frozen Record - Step47_PhaseA_MinimumAuditBaseline`
+* `Frozen Record - Non-Scan Operation Mode Baseline v2`
+* `Frozen Record - Flow Governance Baseline v2`
+* `Frozen Record - Step47_PhaseA_ActualOwner_Approver_Recording_Freeze`
+* `Frozen Record - Step47_PhaseA_ActualCarrier_Recording_Freeze`
+* `Frozen Record - Step47_PhaseA_OpeningRecheck_Freeze`
+* `Decision Record - Step47_PhaseA_OpeningRecheck_ActualDecision_v1`
+
+Locked Objective
+Record the actual Step47 PhaseA implementation-opening decision against the already-frozen prerequisite chain, and state clearly whether implementation-opening for the PhaseA manual / declared layer is now PASS or remains BLOCKED, without turning that decision into submission opening, A-class establishment, runtime production-use authorization, admitted-source activation, or legal truth elevation.
+
+Non-scope
+This decision record does not:
+
+* authorize submission opening
+* establish A-class
+* authorize runtime production use
+* authorize deployment to staging or production-like environment
+* activate admitted-source downstream use
+* convert declared/manual data into legal location truth
+* unlock PhaseB legal-evidence chain
+* create any dependency obligation for PhaseB
+* rewrite any upstream frozen prerequisite meaning
+* weaken downstream non-equality discipline
+
+Decision Result
+`Implementation-opening = PASS (PhaseA manual / declared layer only)`
+
+Decision Basis
+This confirmed PASS is grounded only on the already-frozen Step47 PhaseA prerequisite chain.
+
+The confirmed PASS conclusion is based on the following explicit findings:
+
+1. The implementation-opening prerequisite chain has already been frozen in handoff and does not remain undefined.
+2. The governance owner / approval authority / governed update-path requirements for the relevant actor lane have already been frozen.
+3. Actual owner / approver recording is already frozen as a governed actual-recording layer.
+4. Actual carrier recording is already frozen as a governed actual-recording layer.
+5. Opening re-check has already been frozen and the actual Opening re-check decision has already concluded PASS at re-check layer only.
+6. PhaseA minimum audit requirements are already frozen, including declared-by / declared-at / declared-location / source-record-reference discipline.
+7. Non-scan manual/declared mode has already been frozen as a degraded but governed and auditable mode, not equal-strength to scan-driven truth.
+8. Flow governance requirements are already frozen, including state model / acceptance gate / recovery path discipline.
+9. No current prerequisite in this chain still requires convenience inference in order to justify a narrow implementation-opening decision for PhaseA manual / declared recording.
+
+Explicit Decision Findings
+
+A. Prerequisite-chain completeness
+Result: `SATISFIED`
+Reason: implementation-opening is no longer being asked to stand on vague future intent; the prerequisite chain is already frozen in handoff.
+
+B. Actual responsibility and approval recording
+Result: `SATISFIED`
+Reason: actual owner / approver recording has already been frozen as a governed actual-recording layer and is no longer left to oral assumption.
+
+C. Actual carrier recording
+Result: `SATISFIED`
+Reason: actual carrier recording has already been frozen and Opening re-check no longer depends on vague "some carrier exists" language.
+
+D. Opening re-check dependency
+Result: `SATISFIED`
+Reason: Opening re-check has already been passed at re-check layer only, and that PASS remains explicitly separate from implementation-opening meaning.
+
+E. Minimum audit spine
+Result: `SATISFIED`
+Reason: declared/manual PhaseA submission discipline already requires the minimum audit spine and forbids evidence-free fallback.
+
+F. Non-scan mode boundary
+Result: `SATISFIED`
+Reason: manual/declared mode is already frozen as governed, degraded, auditable, and permanently not equal-strength to scan-driven mode.
+
+G. Flow-governance dependency
+Result: `SATISFIED`
+Reason: the flow-governance baseline already requires explicit decomposition / state / gate / recovery discipline, so implementation-opening is not being granted into an ungoverned flow void.
+
+H. Non-equality preservation
+Result: `SATISFIED`
+Reason: no record in this chain currently collapses implementation-opening into submission opening, A-class, runtime use, admitted-source activation, or legal truth effect.
+
+What This Decision Changes
+This decision changes only one thing:
+
+* it authorizes `implementation-opening` for the Step47 PhaseA manual / declared layer within already-frozen governance boundaries
+
+What This Decision Does NOT Change
+This decision does not mean:
+
+* submission may open
+* A-class is established
+* runtime production use is authorized
+* staging or production-like deployment is authorized
+* admitted-source downstream use is activated
+* legal location truth is established
+* PhaseB legal-evidence chain is unlocked
+* manual/declared records may be consumed as legal truth
+
+Allowed Meaning of PASS
+If this decision enters handoff as PASS, the allowed meaning is only:
+
+* implementation work for the PhaseA manual / declared layer may proceed
+* that implementation work is limited to coding and unit/integration testing in development/test environments only
+* implementation must remain inside the already-frozen governance boundaries
+* downstream consumers must continue to identify declared/manual status explicitly
+* correction, traceability, and audit discipline must remain intact
+* all implementation work under this PASS must continue to be reviewed against Operator Minimal Action Rule and P-Series (PlantFit) before merge or advancement
+
+Forbidden Over-Reading of PASS
+Even if `Implementation-opening = PASS`, the following remain forbidden:
+
+* treating PhaseA as a reduced form of PhaseB
+* treating manual/declared data as legal location truth
+* treating implementation-opening as submission-opening
+* treating implementation-opening as runtime production-use authorization
+* treating implementation-opening as permission to deploy into staging or production-like environment
+* treating implementation-opening as admitted-source activation
+* treating implementation-opening as permission to weaken Operator Minimal Action Rule, P-Series, or audit spine
+* silently upgrading manual/non-scan mode into scan-driven mode
+* using this PASS to claim that PhaseB or admitted-source activation must later depend on PhaseA implementation output
+
+Output Discipline
+This decision record may output only one of the following governance meanings:
+
+* `Implementation-opening = PASS`
+* `Implementation-opening = BLOCKED`
+
+It must not output:
+
+* submission open
+* A-class established
+* production use authorized
+* legal truth established
+* admitted-source active
+
+Mandatory Boundary Wording
+`Implementation-opening = PASS (PhaseA manual / declared layer only)`
+
+`This decision authorizes implementation work only within the already-frozen Step47 PhaseA manual / declared governance boundaries. It authorizes coding and unit/integration testing in development/test environments only. It does not authorize deployment to staging or production-like environment, submission opening, A-class establishment, runtime production use, admitted-source activation, or legal location truth effect.`
+
+Separate-Record Discipline
+This actual implementation-opening conclusion must stand as its own decision record in handoff.
+It must not be silently merged into:
+
+* the Opening re-check decision record
+* a summary sync line only
+* a later runtime-use decision
+* a later admitted-source activation decision
+
+Downstream Non-Equality
+Even after `Implementation-opening = PASS`:
+
+* submission opening remains separate
+* A-class remains separate
+* runtime production use remains separate
+* admitted-source activation remains separate
+* legal truth effect remains separate
+* PhaseB remains separate
+
+No downstream step may infer those meanings automatically from this decision record.
+
+Any future use of PhaseA implementation output by PhaseB or by admitted-source activation requires a separate governance decision.
+
+Final Review Notes
+
+W1 - Development/test environment classification responsibility
+Whether a target environment qualifies as `development/test environment` for the allowed scope of this PASS must be confirmed by the designated plant-fit reviewer or by Ruichen directly.
+If environment classification is ambiguous, it must be treated as outside the allowed scope by default.
+
+W2 - Minimum implementation review-gate trigger
+All implementation work under this PASS must continue to be reviewed against Operator Minimal Action Rule and P-Series (PlantFit).
+At minimum, each implementation Task Card must have an explicit Operator Minimal Action Rule review record and P-Series review record before merge.
+No delayed bulk catch-up review is allowed as a substitute.
+
+W3 - Explicit Ruichen confirmation discipline
+This decision record enters handoff only together with the explicit Ruichen confirmation already recorded above.
+If the upstream Opening re-check decision record were not Ruichen-confirmed, this record could not lawfully enter handoff.
+
+Factory-Language Explanation
+This is not a "go live" decision, and it is not a legal-truth decision.
+
+This record addresses a narrower question:
+
+Can the project now start building the PhaseA manual / declared layer inside the already-frozen governance boundary?
+
+Factory-language explanation:
+
+* this is not saying location truth has become legal truth
+* this is not saying the floor may already use it formally
+* this is not saying shortage or downstream modules may already consume it as trusted truth
+
+It says only:
+
+**the project may now start implementation work for the already-frozen PhaseA manual / declared layer**
+
+But even after this PASS, the result remains:
+
+* manual / declared
+* degraded mode
+* auditable
+* not equal to scan-driven truth
+* not equal to legal location truth
+
+And the allowed scope remains narrow:
+
+* coding
+* unit/integration testing
+* development/test environments only
+
+It does not mean:
+
+* staging deployment
+* production-like deployment
+* runtime production use
+* submission opening
+* A-class establishment
+* PhaseB dependency creation
+
+This record is important not because it says PASS, but because it prevents later teams from over-reading that PASS into permissions that were never granted.
