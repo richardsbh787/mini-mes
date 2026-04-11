@@ -135,6 +135,7 @@ Step47_PhaseA_ActualCarrier_Recording_Freeze is now PASS WITH WARNINGS / FROZEN 
 Step47_PhaseA_OpeningRecheck_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA Opening re-check is now frozen as a narrow governance-only record, it locks Opening re-check as a governance re-check layer only, minimum prerequisite re-check scope across known-valid-actor governance, carrier recording, actual owner / approver recording, and actual carrier recording, temporary/emergency carrier expiry and rollback-execution re-check discipline, no-auto-pass discipline, re-check-layer-only output discipline, separate-decision-record discipline, and downstream non-equality discipline, it includes final-review-note tightening on ambiguity-removal judgment responsibility and decision-record timing / review-chain discipline, and it does not authorize implementation, submission opening, A-class establishment, or runtime production use.
 Step47_PhaseA_OpeningRecheck_ActualDecision_v1 is now PASS WITH WARNINGS / DECISION RECORD CONFIRMED; Step47 PhaseA Opening re-check actual decision is now recorded as PASS at re-check layer only, it confirms that the already-frozen opening prerequisites are re-check-satisfied at the governance re-check layer, includes Qinran-confirmed ambiguity-clearance discipline, carries an explicit boundary that item F is confirmed only against the recorded handoff state and must be re-reviewed if later unrecorded emergency-carrier or overdue-rollback facts are discovered, uses the explicit record identifier Step47_PhaseA_OpeningRecheck_ActualDecision_v1 for downstream citation, and it does not authorize implementation, implementation-opening PASS, submission opening, A-class establishment, or runtime production use.
 Step47_PhaseA_ImplementationOpening_ActualDecision_v1 is now PASS WITH WARNINGS / DECISION RECORD CONFIRMED; Step47 PhaseA implementation-opening actual decision is now recorded as PASS for the manual / declared layer only, it authorizes implementation work only within the already-frozen Step47 PhaseA governance boundaries, limited to coding and unit/integration testing in development/test environments only, preserves permanent non-equality from submission opening, A-class, runtime production use, admitted-source activation, legal location truth effect, and PhaseB dependency, includes final-review-note tightening on development/test environment classification responsibility, minimum implementation review-gate trigger before merge, and explicit Ruichen confirmation discipline, and it does not authorize staging or production-like deployment, submission opening, A-class establishment, runtime production use, admitted-source activation, or legal location truth effect.
+Implementation Result Record - Step47 PhaseA Declared/Manual Read Surface is now PASS / INSERTED WITH RUICHEN GATE CONFIRMATION; it records implementation result commit `f7fd056901bfa6a9bbe9c210f9852aaebddbe2dc` for the separate Step47 PhaseA declared/manual read surface, confirms mandatory contract markers `data_strength = "declared_manual"` and `is_legal_truth = false`, preserves `declared_location` naming, marks test records with `is_test_data = true`, records contract-level misuse blocking, Literal-constrained `data_strength`, and dev/test-only route exposure guard, carries forward the merge-side reminder that Operator Minimal Action Rule review record and P-Series review record must be archived before merge, includes non-blocking implementation notes on review basis and naming stability, and it does not authorize submission opening, staging opening, legal truth effect, admitted-source activation, or any PhaseB opening.
 
 FG_RECEIVE Location Master Physical Schema Baseline is frozen as a design-layer schema baseline only.
 It is not implementation authorization.
@@ -10711,3 +10712,80 @@ It does not mean:
 * PhaseB dependency creation
 
 This record is important not because it says PASS, but because it prevents later teams from over-reading that PASS into permissions that were never granted.
+
+Implementation Result Record - Step47 PhaseA Declared/Manual Read Surface
+
+Final review result: PASS
+Ruichen Gate Confirmation: CONFIRMED
+Authority layer: Handoff-only implementation result record
+
+Commit
+`f7fd056901bfa6a9bbe9c210f9852aaebddbe2dc`
+
+Exact files changed
+
+* `app/api/v2/step47_phasea_declared_manual_read.py`
+* `app/schemas/step47_phasea_declared_manual.py`
+* `app/services/step47_phasea_declared_manual.py`
+* `tests/test_step47_phasea_declared_manual_read_surface.py`
+* `tests/test_step47_phasea_declared_manual_storage_read_source.py`
+
+Implementation meaning
+
+* separate Step47 PhaseA declared/manual read surface implemented
+* mandatory contract markers present:
+  `data_strength = "declared_manual"`
+  `is_legal_truth = false`
+* location-related value kept as `declared_location`
+* test records marked with `is_test_data = true`
+* route guarded to dev/test only
+
+W1 handling
+
+* consumer misuse test uses contract-level guard plus explicit assertion
+* assertion message:
+  `consumer misuse blocked: Step47 PhaseA declared/manual read surface is not legal truth.`
+
+W2 handling
+
+* `data_strength` constrained with `Literal["declared_manual"]`
+* applies at record model and top-level list/detail response model
+
+W3 handling
+
+* route available only when:
+  `MINI_MES_ENV` is `dev`, `development`, or `test`
+  and `STEP47_PHASEA_DECLARED_MANUAL_READ_ENABLED` is explicitly enabled
+* otherwise returns `404`
+
+Non-scope confirmed
+
+* no submission path opened
+* no staging or production-like path opened
+* no admitted-source activation opened
+* no PhaseB path opened
+* no legal-truth path opened
+
+Tests run
+
+* `python -m pytest tests/test_step47_phasea_declared_manual_storage_read_source.py tests/test_step47_phasea_declared_manual_read_surface.py`
+* result: `14 passed`
+
+Boundary unchanged
+
+* no submission opening
+* no staging opening
+* no legal truth effect
+* no PhaseB opening
+
+Merge-side reminder
+
+* Operator Minimal Action Rule review record must be archived before merge
+* P-Series review record must be archived before merge
+
+Non-blocking implementation notes
+
+1. record basis note:
+   this implementation review was accepted based on Codex implementation summary plus Lao Xiao secondary review, without independent line-by-line diff verification by Qinran
+2. naming stability note:
+   `declared_location` naming should remain fixed and must not later be simplified to `location`
