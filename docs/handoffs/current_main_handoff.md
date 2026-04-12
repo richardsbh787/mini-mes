@@ -141,6 +141,7 @@ Review Record - P-Series PlantFit / Practicality Check - Step47 PhaseA Declared/
 Implementation Result Record - Step47 PhaseA Declared/Manual Intake Skeleton is now PASS / INSERTED WITH RUICHEN GATE CONFIRMATION; it records implementation result commit `ac6742f505e4b1044253eeed51b9098b973af097` for the separate Step47 PhaseA declared/manual intake skeleton, confirms a single-record create-only dev/test path with mandatory audit spine, records that created records carry `data_strength = "declared_manual"` and `is_legal_truth = false`, preserves `declared_location` naming, records server-side `declared_by` sourcing, system-generated `declared_at`, anti-bulk enforcement, explicit overwrite/correction misuse rejection, and dev/test-only exposure guard, carries forward the unchanged boundary that raw technical status codes may remain in backend/dev/log documentation while future operator-facing UI messages must use plain factory language and next-action guidance, preserves the merge-side reminder that Operator Minimal Action Rule review record and P-Series review record must be archived before merge, and it does not authorize submission opening, staging opening, legal truth effect, admitted-source activation, any PhaseB opening, or any correction-path opening.
 Review Record - Operator Minimal Action Rule Check - Step47 PhaseA Declared/Manual Intake Skeleton is now PASS / INSERTED WITH RUICHEN GATE CONFIRMATION; it records Operator Minimal Action Rule review against `Implementation Result Record - Step47 PhaseA Declared/Manual Intake Skeleton`, confirms that at the current dev/test API/service-layer boundary the implementation adds no new operator input steps, no new scan steps, and no new shopfloor decision burden, preserves the boundary that this conclusion applies only to the current dev/test and API/service-layer implementation scope and does not automatically extend to staging, production, or operator-facing approval, carries forward the unchanged language-layer rule that raw technical status codes remain backend/dev/log only and must not be shown directly to operators, and includes the non-blocking note that any future bulk or array-style intake expansion must automatically trigger renewed Operator Minimal Action Rule review.
 Review Record - P-Series PlantFit / Practicality Check - Step47 PhaseA Declared/Manual Intake Skeleton is now PASS / INSERTED WITH RUICHEN GATE CONFIRMATION; it records P-Series PlantFit / Practicality review against `Implementation Result Record - Step47 PhaseA Declared/Manual Intake Skeleton`, confirms that at the current API/service/contract-layer and dev/test boundary the implementation is plant-fit because it locks the minimum audit spine and blocks likely misuse paths without turning the intake into a false formal-entry path or adding frontline complexity, preserves the boundary that this conclusion applies only to the current API/service/contract layer and current dev/test scope and does not automatically extend to UI, reporting, staging, or production, carries forward the unchanged language-layer rule and the fixed naming requirement for `declared_location`, and records that any future staging/production deployment, operator-facing usage, or naming change must trigger a new P-Series review rather than being treated as a cosmetic follow-on.
+Unblock Review - Step47 PhaseA / Correction Reason Narrow Persistence Authorization is now PASS WITH WARNINGS / INSERTED WITH RUICHEN GATE CONFIRMATION; it records that the current correction-trace persistence surface has no dedicated `correction_reason` field while the already-passed correction-with-trace task requires `correction_reason` to remain mandatory and non-empty, confirms that safe implementation is therefore blocked unless a lawful persistence surface is explicitly authorized, and authorizes only one narrow single-field single-purpose persistence unblock for a dedicated PhaseA declared/manual `correction_reason` field, while explicitly rejecting any generic correction-metadata redesign, broader audit-table redesign, submission/legal-truth/PhaseB schema opening, temporary workaround storage, removal of the persistence requirement, or any persistence freedom beyond a single-field append.
 
 FG_RECEIVE Location Master Physical Schema Baseline is frozen as a design-layer schema baseline only.
 It is not implementation authorization.
@@ -11139,3 +11140,80 @@ This review does not mean
 * admitted-source activation
 * PhaseB opening
 * formal shopfloor-ready entry
+
+Unblock Review - Step47 PhaseA / Correction Reason Narrow Persistence Authorization
+
+Final review result: PASS WITH WARNINGS
+Ruichen Gate Confirmation: CONFIRMED
+Authority layer: Handoff-only review / unblock record
+
+Review target
+
+* `Task Card - Step47 PhaseA / Declared-Manual Correction-with-Trace Skeleton (Dev/Test Only)`
+
+Blocker summary
+
+* current correction trace persistence surface has no dedicated `correction_reason` field
+* the already-passed Task Card requires `correction_reason` to be mandatory and non-empty
+* therefore safe implementation is blocked unless a lawful persistence surface is explicitly authorized
+
+Approved unblock meaning
+
+* authorize one narrow, single-field, single-purpose persistence unblock
+* sole purpose: allow a dedicated `correction_reason` field for Step47 PhaseA declared/manual correction trace
+
+Field meaning
+
+* `correction_reason` exists only to record why the correction happened
+* it remains mandatory
+* it remains non-empty
+* it remains PhaseA declared/manual layer only
+
+Mandatory hard boundaries
+
+* this authorization applies only to `Step47 PhaseA declared/manual correction trace`
+* this authorization does not permit:
+  generic correction metadata redesign
+  broader audit-table redesign
+  submission schema opening
+  legal-truth schema opening
+  PhaseB schema opening
+  any broader persistence freedom
+
+Temporary alternative storage is explicitly rejected
+
+* do not use JSON stuffing
+* do not borrow another field
+* do not use non-persistent workaround behavior
+
+Removal of the persistence requirement is explicitly rejected
+
+* do not weaken the already-passed correction-with-trace requirement
+
+Additional limit
+
+* if implementation would require anything beyond a single-field append, that wider change is not covered by this authorization and must go to a new card before implementation
+
+Confirmed review conclusion
+
+* blocker is real
+* narrow single-field persistence unblock is the smallest acceptable solution
+
+This review does not mean
+
+* submission opening
+* legal truth effect
+* PhaseB opening
+* generic schema redesign
+* broad correction-schema freedom
+
+Factory-language meaning
+
+* the system currently has no lawful drawer to store the "why it was corrected" note
+* this unblock authorizes opening exactly one small drawer for `correction_reason`
+* it does not authorize rebuilding the whole cabinet
+
+Non-blocking final-review note
+
+* before implementation begins, the `correction_reason` schema landing type should be confirmed as a true single-field append
+* if the real landing would require a new table, relationship redesign, extra fields, or other structural expansion, implementation must stop and a new card must be opened first
