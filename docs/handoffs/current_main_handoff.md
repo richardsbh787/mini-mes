@@ -1,7 +1,7 @@
-Mini-MES Handoff v2.40
+Mini-MES Handoff v2.41
 
-Updated after 2026-04-10 handoff-only decision-record patch for Step47_PhaseA_ImplementationOpening_ActualDecision_v1
-Date: 2026-04-10
+Updated after 2026-04-13 handoff-only insertion for Implementation Result Record - Step47 PhaseA / Local Dev Persistence Surface Materialization Prerequisite (SQLite Only)
+Date: 2026-04-13
 
 1. Frozen mainline snapshot
 
@@ -141,6 +141,7 @@ Review Record - P-Series PlantFit / Practicality Check - Step47 PhaseA Declared/
 Implementation Result Record - Step47 PhaseA Declared/Manual Intake Skeleton is now PASS / INSERTED WITH RUICHEN GATE CONFIRMATION; it records implementation result commit `ac6742f505e4b1044253eeed51b9098b973af097` for the separate Step47 PhaseA declared/manual intake skeleton, confirms a single-record create-only dev/test path with mandatory audit spine, records that created records carry `data_strength = "declared_manual"` and `is_legal_truth = false`, preserves `declared_location` naming, records server-side `declared_by` sourcing, system-generated `declared_at`, anti-bulk enforcement, explicit overwrite/correction misuse rejection, and dev/test-only exposure guard, carries forward the unchanged boundary that raw technical status codes may remain in backend/dev/log documentation while future operator-facing UI messages must use plain factory language and next-action guidance, preserves the merge-side reminder that Operator Minimal Action Rule review record and P-Series review record must be archived before merge, and it does not authorize submission opening, staging opening, legal truth effect, admitted-source activation, any PhaseB opening, or any correction-path opening.
 Review Record - Operator Minimal Action Rule Check - Step47 PhaseA Declared/Manual Intake Skeleton is now PASS / INSERTED WITH RUICHEN GATE CONFIRMATION; it records Operator Minimal Action Rule review against `Implementation Result Record - Step47 PhaseA Declared/Manual Intake Skeleton`, confirms that at the current dev/test API/service-layer boundary the implementation adds no new operator input steps, no new scan steps, and no new shopfloor decision burden, preserves the boundary that this conclusion applies only to the current dev/test and API/service-layer implementation scope and does not automatically extend to staging, production, or operator-facing approval, carries forward the unchanged language-layer rule that raw technical status codes remain backend/dev/log only and must not be shown directly to operators, and includes the non-blocking note that any future bulk or array-style intake expansion must automatically trigger renewed Operator Minimal Action Rule review.
 Review Record - P-Series PlantFit / Practicality Check - Step47 PhaseA Declared/Manual Intake Skeleton is now PASS / INSERTED WITH RUICHEN GATE CONFIRMATION; it records P-Series PlantFit / Practicality review against `Implementation Result Record - Step47 PhaseA Declared/Manual Intake Skeleton`, confirms that at the current API/service/contract-layer and dev/test boundary the implementation is plant-fit because it locks the minimum audit spine and blocks likely misuse paths without turning the intake into a false formal-entry path or adding frontline complexity, preserves the boundary that this conclusion applies only to the current API/service/contract layer and current dev/test scope and does not automatically extend to UI, reporting, staging, or production, carries forward the unchanged language-layer rule and the fixed naming requirement for `declared_location`, and records that any future staging/production deployment, operator-facing usage, or naming change must trigger a new P-Series review rather than being treated as a cosmetic follow-on.
+Implementation Result Record - Step47 PhaseA / Local Dev Persistence Surface Materialization Prerequisite (SQLite Only) is now PASS / INSERTED WITH RUICHEN GATE CONFIRMATION; it records implementation result commit `03116a984fd0bdd8cf49df48121233ed42907240` for the narrow local-dev SQLite materialization prerequisite only, confirms that the two already-defined Step47 PhaseA declared/manual tables `step47_phasea_declared_manual_source` and `step47_phasea_declared_manual_correction_trace` now exist in local `mini_mes.db`, records the exact two-table-only materialization method `Step47PhaseADeclaredManualSource.__table__.create(bind=engine, checkfirst=True)` and `Step47PhaseADeclaredManualCorrectionTrace.__table__.create(bind=engine, checkfirst=True)`, preserves the actual SQLite evidence `ADDED:` those two tables with `MISSING_EXPECTED: []` and `UNEXPECTED_ADDED: []`, confirms that no other tables were materialized, no code files were changed, no `correction_reason` work was performed, no global `Base.metadata.create_all(...)` path was used, and no DB recreation/reset/deletion, Supabase change, production change, or broader schema change was performed, carries forward the non-blocking implementation note that this record is based on Codex implementation summary plus Lao Xiao secondary review without independent line-by-line diff review, and explicitly preserves that local dev table materialization is complete but does not constitute business functionality opening, admitted-source activation, submission opening, legal-truth effect, or any advancement beyond the local dev prerequisite boundary.
 Unblock Review - Step47 PhaseA / Correction Reason Narrow Persistence Authorization is now PASS WITH WARNINGS / INSERTED WITH RUICHEN GATE CONFIRMATION; it records that the current correction-trace persistence surface has no dedicated `correction_reason` field while the already-passed correction-with-trace task requires `correction_reason` to remain mandatory and non-empty, confirms that safe implementation is therefore blocked unless a lawful persistence surface is explicitly authorized, and authorizes only one narrow single-field single-purpose persistence unblock for a dedicated PhaseA declared/manual `correction_reason` field, while explicitly rejecting any generic correction-metadata redesign, broader audit-table redesign, submission/legal-truth/PhaseB schema opening, temporary workaround storage, removal of the persistence requirement, or any persistence freedom beyond a single-field append.
 
 FG_RECEIVE Location Master Physical Schema Baseline is frozen as a design-layer schema baseline only.
@@ -11140,6 +11141,67 @@ This review does not mean
 * admitted-source activation
 * PhaseB opening
 * formal shopfloor-ready entry
+
+Implementation Result Record - Step47 PhaseA / Local Dev Persistence Surface Materialization Prerequisite (SQLite Only)
+
+Final review result: PASS
+Ruichen Gate Confirmation: CONFIRMED
+Authority layer: Handoff-only implementation result record
+
+Commit
+`03116a984fd0bdd8cf49df48121233ed42907240`
+
+Exact files changed
+
+* `mini_mes.db`
+
+Implementation meaning
+
+* local dev SQLite materialization of the two already-defined Step47 PhaseA tables is complete
+* affected tables:
+  `step47_phasea_declared_manual_source`
+  `step47_phasea_declared_manual_correction_trace`
+* no other tables were materialized
+* no code files were changed
+* no `correction_reason` work was performed
+* no global `Base.metadata.create_all(...)` path was used
+* no DB recreation, reset, or deletion was performed
+* no Supabase change was performed
+* no production change was performed
+* no broader schema change was performed
+
+Materialization method used
+
+* `Step47PhaseADeclaredManualSource.__table__.create(bind=engine, checkfirst=True)`
+* `Step47PhaseADeclaredManualCorrectionTrace.__table__.create(bind=engine, checkfirst=True)`
+
+SQLite evidence recorded
+
+* `ADDED:`
+  `step47_phasea_declared_manual_source`
+  `step47_phasea_declared_manual_correction_trace`
+* `MISSING_EXPECTED: []`
+* `UNEXPECTED_ADDED: []`
+
+Boundary unchanged
+
+* local dev only
+* Phase A only
+* declared/manual only
+* not business functionality opening
+* not admitted-source activation
+* not submission opening
+* not legal truth
+* not Phase B opening
+
+Mandatory boundary statement
+
+* Local dev table materialization complete.
+* This does not constitute business functionality opening, admitted-source activation, submission opening, legal-truth effect, or any advancement beyond the local dev prerequisite boundary.
+
+Non-blocking implementation note
+
+* this implementation record is based on Codex implementation summary plus Lao Xiao secondary review, and was not independently diff-reviewed line by line
 
 Unblock Review - Step47 PhaseA / Correction Reason Narrow Persistence Authorization
 
