@@ -1,6 +1,6 @@
 Mini-MES Handoff v2.42
 
-Updated after 2026-04-13 handoff-only insertion for Frozen Governance Baseline - Step47 PhaseA / Correction Reason Operator Input Pattern Baseline (Governance Only)
+Updated after 2026-04-13 handoff-only insertion for Frozen Governance Baseline - Step47 PhaseA / Correction Reason UI-Stage Review Entry Gate Baseline (Governance Only)
 Date: 2026-04-13
 
 1. Frozen mainline snapshot
@@ -93,6 +93,8 @@ Frozen Record - Step47_PhaseA_OpeningRecheck_Freeze
 
 Frozen Record - Step47_PhaseA_CorrectionReason_OperatorInputPattern_Baseline
 
+Frozen Record - Step47_PhaseA_CorrectionReason_UIStageReviewEntryGate_Baseline
+
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
 
@@ -136,6 +138,7 @@ Step47_PhaseA_ActualOwner_Approver_Recording_Freeze is now PASS WITH WARNINGS / 
 Step47_PhaseA_ActualCarrier_Recording_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA Actual Carrier Recording is now frozen as a narrow governance-only record, it locks minimum actual-carrier recording, environment-scope recording, temporary/emergency carrier recording, permanent separation from owner / approver / valid-actor / A-class / implementation-opening, change-triggered handoff update / A-B-C re-determination / annual review discipline, and ambiguity-blocking discipline for Opening re-check, it includes final-review-note tightening on minimum trust-boundary reference form and minimum rollback / normalization path form, and it does not authorize implementation, submission opening, or A-class establishment.
 Step47_PhaseA_OpeningRecheck_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA Opening re-check is now frozen as a narrow governance-only record, it locks Opening re-check as a governance re-check layer only, minimum prerequisite re-check scope across known-valid-actor governance, carrier recording, actual owner / approver recording, and actual carrier recording, temporary/emergency carrier expiry and rollback-execution re-check discipline, no-auto-pass discipline, re-check-layer-only output discipline, separate-decision-record discipline, and downstream non-equality discipline, it includes final-review-note tightening on ambiguity-removal judgment responsibility and decision-record timing / review-chain discipline, and it does not authorize implementation, submission opening, A-class establishment, or runtime production use.
 Step47_PhaseA_CorrectionReason_OperatorInputPattern_Baseline is now PASS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA correction-reason operator-input pattern baseline is now frozen as a narrow governance-only record, it locks the minimum future operator-input pattern baseline for `correction_reason` in the Step47 PhaseA declared/manual correction-with-trace path, prefers common-reason options first with short supplemental text when needed, rejects pure unrestricted long free-text-only design as the default pattern, freezes future operator-facing wording to factory language rather than technical field names or status codes, freezes anti-blame framing and high-pressure speed-preservation as mandatory design constraints, explicitly leaves exact option values and exact UI wording for later separate confirmation, and does not authorize UI implementation, does not mean UI PlantFit has already passed, does not authorize business functionality opening, submission opening, admitted-source activation, legal-truth effect, or Phase B opening.
+Step47_PhaseA_CorrectionReason_UIStageReviewEntryGate_Baseline is now PASS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA correction-reason UI-stage review entry gate baseline is now frozen as a narrow governance-only record, it locks that the already-frozen input-pattern baseline does not mean UI may directly start, freezes that any future UI/operator-facing implementation for `correction_reason` may not start unless all required entry conditions are explicitly satisfied and recorded, requires a design-only UI-stage candidate that explicitly states common-reason options first, short supplemental text when needed, and no pure unrestricted long free-text-only default, requires operator-facing wording draft in factory language with explicit confirmation by 睿辰 before implementation, requires dedicated re-execution of Operator Minimal Action Rule review and P-Series PlantFit / Practicality review plus explicit high-pressure-scenario usability checking for the UI-stage candidate, freezes that only after those items pass may a separate UI implementation card be considered, and does not authorize UI implementation, does not mean UI PlantFit has already passed, does not mean UI may directly start, and does not authorize business functionality opening, submission opening, admitted-source activation, legal-truth effect, or Phase B opening.
 Step47_PhaseA_OpeningRecheck_ActualDecision_v1 is now PASS WITH WARNINGS / DECISION RECORD CONFIRMED; Step47 PhaseA Opening re-check actual decision is now recorded as PASS at re-check layer only, it confirms that the already-frozen opening prerequisites are re-check-satisfied at the governance re-check layer, includes Qinran-confirmed ambiguity-clearance discipline, carries an explicit boundary that item F is confirmed only against the recorded handoff state and must be re-reviewed if later unrecorded emergency-carrier or overdue-rollback facts are discovered, uses the explicit record identifier Step47_PhaseA_OpeningRecheck_ActualDecision_v1 for downstream citation, and it does not authorize implementation, implementation-opening PASS, submission opening, A-class establishment, or runtime production use.
 Step47_PhaseA_ImplementationOpening_ActualDecision_v1 is now PASS WITH WARNINGS / DECISION RECORD CONFIRMED; Step47 PhaseA implementation-opening actual decision is now recorded as PASS for the manual / declared layer only, it authorizes implementation work only within the already-frozen Step47 PhaseA governance boundaries, limited to coding and unit/integration testing in development/test environments only, preserves permanent non-equality from submission opening, A-class, runtime production use, admitted-source activation, legal location truth effect, and PhaseB dependency, includes final-review-note tightening on development/test environment classification responsibility, minimum implementation review-gate trigger before merge, and explicit Ruichen confirmation discipline, and it does not authorize staging or production-like deployment, submission opening, A-class establishment, runtime production use, admitted-source activation, or legal location truth effect.
 Implementation Result Record - Step47 PhaseA Declared/Manual Read Surface is now PASS / INSERTED WITH RUICHEN GATE CONFIRMATION; it records implementation result commit `f7fd056901bfa6a9bbe9c210f9852aaebddbe2dc` for the separate Step47 PhaseA declared/manual read surface, confirms mandatory contract markers `data_strength = "declared_manual"` and `is_legal_truth = false`, preserves `declared_location` naming, marks test records with `is_test_data = true`, records contract-level misuse blocking, Literal-constrained `data_strength`, and dev/test-only route exposure guard, carries forward the merge-side reminder that Operator Minimal Action Rule review record and P-Series review record must be archived before merge, includes non-blocking implementation notes on review basis and naming stability, and it does not authorize submission opening, staging opening, legal truth effect, admitted-source activation, or any PhaseB opening.
@@ -10485,6 +10488,159 @@ Final Review Notes
 
 * this frozen baseline does not mean UI PlantFit has already passed
 * this frozen baseline does not mean UI may directly start
+* this frozen baseline does not mean business functionality opening
+* this frozen baseline does not mean submission opening
+* this frozen baseline does not mean admitted-source activation
+* this frozen baseline does not mean legal-truth effect
+* this frozen baseline does not mean Phase B opening
+
+73. Frozen Record - Step47_PhaseA_CorrectionReason_UIStageReviewEntryGate_Baseline
+
+Status: PASS / FROZEN WITH FINAL REVIEW NOTES
+Scope Type: Handoff-only governance freeze
+Secondary review: PASS
+Final review: PASS
+Gate decision confirmation: Ruichen CONFIRMED
+
+Purpose
+This record freezes the mandatory UI-stage review entry gate for any future operator-facing work related to `correction_reason` in the Step47 PhaseA declared/manual correction-with-trace path, so the already-frozen input-pattern baseline cannot be misread as permission to directly start UI work and no UI/operator-facing implementation may begin before the required UI-stage entry conditions are explicitly satisfied and recorded.
+
+This record is governance-only.
+It does not authorize UI implementation.
+It does not authorize UI start.
+It does not authorize business functionality opening.
+It does not authorize submission opening.
+It does not authorize admitted-source activation.
+It does not create legal-truth effect.
+It does not open Phase B.
+
+Locked Objective
+This record freezes only the following:
+
+1. the rule that the already-frozen input-pattern baseline does not mean UI may directly start
+2. the rule that any future UI/operator-facing implementation for `correction_reason` may not start unless all required entry conditions are explicitly satisfied and recorded
+3. the required entry condition that a UI-stage candidate design exists and remains design-only
+4. the required entry condition that the candidate design explicitly states common-reason options first, short supplemental text when needed, and no pure unrestricted long free-text-only default
+5. the required entry condition that operator-facing wording draft is provided in factory language
+6. the required entry condition that operator-facing wording draft is explicitly confirmed by 睿辰 before implementation
+7. the required entry condition that a dedicated Operator Minimal Action Rule review is re-executed for the UI-stage candidate
+8. the required entry condition that a dedicated P-Series PlantFit / Practicality review is re-executed for the UI-stage candidate
+9. the required entry condition that the UI-stage review chain explicitly checks high-pressure-scenario usability
+10. the rule that only after those items pass may a separate UI implementation card be considered
+11. the rule that all UI-stage entry conditions must be explicitly satisfied and recorded before any UI implementation card may be opened
+12. the rule that the later UI-stage review chain is a mandatory prerequisite and may not be skipped
+
+Non-scope
+This record does not:
+
+* authorize UI implementation
+* authorize UI start
+* confirm that UI PlantFit has already passed
+* confirm that the already-frozen input-pattern baseline is sufficient by itself to open UI work
+* define exact UI wording
+* define exact option values
+* define runtime UI behavior
+* define schema, API, service, middleware, config, or DB behavior
+* authorize business functionality opening
+* authorize submission opening
+* authorize admitted-source activation
+* create legal-truth effect
+* open Phase B
+
+S-1 / S0 / S+1
+
+S-1
+
+* `Frozen Record - Step47_PhaseA_CorrectionReason_OperatorInputPattern_Baseline` already froze the minimum future operator-input pattern baseline for `correction_reason` and already stated that future UI/operator-facing implementation remains blocked until a later dedicated UI-stage review chain is executed.
+* `Review Record - Operator Minimal Action Rule Check - Step47 PhaseA / Declared-Manual Correction Reason Single-Field Append Implementation (Post-Materialization Reopen)` already confirmed the minimum-necessary-action conclusion only at the current API/service/contract layer and local dev/dev-test boundary.
+* `Review Record - P-Series PlantFit / Practicality Check - Step47 PhaseA / Declared-Manual Correction Reason Single-Field Append Implementation (Post-Materialization Reopen)` already confirmed plant-fit only at the current API/service layer and local dev/dev-test boundary and already warned that future UI/operator-facing handling must undergo a new P-Series review.
+* This record stands on those frozen and reviewed boundaries only to define the later UI-stage review entry gate and must not convert any existing baseline or review record into UI readiness or UI authorization.
+
+S0
+
+* freeze the mandatory entry gate for future UI/operator-facing work related to `correction_reason`
+* freeze the exact entry conditions that must be satisfied and recorded before any UI implementation card may even be considered
+* freeze that the candidate remains design-only until the UI-stage review chain is re-executed and passed
+* do not authorize UI implementation or collapse governance entry conditions into implementation permission
+
+S+1
+
+* a later design-only UI-stage candidate review chain for `correction_reason`, if and only if later UI/operator-facing work is deliberately opened
+* only after all entry conditions pass may a separate UI implementation card be considered
+* no direct jump from this governance freeze to UI implementation or broader functionality opening
+
+Pre-Freeze Crisis Check
+
+* Current highest risk:
+  the already-frozen input-pattern baseline may be misread as enough to begin UI work, allowing UI/operator-facing implementation to start before wording, high-pressure usability, and renewed review gates are explicitly re-checked
+* Risk level:
+  P0
+* Affected scope:
+  future Step47 PhaseA correction UI entry discipline, review-chain integrity, plant-fit defensibility, operator-facing usability under pressure
+* Foundation check:
+  the input-pattern baseline already exists, but by itself it does not define the full UI-stage entry gate and does not prove wording readiness, high-pressure usability readiness, or renewed review completion
+* Dependency chain check:
+  if this entry gate is weak, later work may jump straight from governance direction to implementation card opening and bypass the design-only review stage that should absorb UI risk first
+* Reality intrusion check:
+  likely bypass modes include treating governance wording as implementation-ready copy, assuming the previous API/service reviews are enough for UI, or skipping dedicated high-pressure-scenario checking because the field seems small
+* Operator action surface check:
+  later UI-stage review must explicitly test whether the design stays fast, understandable, and non-blocking for operators during pressured correction moments
+* Freeze pollution check:
+  high if this record is read as UI approval rather than as an entry gate that keeps UI work blocked until later conditions are satisfied and recorded
+* Gate decision draft:
+  GO
+* Preconditions before resume:
+  any later UI-stage candidate must remain design-only and all entry conditions must be explicitly satisfied and recorded before any UI implementation card may be opened
+* Gate decision confirmation:
+  Ruichen [confirmed]
+
+Frozen Body
+
+1. Governance-Only Entry Gate Rule
+This record is governance-only.
+It freezes the mandatory UI-stage review entry gate for any future operator-facing work related to `correction_reason` in the Step47 PhaseA declared/manual correction-with-trace path.
+
+This record does not:
+
+* authorize UI implementation
+* authorize UI start
+* prove UI PlantFit has passed
+* authorize business functionality opening
+* authorize submission opening
+* authorize admitted-source activation
+* create legal-truth effect
+* open Phase B
+
+2. Non-Equality Rule Against Direct UI Start
+The already-frozen input-pattern baseline does not mean UI may directly start.
+No future UI/operator-facing implementation for `correction_reason` may start unless all required entry conditions below are explicitly satisfied and recorded.
+
+3. Required Entry Conditions Rule
+The following entry conditions are mandatory:
+
+* a UI-stage candidate design exists and remains design-only
+* the candidate design explicitly states common-reason options first
+* the candidate design explicitly states short supplemental text when needed
+* the candidate design explicitly states no pure unrestricted long free-text-only default
+* operator-facing wording draft is provided in factory language
+* operator-facing wording draft is explicitly confirmed by 睿辰 before implementation
+* a dedicated Operator Minimal Action Rule review is re-executed for the UI-stage candidate
+* a dedicated P-Series PlantFit / Practicality review is re-executed for the UI-stage candidate
+* the UI-stage review chain explicitly checks high-pressure-scenario usability
+
+4. Separate UI Implementation Card Rule
+Only after the required entry conditions above pass may a separate UI implementation card be considered.
+
+5. Mandatory Recording Rule
+All UI-stage entry conditions must be explicitly satisfied and recorded before any UI implementation card may be opened.
+
+6. Mandatory Review-Chain Rule
+The later UI-stage review chain is a mandatory prerequisite and may not be skipped.
+
+Final Review Notes
+
+* this frozen baseline does not mean UI may directly start
+* this frozen baseline does not mean UI PlantFit has already passed
 * this frozen baseline does not mean business functionality opening
 * this frozen baseline does not mean submission opening
 * this frozen baseline does not mean admitted-source activation
