@@ -1,6 +1,6 @@
 Mini-MES Handoff v2.42
 
-Updated after 2026-04-13 handoff-only insertion for Review Record - Operator Minimal Action Rule Check - Step47 PhaseA / Declared-Manual Correction Reason Single-Field Append Implementation (Post-Materialization Reopen)
+Updated after 2026-04-13 handoff-only insertion for Review Record - P-Series PlantFit / Practicality Check - Step47 PhaseA / Declared-Manual Correction Reason Single-Field Append Implementation (Post-Materialization Reopen)
 Date: 2026-04-13
 
 1. Frozen mainline snapshot
@@ -144,6 +144,7 @@ Review Record - P-Series PlantFit / Practicality Check - Step47 PhaseA Declared/
 Implementation Result Record - Step47 PhaseA / Local Dev Persistence Surface Materialization Prerequisite (SQLite Only) is now PASS / INSERTED WITH RUICHEN GATE CONFIRMATION; it records implementation result commit `03116a984fd0bdd8cf49df48121233ed42907240` for the narrow local-dev SQLite materialization prerequisite only, confirms that the two already-defined Step47 PhaseA declared/manual tables `step47_phasea_declared_manual_source` and `step47_phasea_declared_manual_correction_trace` now exist in local `mini_mes.db`, records the exact two-table-only materialization method `Step47PhaseADeclaredManualSource.__table__.create(bind=engine, checkfirst=True)` and `Step47PhaseADeclaredManualCorrectionTrace.__table__.create(bind=engine, checkfirst=True)`, preserves the actual SQLite evidence `ADDED:` those two tables with `MISSING_EXPECTED: []` and `UNEXPECTED_ADDED: []`, confirms that no other tables were materialized, no code files were changed, no `correction_reason` work was performed, no global `Base.metadata.create_all(...)` path was used, and no DB recreation/reset/deletion, Supabase change, production change, or broader schema change was performed, carries forward the non-blocking implementation note that this record is based on Codex implementation summary plus Lao Xiao secondary review without independent line-by-line diff review, and explicitly preserves that local dev table materialization is complete but does not constitute business functionality opening, admitted-source activation, submission opening, legal-truth effect, or any advancement beyond the local dev prerequisite boundary.
 Implementation Result Record - Step47 PhaseA / Declared-Manual Correction Reason Single-Field Append Implementation (Post-Materialization Reopen) is now PASS / INSERTED WITH RUICHEN GATE CONFIRMATION; it records implementation result commit `68b187b970f4d93a354c5d5fd08ac7a86efdaabb` for the narrow post-materialization reopen only, records the required pre-check result that local row count for `step47_phasea_declared_manual_correction_trace` was `0` and implementation therefore proceeded under the approved rule, confirms that `correction_reason` single-field append is complete on the existing `Step47PhaseADeclaredManualCorrectionTrace` persistence surface, records that only one new persisted field `correction_reason` was added, declared/manual correction schema now requires and normalizes `correction_reason`, the existing correction-trace service path now persists `correction_reason`, correction-trace reads now expose `correction_reason`, focused tests passed with `15 passed`, and no change exceeded the single-field append boundary, preserves the SQLite physical evidence that row count of `step47_phasea_declared_manual_correction_trace` remained `0` and `PRAGMA table_info(step47_phasea_declared_manual_correction_trace)` showed `(8, 'correction_reason', 'TEXT', 1, None, 0)`, confirms that no default values, no extra columns, no indexes, no broader schema changes, no unrelated refactor, and no non-scope files were introduced, carries forward the non-blocking implementation note that this record is based on Codex implementation summary, Lao Xiao secondary review, and PRAGMA physical evidence without independent line-by-line diff review, and explicitly preserves that Correction_reason single-field append complete but this does not constitute business functionality opening, submission opening, admitted-source activation, legal-truth effect, or any advancement beyond the PhaseA declared/manual local dev/dev-test implementation boundary.
 Review Record - Operator Minimal Action Rule Check - Step47 PhaseA / Declared-Manual Correction Reason Single-Field Append Implementation (Post-Materialization Reopen) is now PASS / INSERTED WITH RUICHEN GATE CONFIRMATION; it records Operator Minimal Action Rule review against `Implementation Result Record - Step47 PhaseA / Declared-Manual Correction Reason Single-Field Append Implementation (Post-Materialization Reopen)`, confirms that at the current API/service/contract layer and local dev/dev-test boundary `correction_reason` is the only new operator-provided input and is the minimum necessary operator action because why corrected cannot be system-generated, preserves that `corrected_by` remains server-generated and `corrected_at` remains server-generated, confirms that no extra operator workflow, no repeated operator action, and no technical field exposure to operators were introduced in this implementation layer, carries Lao Xiao secondary review result `PASS` with the points that implementation complies with the Operator Minimal Action Rule, `correction_reason` mandatory is a minimum necessary new action, system-side responsibility remains on the system side, and future UI stage must keep reason input simple with operator-facing wording in factory language, and explicitly preserves that this PASS applies only to the current API/service/contract layer and local dev/dev-test boundary, any future UI/operator-facing handling of `correction_reason` must undergo a new Operator Minimal Action Rule review before it may be treated as aligned, and this record does not mean UI compliance already landed, submission opening, legal-truth effect, admitted-source activation, business functionality opening, or Phase B opening.
+Review Record - P-Series PlantFit / Practicality Check - Step47 PhaseA / Declared-Manual Correction Reason Single-Field Append Implementation (Post-Materialization Reopen) is now PASS WITH WARNINGS / INSERTED WITH RUICHEN GATE CONFIRMATION; it records P-Series PlantFit / Practicality review against `Implementation Result Record - Step47 PhaseA / Declared-Manual Correction Reason Single-Field Append Implementation (Post-Materialization Reopen)`, confirms that at the current API/service layer and local dev/dev-test boundary `correction_reason` mandatory is accepted as a real shopfloor traceability need rather than management-only overhead, preserves that current implementation keeps system complexity on the system side because `corrected_by` remains server-generated, `corrected_at` remains server-generated, original-value preservation is retained, trace remains separate, and silent overwrite remains forbidden, confirms that the current implementation adds only one operator-side action which is to provide why corrected, carries Lao Xiao secondary review result `PASS WITH WARNINGS` and Qinran final result `PASS WITH WARNINGS`, and explicitly preserves that this review aligns only the current API/service layer and local dev/dev-test boundary, that UI PlantFit has not yet been reviewed, that any future UI/operator-facing handling of `correction_reason` must undergo a new mandatory P-Series PlantFit / Practicality review before it may be treated as aligned, and that this record does not mean business functionality opening, submission opening, admitted-source activation, legal-truth effect, or Phase B opening.
 Unblock Review - Step47 PhaseA / Correction Reason Narrow Persistence Authorization is now PASS WITH WARNINGS / INSERTED WITH RUICHEN GATE CONFIRMATION; it records that the current correction-trace persistence surface has no dedicated `correction_reason` field while the already-passed correction-with-trace task requires `correction_reason` to remain mandatory and non-empty, confirms that safe implementation is therefore blocked unless a lawful persistence surface is explicitly authorized, and authorizes only one narrow single-field single-purpose persistence unblock for a dedicated PhaseA declared/manual `correction_reason` field, while explicitly rejecting any generic correction-metadata redesign, broader audit-table redesign, submission/legal-truth/PhaseB schema opening, temporary workaround storage, removal of the persistence requirement, or any persistence freedom beyond a single-field append.
 
 FG_RECEIVE Location Master Physical Schema Baseline is frozen as a design-layer schema baseline only.
@@ -11327,6 +11328,75 @@ Mandatory boundary preservation
 This review does not mean
 
 * UI compliance already landed
+* business functionality opening
+* submission opening
+* admitted-source activation
+* legal truth effect
+* Phase B opening
+
+Review Record - P-Series PlantFit / Practicality Check - Step47 PhaseA / Declared-Manual Correction Reason Single-Field Append Implementation (Post-Materialization Reopen)
+
+Final review result: PASS WITH WARNINGS
+Ruichen Gate Confirmation: CONFIRMED
+Authority layer: Handoff-only review record
+
+Review target
+
+* `Implementation Result Record - Step47 PhaseA / Declared-Manual Correction Reason Single-Field Append Implementation (Post-Materialization Reopen)`
+
+Implementation commit
+
+* `68b187b970f4d93a354c5d5fd08ac7a86efdaabb`
+
+Secondary/final review carry-ins
+
+* Lao Xiao result: PASS WITH WARNINGS
+* Qinran final result: PASS WITH WARNINGS
+
+Review scope
+
+* Phase A only
+* declared/manual only
+* local dev / dev-test only
+* API/service-layer-only for this review conclusion
+* non-legal-truth
+* non-PhaseB
+
+Review conclusion
+
+Based on the current implementation result, this Step47 PhaseA declared/manual correction-reason single-field append is plant-fit only at the current API/service layer and local dev/dev-test boundary. `correction_reason` mandatory is accepted here as a real shopfloor traceability need rather than management-only overhead. The current implementation keeps system complexity on the system side because `corrected_by` remains server-generated, `corrected_at` remains server-generated, original-value preservation is retained, trace remains separate, and silent overwrite remains forbidden. At the current implementation layer, the operator-side action added is limited to providing why corrected. This conclusion does not mean UI PlantFit is already reviewed or approved and does not automatically extend to later UI/operator-facing handling.
+
+Confirmed scope of PASS WITH WARNINGS
+
+* approved for handoff insertion as a review record
+* this review confirms P-Series PlantFit / Practicality alignment only at the current API/service layer and local dev/dev-test boundary
+* the accepted operator-side burden at this layer is limited to one action: provide why corrected
+
+Mandatory warning carry-ins
+
+* future UI/operator-facing handling of `correction_reason` must undergo a new P-Series PlantFit / Practicality review as a mandatory prerequisite and may not be skipped
+* UI PlantFit has not yet been reviewed
+* future UI review must focus on input method preference for common-reason options plus short supplemental text, with no pure long free-text design
+* future UI review must focus on operator language in factory language only, with no technical field names or status codes
+* future UI review must focus on psychological design that must not feel like a blame or discipline tool
+* future UI review must focus on high-pressure scenarios where reason entry must not become a bottleneck during rush or insert-order conditions
+
+Mandatory boundary preservation
+
+* this conclusion applies only to the current `API/service layer`
+* this conclusion applies only to the current `local dev / dev-test boundary`
+* `correction_reason` mandatory is accepted only as a real shopfloor traceability need at this layer
+* `corrected_by` remains server-generated
+* `corrected_at` remains server-generated
+* original-value preservation is retained
+* trace remains separate
+* silent overwrite remains forbidden
+* only one operator-side action is added at this layer: provide why corrected
+
+This review does not mean
+
+* UI PlantFit already reviewed
+* UI PlantFit already approved
 * business functionality opening
 * submission opening
 * admitted-source activation
