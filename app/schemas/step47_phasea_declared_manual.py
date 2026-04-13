@@ -53,12 +53,17 @@ class Step47PhaseADeclaredManualCorrection(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     corrected_by: str = Field(min_length=1)
+    correction_reason: str = Field(min_length=1)
     declared_location: str | None = None
     source_record_reference: str | None = None
 
     @model_validator(mode="after")
     def normalize_fields(self) -> "Step47PhaseADeclaredManualCorrection":
         self.corrected_by = normalize_required_text(self.corrected_by, field_name="corrected_by")
+        self.correction_reason = normalize_required_text(
+            self.correction_reason,
+            field_name="correction_reason",
+        )
         if self.declared_location is not None:
             self.declared_location = normalize_declared_location(self.declared_location)
         if self.source_record_reference is not None:
@@ -94,6 +99,7 @@ class Step47PhaseADeclaredManualCorrectionTraceRead(BaseModel):
     is_test_data: Literal[True] = DECLARED_MANUAL_IS_TEST_DATA
     corrected_by: str
     corrected_at: datetime
+    correction_reason: str
     previous_declared_location: str | None
     new_declared_location: str | None
     previous_source_record_reference: str | None

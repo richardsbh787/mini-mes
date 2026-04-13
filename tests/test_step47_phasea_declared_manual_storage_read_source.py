@@ -146,6 +146,7 @@ class Step47PhaseADeclaredManualStorageReadSourceTests(unittest.TestCase):
             declaration_id=created.id,
             payload=Step47PhaseADeclaredManualCorrection(
                 corrected_by="supervisor-a",
+                correction_reason="source card misread",
                 declared_location="FG-LOC-B",
                 source_record_reference="CARD-002",
             ),
@@ -162,12 +163,34 @@ class Step47PhaseADeclaredManualStorageReadSourceTests(unittest.TestCase):
         self.assertFalse(trace.is_legal_truth)
         self.assertTrue(trace.is_test_data)
         self.assertEqual(trace.corrected_by, "supervisor-a")
+        self.assertEqual(trace.correction_reason, "source card misread")
         self.assertEqual(trace.previous_declared_location, "FG-LOC-A")
         self.assertEqual(trace.new_declared_location, "FG-LOC-B")
         self.assertEqual(trace.previous_source_record_reference, "CARD-001")
         self.assertEqual(trace.new_source_record_reference, "CARD-002")
         stored_trace = db.query(Step47PhaseADeclaredManualCorrectionTrace).filter_by(declaration_id=created.id).one()
+        self.assertEqual(stored_trace.correction_reason, "source card misread")
         self.assertEqual(stored_trace.previous_declared_location, "FG-LOC-A")
+
+    def test_correction_reason_is_mandatory_and_empty_value_is_rejected(self) -> None:
+        with self.assertRaises(ValidationError) as missing_ctx:
+            Step47PhaseADeclaredManualCorrection.model_validate(
+                {
+                    "corrected_by": "supervisor-a",
+                    "declared_location": "FG-LOC-B",
+                }
+            )
+
+        self.assertIn("correction_reason", str(missing_ctx.exception))
+
+        with self.assertRaises(ValidationError) as empty_ctx:
+            Step47PhaseADeclaredManualCorrection(
+                corrected_by="supervisor-a",
+                correction_reason="   ",
+                declared_location="FG-LOC-B",
+            )
+
+        self.assertIn("correction_reason is required", str(empty_ctx.exception))
 
     def test_correction_rejects_noop_overwrite_attempt(self) -> None:
         db = self._new_db()
@@ -187,6 +210,7 @@ class Step47PhaseADeclaredManualStorageReadSourceTests(unittest.TestCase):
                 declaration_id=created.id,
                 payload=Step47PhaseADeclaredManualCorrection(
                     corrected_by="supervisor-a",
+                    correction_reason="attempted silent overwrite",
                     declared_location="FG-LOC-A",
                     source_record_reference="CARD-001",
                 ),
@@ -227,6 +251,7 @@ class Step47PhaseADeclaredManualStorageReadSourceTests(unittest.TestCase):
             declaration_id=row.id,
             corrected_by="supervisor-a",
             corrected_at=datetime(2026, 4, 7, 10, 0, 0),
+            correction_reason="first correction reason",
             previous_declared_location="FG-LOC-A",
             new_declared_location="FG-LOC-B",
             previous_source_record_reference="CARD-001",
@@ -236,6 +261,7 @@ class Step47PhaseADeclaredManualStorageReadSourceTests(unittest.TestCase):
             declaration_id=row.id,
             corrected_by="supervisor-b",
             corrected_at=datetime(2026, 4, 7, 11, 0, 0),
+            correction_reason="second correction reason",
             previous_declared_location="FG-LOC-B",
             new_declared_location="FG-LOC-C",
             previous_source_record_reference="CARD-002",

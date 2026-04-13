@@ -50,6 +50,7 @@ def correct_step47_phasea_declared_manual_source(
     trace = Step47PhaseADeclaredManualCorrectionTrace(
         declaration_id=row.id,
         corrected_by=payload.corrected_by,
+        correction_reason=payload.correction_reason,
         previous_declared_location=row.declared_location if location_changed else None,
         new_declared_location=next_declared_location if location_changed else None,
         previous_source_record_reference=row.source_record_reference if reference_changed else None,

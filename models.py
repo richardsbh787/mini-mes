@@ -715,6 +715,35 @@ class FgReceiveEventTruth(Base):
     location_bound_at = Column(DateTime, nullable=False, default=datetime.utcnow, index=True)
 
 
+class Step47PhaseADeclaredManualSource(Base):
+    __tablename__ = "step47_phasea_declared_manual_source"
+
+    id = Column(Integer, primary_key=True, index=True)
+    declared_by = Column(String, nullable=False)
+    declared_at = Column(DateTime, nullable=False, default=datetime.utcnow, index=True)
+    declared_location = Column(String, nullable=False, index=True)
+    source_record_reference = Column(String, nullable=False, index=True)
+
+
+class Step47PhaseADeclaredManualCorrectionTrace(Base):
+    __tablename__ = "step47_phasea_declared_manual_correction_trace"
+
+    id = Column(Integer, primary_key=True, index=True)
+    declaration_id = Column(
+        Integer,
+        ForeignKey("step47_phasea_declared_manual_source.id"),
+        nullable=False,
+        index=True,
+    )
+    corrected_by = Column(String, nullable=False)
+    corrected_at = Column(DateTime, nullable=False, default=datetime.utcnow, index=True)
+    correction_reason = Column(String, nullable=False)
+    previous_declared_location = Column(String, nullable=True)
+    new_declared_location = Column(String, nullable=True)
+    previous_source_record_reference = Column(String, nullable=True)
+    new_source_record_reference = Column(String, nullable=True)
+
+
 class PackingDetail(Base):
     __tablename__ = "packing_detail"
     __table_args__ = (

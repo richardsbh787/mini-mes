@@ -125,6 +125,7 @@ class Step47PhaseADeclaredManualReadSurfaceTests(unittest.TestCase):
             declaration_id=created.id,
             payload=Step47PhaseADeclaredManualCorrection(
                 corrected_by="supervisor-a",
+                correction_reason="source card misread",
                 declared_location="FG-LOC-B",
                 source_record_reference="CARD-002",
             ),
@@ -152,6 +153,7 @@ class Step47PhaseADeclaredManualReadSurfaceTests(unittest.TestCase):
         self.assertEqual(payload["correction_trace"][0]["data_strength"], "declared_manual")
         self.assertFalse(payload["correction_trace"][0]["is_legal_truth"])
         self.assertTrue(payload["correction_trace"][0]["is_test_data"])
+        self.assertEqual(payload["correction_trace"][0]["correction_reason"], "source card misread")
         self.assertNotIn("location", payload["current_record"])
         self.assertNotIn("location", payload["original_record"])
 
