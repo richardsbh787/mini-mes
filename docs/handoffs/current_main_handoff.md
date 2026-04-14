@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.43
+Mini-MES Handoff v2.44
 
-Updated after 2026-04-14 handoff-only insertion for Frozen Record - Step47_PhaseA_CorrectionReason_CommonReasonOption_Governance_Baseline
+Updated after 2026-04-14 handoff-only insertion for Frozen Record - Step47_PhaseA_CorrectionReason_CommonReason_OptionSet_Change_Governance_Baseline
 Date: 2026-04-14
 
 1. Frozen mainline snapshot
@@ -97,6 +97,8 @@ Frozen Record - Step47_PhaseA_CorrectionReason_UIStageReviewEntryGate_Baseline
 
 Frozen Record - Step47_PhaseA_CorrectionReason_CommonReasonOption_Governance_Baseline
 
+Frozen Record - Step47_PhaseA_CorrectionReason_CommonReason_OptionSet_Change_Governance_Baseline
+
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
 
@@ -142,6 +144,7 @@ Step47_PhaseA_OpeningRecheck_Freeze is now PASS WITH WARNINGS / FROZEN WITH FINA
 Step47_PhaseA_CorrectionReason_OperatorInputPattern_Baseline is now PASS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA correction-reason operator-input pattern baseline is now frozen as a narrow governance-only record, it locks the minimum future operator-input pattern baseline for `correction_reason` in the Step47 PhaseA declared/manual correction-with-trace path, prefers common-reason options first with short supplemental text when needed, rejects pure unrestricted long free-text-only design as the default pattern, freezes future operator-facing wording to factory language rather than technical field names or status codes, freezes anti-blame framing and high-pressure speed-preservation as mandatory design constraints, explicitly leaves exact option values and exact UI wording for later separate confirmation, and does not authorize UI implementation, does not mean UI PlantFit has already passed, does not authorize business functionality opening, submission opening, admitted-source activation, legal-truth effect, or Phase B opening.
 Step47_PhaseA_CorrectionReason_UIStageReviewEntryGate_Baseline is now PASS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA correction-reason UI-stage review entry gate baseline is now frozen as a narrow governance-only record, it locks that the already-frozen input-pattern baseline does not mean UI may directly start, freezes that any future UI/operator-facing implementation for `correction_reason` may not start unless all required entry conditions are explicitly satisfied and recorded, requires a design-only UI-stage candidate that explicitly states common-reason options first, short supplemental text when needed, and no pure unrestricted long free-text-only default, requires operator-facing wording draft in factory language with explicit confirmation by 睿辰 before implementation, requires dedicated re-execution of Operator Minimal Action Rule review and P-Series PlantFit / Practicality review plus explicit high-pressure-scenario usability checking for the UI-stage candidate, freezes that only after those items pass may a separate UI implementation card be considered, and does not authorize UI implementation, does not mean UI PlantFit has already passed, does not mean UI may directly start, and does not authorize business functionality opening, submission opening, admitted-source activation, legal-truth effect, or Phase B opening.
 Step47_PhaseA_CorrectionReason_CommonReasonOption_Governance_Baseline is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA correction-reason common-reason option governance baseline is now frozen as a narrow Phase A declared/manual governance-only record, it locks that the future common-reason option set for `correction_reason` is a governed business artifact rather than an implementer-owned convenience list, freezes that exact option values must be proposed separately and explicitly confirmed by Ruichen before any later UI-stage use, preserves that the option set is not an exhaustive closed truth list and that short supplemental text remains allowed when options do not adequately express the real reason, freezes that any future UI/operator-facing implementation may only consume an already-confirmed option set and that UI must not define its own option set, carries W1 as a non-blocking warning that later narrow option-set change governance is still required, and does not mean option values are already approved, does not authorize UI implementation, does not mean UI may directly start, does not authorize business functionality opening, submission opening, admitted-source activation, legal-truth effect, or Phase B opening.
+Step47_PhaseA_CorrectionReason_CommonReason_OptionSet_Change_Governance_Baseline is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA correction-reason common-reason option-set change governance baseline is now frozen as a narrow Phase A declared/manual governance-only record, it locks that future add / modify / remove changes to the governed `correction_reason` common-reason option set must follow a governed change path with Ruichen as final confirmation authority, preserves that Codex / frontend implementers must not define, change, or expand option values on their own, freezes that UI / frontend may only consume an already-confirmed option-set version after the governed path is completed and formally landed, carries W1 as a non-blocking warning that formal record landing must be tightened to handoff record or independent decision record rather than chat history / screenshots / informal messages, carries W2 as a non-blocking warning that re-review trigger judgments remain principle-based at this stage with future disputes decided case by case by Ruichen, and does not approve exact option values, does not authorize UI implementation, does not mean UI may directly start, and does not authorize business functionality opening, submission opening, admitted-source activation, legal-truth effect, or Phase B opening.
 Step47_PhaseA_OpeningRecheck_ActualDecision_v1 is now PASS WITH WARNINGS / DECISION RECORD CONFIRMED; Step47 PhaseA Opening re-check actual decision is now recorded as PASS at re-check layer only, it confirms that the already-frozen opening prerequisites are re-check-satisfied at the governance re-check layer, includes Qinran-confirmed ambiguity-clearance discipline, carries an explicit boundary that item F is confirmed only against the recorded handoff state and must be re-reviewed if later unrecorded emergency-carrier or overdue-rollback facts are discovered, uses the explicit record identifier Step47_PhaseA_OpeningRecheck_ActualDecision_v1 for downstream citation, and it does not authorize implementation, implementation-opening PASS, submission opening, A-class establishment, or runtime production use.
 Step47_PhaseA_ImplementationOpening_ActualDecision_v1 is now PASS WITH WARNINGS / DECISION RECORD CONFIRMED; Step47 PhaseA implementation-opening actual decision is now recorded as PASS for the manual / declared layer only, it authorizes implementation work only within the already-frozen Step47 PhaseA governance boundaries, limited to coding and unit/integration testing in development/test environments only, preserves permanent non-equality from submission opening, A-class, runtime production use, admitted-source activation, legal location truth effect, and PhaseB dependency, includes final-review-note tightening on development/test environment classification responsibility, minimum implementation review-gate trigger before merge, and explicit Ruichen confirmation discipline, and it does not authorize staging or production-like deployment, submission opening, A-class establishment, runtime production use, admitted-source activation, or legal location truth effect.
 Implementation Result Record - Step47 PhaseA Declared/Manual Read Surface is now PASS / INSERTED WITH RUICHEN GATE CONFIRMATION; it records implementation result commit `f7fd056901bfa6a9bbe9c210f9852aaebddbe2dc` for the separate Step47 PhaseA declared/manual read surface, confirms mandatory contract markers `data_strength = "declared_manual"` and `is_legal_truth = false`, preserves `declared_location` naming, marks test records with `is_test_data = true`, records contract-level misuse blocking, Literal-constrained `data_strength`, and dev/test-only route exposure guard, carries forward the merge-side reminder that Operator Minimal Action Rule review record and P-Series review record must be archived before merge, includes non-blocking implementation notes on review basis and naming stability, and it does not authorize submission opening, staging opening, legal truth effect, admitted-source activation, or any PhaseB opening.
@@ -10772,6 +10775,152 @@ Final Review Notes
 * this frozen baseline does not constitute admitted-source activation
 * this frozen baseline does not constitute legal-truth effect
 * this frozen baseline does not constitute Phase B opening
+
+75. Frozen Record - Step47_PhaseA_CorrectionReason_CommonReason_OptionSet_Change_Governance_Baseline
+
+Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+Scope Type: Handoff-only governance freeze
+Final review title: `Task Card — Step47 PhaseA — Correction Reason Common-Reason Option Set Change Governance Baseline (Governance Only)`
+Final review result: PASS WITH WARNINGS
+
+Purpose
+This record freezes the governance-only baseline for future change control of the Step47 PhaseA declared/manual `correction_reason` common-reason option set, so the list cannot be changed casually and any future add / modify / remove change must follow a governed path with formal record landing before UI / frontend is allowed to consume an updated version.
+
+This record is governance-only.
+It is Phase A only.
+It is declared/manual only.
+It does not approve exact option values.
+It does not authorize UI implementation.
+It does not mean UI may directly start.
+It does not authorize business functionality opening.
+It does not authorize submission opening.
+It does not authorize admitted-source activation.
+It does not create legal-truth effect.
+It does not open Phase B.
+
+Locked Objective
+This record freezes only the following:
+
+1. the rule that future option-set change control for the governed `correction_reason` common-reason option set must itself be governed
+2. the rule that proposal source for option-set change must be governed and must not be implementer-self-decided
+3. the rule that final confirmation authority for option-set change remains Ruichen
+4. the rule that the governed change path must explicitly cover the three change operation classes:
+   add option
+   modify option
+   remove option
+5. the rule that re-review may be triggered when a proposed change could materially increase operator burden
+6. the rule that re-review may be triggered when a proposed change could affect shopfloor comprehension
+7. the rule that re-review may be triggered when a proposed change could alter non-blame or factory-language usability
+8. the rule that re-review may be triggered when a proposed change could create high-pressure execution risk
+9. the rule that UI / frontend may only consume an already-confirmed option-set version after the governed path is completed
+10. the rule that a formal record landing point is required after confirmation
+11. the non-blocking warning carry-in W1 on formal record-landing tightening
+12. the non-blocking warning carry-in W2 on principle-based re-review trigger judgments
+
+Non-scope
+This record does not:
+
+* approve exact option values
+* authorize UI implementation
+* authorize UI start
+* constitute UI implementation authorization
+* constitute business functionality opening
+* constitute submission opening
+* constitute admitted-source activation
+* create legal-truth effect
+* open Phase B
+* define schema, service, API, UI, test, config, or DB behavior
+* convert this governance baseline into direct UI-start permission
+
+S-1 / S0 / S+1
+
+S-1
+
+* `Frozen Record - Step47_PhaseA_CorrectionReason_CommonReasonOption_Governance_Baseline` already froze that the common-reason option set for `correction_reason` is a governed business artifact, that exact option values require separate proposal plus explicit Ruichen confirmation, and that UI may only consume an already-confirmed option set.
+* `Frozen Record - Step47_PhaseA_CorrectionReason_UIStageReviewEntryGate_Baseline` already froze that future UI/operator-facing implementation may not directly start and remains blocked until a later dedicated UI-stage review chain is executed.
+* This record stands on those already-frozen boundaries only to govern how future option-set changes must be controlled and recorded, and must not be re-read as approval of any exact option values or as UI-start authorization.
+
+S0
+
+* freeze the governance-only change-control baseline for the already-governed `correction_reason` common-reason option set
+* freeze who confirms change results, what operation classes are covered, when re-review may be triggered, and how UI / frontend may consume only a confirmed version after formal landing
+* keep exact option values, UI implementation, UI direct start, business functionality opening, submission opening, admitted-source activation, legal-truth effect, and Phase B opening out of scope
+
+S+1
+
+* a later governed option-set change event, if and only if a concrete add / modify / remove proposal is deliberately opened
+* a later formal landing of confirmed result into handoff record or independent decision record before UI / frontend consumption
+* no direct jump from this governance baseline to approved option values, UI implementation, or any broader opening
+
+Frozen Body
+
+1. Governed Change Path Rule
+The common-reason option set cannot be changed casually.
+Before changing it, the governed path must be followed.
+
+2. Governed Proposal Source Rule
+Proposal source for option-set change must be governed.
+It must not be implementer-self-decided.
+Codex / frontend implementers must not define, change, or expand option values on their own.
+
+3. Final Confirmation Authority Rule
+Final confirmation authority for option-set change remains Ruichen.
+
+4. Covered Change Operation Classes Rule
+This baseline covers the following three change operation classes:
+
+* add option
+* modify option
+* remove option
+
+5. Re-Review Trigger Preservation Rule
+Re-review may be triggered when the proposed change could:
+
+* materially increase operator burden
+* affect shopfloor comprehension
+* alter non-blame / factory-language usability
+* create high-pressure execution risk
+
+6. UI / Frontend Consumption Rule
+UI / frontend may only consume an already-confirmed option-set version after the governed path is completed.
+UI / frontend may not consume a draft, informal, or self-expanded version.
+
+7. Formal Record Landing Rule
+After confirmation, the result must land in a formal record.
+The formal landing point must be either:
+
+* handoff record
+* independent decision record
+
+8. W1 Non-Blocking Warning Carry-In
+W1 is preserved as non-blocking.
+The record-landing form must be tightened.
+Pure chat history, ad hoc screenshots, or informal messages are not acceptable as the formal basis.
+
+9. W2 Non-Blocking Warning Carry-In
+W2 is preserved as non-blocking.
+Re-review trigger judgments remain principle-based at this stage.
+If a future dispute appears, Ruichen decides case by case.
+No separate card is required now for that point.
+
+Factory-Language Meaning
+
+* the common-reason list cannot be changed casually
+* before changing it, the governed path must be followed
+* there must be a formal record
+* the path must make clear who may propose, who confirms, when re-review is required, and how the frontend is allowed to consume the updated version
+
+Final Review Notes
+
+* this frozen baseline preserves that the option-set remains a governed business artifact
+* this frozen baseline does not approve exact option values
+* this frozen baseline does not authorize UI implementation
+* this frozen baseline does not mean UI may directly start
+* this frozen baseline does not mean business functionality opening
+* this frozen baseline does not mean submission opening
+* this frozen baseline does not mean admitted-source activation
+* this frozen baseline does not mean legal-truth effect
+* this frozen baseline does not mean Phase B opening
 
 Decision Record - Step47_PhaseA_OpeningRecheck_ActualDecision_v1
 
