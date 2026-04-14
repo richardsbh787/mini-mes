@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.46
+Mini-MES Handoff v2.47
 
-Updated after 2026-04-14 handoff-only insertion for Frozen Record - Step47 PhaseA / Correction Reason UI-Stage Candidate Design-Only Review Preparation
+Updated after 2026-04-14 handoff-only insertion for Frozen Record - Step47 PhaseA / Correction Reason UI-Stage Candidate Design Artifact Preparation
 Date: 2026-04-14
 
 1. Frozen mainline snapshot
@@ -103,6 +103,8 @@ Approved Option Set Record - Step47 PhaseA / Correction Reason Initial Common-Re
 
 Frozen Record - Step47 PhaseA / Correction Reason UI-Stage Candidate Design-Only Review Preparation
 
+Frozen Record - Step47 PhaseA / Correction Reason UI-Stage Candidate Design Artifact Preparation
+
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
 
@@ -151,6 +153,7 @@ Step47_PhaseA_CorrectionReason_CommonReasonOption_Governance_Baseline is now PAS
 Step47_PhaseA_CorrectionReason_CommonReason_OptionSet_Change_Governance_Baseline is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA correction-reason common-reason option-set change governance baseline is now frozen as a narrow Phase A declared/manual governance-only record, it locks that future add / modify / remove changes to the governed `correction_reason` common-reason option set must follow a governed change path with Ruichen as final confirmation authority, preserves that Codex / frontend implementers must not define, change, or expand option values on their own, freezes that UI / frontend may only consume an already-confirmed option-set version after the governed path is completed and formally landed, carries W1 as a non-blocking warning that formal record landing must be tightened to handoff record or independent decision record rather than chat history / screenshots / informal messages, carries W2 as a non-blocking warning that re-review trigger judgments remain principle-based at this stage with future disputes decided case by case by Ruichen, and does not approve exact option values, does not authorize UI implementation, does not mean UI may directly start, and does not authorize business functionality opening, submission opening, admitted-source activation, legal-truth effect, or Phase B opening.
 Approved Option Set Record - Step47 PhaseA / Correction Reason Initial Common-Reason Option Set v1 is now PASS WITH WARNINGS / APPROVED AND RECORDED; the explicitly approved initial common-reason option set for Step47 PhaseA declared/manual `correction_reason` is now recorded as an approved business artifact for later UI-stage candidate consumption only, the approved set is `1. 写错申报位置 2. 搬货后未更新 3. 临时挪位 4. 标签脱落 / 看不清 5. 现场位置与申报不符（原因待查） 6. 盘点后发现有误 7. 主管要求更正 8. 其他（需补短说明）`, the earlier overlap concern between item 1 and the former broader wording of item 5 is recorded as resolved by the approved wording `现场位置与申报不符（原因待查）`, UI ordering is not frozen by this record and remains for later UI-stage review, short supplemental text remains allowed through item 8, future UI-stage work must still satisfy Ruichen-confirmed wording plus re-executed Operator Minimal Action Rule review, re-executed P-Series PlantFit / Practicality review, and explicit high-pressure usability checking, future changes to this option set must still follow the already-frozen option-set change governance path, and this record does not authorize UI implementation, does not mean UI may directly start, does not mean UI PlantFit has passed, and does not authorize business functionality opening, submission opening, admitted-source activation, legal truth, or Phase B opening.
 Frozen Record - Step47 PhaseA / Correction Reason UI-Stage Candidate Design-Only Review Preparation is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA correction-reason UI-stage candidate design-only review preparation is now frozen as a narrow governance/design-review-only record, it locks that a UI-stage candidate design must exist for review only and must include candidate input form, candidate consumption pattern for the already-approved 8-item option set, candidate interaction for `Other (short supplemental text required)`, a factory-language wording candidate draft as a later Ruichen-confirmation review object, and a high-pressure-scenario usability candidate check result, requires at least a low-fidelity wireframe or explicit interaction-flow description and visible submission of option layout, short supplemental text input method, basic prompt direction, and candidate error-message wording, freezes that the already-approved option set may only be consumed and may not be added to, deleted from, or modified by the implementation layer, freezes that high-pressure checking cannot be skipped and must include at least 2 shopfloor people trying or walking through the candidate with no obvious confusion and no obvious slowdown, carries Qinran non-blocking W1 that later execution of that two-person try/walk-through requirement still needs a short written record landing in handoff or an independent decision record rather than pure verbal confirmation, and does not authorize UI implementation, frontend submission wiring, API/schema/service change, option-value rewriting, submission opening, legal truth, admitted-source activation, or Phase B opening.
+Frozen Record - Step47 PhaseA / Correction Reason UI-Stage Candidate Design Artifact Preparation is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA correction-reason UI-stage candidate design artifact preparation is now frozen as a narrow governance/design-review-only record, it prepares the future submission of an actual UI-stage candidate design artifact while explicitly preserving that this card does not itself contain the actual candidate artifact body, freezes the required input chain including the approved 8-item option set and the already-frozen design-only review preparation record, freezes that the future deliverable must be an actual reviewable candidate design artifact in at least low-fidelity wireframe or explicit interaction-flow form and must visibly include option layout, `Other (short supplemental text required)` input behavior, wording candidate direction, and error-message candidate wording, freezes that future artifact submission must include a wording candidate draft plus at least 2 shopfloor-person try/walk-through written records that must not remain oral-only, carries W1 that this card passes as a preparation freeze only and the actual artifact body has not yet been produced here and cannot be replaced later by card text again, carries W2 that future try/walk-through should prioritize a high-pressure scenario such as urgent location correction during rush output with real frontline participants, and carries the required future written try/walk-through record fields for participant roles, scenario description, confusion occurrence, and rhythm/pace slowdown occurrence, and does not authorize UI implementation, frontend wiring, API/schema/service/model/test/DB changes, final wording approval, submission opening, legal truth, admitted-source activation, or Phase B opening.
 Step47_PhaseA_OpeningRecheck_ActualDecision_v1 is now PASS WITH WARNINGS / DECISION RECORD CONFIRMED; Step47 PhaseA Opening re-check actual decision is now recorded as PASS at re-check layer only, it confirms that the already-frozen opening prerequisites are re-check-satisfied at the governance re-check layer, includes Qinran-confirmed ambiguity-clearance discipline, carries an explicit boundary that item F is confirmed only against the recorded handoff state and must be re-reviewed if later unrecorded emergency-carrier or overdue-rollback facts are discovered, uses the explicit record identifier Step47_PhaseA_OpeningRecheck_ActualDecision_v1 for downstream citation, and it does not authorize implementation, implementation-opening PASS, submission opening, A-class establishment, or runtime production use.
 Step47_PhaseA_ImplementationOpening_ActualDecision_v1 is now PASS WITH WARNINGS / DECISION RECORD CONFIRMED; Step47 PhaseA implementation-opening actual decision is now recorded as PASS for the manual / declared layer only, it authorizes implementation work only within the already-frozen Step47 PhaseA governance boundaries, limited to coding and unit/integration testing in development/test environments only, preserves permanent non-equality from submission opening, A-class, runtime production use, admitted-source activation, legal location truth effect, and PhaseB dependency, includes final-review-note tightening on development/test environment classification responsibility, minimum implementation review-gate trigger before merge, and explicit Ruichen confirmation discipline, and it does not authorize staging or production-like deployment, submission opening, A-class establishment, runtime production use, admitted-source activation, or legal location truth effect.
 Implementation Result Record - Step47 PhaseA Declared/Manual Read Surface is now PASS / INSERTED WITH RUICHEN GATE CONFIRMATION; it records implementation result commit `f7fd056901bfa6a9bbe9c210f9852aaebddbe2dc` for the separate Step47 PhaseA declared/manual read surface, confirms mandatory contract markers `data_strength = "declared_manual"` and `is_legal_truth = false`, preserves `declared_location` naming, marks test records with `is_test_data = true`, records contract-level misuse blocking, Literal-constrained `data_strength`, and dev/test-only route exposure guard, carries forward the merge-side reminder that Operator Minimal Action Rule review record and P-Series review record must be archived before merge, includes non-blocking implementation notes on review basis and naming stability, and it does not authorize submission opening, staging opening, legal truth effect, admitted-source activation, or any PhaseB opening.
@@ -11251,6 +11254,166 @@ Final Review Notes
 * this record does not mean admitted-source activation
 * this record does not mean legal truth
 * this record does not mean Phase B opening
+
+78. Frozen Record - Step47 PhaseA / Correction Reason UI-Stage Candidate Design Artifact Preparation
+
+Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+Scope Type: Handoff-only governance freeze
+
+Purpose
+This record freezes the preparation baseline for the future submission of an actual Step47 PhaseA `correction_reason` UI-stage candidate design artifact, but only as a governance/design-review-only step. This record does not itself contain the actual candidate artifact body.
+
+This record is governance/design-review-only.
+This record is Phase A only.
+This record is declared/manual only.
+This record does not authorize UI implementation.
+This record does not authorize frontend wiring.
+This record does not authorize API/schema/service/model/test/DB changes.
+This record does not approve final operator-facing wording.
+This record does not reopen submission, legal truth, admitted-source activation, or Phase B.
+The actual candidate artifact is not yet submitted in this record.
+
+Required Inputs
+
+* `Review Record - Operator Minimal Action Rule Check - Step47 PhaseA / Declared-Manual Correction Reason Single-Field Append Implementation (Post-Materialization Reopen)`
+* `Review Record - P-Series PlantFit / Practicality Check - Step47 PhaseA / Declared-Manual Correction Reason Single-Field Append Implementation (Post-Materialization Reopen)`
+* `Frozen Record - Step47_PhaseA_CorrectionReason_OperatorInputPattern_Baseline`
+* `Frozen Record - Step47_PhaseA_CorrectionReason_UIStageReviewEntryGate_Baseline`
+* `Frozen Record - Step47_PhaseA_CorrectionReason_CommonReasonOption_Governance_Baseline`
+* `Frozen Record - Step47_PhaseA_CorrectionReason_CommonReason_OptionSet_Change_Governance_Baseline`
+* `Approved Option Set Record - Step47 PhaseA / Correction Reason Initial Common-Reason Option Set v1`
+* `Frozen Record - Step47 PhaseA / Correction Reason UI-Stage Candidate Design-Only Review Preparation`
+* current handoff baseline before insertion: `v2.46`
+
+Approved Option Set Input
+
+1. 写错申报位置
+2. 搬货后未更新
+3. 临时挪位
+4. 标签脱落 / 看不清
+5. 现场位置与申报不符（原因待查）
+6. 盘点后发现有误
+7. 主管要求更正
+8. 其他（需补短说明）
+
+Locked Objective
+This record freezes only the following:
+
+1. the rule that this card prepares the future submission of an actual UI-stage candidate design artifact
+2. the rule that this card does not itself contain the actual candidate artifact body
+3. the rule that future deliverable must be an actual reviewable candidate design artifact
+4. the rule that acceptable artifact form must be at least one of:
+   low-fidelity wireframe
+   explicit interaction flow description
+5. the rule that future artifact submission must visibly include:
+   option layout
+   `Other (short supplemental text required)` input behavior
+   wording candidate direction
+   error-message candidate wording
+6. the rule that future artifact submission must include wording candidate draft
+7. the rule that future artifact submission must include at least 2 shopfloor-person try/walk-through written records
+8. the rule that written records must not remain oral-only
+9. the rule that future candidate artifact review must still pass through the already-frozen UI entry gate chain
+
+Non-scope
+This record does not:
+
+* create or attach the actual candidate artifact body
+* authorize UI implementation
+* authorize frontend wiring
+* authorize API/schema/service/model/test/DB changes
+* approve final operator-facing wording
+* mean UI PlantFit has passed
+* authorize business functionality opening
+* authorize submission opening
+* activate admitted sources
+* create legal truth
+* advance Phase B
+
+S-1 / S0 / S+1
+
+S-1
+
+* `Approved Option Set Record - Step47 PhaseA / Correction Reason Initial Common-Reason Option Set v1` already recorded the approved 8-item option set for later UI-stage candidate consumption only.
+* `Frozen Record - Step47 PhaseA / Correction Reason UI-Stage Candidate Design-Only Review Preparation` already froze the design-only review-preparation boundary, required candidate content, two-person high-pressure check minimum, and no-direct-jump rule against UI implementation.
+* The rest of the already-frozen correction-reason governance chain listed above already freezes input pattern, UI-stage entry gate, option governance, option-set change governance, and prior Operator Minimal Action Rule / P-Series review context.
+* This record stands on those already-frozen boundaries only to prepare the later artifact-submission round and must not be re-read as actual artifact submission, UI implementation authorization, or UI PlantFit pass.
+
+S0
+
+* freeze the preparation baseline for a later actual candidate artifact submission
+* require the later artifact form and written try/walk-through records to be concrete and reviewable
+* preserve that this current card still contains no actual candidate artifact body
+
+S+1
+
+* a later artifact-review round must attach the actual candidate artifact body instead of re-submitting card text only
+* that later review must still pass through the already-frozen UI entry gate chain
+* no direct jump from this preparation freeze to UI implementation or broader opening
+
+Frozen Body
+
+1. Preparation-Only Rule
+This card prepares the future submission of an actual UI-stage candidate design artifact.
+It does not itself contain the actual candidate artifact body.
+
+2. Future Deliverable Rule
+Future deliverable must be an actual reviewable candidate design artifact.
+
+3. Acceptable Artifact Form Rule
+Acceptable artifact form must be at least one of:
+
+* low-fidelity wireframe
+* explicit interaction flow description
+
+4. Visible Artifact Content Rule
+Future artifact submission must visibly include:
+
+* option layout
+* `Other (short supplemental text required)` input behavior
+* wording candidate direction
+* error-message candidate wording
+
+5. Wording Candidate Draft Rule
+Future artifact submission must include wording candidate draft.
+
+6. Try/Walk-Through Written Record Rule
+Future artifact submission must include at least 2 shopfloor-person try/walk-through written records.
+Written records must not remain oral-only.
+
+7. W1 Final-Review Note Carry-In
+This card passes as a preparation freeze only.
+The actual candidate artifact body has not yet been produced in this card and must be attached in the later review round.
+It is forbidden to submit only card text again when the artifact-review round begins.
+
+8. W2 Final-Review Note Carry-In
+Future try/walk-through should prioritize a high-pressure scenario such as urgent location correction during rush output.
+Participants should include real frontline roles rather than management-only or office-only substitutes.
+
+9. Future Written Record Minimum Fields Rule
+The future written try/walk-through record must state:
+
+* participant roles
+* scenario description
+* whether confusion occurred
+* whether rhythm/pace slowdown occurred
+
+10. UI Entry Gate Preservation Rule
+Future candidate artifact review must still pass through the already-frozen UI entry gate chain.
+
+Final Review Notes
+
+* this record is Phase A only
+* this record is declared/manual only
+* this record is governance/design-review only
+* this record does not authorize UI implementation
+* this record does not mean UI PlantFit has passed
+* this record does not mean business functionality opening
+* this record does not mean submission opening
+* this record does not mean admitted-source activation
+* this record does not mean legal truth
+* this record does not mean Phase B opening
+* the actual candidate artifact is not yet submitted in this record
 
 Decision Record - Step47_PhaseA_OpeningRecheck_ActualDecision_v1
 
