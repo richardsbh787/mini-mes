@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.44
+Mini-MES Handoff v2.45
 
-Updated after 2026-04-14 handoff-only insertion for Frozen Record - Step47_PhaseA_CorrectionReason_CommonReason_OptionSet_Change_Governance_Baseline
+Updated after 2026-04-14 handoff-only insertion for Approved Option Set Record - Step47 PhaseA / Correction Reason Initial Common-Reason Option Set v1
 Date: 2026-04-14
 
 1. Frozen mainline snapshot
@@ -99,6 +99,8 @@ Frozen Record - Step47_PhaseA_CorrectionReason_CommonReasonOption_Governance_Bas
 
 Frozen Record - Step47_PhaseA_CorrectionReason_CommonReason_OptionSet_Change_Governance_Baseline
 
+Approved Option Set Record - Step47 PhaseA / Correction Reason Initial Common-Reason Option Set v1
+
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
 
@@ -145,6 +147,7 @@ Step47_PhaseA_CorrectionReason_OperatorInputPattern_Baseline is now PASS / FROZE
 Step47_PhaseA_CorrectionReason_UIStageReviewEntryGate_Baseline is now PASS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA correction-reason UI-stage review entry gate baseline is now frozen as a narrow governance-only record, it locks that the already-frozen input-pattern baseline does not mean UI may directly start, freezes that any future UI/operator-facing implementation for `correction_reason` may not start unless all required entry conditions are explicitly satisfied and recorded, requires a design-only UI-stage candidate that explicitly states common-reason options first, short supplemental text when needed, and no pure unrestricted long free-text-only default, requires operator-facing wording draft in factory language with explicit confirmation by 睿辰 before implementation, requires dedicated re-execution of Operator Minimal Action Rule review and P-Series PlantFit / Practicality review plus explicit high-pressure-scenario usability checking for the UI-stage candidate, freezes that only after those items pass may a separate UI implementation card be considered, and does not authorize UI implementation, does not mean UI PlantFit has already passed, does not mean UI may directly start, and does not authorize business functionality opening, submission opening, admitted-source activation, legal-truth effect, or Phase B opening.
 Step47_PhaseA_CorrectionReason_CommonReasonOption_Governance_Baseline is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA correction-reason common-reason option governance baseline is now frozen as a narrow Phase A declared/manual governance-only record, it locks that the future common-reason option set for `correction_reason` is a governed business artifact rather than an implementer-owned convenience list, freezes that exact option values must be proposed separately and explicitly confirmed by Ruichen before any later UI-stage use, preserves that the option set is not an exhaustive closed truth list and that short supplemental text remains allowed when options do not adequately express the real reason, freezes that any future UI/operator-facing implementation may only consume an already-confirmed option set and that UI must not define its own option set, carries W1 as a non-blocking warning that later narrow option-set change governance is still required, and does not mean option values are already approved, does not authorize UI implementation, does not mean UI may directly start, does not authorize business functionality opening, submission opening, admitted-source activation, legal-truth effect, or Phase B opening.
 Step47_PhaseA_CorrectionReason_CommonReason_OptionSet_Change_Governance_Baseline is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA correction-reason common-reason option-set change governance baseline is now frozen as a narrow Phase A declared/manual governance-only record, it locks that future add / modify / remove changes to the governed `correction_reason` common-reason option set must follow a governed change path with Ruichen as final confirmation authority, preserves that Codex / frontend implementers must not define, change, or expand option values on their own, freezes that UI / frontend may only consume an already-confirmed option-set version after the governed path is completed and formally landed, carries W1 as a non-blocking warning that formal record landing must be tightened to handoff record or independent decision record rather than chat history / screenshots / informal messages, carries W2 as a non-blocking warning that re-review trigger judgments remain principle-based at this stage with future disputes decided case by case by Ruichen, and does not approve exact option values, does not authorize UI implementation, does not mean UI may directly start, and does not authorize business functionality opening, submission opening, admitted-source activation, legal-truth effect, or Phase B opening.
+Approved Option Set Record - Step47 PhaseA / Correction Reason Initial Common-Reason Option Set v1 is now PASS WITH WARNINGS / APPROVED AND RECORDED; the explicitly approved initial common-reason option set for Step47 PhaseA declared/manual `correction_reason` is now recorded as an approved business artifact for later UI-stage candidate consumption only, the approved set is `1. 写错申报位置 2. 搬货后未更新 3. 临时挪位 4. 标签脱落 / 看不清 5. 现场位置与申报不符（原因待查） 6. 盘点后发现有误 7. 主管要求更正 8. 其他（需补短说明）`, the earlier overlap concern between item 1 and the former broader wording of item 5 is recorded as resolved by the approved wording `现场位置与申报不符（原因待查）`, UI ordering is not frozen by this record and remains for later UI-stage review, short supplemental text remains allowed through item 8, future UI-stage work must still satisfy Ruichen-confirmed wording plus re-executed Operator Minimal Action Rule review, re-executed P-Series PlantFit / Practicality review, and explicit high-pressure usability checking, future changes to this option set must still follow the already-frozen option-set change governance path, and this record does not authorize UI implementation, does not mean UI may directly start, does not mean UI PlantFit has passed, and does not authorize business functionality opening, submission opening, admitted-source activation, legal truth, or Phase B opening.
 Step47_PhaseA_OpeningRecheck_ActualDecision_v1 is now PASS WITH WARNINGS / DECISION RECORD CONFIRMED; Step47 PhaseA Opening re-check actual decision is now recorded as PASS at re-check layer only, it confirms that the already-frozen opening prerequisites are re-check-satisfied at the governance re-check layer, includes Qinran-confirmed ambiguity-clearance discipline, carries an explicit boundary that item F is confirmed only against the recorded handoff state and must be re-reviewed if later unrecorded emergency-carrier or overdue-rollback facts are discovered, uses the explicit record identifier Step47_PhaseA_OpeningRecheck_ActualDecision_v1 for downstream citation, and it does not authorize implementation, implementation-opening PASS, submission opening, A-class establishment, or runtime production use.
 Step47_PhaseA_ImplementationOpening_ActualDecision_v1 is now PASS WITH WARNINGS / DECISION RECORD CONFIRMED; Step47 PhaseA implementation-opening actual decision is now recorded as PASS for the manual / declared layer only, it authorizes implementation work only within the already-frozen Step47 PhaseA governance boundaries, limited to coding and unit/integration testing in development/test environments only, preserves permanent non-equality from submission opening, A-class, runtime production use, admitted-source activation, legal location truth effect, and PhaseB dependency, includes final-review-note tightening on development/test environment classification responsibility, minimum implementation review-gate trigger before merge, and explicit Ruichen confirmation discipline, and it does not authorize staging or production-like deployment, submission opening, A-class establishment, runtime production use, admitted-source activation, or legal location truth effect.
 Implementation Result Record - Step47 PhaseA Declared/Manual Read Surface is now PASS / INSERTED WITH RUICHEN GATE CONFIRMATION; it records implementation result commit `f7fd056901bfa6a9bbe9c210f9852aaebddbe2dc` for the separate Step47 PhaseA declared/manual read surface, confirms mandatory contract markers `data_strength = "declared_manual"` and `is_legal_truth = false`, preserves `declared_location` naming, marks test records with `is_test_data = true`, records contract-level misuse blocking, Literal-constrained `data_strength`, and dev/test-only route exposure guard, carries forward the merge-side reminder that Operator Minimal Action Rule review record and P-Series review record must be archived before merge, includes non-blocking implementation notes on review basis and naming stability, and it does not authorize submission opening, staging opening, legal truth effect, admitted-source activation, or any PhaseB opening.
@@ -10921,6 +10924,152 @@ Final Review Notes
 * this frozen baseline does not mean admitted-source activation
 * this frozen baseline does not mean legal-truth effect
 * this frozen baseline does not mean Phase B opening
+
+76. Approved Option Set Record - Step47 PhaseA / Correction Reason Initial Common-Reason Option Set v1
+
+Status: PASS WITH WARNINGS / APPROVED AND RECORDED
+Scope Type: Handoff-only approved option-set record
+Secondary review: PASS WITH WARNINGS
+Final review: PASS WITH WARNINGS
+Ruichen explicit confirmation: APPROVED
+
+Purpose
+This record inserts the explicitly approved initial common-reason option set for Step47 PhaseA declared/manual `correction_reason` as a narrow governance / approved-business-artifact record only, so later UI-stage candidate work may consume this exact approved set without reopening option-value invention while still preserving that UI implementation remains blocked.
+
+This record is Phase A only.
+This record is declared/manual only.
+This record is governance / approved-business-artifact only.
+This record approves option values only for this initial set.
+This record does not authorize UI implementation.
+This record does not mean UI may directly start.
+This record does not mean UI PlantFit has passed.
+This record does not authorize business functionality opening.
+This record does not authorize submission opening.
+This record does not authorize admitted-source activation.
+This record does not create legal truth.
+This record does not open Phase B.
+
+Approved Option Set v1
+
+1. 写错申报位置
+2. 搬货后未更新
+3. 临时挪位
+4. 标签脱落 / 看不清
+5. 现场位置与申报不符（原因待查）
+6. 盘点后发现有误
+7. 主管要求更正
+8. 其他（需补短说明）
+
+Locked Objective
+This record freezes only the following:
+
+1. the exact approved initial common-reason option set above for `correction_reason`
+2. the rule that this approval is for later UI-stage candidate consumption only
+3. the rule that short supplemental text remains allowed through item 8
+4. the rule that the earlier overlap concern around item 1 and the former broader wording of item 5 is treated as resolved by the approved wording `现场位置与申报不符（原因待查）`
+5. the rule that UI ordering is not frozen by this record and remains for later UI-stage review
+6. the rule that future UI-stage work must still satisfy:
+   Ruichen-confirmed wording
+   re-executed Operator Minimal Action Rule review
+   re-executed P-Series PlantFit / Practicality review
+   explicit high-pressure usability checking
+7. the rule that future changes to this option set must still follow the already-frozen option-set change governance path
+
+Non-scope
+This record does not:
+
+* authorize option-set change outside the frozen governance path
+* authorize UI implementation
+* mean UI may directly start
+* mean UI PlantFit has passed
+* authorize business functionality opening
+* authorize submission opening
+* authorize admitted-source activation
+* create legal truth
+* open Phase B
+* define UI ordering
+* define schema, service, API, UI, test, config, or DB behavior
+
+S-1 / S0 / S+1
+
+S-1
+
+* `Frozen Record - Step47_PhaseA_CorrectionReason_CommonReasonOption_Governance_Baseline` already froze that the common-reason option set is a governed business artifact, that exact option values require explicit Ruichen confirmation before later UI-stage use, and that short supplemental text remains allowed when needed.
+* `Frozen Record - Step47_PhaseA_CorrectionReason_CommonReason_OptionSet_Change_Governance_Baseline` already froze that future add / modify / remove changes must follow a governed change path and that UI / frontend may only consume an already-confirmed option-set version after formal landing.
+* `Frozen Record - Step47_PhaseA_CorrectionReason_UIStageReviewEntryGate_Baseline` already froze that UI may not directly start and that future UI-stage work still requires renewed review gates.
+* This record stands on those already-frozen boundaries only to record the approved initial option set and must not be re-read as UI implementation authorization or as bypass of the UI-stage entry gate.
+
+S0
+
+* record the exact approved initial common-reason option set for later UI-stage candidate consumption only
+* keep the approval narrow to this initial set only
+* preserve unresolved downstream work at the UI-stage gate rather than opening implementation
+
+S+1
+
+* a later design-only UI-stage candidate may consume this approved initial set only after the already-frozen UI-stage entry conditions are satisfied
+* any future change to this set must go through the already-frozen option-set change governance path
+* no direct jump from this approved option-set record to UI implementation or any broader opening
+
+Approved Body
+
+1. Exact Approved Set Rule
+The approved initial common-reason option set for Step47 PhaseA declared/manual `correction_reason` is exactly:
+
+* 写错申报位置
+* 搬货后未更新
+* 临时挪位
+* 标签脱落 / 看不清
+* 现场位置与申报不符（原因待查）
+* 盘点后发现有误
+* 主管要求更正
+* 其他（需补短说明）
+
+2. Approval Scope Rule
+This approval applies only to this initial set as an approved business artifact for later UI-stage candidate consumption.
+It does not authorize UI implementation.
+It does not mean UI may directly start.
+It does not bypass the already-frozen UI-stage entry gate.
+
+3. Overlap-Concern Resolution Carry-In
+The earlier review concern around overlap between item 1 and the former broader wording of item 5 is considered resolved by the approved wording:
+
+* `现场位置与申报不符（原因待查）`
+
+4. Short Supplemental Text Rule
+Short supplemental text remains allowed through item 8:
+
+* `其他（需补短说明）`
+
+5. UI Ordering Non-Freeze Rule
+UI ordering is not frozen by this record.
+UI ordering remains for later UI-stage review.
+
+6. Still-Required Future UI-Stage Conditions Rule
+Any future UI-stage work must still satisfy:
+
+* Ruichen-confirmed wording
+* re-executed Operator Minimal Action Rule review
+* re-executed P-Series PlantFit / Practicality review
+* explicit high-pressure usability checking
+
+7. Future Change Path Rule
+Any future change to this option set must still follow the already-frozen option-set change governance path.
+
+Final Review Notes
+
+* this record is Phase A only
+* this record is declared/manual only
+* this record is governance / approved-business-artifact only
+* this record approves option values only for this initial set
+* this record does not authorize UI implementation
+* this record does not mean UI may directly start
+* this record does not mean UI PlantFit has passed
+* this record does not mean business functionality opening
+* this record does not mean submission opening
+* this record does not mean admitted-source activation
+* this record does not mean legal truth
+* this record does not mean Phase B opening
 
 Decision Record - Step47_PhaseA_OpeningRecheck_ActualDecision_v1
 
