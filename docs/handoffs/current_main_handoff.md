@@ -1,7 +1,7 @@
-Mini-MES Handoff v2.50
+Mini-MES Handoff v2.51
 
-Updated after 2026-04-14 handoff-only insertion for Frozen Record - Step47 PhaseA / Correction Reason Actual Candidate Artifact Body Minimum Review Package Requirements
-Date: 2026-04-14
+Updated after 2026-04-15 handoff-only insertion for Frozen Record - Step47 / Early October Mini-MES Trial-Run Main Spine (ORDER-to-SHIP) with ECN / Waiver Cross-Cutting Control Gates
+Date: 2026-04-15
 
 1. Frozen mainline snapshot
 
@@ -111,6 +111,8 @@ Frozen Record - Step47 PhaseA / Correction Reason Actual Candidate Artifact Body
 
 Frozen Record - Step47 PhaseA / Correction Reason Actual Candidate Artifact Body Minimum Review Package Requirements
 
+Frozen Record - Step47 / Early October Mini-MES Trial-Run Main Spine (ORDER-to-SHIP) with ECN / Waiver Cross-Cutting Control Gates
+
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
 
@@ -163,6 +165,7 @@ Frozen Record - Step47 PhaseA / Correction Reason UI-Stage Candidate Design Arti
 Frozen Record - Step47 PhaseA / Correction Reason UI-Stage Actual Candidate Artifact Submission is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA correction-reason UI-stage actual candidate artifact submission is now frozen as a narrow design-only review submission baseline, it freezes that the later actual candidate artifact review package must include a low-fidelity wireframe or a sufficiently concrete interaction-flow description, the `correction_reason` input form, consumption of the already-approved 8-item common-reason option set only with no implementer-side add/remove/change, interaction for `Other (short supplemental note required)`, a factory-language wording candidate, error-message candidates, error trigger conditions and recovery path, and written high-pressure try/walk-through records from at least 2 real shopfloor people, freezes that if interaction-flow description is used instead of a wireframe it must cover page entry, correction action start, common-reason option selection, `Other` short-note input when applicable, submit action, error trigger, user recovery, and completed end state, freezes the approved English 8-item option set as input to that later review package, freezes that later try/walk-through records must be written not verbal-only and must state participant role, line/shift if available, scenario used, whether confusion appeared, whether pace was slowed, and where the written record landed, preserves that the wording candidate remains candidate-only here and still requires explicit Ruichen confirmation later, preserves that any later UI-stage progress still has to pass the already-frozen UI entry-gate chain including re-review under Operator Minimal Action Rule and P-Series PlantFit / Practicality review, carries non-blocking W1 that this card framework is approved but the actual artifact body is not included here yet and any later artifact submission missing required items must fail review, and does not authorize UI implementation, frontend wiring, business functionality opening, submission opening, admitted-source activation, legal truth, or Phase B opening.
 Frozen Record - Step47 PhaseA / Correction Reason Actual Candidate Artifact Body Preparation is now PASS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA correction-reason actual candidate artifact body preparation is now frozen as a narrow governance/design-review-only record, it freezes that Lao Xiao W1/W2/W3 are fully absorbed with mandatory wireframe, no pure text-only flow description as substitute, formal landing required for try/walk-through records, no personal local notes or temporary chat-only records, no interactive/clickable prototype, and static review material only, freezes that all eight future failure paths are blocked including artifact later being misread as UI-start authorization, frontend changing the option set, wording candidate being treated as final wording, error text being submitted without trigger conditions and recovery path, fake try-out or wrong people or oral-only confirmation, `Other (short note required)` becoming the main path, pure text flow being used to hide layout weakness, and interactive prototype blurring design-only versus implementation, freezes that output requirements are reviewable with mandatory wireframe, interaction-flow description only as supplement, wording candidate, error-message candidate with trigger conditions and recovery path, and written try/walk-through records from 2 real shopfloor people, freezes that try/walk-through requirements are hardened to real frontline roles, written record, formal record landing, no supervisor-only or office-only substitution, high-pressure scenario priority, and different lines/shifts where possible, freezes forbidden touches including no interactive prototype and no pure text steps as substitute for wireframe, confirms dependency completeness against current handoff v2.48 with no dangling references, and preserves the mandatory insertion note that this card passing does not mean UI may start, the artifact body must be produced later in full under the 12 acceptance criteria of this card and submitted for separate review, and the already-frozen UI entry gate chain still applies.
 Frozen Record - Step47 PhaseA / Correction Reason Actual Candidate Artifact Body Minimum Review Package Requirements is now PASS / FROZEN WITH FINAL REVIEW NOTES; Step47 PhaseA correction-reason actual candidate artifact body minimum review package requirements are now frozen as a narrow governance/design-review-only lock point, it freezes that the minimum review-package requirement for the Step47 PhaseA correction-reason actual candidate artifact body is now frozen with B1-B4 tightening items fully absorbed, freezes that a text-only explanation package may not substitute for a real wireframe package, walk-through evidence may not be reduced to oral `looks fine` feedback, formal landing-point discipline is mandatory, and a lightweight P-Series non-violation note is required without re-proving all already-frozen P-Series governance, freezes mandatory wireframe requirements including clearly shown common-reason option layout, input-area position, main controls such as submit and cancel, short labels for each major component, readable hand-drawn allowance only if clearly readable else digital replacement, and no text-only step descriptions as substitute, freezes interaction-flow description as supplement only with every step mapped to visible wireframe elements and any unmapped step invalid until the wireframe is updated, freezes mandatory wording candidate and mandatory error-message candidates with both trigger condition and recovery path in operator/action or factory-scene language, freezes mandatory written high-pressure try/walk-through records from at least 2 real frontline personnel with minimum written fields and no oral/chat-only acceptance, freezes mandatory formal repository landing point in an independently reviewable formal location and prototype prohibition for this round with static artifact-body package material only, freezes the required short P-Series non-violation note, and preserves that this freeze is meant to ensure the correction-reason static sample package is reviewable, traceable, and usable under real shopfloor pressure before any UI work may move forward.
+Frozen Record - Step47 / Early October Mini-MES Trial-Run Main Spine (ORDER-to-SHIP) with ECN / Waiver Cross-Cutting Control Gates is now PASS / FROZEN WITH FINAL REVIEW NOTES; it freezes the minimum viable early-October trial-run main spine from ORDER through SHIP, locks ECN as the minimum controlled path for formal standard change and Waiver as the minimum controlled path for temporary exception / controlled deviation / special acceptance without formal standard rewrite, freezes Shipment Release as the minimum release gate between Stock In and Ship for the trial-run spine, and does not authorize UI readiness, implementation completion, full-scope ERP readiness, or full implementation by itself.
 Step47_PhaseA_OpeningRecheck_ActualDecision_v1 is now PASS WITH WARNINGS / DECISION RECORD CONFIRMED; Step47 PhaseA Opening re-check actual decision is now recorded as PASS at re-check layer only, it confirms that the already-frozen opening prerequisites are re-check-satisfied at the governance re-check layer, includes Qinran-confirmed ambiguity-clearance discipline, carries an explicit boundary that item F is confirmed only against the recorded handoff state and must be re-reviewed if later unrecorded emergency-carrier or overdue-rollback facts are discovered, uses the explicit record identifier Step47_PhaseA_OpeningRecheck_ActualDecision_v1 for downstream citation, and it does not authorize implementation, implementation-opening PASS, submission opening, A-class establishment, or runtime production use.
 Step47_PhaseA_ImplementationOpening_ActualDecision_v1 is now PASS WITH WARNINGS / DECISION RECORD CONFIRMED; Step47 PhaseA implementation-opening actual decision is now recorded as PASS for the manual / declared layer only, it authorizes implementation work only within the already-frozen Step47 PhaseA governance boundaries, limited to coding and unit/integration testing in development/test environments only, preserves permanent non-equality from submission opening, A-class, runtime production use, admitted-source activation, legal location truth effect, and PhaseB dependency, includes final-review-note tightening on development/test environment classification responsibility, minimum implementation review-gate trigger before merge, and explicit Ruichen confirmation discipline, and it does not authorize staging or production-like deployment, submission opening, A-class establishment, runtime production use, admitted-source activation, or legal location truth effect.
 Implementation Result Record - Step47 PhaseA Declared/Manual Read Surface is now PASS / INSERTED WITH RUICHEN GATE CONFIRMATION; it records implementation result commit `f7fd056901bfa6a9bbe9c210f9852aaebddbe2dc` for the separate Step47 PhaseA declared/manual read surface, confirms mandatory contract markers `data_strength = "declared_manual"` and `is_legal_truth = false`, preserves `declared_location` naming, marks test records with `is_test_data = true`, records contract-level misuse blocking, Literal-constrained `data_strength`, and dev/test-only route exposure guard, carries forward the merge-side reminder that Operator Minimal Action Rule review record and P-Series review record must be archived before merge, includes non-blocking implementation notes on review basis and naming stability, and it does not authorize submission opening, staging opening, legal truth effect, admitted-source activation, or any PhaseB opening.
@@ -13090,3 +13093,107 @@ Non-blocking final-review note
 
 * before implementation begins, the `correction_reason` schema landing type should be confirmed as a true single-field append
 * if the real landing would require a new table, relationship redesign, extra fields, or other structural expansion, implementation must stop and a new card must be opened first
+
+Frozen Record - Step47 / Early October Mini-MES Trial-Run Main Spine (ORDER-to-SHIP) with ECN / Waiver Cross-Cutting Control Gates
+
+Final review result: PASS / FROZEN WITH FINAL REVIEW NOTES
+Authority layer: Handoff-only frozen record
+
+Frozen meaning
+
+This frozen record establishes the minimum viable early-October trial-run main spine for Mini-MES from ORDER to SHIP, with ECN and Waiver locked as cross-cutting controlled gates.
+
+Approved main spine
+
+* ORDER
+* BOM / SOP
+* Material Planning
+* Receiving
+* IQC
+* STORE
+* Material Readiness Check
+* Work Order Release (only if material ready)
+* Sample Submission (optional)
+* Pilot Run (mandatory for new product / new process)
+* 1st MP
+* Dispatch Order
+* Kitting
+* Production (with in-process quality checks)
+* FQA
+* Pass? -> Stock In
+* Shipment Release
+* Ship
+* Fail? -> Rework / Reject
+
+Frozen control meaning
+
+* ECN is the controlled path for formal standard change.
+* Waiver is the controlled path for temporary exception / controlled deviation / special acceptance without formal standard rewrite.
+* Any deviation from approved BOM / SOP / process / specification must not proceed by oral instruction alone.
+* Temporary exception = Waiver.
+* Formal standard change = ECN.
+
+Minimum ECN trigger examples to preserve
+
+* before formal BOM / SOP / process / specification change
+* before continuing under a newly adopted permanent method
+* before shipment when packaging / label / document standard is formally changed
+* if the factory does not have a formal release workflow, ECN still applies to any change to the currently effective BOM / SOP / process / specification
+
+Minimum Waiver trigger examples to preserve
+
+* at Material Readiness Check when substitute material or temporary deviation is needed
+* during Production when temporary controlled deviation is needed
+* after FQA when controlled special acceptance / release is approved
+
+Minimum record fields to preserve
+
+ECN minimum record
+
+* change before / after
+* requester
+* approver
+* effective date
+* affected scope
+
+Waiver minimum record
+
+* exception description
+* reason
+* requester
+* approver
+* effective period / expiry
+* affected scope
+* whether follow-up correction is required
+
+Shipment Release minimum meaning to preserve
+
+Shipment Release is the minimum release gate between Stock In and Ship.
+
+Minimum meaning
+
+* shipment can be released
+* required shipment documents / labels are ready
+* shipment condition is approved for loading / dispatch
+
+Trial-stage confirmation role may be simplified to
+
+* storekeeper
+* production supervisor
+* planner
+
+Final boundary meaning
+
+* this frozen record establishes the early-October trial-run minimum main spine
+* this frozen record does not mean UI readiness
+* this frozen record does not mean implementation completion
+* this frozen record does not mean full-scope ERP readiness
+* this frozen record does not authorize full implementation by itself
+* this frozen record does not replace later module-level freezes
+* this frozen record does not erase existing frozen governance / boundary disciplines
+
+Final review notes to preserve
+
+* This is a minimum trial-run main spine only. It must not be rewritten downstream as proof that all modules are complete, production-ready, or full-scope.
+* ECN / Waiver are now frozen as minimum controlled paths on the trial-run spine, but later module-level design and implementation records may still be required.
+* Shipment Release is frozen here only as a minimum gate for the early trial-run spine, not as a complete shipment subsystem.
