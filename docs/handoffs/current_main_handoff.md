@@ -1,7 +1,7 @@
-Mini-MES Handoff v2.51
+Mini-MES Handoff v2.52
 
-Updated after 2026-04-15 handoff-only insertion for Frozen Record - Step47 / Early October Mini-MES Trial-Run Main Spine (ORDER-to-SHIP) with ECN / Waiver Cross-Cutting Control Gates
-Date: 2026-04-15
+Updated after 2026-04-17 handoff-only insertion for Frozen Record - Shared UI Baseline / Sales Order Mock-Stage Branch Split (Local vs Overseas)
+Date: 2026-04-17
 
 1. Frozen mainline snapshot
 
@@ -112,6 +112,8 @@ Frozen Record - Step47 PhaseA / Correction Reason Actual Candidate Artifact Body
 Frozen Record - Step47 PhaseA / Correction Reason Actual Candidate Artifact Body Minimum Review Package Requirements
 
 Frozen Record - Step47 / Early October Mini-MES Trial-Run Main Spine (ORDER-to-SHIP) with ECN / Waiver Cross-Cutting Control Gates
+
+Frozen Record - Shared UI Baseline / Sales Order Mock-Stage Branch Split (Local vs Overseas)
 
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
@@ -13197,3 +13199,71 @@ Final review notes to preserve
 * This is a minimum trial-run main spine only. It must not be rewritten downstream as proof that all modules are complete, production-ready, or full-scope.
 * ECN / Waiver are now frozen as minimum controlled paths on the trial-run spine, but later module-level design and implementation records may still be required.
 * Shipment Release is frozen here only as a minimum gate for the early trial-run spine, not as a complete shipment subsystem.
+
+Shared UI Baseline / Sales Order Mock-Stage Branch Split (Local vs Overseas) is now PASS / FROZEN WITH FINAL REVIEW NOTES; the Sales Order mock page is frozen to exactly two approved mock-stage branches, `Local Sales Order` and `Overseas Sales Order`, both branches must retain the same shared primary page skeleton, the split does not open runtime configurability or schema/page-generator behavior, Part 2 must remain semantically separated between local-delivery/coordination versus shipment/export/container/customs meaning, a single-page hide/show interpretation does not satisfy this split at mock-stage governance level, detailed Part 2 field sets remain intentionally unfrozen for later separate Local / Overseas field-definition cards, no third branch is admitted by interpretation, and this record does not authorize backend, API, DB, permission, production-use, or customer-specific layout expansion.
+
+Frozen Record - Shared UI Baseline / Sales Order Mock-Stage Branch Split (Local vs Overseas)
+
+Status: PASS / FROZEN WITH FINAL REVIEW NOTES
+Authority layer: Handoff-only frozen record
+
+Review chain
+
+* Qingchen draft
+* Lao Xiao secondary review: PASS
+* Qinran final review: PASS
+* Ruichen Gate Confirmation: PASS
+
+Scope
+
+This record freezes only the mock-stage page-branch discipline for the Sales Order UI.
+It is front-end mock only.
+It does not authorize backend implementation, runtime configurability, schema engines, page generators, API work, DB work, permission logic, or production-use behavior.
+
+Frozen rule body
+
+1. The Sales Order mock page is now frozen to split into exactly two approved page branches:
+   * Local Sales Order
+   * Overseas Sales Order
+
+2. Both branches must retain the same shared primary page skeleton / macro structure:
+   * Header / Action bar
+   * Display Section selector
+   * Order Summary
+   * Main detail area
+   * Procurement / Readiness
+   * Change Log
+
+3. The split does not open runtime configurability.
+This is a mock-stage page-branch discipline only.
+It must not be interpreted as approval for schema-driven page assembly, dynamic layout switching, or page-generator behavior.
+
+4. Part 2 must remain semantically separated between the two branches:
+   * Local Sales Order: local delivery / coordination semantics only
+   * Overseas Sales Order: shipment / export / container / customs semantics only
+
+5. It is forbidden to claim that a single page with field hide/show switching has already solved the Local vs Overseas split at the mock-stage governance level.
+
+6. This record does not freeze the final detailed field list for each Part 2 branch.
+Those details must be handled later by separate Local / Overseas field-definition cards.
+
+7. Any future third branch (for example, distributor-specific mode, special consignment mode, project shipment mode, or similar) must not be added under this record by interpretation.
+It requires a separate reviewed card.
+
+8. This record operates inside the already-approved mock-stage section discipline and does not override the previously frozen shared UI baseline / section-discipline structure.
+
+Non-scope / forbidden interpretations
+
+* not runtime config opening
+* not schema engine opening
+* not page generator opening
+* not backend implementation authorization
+* not API / DB / permission scope
+* not final field-definition freeze
+* not customer-specific layout free expansion
+* not production-use authorization
+
+Final Review Note
+
+The Part 2 detailed field sets remain intentionally unfrozen here.
+If Local and Overseas Part 2 content is later detailed, each branch should receive its own field-definition card to avoid semantic drift.
