@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sales Order — Complete Mock v8 Lighter Scrollbar</title>
+<style>
+:root{
+  --bg:#f3f6f9;--panel:#ffffff;--header:#fcfdfe;--line:#e6edf3;--line-strong:#d4dee8;--text:#24364b;--muted:#6d7f92;--title:#324b66;--blue:#2f5f98;
+  --surface-soft:#fbfcfe;--surface-muted:#f6f9fc;--surface-header:#f3f7fb;--surface-card:#ffffff;
+  --shadow-soft:0 1px 2px rgba(36,54,75,.05),0 8px 24px rgba(36,54,75,.04);
+  --shadow-card:0 1px 2px rgba(36,54,75,.04),0 6px 18px rgba(36,54,75,.03);
+  --scroll-track:#edf2f6;--scroll-thumb:#c5d2df;--scroll-thumb-hover:#afc0d0;
+  --badge-neutral-bg:#f2f5f8;--badge-neutral-border:#d8e0e8;--badge-neutral-text:#607286;
+  --badge-blue-bg:#edf5ff;--badge-blue-border:#cddff3;--badge-blue-text:#4f78a3;
+  --badge-amber-bg:#f9f2df;--badge-amber-border:#eadbbe;--badge-amber-text:#967042;
+  --badge-green-bg:#eaf3ea;--badge-green-border:#cedece;--badge-green-text:#55795f;
+  --badge-yellow-bg:#faf3da;--badge-yellow-border:#ebddb0;--badge-yellow-text:#8f6a24;
+  --badge-red-bg:#f8ecec;--badge-red-border:#e8cccc;--badge-red-text:#a35c5c;
+  --badge-steel-bg:#eef3f7;--badge-steel-border:#d5dee7;--badge-steel-text:#627b92;
+  --date-alert:#a96a6a;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:Arial,Helvetica,sans-serif;color:var(--text)}
+.page{max-width:1440px;margin:0 auto;background:transparent;min-height:100vh;padding:0 18px 24px}
+.sticky-shell{position:sticky;top:0;z-index:50;margin:0 -18px;background:rgba(247,249,251,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--line-strong);box-shadow:0 1px 0 rgba(212,222,232,.85)}
+.topbar{display:flex;justify-content:space-between;gap:24px;align-items:flex-start;padding:18px 24px 11px;background:var(--surface-card);border-bottom:1px solid var(--line)}
+.topbar-main{display:flex;flex-direction:column;gap:4px;min-width:0}
+.topbar h1{margin:0;font-size:24px;color:var(--title);letter-spacing:.2px}
+.object-kicker{font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#8798a8}
+.object-number{font-size:12px;font-weight:500;color:#75889b;line-height:1.2}
+.top-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.badge{display:inline-flex;align-items:center;justify-content:center;padding:5px 10px;border-radius:999px;border:1px solid var(--badge-neutral-border);background:var(--badge-neutral-bg);color:var(--badge-neutral-text);font-size:10px;font-weight:600;line-height:1;white-space:nowrap;box-shadow:none}
+.badge.amber{background:var(--badge-yellow-bg);border-color:var(--badge-yellow-border);color:var(--badge-yellow-text)}
+.badge.red{background:var(--badge-red-bg);border-color:var(--badge-red-border);color:var(--badge-red-text)}
+.badge.green{background:var(--badge-green-bg);border-color:var(--badge-green-border);color:var(--badge-green-text)}
+.badge.blue{background:var(--badge-blue-bg);border-color:var(--badge-blue-border);color:var(--badge-blue-text)}
+.badge.steel{background:var(--badge-steel-bg);border-color:var(--badge-steel-border);color:var(--badge-steel-text)}
+.overdue-date{color:var(--date-alert);font-weight:600}
+.procurement-title{padding:12px 20px;background:var(--surface-header);border-bottom:1px solid var(--line);color:#47637f}
+.procurement-section{padding:18px 20px 20px}
+.procurement-sequence-note{margin:0 0 12px;font-size:11px;font-weight:600;letter-spacing:.01em;color:#73879a}
+.table-wrap.procurement-wrap{position:relative;display:block;width:100%;height:280px;padding-bottom:8px;border:1px solid var(--line);border-radius:14px;background:var(--surface-soft);overflow-x:auto;overflow-y:auto;scroll-padding-bottom:8px;box-shadow:inset 0 1px 0 rgba(255,255,255,.7)}
+.procurement-table{width:max-content;min-width:1880px;border-collapse:separate;border-spacing:0;table-layout:fixed}
+.procurement-table thead th{position:sticky;top:0;z-index:16;padding:13px 10px;background:var(--surface-header);border-bottom:1px solid var(--line-strong);font-size:11px;letter-spacing:.35px;color:#617891;box-shadow:0 1px 0 var(--line-strong)}
+.procurement-table tbody td{padding:10px 10px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.35;background:var(--surface-soft)}
+.procurement-table tbody tr:nth-child(even){background:#fcfdff}
+.procurement-table tbody tr:last-child td{border-bottom:none}
+.procurement-table th:nth-child(1),.procurement-table td:nth-child(1){width:118px}
+.procurement-table th:nth-child(2),.procurement-table td:nth-child(2){width:232px;white-space:normal;overflow-wrap:anywhere;word-break:break-word}
+.procurement-table th:nth-child(3),.procurement-table td:nth-child(3){width:108px}
+.procurement-table th:nth-child(4),.procurement-table td:nth-child(4){width:156px}
+.procurement-table th:nth-child(5),.procurement-table td:nth-child(5){width:232px}
+.procurement-table th:nth-child(6),.procurement-table td:nth-child(6){width:110px}
+.procurement-table th:nth-child(7),.procurement-table td:nth-child(7){width:160px}
+.procurement-table th:nth-child(8),.procurement-table td:nth-child(8){width:145px;white-space:normal;overflow-wrap:anywhere;word-break:break-word}
+.procurement-table th:nth-child(9),.procurement-table td:nth-child(9){width:112px}
+.procurement-table th:nth-child(10),.procurement-table td:nth-child(10){width:190px}
+.procurement-table th:nth-child(11),.procurement-table td:nth-child(11){width:120px}
+.procurement-table th:nth-child(12),.procurement-table td:nth-child(12){width:100px}
+.procurement-table th:nth-child(13),.procurement-table td:nth-child(13){width:120px}
+.procurement-table th:nth-child(14),.procurement-table td:nth-child(14){width:430px}
+.procurement-table td:nth-child(1),.procurement-table td:nth-child(2),.procurement-table td:nth-child(3),.procurement-table td:nth-child(4),.procurement-table td:nth-child(5){color:#314a65}
+.procurement-table th:nth-child(9),.procurement-table td:nth-child(9),.procurement-table th:nth-child(11),.procurement-table td:nth-child(11),.procurement-table th:nth-child(12),.procurement-table td:nth-child(12){white-space:nowrap}
+.procurement-table td:nth-child(10){white-space:normal;overflow-wrap:anywhere;word-break:break-word}
+.procurement-table tbody td:nth-child(1),.procurement-table tbody td:nth-child(2),.procurement-table tbody td:nth-child(3),.procurement-table tbody td:nth-child(4){background:#f9fbfe}
+.process-cue{display:grid;gap:2px;padding:2px 0}
+.process-main{font-size:12px;font-weight:700;color:#50677f}
+.process-sub{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8798a8}
+.bom-material{display:grid;gap:4px}
+.material-name{font-size:13px;font-weight:700;color:#314a65}
+.material-meta{display:block;font-size:11px;font-weight:600;color:#6f8397}
+.material-desc{display:block;font-size:11px;font-weight:500;line-height:1.4;color:#7c8f9f}
+.usage-cell{vertical-align:middle}
+.where-used-text{display:block;font-size:11px;font-weight:700;color:#5b7188;line-height:1.3}
+.bom-usage-text{display:block;font-size:12px;font-weight:600;color:#40596f;line-height:1.4}
+.promised-date-cell{display:grid;gap:4px}
+.promised-date-inline{display:inline-block;white-space:nowrap}
+.warning-date{display:inline-flex;align-items:center;padding:7px 12px;border-radius:999px;background:#fbefef;border:1px solid #ead3d3;color:var(--date-alert);font-weight:600;line-height:1;white-space:nowrap}
+.action-summary{display:grid;gap:5px;min-width:0}
+.action-summary-line{display:block;line-height:1.35;color:#3e556d}
+.action-summary-key{font-size:11px;font-weight:700;letter-spacing:.2px;text-transform:uppercase;color:#6a8096}
+.actions{display:flex;align-items:center;min-width:0;padding-top:8px;padding-right:4px}
+.action-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.action-cluster{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;padding:8px;border:1px solid var(--line);border-radius:12px;background:var(--surface-muted)}
+.btn{height:30px;padding:0 10px;border:1px solid #d3dde7;border-radius:8px;background:#fff;color:#37516d;font-size:11px;font-weight:600}
+.btn.primary{background:#eaf3ff;border-color:#c7d8ec;color:#29557f}
+.btn.secondary{background:#f8fafc;border-color:#d7e0e8;color:#5a7087}
+.btn:hover{background:#f9fbfd}
+.toolbar-shell{padding:6px 22px 9px;background:var(--surface-card);border-bottom:1px solid var(--line)}
+.switch-bar{padding:6px 10px;background:var(--surface-muted);border:1px solid var(--line);border-radius:12px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.toolbar-group{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.switch-bar label{font-weight:700;color:#5a7189;font-size:11px;letter-spacing:.15px}
+.switch-bar select{height:28px;border:1px solid #d4dde6;border-radius:8px;background:#fff;padding:0 10px;font-size:12px;color:#35506d}
+#section-select{min-width:290px}
+#type-select{min-width:180px}
+.section-pane{margin-top:18px;border:1px solid var(--line);border-radius:16px;background:var(--surface-card);box-shadow:var(--shadow-card);overflow:hidden}
+.section-title{padding:12px 20px;background:var(--surface-header);border-bottom:1px solid var(--line);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.45px;color:#49607b}
+.section{padding:20px 24px;background:var(--surface-card)}
+.section-scroll{max-height:420px;overflow-y:auto;padding-right:8px;scroll-padding-top:140px}
+.field-row,.edit-row{padding:14px 0;border-top:1px solid var(--line)}.summary-sheet{border:1px solid var(--line);border-radius:14px;overflow:auto;background:var(--surface-soft)}.summary-sheet table{width:100%;min-width:1080px;border-collapse:collapse;font-size:14px}.summary-sheet td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}.summary-sheet .label{width:180px;font-size:12px;font-weight:700;color:#5b6f84;background:var(--surface-header);letter-spacing:.15px}.summary-sheet .value{min-width:180px;background:var(--surface-card)}.summary-note{padding-top:0}
+.field-label,.edit-label,.block-label{font-size:13px;font-weight:700;color:#53677f;margin-bottom:8px}
+.field-value,.block-value{font-size:15px;line-height:1.45}
+.block{margin-top:12px;border:1px solid var(--line);border-radius:12px;background:var(--surface-soft);padding:14px 16px}
+.route-display{display:grid;grid-template-columns:220px 1fr 220px 1fr;column-gap:18px;align-items:start;padding:0 0 14px;border-bottom:1px solid var(--line)}
+.input-line,.select-line,.textarea-line{width:100%;font-size:14px;line-height:1.45;color:var(--text);background:#fff;border:1px solid #d5dee8;padding:9px 12px;outline:none;border-radius:8px;box-shadow:none}
+.select-line{height:38px;padding-right:28px}
+.textarea-line{min-height:76px;resize:vertical}.horizontal-form .edit-row{display:grid;grid-template-columns:220px 1fr;column-gap:18px;align-items:start}.horizontal-form .edit-label{margin-bottom:0;padding-top:8px}
+.table-wrap{border:1px solid var(--line);border-radius:14px;overflow:auto;background:var(--surface-soft);box-shadow:none}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{padding:12px 10px;text-align:left;background:var(--surface-header);border-bottom:1px solid var(--line-strong);font-size:12px;color:#587089;letter-spacing:.2px}
+td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.5}
+.items-sheet{border-top:1px solid var(--line);overflow-x:auto}
+.items-sheet table{width:100%;border-collapse:collapse;font-size:14px}
+.items-sheet th{padding:10px 12px;font-size:13px;font-weight:700;color:#53677f;background:var(--surface-header);border-bottom:1px solid var(--line)}
+.items-sheet td{padding:13px 12px;font-size:15px;color:var(--text);border-bottom:1px solid var(--line)}
+.note{font-size:12px;color:var(--muted);margin-top:8px}.contact-toggle{display:inline-block;margin-top:6px;font-size:12px;color:var(--blue);background:none;border:none;padding:0;cursor:pointer;text-decoration:underline}.contact-details{display:none;margin-top:6px;font-size:12px;color:var(--muted);line-height:1.5}.contact-details.show{display:block}.support-text{margin-top:6px;font-size:12px;color:var(--muted);line-height:1.5}.view-only{display:block}.draft-only{display:none}body[data-order-state="draft"] .view-only{display:none}body[data-order-state="draft"] .draft-only{display:block}
+.section-scroll,.summary-sheet,.textarea-line,.items-sheet,.table-wrap.procurement-wrap{
+  scrollbar-width:thin;
+  scrollbar-color:var(--scroll-thumb) var(--scroll-track);
+}
+.section-scroll::-webkit-scrollbar,.summary-sheet::-webkit-scrollbar,.textarea-line::-webkit-scrollbar,.items-sheet::-webkit-scrollbar,.table-wrap.procurement-wrap::-webkit-scrollbar{width:10px;height:10px}
+.section-scroll::-webkit-scrollbar-track,.summary-sheet::-webkit-scrollbar-track,.textarea-line::-webkit-scrollbar-track,.items-sheet::-webkit-scrollbar-track,.table-wrap.procurement-wrap::-webkit-scrollbar-track{background:var(--scroll-track);border-radius:999px}
+.section-scroll::-webkit-scrollbar-thumb,.summary-sheet::-webkit-scrollbar-thumb,.textarea-line::-webkit-scrollbar-thumb,.items-sheet::-webkit-scrollbar-thumb,.table-wrap.procurement-wrap::-webkit-scrollbar-thumb{background:var(--scroll-thumb);border-radius:999px;border:2px solid var(--scroll-track)}
+.section-scroll::-webkit-scrollbar-thumb:hover,.summary-sheet::-webkit-scrollbar-thumb:hover,.textarea-line::-webkit-scrollbar-thumb:hover,.items-sheet::-webkit-scrollbar-thumb:hover,.table-wrap.procurement-wrap::-webkit-scrollbar-thumb:hover{background:var(--scroll-thumb-hover)}
+
+.hidden{display:none}
+@media (max-width:900px){
+  .topbar{flex-direction:column}
+  .actions{justify-content:flex-start}
+  .actions{align-items:flex-start}
+  .action-row{justify-content:flex-start}
+  .action-cluster{justify-content:flex-start}
+  .toolbar-group{width:100%}
+}
+</style>
+<script>
+function showSection(){
+  const value=document.getElementById('section-select').value;
+  document.querySelectorAll('.section-pane').forEach(el=>el.classList.add('hidden'));
+  document.getElementById(value).classList.remove('hidden');
+}
+function toggleContact(id,btn){
+  const el=document.getElementById(id);
+  const isShown=el.classList.toggle('show');
+  btn.textContent=isShown ? 'Hide Contact' : 'Show Contact';
+}
+function syncType(){
+  const type=document.getElementById('type-select').value;
+  const typeBadge=document.getElementById('type-badge');
+  const commerceTeam=document.getElementById('commerce-team');
+  const commercialLocal=document.getElementById('commercial-local');
+  const commercialOverseas=document.getElementById('commercial-overseas');
+  const deliveryLocalRow=document.getElementById('delivery-local-row');
+  const deliveryOverseasRow=document.getElementById('delivery-overseas-row');
+
+  if(type==='Local'){
+    typeBadge.textContent='Order Route · Local';
+    typeBadge.className='badge blue';
+    commerceTeam.textContent='Local Commerce Team';
+    commercialLocal.classList.remove('hidden');
+    commercialOverseas.classList.add('hidden');
+    deliveryLocalRow.classList.remove('hidden');
+    deliveryOverseasRow.classList.add('hidden');
+  } else {
+    typeBadge.textContent='Order Route · Overseas';
+    typeBadge.className='badge amber';
+    commerceTeam.textContent='Overseas Commerce Team';
+    commercialOverseas.classList.remove('hidden');
+    commercialLocal.classList.add('hidden');
+    deliveryOverseasRow.classList.remove('hidden');
+    deliveryLocalRow.classList.add('hidden');
+  }
+}
+function syncOrderType(){
+  const orderTypeSelect=document.getElementById('order-type-select');
+  const orderTypeDisplay=document.getElementById('order-type-display');
+
+  if(orderTypeSelect&&orderTypeDisplay){
+    orderTypeDisplay.textContent=orderTypeSelect.value;
+  }
+}
+window.addEventListener('DOMContentLoaded',()=>{showSection();syncType();syncOrderType();});
+</script>
+</head>
+<body data-order-state="view">
+<div class="page">
+  <div class="sticky-shell">
+  <div class="topbar">
+    <div class="topbar-main">
+      <div class="object-kicker">Sales Coordination</div>
+      <div>
+      <h1>Sales Order</h1>
+      <div class="object-number">SO-20260328-001</div>
+      <div class="top-meta">
+        <span class="badge amber">Overall Risk · Medium</span>
+        <span id="type-badge" class="badge blue">Order Route · Local</span>
+      </div>
+      </div>
+    </div>
+    <div class="actions">
+      <div class="action-row">
+        <div class="action-cluster">
+          <button class="btn">Back</button>
+          <button class="btn primary">Edit</button>
+          <button class="btn primary">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toolbar-shell">
+    <div class="switch-bar">
+      <div class="toolbar-group">
+        <label for="section-select">Display Section</label>
+        <select id="section-select" onchange="showSection()">
+          <option value="summary">Order Summary</option>
+          <option value="commercial">Commercial Terms</option>
+          <option value="items">Order Items</option>
+          <option value="risk">Risk Status</option>
+          <option value="procurement">Procurement</option>
+          <option value="delivery">Shipping Detail</option>
+          <option value="log">Change Log</option>
+        </select>
+      </div>
+
+      <div class="toolbar-group">
+        <label for="type-select">Order Route</label>
+        <select id="type-select" onchange="syncType()">
+          <option selected>Local</option>
+          <option>Overseas</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div id="summary" class="section-pane">
+    <div class="section-title">Order Summary</div>
+    <div class="section section-scroll">
+      <div class="summary-sheet">
+        <table>
+          <tr>
+            <td class="label">Sales Order No.</td>
+            <td class="label">Order Type</td>
+            <td class="label">Customer PO No.</td>
+            <td class="label">Customer Company Name</td>
+            <td class="label">Buyer</td>
+            <td class="label">Salesperson</td>
+            <td class="label">Order Entry Date</td>
+            <td class="label">Customer Request Date</td>
+            <td class="label">Overall Commit Date</td>
+          </tr>
+          <tr>
+            <td class="value">SO-20260328-001</td>
+            <td class="value">
+              <div id="order-type-display" class="view-only">Normal</div>
+              <select id="order-type-select" class="select-line draft-only" onchange="syncOrderType()">
+                <option selected>Normal</option>
+                <option>Sample</option>
+                <option>Insert Order</option>
+                <option>Replacement</option>
+                <option>Spare Part Only</option>
+                <option>Top Urgent</option>
+              </select>
+            </td>
+            <td class="value">PO-20260328-NB</td>
+            <td class="value">NorthBay Retail Group</td>
+            <td class="value"><div>Emily Carter</div><button class="contact-toggle" type="button" onclick="toggleContact('buyer-contact', this)">Show Contact</button><div id="buyer-contact" class="contact-details">Role: Buyer<br>Email: emily.carter@northbayretail.com</div></td>
+            <td class="value"><div>Alex Chen</div><button class="contact-toggle" type="button" onclick="toggleContact('sales-contact', this)">Show Contact</button><div id="sales-contact" class="contact-details">Email: alexchen.nb@northbay.com<br>Mobile / WhatsApp: +60 12-345 6789<br>WeChat: alexchen_nb<br>LINE: alexchen-sales</div></td>
+            <td class="value">2026-03-28</td>
+            <td class="value">2026-05-15</td>
+            <td class="value">2026-05-22<div class="support-text">Commit Lead Time: 37 working days (MY / CN holiday-adjusted mock)</div></td>
+          </tr>
+        </table>
+      </div>
+      <div class="block"><div class="block-label">Commerce Team</div><div id="commerce-team" class="block-value">Local Commerce Team</div></div>
+      <div class="block summary-note"><div class="block-label">Internal Remark</div><div class="block-value">Need weekly readiness check by procurement and production planning.</div></div>
+      <div class="block"><div class="block-label">Customer Remark</div><div class="block-value">Partial shipment accepted if total lead time improves.</div></div>
+      <div class="block"><div class="block-label">Shipment / Delivery Coordination Issue</div><div class="block-value">This block can carry either local delivery coordination notes or overseas shipping / customs coordination notes, depending on selected order route.</div></div>
+    </div>
+  </div>
+
+  <div id="commercial" class="section-pane hidden">
+    <div class="section-title">Commercial Terms</div>
+    <div class="section section-scroll">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Currency</th>
+              <th>Payment Method</th>
+              <th>Payment Term</th>
+              <th>Incoterm / Delivery Term</th>
+              <th>Tax / SST / VAT</th>
+              <th>Validity</th>
+              <th>Remark</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr id="commercial-local">
+              <td>USD</td>
+              <td>Bank Transfer</td>
+              <td>30 days after invoice date</td>
+              <td>Local Delivery</td>
+              <td>Local sales - tax handling follows domestic delivery arrangement</td>
+              <td>Valid until 2026-05-31</td>
+              <td>Commercial terms mock only. Unit price is intentionally not shown here at this stage.</td>
+            </tr>
+            <tr id="commercial-overseas" class="hidden">
+              <td>USD</td>
+              <td>Bank Transfer</td>
+              <td>30 days after invoice date</td>
+              <td>FOB</td>
+              <td>Export sales - tax handling to follow shipment arrangement</td>
+              <td>Valid until 2026-05-31</td>
+              <td>Commercial terms mock only. Unit price is intentionally not shown here at this stage.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="items" class="section-pane hidden">
+    <div class="section-title">Order Items</div>
+    <div class="section section-scroll">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Item No.</th>
+              <th>Model No.</th>
+              <th>Model Description</th>
+              <th>BOM Version</th>
+              <th>Order Qty</th>
+              <th>UOM</th>
+              <th>Unit Price</th>
+              <th>Amount</th>
+              <th>Item Status</th>
+              <th>Remark</th>
+              <th>Need By Before (Date)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>001</td>
+              <td>SL-NB-100W</td>
+              <td>100W Solar LED Street Light</td>
+              <td>BOM-NB-07</td>
+              <td>900</td>
+              <td>pcs</td>
+              <td>MYR 12.80</td>
+              <td>MYR 11,520.00</td>
+              <td>1st Order</td>
+              <td>New customer launch batch.</td>
+              <td>2026-04-28</td>
+            </tr>
+            <tr>
+              <td>002</td>
+              <td>SL-NB-150W</td>
+              <td>150W Solar LED Street Light</td>
+              <td>BOM-NB-05</td>
+              <td>500</td>
+              <td>pcs</td>
+              <td>MYR 15.20</td>
+              <td>MYR 7,600.00</td>
+              <td>Normal Repeat</td>
+              <td>Follow previous approved build.</td>
+              <td>2026-05-03</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td><strong>Total</strong></td>
+              <td><strong>1,400</strong></td>
+              <td><strong>pcs</strong></td>
+              <td></td>
+              <td><strong>MYR 19,120.00</strong></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="risk" class="section-pane hidden">
+    <div class="section-title">Risk Status</div>
+    <div class="section section-scroll">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Risk Area</th><th>Current Status</th><th>Remark</th></tr></thead>
+          <tbody>
+            <tr><td>Material Risk</td><td><span class="badge amber">Medium</span></td><td><div>1. Label-set ETA is close to pre-stage need date.</div><div>2. Staging may slip with only a 2-day buffer left.</div><div>3. Purchaser is expediting split release with supplier.</div></td></tr>
+            <tr><td>Supplier Risk</td><td><span class="badge amber">Medium</span></td><td><div>1. 150W driver inbound still depends on overseas forward timing.</div><div>2. Final assembly recovery window may tighten next.</div><div>3. Supplier is advancing 300 units by air first.</div></td></tr>
+            <tr><td>Capacity Risk</td><td><span class="badge amber">Medium</span></td><td><div>1. Line loading is near the weekly limit for mixed output.</div><div>2. Second-batch start may slide if supply slips.</div><div>3. Planner is reviewing resequencing now.</div></td></tr>
+            <tr><td>Change Risk</td><td><span class="badge blue">Controlled</span></td><td><div>1. No new customer spec or quantity change is open now.</div><div>2. Any late change would hit label and packing sequence first.</div><div>3. Sales admin is holding the change confirmation gate.</div></td></tr>
+            <tr><td>Route / Site Risk</td><td><span class="badge blue">Controlled</span></td><td><div>1. Local site unloading starts only after 2:00 PM.</div><div>2. Same-day truck turnaround may slip if dispatch moves late.</div><div>3. Logistics is aligning an earlier loading slot.</div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="procurement" class="section-pane hidden">
+    <div class="section-title procurement-title">Procurement</div>
+    <div class="section procurement-section">
+      <div class="procurement-sequence-note">Rows follow BOM/SOP process sequence from earlier-use materials to later-use materials.</div>
+      <div class="table-wrap procurement-wrap">
+        <table class="procurement-table">
+          <thead><tr><th>Process Step</th><th>BOM Material</th><th>Where Used</th><th>Usage in BOM</th><th>Supplier Name</th><th>Supplier Type</th><th>Supplier Location</th><th>Supply Lead Time</th><th>Stage Due Date</th><th>Supplier Promised Date</th><th>Supplier Promised Qty</th><th>Required Qty</th><th>Criticality</th><th>Action Summary</th></tr></thead>
+          <tbody>
+            <tr><td><div class="process-cue"><span class="process-main">S10</span><span class="process-sub">Pre-Stage</span></div></td><td><div class="bom-material"><span class="material-name">Label Set</span><span class="material-meta">Label-Set-NB</span><span class="material-desc">Adhesive product label for finished unit identification</span></div></td><td class="usage-cell"><span class="where-used-text">PP</span></td><td><span class="bom-usage-text">1 PCS / SET</span></td><td>PrintMark Industrial Labels Sdn. Bhd.</td><td>Local</td><td>Klang, Selangor</td><td>5 working days</td><td>2026-05-08</td><td><span class="promised-date-inline"><span class="warning-date">2026-05-09</span></span></td><td>400 pcs</td><td>900 pcs</td><td><span class="badge red">Critical</span></td><td><div class="action-summary"><span class="action-summary-line"><span class="action-summary-key">Gap:</span> Need 900 pcs by S10 pre-stage on 2026-05-08; only 400 pcs is promised one day late and 500 pcs is still open.</span><span class="action-summary-line"><span class="action-summary-key">Supplier:</span> Splitting print and lamination into two shifts; first 400 pcs confirmed on 2026-05-09.</span><span class="action-summary-line"><span class="action-summary-key">Action:</span> Purchaser is pushing earlier partial release while planner prepares priority-unit staging.</span></div></td></tr>
+            <tr><td><div class="process-cue"><span class="process-main">S30</span><span class="process-sub">Final Assembly</span></div></td><td><div class="bom-material"><span class="material-name">LED Driver 150W</span><span class="material-meta">DRV-150W-NB</span><span class="material-desc">150W constant-current LED driver for NB export finished unit</span></div></td><td class="usage-cell"><span class="where-used-text">Assy</span></td><td><span class="bom-usage-text">1 PCS / UNIT</span></td><td>NovaPower Electronics Co., Ltd.</td><td>Overseas</td><td>Shenzhen, China</td><td>12 working days + cross-border transit</td><td>2026-05-06</td><td><div class="promised-date-cell"><span class="promised-date-inline">2026-05-05</span><span class="promised-date-inline"><span class="warning-date">2026-05-11</span></span></div></td><td>300 pcs / 200 pcs</td><td>500 pcs</td><td><span class="badge amber">Watching</span></td><td><div class="action-summary"><span class="action-summary-line"><span class="action-summary-key">Gap:</span> Need 500 pcs by S30 final assembly on 2026-05-06; only 300 pcs is promised before cut-off and 200 pcs lands later.</span><span class="action-summary-line"><span class="action-summary-key">Supplier:</span> 300 pcs by air for 2026-05-05; remaining 200 pcs targeted for 2026-05-11.</span><span class="action-summary-line"><span class="action-summary-key">Action:</span> Planner resequences 100W output first while purchaser chases daily forwarder confirmation.</span></div></td></tr>
+            <tr><td><div class="process-cue"><span class="process-main">S40</span><span class="process-sub">Packing</span></div></td><td><div class="bom-material"><span class="material-name">Driver Carton</span><span class="material-meta">CTN-DRV-NB</span><span class="material-desc">Printed outer carton for finished driver packing and shipment</span></div></td><td class="usage-cell"><span class="where-used-text">Packing</span></td><td><span class="bom-usage-text">1 PCS / UNIT</span></td><td>BrightPak Carton Industries</td><td>Local</td><td>Shah Alam, Selangor</td><td>3 working days</td><td>2026-05-18</td><td>2026-05-16</td><td>1,400 pcs</td><td>1,400 pcs</td><td><span class="badge blue">Ready</span></td><td><div class="action-summary"><span class="action-summary-line"><span class="action-summary-key">Gap:</span> Full 1,400 pcs need is covered before S40 packing use; no open qty gap.</span><span class="action-summary-line"><span class="action-summary-key">Supplier:</span> Full call-off confirmed by 2026-05-16 with one emergency top-up slot reserved.</span><span class="action-summary-line"><span class="action-summary-key">Action:</span> Planner keeps the standard call-off plan active and triggers top-up only if FG output runs ahead.</span></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="delivery" class="section-pane hidden">
+    <div id="delivery-title" class="section-title">Shipping Detail</div>
+    <div class="section section-scroll">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Order Route</th>
+              <th>Commerce Team</th>
+              <th>Delivery Area / State</th>
+              <th>Delivery Site / Address</th>
+              <th>Open in Google Maps</th>
+              <th>Delivery Method</th>
+              <th>Delivery / Site Issue</th>
+              <th>Coordination Remark</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr id="delivery-local-row">
+              <td>Local</td>
+              <td>Local Commerce Team</td>
+              <td>Selangor</td>
+              <td>NorthBay Retail Group, Lot 18, Jalan Sungai Pinang 4/2, Seksyen 4, 41050 Klang, Selangor</td>
+              <td><a href="https://www.google.com/maps/search/?api=1&query=NorthBay%20Retail%20Group%2C%20Lot%2018%2C%20Jalan%20Sungai%20Pinang%204%2F2%2C%20Seksyen%204%2C%2041050%20Klang%2C%20Selangor" target="_blank" rel="noopener noreferrer">Open in Google Maps</a></td>
+              <td>Company Truck</td>
+              <td>Site only accepts unloading after 2:00 PM. Security registration required at gate.</td>
+              <td>Current mock only. Final field set can later expand to driver contact, vehicle plate number, gate-pass note, unloading arrangement, and customer receiving contact.</td>
+            </tr>
+            <tr id="delivery-overseas-row" class="hidden">
+              <td>Overseas</td>
+              <td>Overseas Commerce Team</td>
+              <td>United States</td>
+              <td>NorthBay Retail Group HQ, 123 Commerce Blvd, Suite 400, Austin, TX 78701</td>
+              <td><a href="https://www.google.com/maps/search/?api=1&query=NorthBay%20Retail%20Group%20HQ%2C%20123%20Commerce%20Blvd%2C%20Suite%20400%2C%20Austin%2C%20TX%2078701" target="_blank" rel="noopener noreferrer">Open in Google Maps</a></td>
+              <td>FOB / Pending booking with BluePort Logistics</td>
+              <td>Booking window still open. Customs document set must be checked before loading plan is confirmed.</td>
+              <td>Customer requests shipping advice before ETD confirmation.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note">Mock-stage behavior: user switches Order Route between Local and Overseas on the same Sales Order page, and Shipping Detail follows that selection.</div>
+    </div>
+  </div>
+
+  <div id="log" class="section-pane hidden">
+    <div class="section-title">Change Log</div>
+    <div class="section section-scroll">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Date / Time</th><th>User</th><th>Action</th><th>Remark</th></tr></thead>
+          <tbody>
+            <tr><td>2026-03-28 09:12</td><td>Alex Chen</td><td>Draft created</td><td>Initial sales order created.</td></tr>
+            <tr><td>2026-04-01 11:20</td><td>Sales Admin</td><td>Coordination updated</td><td>Delivery / shipment detail revised based on selected order route.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+
