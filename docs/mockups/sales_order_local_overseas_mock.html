@@ -6,46 +6,83 @@
 <title>Sales Order — Complete Mock v8 Lighter Scrollbar</title>
 <style>
 :root{
-  --bg:#f4f8fb;--panel:#fbfdfe;--header:#fbfdfe;--line:#d6e1ea;--line-strong:#d6e1ea;--text:#2f4a66;--muted:#6b8096;--title:#2f4a66;--blue:#4f7fa8;
-  --surface-soft:#eef4f8;--surface-muted:#eef4f8;--surface-header:#dce8f1;--surface-card:#fbfdfe;
+  --bg:#fafafb;--panel:#fcfdfe;--header:#fbfdfe;--line:#d6e1ea;--line-strong:#d6e1ea;--text:#2f4a66;--muted:#6b8096;--title:#2f4a66;--blue:#4f7fa8;
+  --surface-soft:#fafbfc;--surface-muted:#f4f7f9;--surface-header:#dce8f1;--surface-card:#fdfefe;
+  --sidebar-width:236px;--topbar-height:96px;--tabbar-height:44px;--content-grid-min-width:980px;
+  --panel-radius:14px;--panel-gap:16px;--panel-body-padding:14px 16px;--tab-content-top-gap:2px;
+  --table-header-height:42px;--table-header-font-size:11px;--table-header-font-weight:700;--table-header-letter-spacing:.22px;--table-header-line-height:1.2;--table-header-text-transform:uppercase;
+  --tab-font-size:13px;--tab-font-weight:650;--note-font-size:12px;--note-line-height:1.55;
   --shadow-soft:0 1px 2px rgba(36,54,75,.025),0 8px 18px rgba(36,54,75,.03);
   --shadow-card:0 1px 2px rgba(36,54,75,.025),0 10px 22px rgba(36,54,75,.04);
   --scroll-track:#e5edf3;--scroll-thumb:#b8cad8;--scroll-thumb-hover:#a5bbcb;
   --badge-neutral-bg:#eef4f8;--badge-neutral-border:#d6e1ea;--badge-neutral-text:#6b8096;
   --badge-blue-bg:#eaf2f8;--badge-blue-border:#d6e1ea;--badge-blue-text:#4f7fa8;
-  --badge-amber-bg:#f5f1e4;--badge-amber-border:#e3dcc8;--badge-amber-text:#8a7a58;
+  --badge-amber-bg:#edf4f7;--badge-amber-border:#d5e1e8;--badge-amber-text:#647b8f;
   --badge-green-bg:#edf6f1;--badge-green-border:#d4e6dc;--badge-green-text:#6fa38a;
-  --badge-yellow-bg:#f6f2e6;--badge-yellow-border:#e3dcc8;--badge-yellow-text:#8a7a58;
-  --badge-red-bg:#f6eded;--badge-red-border:#e7d7d7;--badge-red-text:#9c6a6a;
-  --badge-steel-bg:#eef4f8;--badge-steel-border:#d6e1ea;--badge-steel-text:#6b8096;
-  --date-alert:#a96a6a;
+  --badge-yellow-bg:#eef5f8;--badge-yellow-border:#d7e2e8;--badge-yellow-text:#698094;
+  --badge-red-bg:#f3e8e8;--badge-red-border:#ddcaca;--badge-red-text:#8e6262;
+  --badge-steel-bg:#f5f8fa;--badge-steel-border:#dde6ed;--badge-steel-text:#75899a;
+  --risk-low-bg:#eef5f0;--risk-low-border:#d6e2d8;--risk-low-text:#6f8677;
+  --risk-medium-bg:#e3edf4;--risk-medium-border:#c8d7e2;--risk-medium-text:#85718f;
+  --risk-high-bg:#e8f0f4;--risk-high-border:#d1dde4;--risk-high-text:#5f7589;
+  --risk-critical-bg:#f1e5e6;--risk-critical-border:#dcc7ca;--risk-critical-text:#8b5d64;
+  --date-alert:#6f8698;
   --secondary:#6FA38A;--secondary-hover:#5D8E76;--secondary-soft:#EDF6F1;--primary-soft:#EAF2F8;--primary-hover:#426D92;--row-hover:#F1F7FB;--muted-soft:#8FA1B2;--soft-border:#E5EDF3;
 }
 *{box-sizing:border-box}
-body{margin:0;background:linear-gradient(180deg,#f7fafc 0%,var(--bg) 180px,#eef4f8 100%);font-family:"Segoe UI",Arial,Helvetica,sans-serif;color:var(--text)}
-.page{max-width:1440px;margin:0 auto;background:transparent;min-height:100vh;padding:0 24px 36px}
-.sticky-shell{position:sticky;top:0;z-index:50;margin:0 -24px 14px;background:rgba(251,253,254,.965);backdrop-filter:blur(14px);border-bottom:1px solid var(--line-strong);box-shadow:0 1px 0 rgba(214,225,234,.78),0 12px 26px rgba(79,127,168,.05)}
-.topbar{display:flex;justify-content:space-between;gap:24px;align-items:flex-start;padding:20px 28px 14px;background:linear-gradient(180deg,#fbfdfe 0%,#eef4f8 100%);border-bottom:1px solid var(--line)}
-.topbar-main{display:flex;flex-direction:column;gap:5px;min-width:0}
-.topbar h1{margin:0;font-size:26px;font-weight:700;color:var(--title);letter-spacing:.1px}
-.object-kicker{font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-soft)}
-.object-number{font-size:13px;font-weight:500;color:var(--muted);line-height:1.2;letter-spacing:.02em}
-.top-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+body{margin:0;background:linear-gradient(180deg,#fdfdfe 0%,var(--bg) 180px,#f6f7f8 100%);font-family:"Segoe UI",Arial,Helvetica,sans-serif;color:var(--text)}
+.page{width:100%;max-width:none;margin:0;background:transparent;min-height:100vh;padding:0}
+.layout-shell{display:grid;grid-template-columns:var(--sidebar-width) minmax(0,1fr);gap:0;align-items:start;min-height:100vh;height:100vh;overflow:hidden}
+.side-nav{position:sticky;top:0;min-height:100vh;border-right:1px solid var(--line);border-top:none;border-left:none;border-bottom:none;border-radius:0;background:rgba(251,253,254,.94);box-shadow:none;overflow:hidden}
+.side-nav-head{padding:18px 18px 14px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fcfdfe 0%,#f7f9fb 100%)}
+.side-nav-kicker{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted-soft)}
+.side-nav-title{margin-top:6px;font-size:18px;font-weight:700;color:var(--title)}
+.side-nav-body{padding:14px 12px 16px}
+.side-nav-group{margin-top:4px}
+.side-nav-group + .side-nav-group{margin-top:14px;padding-top:14px;border-top:1px solid var(--soft-border)}
+.side-nav-label{padding:0 8px 8px;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted-soft)}
+.side-nav-item{display:flex;align-items:center;width:100%;margin:0;border:1px solid transparent;border-radius:12px;background:transparent;color:var(--muted);font-size:13px;font-weight:600;text-align:left;padding:10px 12px;cursor:pointer}
+.side-nav-item + .side-nav-item{margin-top:4px}
+.side-nav-item:hover{background:var(--row-hover);color:var(--text)}
+.side-nav-item.active{background:var(--primary-soft);border-color:#d4e1ec;color:var(--title);box-shadow:inset 0 1px 0 rgba(255,255,255,.74)}
+.workspace{min-width:0;padding:0 18px 18px 0;display:flex;flex-direction:column;min-height:100vh;height:100vh;overflow:hidden}
+.workspace-main{min-width:0;display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden}
+.sticky-shell{position:sticky;top:0;z-index:50;margin:0 0 8px;background:rgba(251,253,254,.965);backdrop-filter:blur(14px);border-top:none;border-right:none;border-bottom:1px solid var(--line-strong);border-left:none;border-radius:0;box-shadow:0 1px 0 rgba(214,225,234,.78),0 12px 26px rgba(79,127,168,.05);overflow:visible}
+.topbar{display:flex;justify-content:space-between;gap:24px;align-items:center;min-height:var(--topbar-height);padding:18px 28px 12px;background:linear-gradient(180deg,#fcfdfe 0%,#f7f9fb 100%);border-bottom:1px solid var(--line)}
+.topbar-main{display:flex;flex-direction:column;gap:10px;min-width:0}
+.title-row{display:flex;align-items:center;gap:8px;min-width:0}
+.topbar h1{margin:0;font-size:24px;font-weight:700;color:var(--title);letter-spacing:.1px;white-space:nowrap}
+.title-divider{color:var(--muted-soft);font-size:20px;font-weight:500;line-height:1}
+.title-order-no{font-size:18px;font-weight:600;color:var(--muted);line-height:1.2;white-space:nowrap}
+.object-kicker,.object-number{display:none}
+.topbar-main > .object-kicker + div{display:none}
+.top-meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:0}
+.meta-group{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.meta-label{font-weight:700;color:var(--muted)}
+.meta-divider{width:1px;height:18px;background:var(--line)}
+.route-text{font-size:12px;font-weight:600;color:var(--text)}
+.route-segmented{display:inline-flex;align-items:center;padding:3px;border:1px solid var(--line);border-radius:999px;background:var(--surface-card);box-shadow:inset 0 1px 0 rgba(255,255,255,.78)}
+.route-segment{min-width:82px;height:28px;padding:0 14px;border:none;border-radius:999px;background:transparent;color:var(--muted);font-size:12px;font-weight:650;cursor:pointer}
+.route-segment:hover{background:var(--row-hover);color:var(--text)}
+.route-segment.active{background:var(--primary-soft);color:var(--blue);box-shadow:inset 0 1px 0 rgba(255,255,255,.72)}
+.top-meta-ref #type-badge{display:none!important}
 .badge{display:inline-flex;align-items:center;justify-content:center;padding:6px 12px;border-radius:999px;border:1px solid var(--badge-neutral-border);background:var(--badge-neutral-bg);color:var(--badge-neutral-text);font-size:10px;font-weight:600;line-height:1;white-space:nowrap;box-shadow:inset 0 1px 0 rgba(255,255,255,.72)}
 .badge.amber{background:var(--badge-yellow-bg);border-color:var(--badge-yellow-border);color:var(--badge-yellow-text)}
 .badge.red{background:var(--badge-red-bg);border-color:var(--badge-red-border);color:var(--badge-red-text)}
 .badge.green{background:var(--badge-green-bg);border-color:var(--badge-green-border);color:var(--badge-green-text)}
 .badge.blue{background:var(--badge-blue-bg);border-color:var(--badge-blue-border);color:var(--badge-blue-text)}
 .badge.steel{background:var(--badge-steel-bg);border-color:var(--badge-steel-border);color:var(--badge-steel-text)}
+.badge.low{background:var(--risk-low-bg);border-color:var(--risk-low-border);color:var(--risk-low-text)}
+.badge.medium{background:var(--risk-medium-bg);border-color:var(--risk-medium-border);color:var(--risk-medium-text)}
+.badge.high{background:var(--risk-high-bg);border-color:var(--risk-high-border);color:var(--risk-high-text)}
+.badge.critical{background:var(--risk-critical-bg);border-color:var(--risk-critical-border);color:var(--risk-critical-text)}
 .overdue-date{color:var(--date-alert);font-weight:600}
-.procurement-title{padding:12px 20px;background:var(--surface-header);border-bottom:1px solid var(--line);color:var(--title)}
-.procurement-section{padding:18px 20px 20px}
-.procurement-sequence-note{margin:0 0 12px;font-size:11px;font-weight:600;letter-spacing:.01em;color:var(--muted)}
-.table-wrap.procurement-wrap{position:relative;display:block;width:100%;height:280px;padding-bottom:8px;border:1px solid var(--line);border-radius:14px;background:var(--surface-soft);overflow-x:auto;overflow-y:auto;scroll-padding-bottom:8px;box-shadow:inset 0 1px 0 rgba(255,255,255,.7)}
+.procurement-section{padding:var(--tab-content-top-gap) 0 12px}
+.table-wrap.procurement-wrap{position:relative;display:block;width:100%;height:auto;min-height:420px;flex:1;padding-bottom:8px;border:1px solid var(--line);border-radius:var(--panel-radius);background:#fdfefe;overflow-x:auto;overflow-y:auto;scroll-padding-bottom:8px;box-shadow:inset 0 1px 0 rgba(255,255,255,.7)}
 .procurement-table{width:max-content;min-width:1880px;border-collapse:separate;border-spacing:0;table-layout:fixed}
-.procurement-table thead th{position:sticky;top:0;z-index:16;padding:13px 10px;background:var(--surface-header);border-bottom:1px solid var(--line-strong);font-size:11px;letter-spacing:.35px;color:#617891;box-shadow:0 1px 0 var(--line-strong)}
-.procurement-table tbody td{padding:10px 10px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.35;background:rgba(252,253,255,.84)}
-.procurement-table tbody tr:nth-child(even) td{background:rgba(252,253,255,.84)}
+.procurement-table thead th{position:sticky;top:0;z-index:16;height:var(--table-header-height);padding:12px 10px;background:var(--surface-header);border-bottom:1px solid var(--line-strong);font-size:var(--table-header-font-size);font-weight:var(--table-header-font-weight);letter-spacing:var(--table-header-letter-spacing);line-height:var(--table-header-line-height);text-transform:var(--table-header-text-transform);vertical-align:middle;color:var(--text);box-shadow:0 1px 0 var(--line-strong)}
+.procurement-table tbody td{padding:10px 10px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.35;background:#fdfefe}
+.procurement-table tbody tr:nth-child(even) td{background:#fdfefe}
 .procurement-table tbody tr:hover td{background:var(--row-hover)}
 .procurement-table tbody tr:last-child td{border-bottom:none}
 .procurement-table th:nth-child(1),.procurement-table td:nth-child(1){width:118px}
@@ -70,21 +107,21 @@ body{margin:0;background:linear-gradient(180deg,#f7fafc 0%,var(--bg) 180px,#eef4
 .process-sub{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-soft)}
 .bom-material{display:grid;gap:4px}
 .material-name{font-size:13px;font-weight:700;color:var(--title)}
-.material-meta{display:block;font-size:11px;font-weight:600;color:var(--muted)}
-.material-desc{display:block;font-size:11px;font-weight:500;line-height:1.4;color:var(--muted-soft)}
+.material-meta{display:block;font-size:12px;font-weight:700;line-height:1.35;color:var(--muted)}
+.material-desc{display:block;font-size:12px;font-weight:600;line-height:1.4;color:var(--muted)}
 .usage-cell{vertical-align:middle}
 .where-used-text{display:block;font-size:11px;font-weight:700;color:var(--blue);line-height:1.3}
 .bom-usage-text{display:block;font-size:12px;font-weight:600;color:var(--text);line-height:1.4}
 .promised-date-cell{display:grid;gap:4px}
 .promised-date-inline{display:inline-block;white-space:nowrap}
-.warning-date{display:inline-flex;align-items:center;padding:7px 12px;border-radius:999px;background:#f7f1e6;border:1px solid #e4ddcf;color:#8a7a58;font-weight:600;line-height:1;white-space:nowrap}
+.warning-date{display:inline-flex;align-items:center;padding:7px 12px;border-radius:999px;background:#eef5f8;border:1px solid #d7e2e8;color:var(--date-alert);font-weight:600;line-height:1;white-space:nowrap}
 .action-summary{display:grid;gap:5px;min-width:0}
 .action-summary-line{display:block;line-height:1.35;color:#3e556d}
 .action-summary-key{font-size:11px;font-weight:700;letter-spacing:.2px;text-transform:uppercase;color:var(--muted)}
-.actions{display:flex;align-items:center;min-width:0;padding-top:8px;padding-right:6px}
+.actions{display:flex;align-items:flex-start;min-width:0;padding-top:2px;padding-right:0}
 .action-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
-.action-cluster{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;padding:9px 10px;border:1px solid rgba(214,225,234,.28);border-radius:14px;background:rgba(251,253,254,.35);box-shadow:none}
-.btn{height:32px;padding:0 13px;border:1px solid var(--line);border-radius:9px;background:var(--surface-card);color:var(--muted);font-size:11px;font-weight:600;box-shadow:inset 0 1px 0 rgba(255,255,255,.78)}
+.action-cluster{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;padding:0;border:none;border-radius:0;background:transparent;box-shadow:none}
+.btn{height:34px;padding:0 14px;border:1px solid var(--line);border-radius:9px;background:var(--surface-card);color:var(--muted);font-size:12px;font-weight:600;box-shadow:inset 0 1px 0 rgba(255,255,255,.78)}
 .btn.emphasis{background:var(--primary-soft);border-color:#c7d8e6;color:var(--blue);font-weight:650}
 .btn.primary{background:#426f94;border-color:#426f94;color:#fbfdfe;font-weight:700;box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 2px 6px rgba(66,109,146,.18)}
 .btn.secondary{background:var(--secondary-soft);border-color:#d4e6dc;color:var(--secondary)}
@@ -92,10 +129,21 @@ body{margin:0;background:linear-gradient(180deg,#f7fafc 0%,var(--bg) 180px,#eef4
 .btn.emphasis:hover{background:#deebf5;border-color:#b7cddd;color:var(--primary-hover)}
 .btn.primary:hover{background:var(--primary-hover);border-color:var(--primary-hover)}
 .btn.secondary:hover{background:#e3f0e9;border-color:var(--secondary-hover);color:var(--secondary-hover)}
-.toolbar-shell{padding:8px 24px 11px;background:var(--surface-soft);border-bottom:1px solid var(--line)}
-.switch-bar{padding:8px 12px;background:var(--surface-muted);border:1px solid var(--line);border-radius:14px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;box-shadow:inset 0 1px 0 rgba(255,255,255,.74)}
-.toolbar-group{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.switch-bar label{font-weight:700;color:var(--text);font-size:11px;letter-spacing:.12px}
+.btn-text{background:transparent;border-color:transparent;box-shadow:none;padding:0 8px;color:var(--muted)}
+.btn-text:hover{background:transparent;color:var(--text)}
+.btn-icon{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;margin-right:6px;font-size:0;line-height:1}
+.btn.emphasis .btn-icon::before{content:"\270E";font-size:12px;line-height:1}
+.btn.primary .btn-icon::before{content:"\1F4BE";font-size:12px;line-height:1}
+.toolbar-shell{min-height:var(--tabbar-height);padding:0 24px;background:var(--surface-soft);border-bottom:1px solid var(--line)}
+.switch-bar{padding:0;background:transparent;border:none;border-radius:0;display:flex;gap:0;align-items:center;justify-content:space-between;flex-wrap:nowrap;box-shadow:none}
+.tabs-shell{display:flex;align-items:center;min-width:0;flex:1 1 auto}
+.tab-list{display:flex;gap:22px;align-items:center;min-width:0;overflow-x:auto;padding:0}
+.workspace-tab{display:inline-flex;align-items:center;justify-content:center;height:42px;padding:0;border:none;border-radius:0;background:transparent;color:var(--muted);font-size:var(--tab-font-size);font-weight:var(--tab-font-weight);line-height:1.2;white-space:nowrap;cursor:pointer;box-shadow:none;border-bottom:2px solid transparent}
+.workspace-tab:hover{background:transparent;color:var(--text)}
+.workspace-tab.active{background:transparent;border-color:var(--blue);color:var(--title);box-shadow:none}
+.zoom-notice{display:none;align-items:center;gap:8px;margin:10px 24px 0;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:rgba(250,251,252,.96);color:var(--muted);font-size:12px;line-height:1.35}
+.zoom-notice.show{display:inline-flex}
+.zoom-notice strong{color:var(--text);font-weight:700}
 .mock-dropdown{position:relative;min-width:290px}
 .mock-dropdown--compact{min-width:180px}
 .mock-dropdown--field{min-width:100%;width:100%}
@@ -104,7 +152,7 @@ body{margin:0;background:linear-gradient(180deg,#f7fafc 0%,var(--bg) 180px,#eef4
   height:30px;
   border:1px solid var(--line);
   border-radius:8px;
-  background:#f3f8fb;
+  background:#fdfefe;
   color:var(--text);
   font-size:12px;
   padding:0 34px 0 10px;
@@ -117,7 +165,7 @@ body{margin:0;background:linear-gradient(180deg,#f7fafc 0%,var(--bg) 180px,#eef4
   height:38px;
   font-size:14px;
   padding:0 38px 0 12px;
-  background:#fbfdfe;
+  background:#fefefe;
 }
 .mock-dropdown-toggle::after{
   content:"";
@@ -135,7 +183,7 @@ body{margin:0;background:linear-gradient(180deg,#f7fafc 0%,var(--bg) 180px,#eef4
 }
 .mock-dropdown.open .mock-dropdown-toggle{border-color:var(--blue);box-shadow:0 0 0 3px rgba(79,127,168,.16),inset 0 1px 0 rgba(255,255,255,.82);outline:none}
 .mock-dropdown.open .mock-dropdown-toggle::after{transform:translateY(-50%) rotate(180deg)}
-.mock-dropdown-toggle:hover{border-color:#c8d7e3;background:#f7fbfd}
+.mock-dropdown-toggle:hover{border-color:#c8d7e3;background:#f8fbfd}
 .mock-dropdown-menu{
   position:absolute;
   top:calc(100% + 8px);
@@ -144,7 +192,7 @@ body{margin:0;background:linear-gradient(180deg,#f7fafc 0%,var(--bg) 180px,#eef4
   margin:0;
   padding:6px;
   list-style:none;
-  background:#fbfdfe;
+  background:#fefefe;
   border:1px solid var(--line);
   border-radius:12px;
   box-shadow:0 10px 24px rgba(79,127,168,.10),0 1px 2px rgba(47,74,102,.08);
@@ -209,30 +257,42 @@ body{margin:0;background:linear-gradient(180deg,#f7fafc 0%,var(--bg) 180px,#eef4
   background:linear-gradient(0deg,var(--row-hover),var(--row-hover));
   color:var(--title);
 }
-#section-select{min-width:290px}
 #type-select{min-width:180px}
-.section-pane{margin-top:20px;border:1px solid var(--line);border-radius:18px;background:var(--surface-card);box-shadow:var(--shadow-card);overflow:hidden}
-.section-title{padding:14px 22px;background:var(--surface-header);border-bottom:1px solid var(--line);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--title)}
-.section{padding:24px 26px;background:var(--surface-card)}
+.section-pane{border:none;border-radius:0;background:transparent;box-shadow:none;overflow:visible}
+.section-pane + .section-pane{margin-top:var(--panel-gap)}
+.workspace-main > .section-pane{width:100%}
+.section-pane.data-pane:not(.hidden){display:flex;flex-direction:column;flex:1;min-height:0}
+.section-pane.data-pane:not(.hidden) .section{display:flex;flex-direction:column;flex:1;min-height:0}
+.section-pane.procurement-pane:not(.hidden) .procurement-section{display:flex;flex-direction:column;flex:1;min-height:0}
+.section{padding:var(--tab-content-top-gap) 0 12px;background:transparent}
 .section-scroll{max-height:420px;overflow-y:auto;padding-right:8px;scroll-padding-top:140px}
-.field-row,.edit-row{padding:14px 0;border-top:1px solid var(--line)}.summary-sheet{border:1px solid var(--line);border-radius:16px;overflow:auto;background:var(--surface-soft);box-shadow:inset 0 1px 0 rgba(255,255,255,.82),0 2px 6px rgba(67,89,112,.035)}.summary-sheet table{width:100%;min-width:1080px;border-collapse:collapse;font-size:14px}.summary-sheet td{padding:14px 16px;border-bottom:1px solid var(--soft-border);vertical-align:top}.summary-sheet .label{width:180px;font-size:11px;font-weight:700;color:var(--muted);background:var(--surface-header);letter-spacing:.18px;text-transform:uppercase}.summary-sheet .value{min-width:180px;background:var(--surface-card)}.summary-note{padding-top:0}
+.section-pane.compact-pane .section{padding-top:var(--tab-content-top-gap);padding-bottom:10px}
+.section-pane.compact-pane .section-scroll{max-height:none;overflow:visible;padding-right:0}
+.section-pane.data-pane .section{padding-top:var(--tab-content-top-gap);padding-bottom:12px}
+.section-pane.data-pane .section-scroll{flex:1;min-height:0;max-height:none}
+.section-pane.data-pane .table-wrap,
+.section-pane.data-pane .summary-sheet{flex:0 0 auto;max-width:100%}
+.section-pane.data-pane#items .table-wrap,
+.section-pane.data-pane#delivery .table-wrap,
+.section-pane.data-pane#log .table-wrap{flex:1;min-height:0;overflow:auto}
+.field-row,.edit-row{padding:14px 0;border-top:1px solid var(--line)}.summary-sheet{border:1px solid var(--line);border-radius:var(--panel-radius);overflow:auto;background:var(--surface-soft);box-shadow:inset 0 1px 0 rgba(255,255,255,.82),0 2px 6px rgba(67,89,112,.035)}.summary-sheet table{width:100%;min-width:max(1080px,var(--content-grid-min-width));border-collapse:collapse;font-size:14px}.summary-sheet td{padding:14px 16px;border-bottom:1px solid var(--soft-border);vertical-align:top}.summary-sheet .label{width:180px;height:var(--table-header-height);padding:12px 16px;font-size:var(--table-header-font-size);font-weight:var(--table-header-font-weight);line-height:var(--table-header-line-height);color:var(--text);background:var(--surface-header);letter-spacing:var(--table-header-letter-spacing);text-transform:var(--table-header-text-transform);vertical-align:middle}.summary-sheet .value{min-width:180px;background:var(--surface-card)}.summary-note{padding-top:0}
 .field-label,.edit-label,.block-label{font-size:12px;font-weight:700;color:var(--blue);margin-bottom:8px;letter-spacing:.08px}
 .field-value,.block-value{font-size:15px;line-height:1.45;color:#314a65}
 .block{margin-top:10px;border:1px solid var(--soft-border);border-radius:14px;background:var(--surface-card);padding:16px 17px;box-shadow:inset 0 1px 0 rgba(255,255,255,.82),0 1px 3px rgba(67,89,112,.02)}
 .route-display{display:grid;grid-template-columns:220px 1fr 220px 1fr;column-gap:18px;align-items:start;padding:0 0 14px;border-bottom:1px solid var(--line)}
-.input-line,.select-line,.textarea-line{width:100%;font-size:14px;line-height:1.45;color:var(--text);background:#fbfdfe;border:1px solid var(--line);padding:9px 12px;outline:none;border-radius:8px;box-shadow:none}
+.input-line,.select-line,.textarea-line{width:100%;font-size:14px;line-height:1.45;color:var(--text);background:#fefefe;border:1px solid var(--line);padding:9px 12px;outline:none;border-radius:8px;box-shadow:none}
 .select-line{height:38px;padding-right:28px}
 .textarea-line{min-height:76px;resize:vertical}.horizontal-form .edit-row{display:grid;grid-template-columns:220px 1fr;column-gap:18px;align-items:start}.horizontal-form .edit-label{margin-bottom:0;padding-top:8px}
-.table-wrap{border:1px solid var(--line);border-radius:16px;overflow:auto;background:var(--surface-soft);box-shadow:inset 0 1px 0 rgba(255,255,255,.82),0 2px 6px rgba(67,89,112,.03)}
-table{width:100%;border-collapse:collapse;font-size:14px}
-th{padding:12px 10px;text-align:left;background:var(--surface-header);border-bottom:1px solid var(--line-strong);font-size:11px;color:var(--text);letter-spacing:.22px;text-transform:uppercase}
-td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.5;background:rgba(252,253,255,.84)}
+.table-wrap{border:1px solid var(--line);border-radius:16px;overflow:auto;background:#fdfefe;box-shadow:inset 0 1px 0 rgba(255,255,255,.82),0 2px 6px rgba(67,89,112,.03)}
+table{width:100%;min-width:var(--content-grid-min-width);border-collapse:collapse;font-size:14px}
+th{height:var(--table-header-height);padding:12px 10px;text-align:left;vertical-align:middle;background:var(--surface-header);border-bottom:1px solid var(--line-strong);font-size:var(--table-header-font-size);font-weight:var(--table-header-font-weight);line-height:var(--table-header-line-height);color:var(--text);letter-spacing:var(--table-header-letter-spacing);text-transform:var(--table-header-text-transform)}
+td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.5;background:#fdfefe}
 .table-wrap tbody tr:hover td,.summary-sheet tr:hover td,.items-sheet tr:hover td{background:var(--row-hover)}
 .items-sheet{border-top:1px solid var(--line);overflow-x:auto}
 .items-sheet table{width:100%;border-collapse:collapse;font-size:14px}
-.items-sheet th{padding:10px 12px;font-size:12px;font-weight:700;color:var(--text);background:var(--surface-header);border-bottom:1px solid var(--line);text-transform:uppercase;letter-spacing:.18px}
+.items-sheet th{height:var(--table-header-height);padding:12px 12px;font-size:var(--table-header-font-size);font-weight:var(--table-header-font-weight);line-height:var(--table-header-line-height);color:var(--text);background:var(--surface-header);border-bottom:1px solid var(--line-strong);text-transform:var(--table-header-text-transform);letter-spacing:var(--table-header-letter-spacing);vertical-align:middle}
 .items-sheet td{padding:13px 12px;font-size:15px;color:var(--text);border-bottom:1px solid var(--line)}
-.note{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.55}.contact-toggle{display:inline-block;margin-top:6px;font-size:12px;color:var(--blue);background:none;border:none;padding:0;cursor:pointer;text-decoration:underline}.contact-details{display:none;margin-top:6px;font-size:12px;color:var(--muted);line-height:1.5}.contact-details.show{display:block}.support-text{margin-top:6px;font-size:12px;color:var(--muted);line-height:1.55}.view-only{display:block}.draft-only{display:none}body[data-order-state="draft"] .view-only{display:none}body[data-order-state="draft"] .draft-only{display:block}
+.note{font-size:var(--note-font-size);color:var(--muted);margin-top:10px;line-height:var(--note-line-height)}.contact-toggle{display:inline-block;margin-top:6px;font-size:12px;color:var(--blue);background:none;border:none;padding:0;cursor:pointer;text-decoration:underline}.contact-details{display:none;margin-top:6px;font-size:var(--note-font-size);color:var(--muted);line-height:1.5}.contact-details.show{display:block}.support-text{margin-top:6px;font-size:var(--note-font-size);color:var(--muted);line-height:var(--note-line-height)}.view-only{display:block}.draft-only{display:none}body[data-order-state="draft"] .view-only{display:none}body[data-order-state="draft"] .draft-only{display:block}
 .section-scroll,.summary-sheet,.textarea-line,.items-sheet,.table-wrap.procurement-wrap{
   scrollbar-width:thin;
   scrollbar-color:var(--scroll-thumb) var(--scroll-track);
@@ -244,19 +304,36 @@ td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line
 
 .hidden{display:none}
 @media (max-width:900px){
+  .layout-shell{grid-template-columns:1fr}
+  .side-nav{position:relative;top:auto;min-height:auto;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .workspace{padding:0 14px 28px 0;min-height:auto;height:auto}
+  .workspace-main{min-height:auto}
   .topbar{flex-direction:column}
   .actions{justify-content:flex-start}
   .actions{align-items:flex-start}
   .action-row{justify-content:flex-start}
   .action-cluster{justify-content:flex-start}
   .toolbar-group{width:100%}
+  .switch-bar{align-items:flex-start}
+  .tabs-shell{flex-basis:100%}
+  .toolbar-route{width:100%}
+  table,.summary-sheet table{min-width:900px}
 }
 </style>
 <script>
 function showSection(){
   const value=document.getElementById('section-select').value;
   document.querySelectorAll('.section-pane').forEach(el=>el.classList.add('hidden'));
-  document.getElementById(value).classList.remove('hidden');
+  const target=document.getElementById(value);
+  if(target)target.classList.remove('hidden');
+  document.querySelectorAll('.workspace-tab').forEach(tab=>{
+    const isActive=tab.dataset.value===value;
+    tab.classList.toggle('active',isActive);
+    tab.setAttribute('aria-selected',isActive?'true':'false');
+  });
+  document.querySelectorAll('.side-nav-item[data-target]').forEach(item=>{
+    item.classList.toggle('active',item.dataset.target===value);
+  });
 }
 function setupMockDropdown(dropdownId,selectId,labelId,onChange){
   const dropdown=document.getElementById(dropdownId);
@@ -303,15 +380,20 @@ function toggleContact(id,btn){
 function syncType(){
   const type=document.getElementById('type-select').value;
   const typeBadge=document.getElementById('type-badge');
+  const routeText=document.getElementById('route-text');
   const commerceTeam=document.getElementById('commerce-team');
   const commercialLocal=document.getElementById('commercial-local');
   const commercialOverseas=document.getElementById('commercial-overseas');
   const deliveryLocalRow=document.getElementById('delivery-local-row');
   const deliveryOverseasRow=document.getElementById('delivery-overseas-row');
+  document.querySelectorAll('.route-segment').forEach(button=>{
+    button.classList.toggle('active',button.dataset.value===type);
+  });
 
   if(type==='Local'){
     typeBadge.textContent='Order Route · Local';
     typeBadge.className='badge blue';
+    if(routeText)routeText.textContent='Order Route: Local';
     commerceTeam.textContent='Local Commerce Team';
     commercialLocal.classList.remove('hidden');
     commercialOverseas.classList.add('hidden');
@@ -320,12 +402,38 @@ function syncType(){
   } else {
     typeBadge.textContent='Order Route · Overseas';
     typeBadge.className='badge amber';
+    if(routeText)routeText.textContent='Order Route: Overseas';
     commerceTeam.textContent='Overseas Commerce Team';
     commercialOverseas.classList.remove('hidden');
     commercialLocal.classList.add('hidden');
     deliveryOverseasRow.classList.remove('hidden');
     deliveryLocalRow.classList.add('hidden');
   }
+}
+function setupRouteSegmented(){
+  const hiddenSelect=document.getElementById('type-select');
+  if(!hiddenSelect)return;
+  document.querySelectorAll('.route-segment').forEach(button=>{
+    button.addEventListener('click',()=>{
+      hiddenSelect.value=button.dataset.value;
+      syncType();
+    });
+  });
+}
+function getZoomScale(){
+  if(window.visualViewport&&typeof window.visualViewport.scale==='number'){
+    return window.visualViewport.scale;
+  }
+  const baseDpr=window.__salesWorkspaceBaseDpr||window.devicePixelRatio||1;
+  return (window.devicePixelRatio||1)/baseDpr;
+}
+function updateZoomNotice(){
+  const notice=document.getElementById('zoom-notice');
+  if(!notice)return;
+  const scale=getZoomScale();
+  const isRecommended=Math.abs(scale-1)<0.05;
+  notice.classList.toggle('show',!isRecommended);
+  notice.setAttribute('aria-hidden',isRecommended?'true':'false');
 }
 function syncOrderType(){
   const orderTypeSelect=document.getElementById('order-type-select');
@@ -335,21 +443,85 @@ function syncOrderType(){
     orderTypeDisplay.textContent=orderTypeSelect.value;
   }
 }
+function setupSectionTabs(){
+  const sectionSelect=document.getElementById('section-select');
+  if(!sectionSelect)return;
+  document.querySelectorAll('.workspace-tab').forEach(tab=>{
+    tab.addEventListener('click',()=>{
+      sectionSelect.value=tab.dataset.value;
+      showSection();
+    });
+  });
+  document.querySelectorAll('.side-nav-item[data-target]').forEach(item=>{
+    item.addEventListener('click',()=>{
+      sectionSelect.value=item.dataset.target;
+      showSection();
+    });
+  });
+}
 window.addEventListener('DOMContentLoaded',()=>{
-  setupMockDropdown('section-dropdown','section-select','section-dropdown-label',showSection);
-  setupMockDropdown('route-dropdown','type-select','route-dropdown-label',syncType);
+  window.__salesWorkspaceBaseDpr=window.devicePixelRatio||1;
   setupMockDropdown('order-type-dropdown','order-type-select','order-type-dropdown-label',syncOrderType);
+  setupRouteSegmented();
+  setupSectionTabs();
   showSection();
   syncType();
   syncOrderType();
+  updateZoomNotice();
+  window.addEventListener('resize',updateZoomNotice);
+  if(window.visualViewport){
+    window.visualViewport.addEventListener('resize',updateZoomNotice);
+  }
 });
 </script>
 </head>
 <body data-order-state="view">
 <div class="page">
+  <div class="layout-shell">
+    <aside class="side-nav" aria-label="Sales Order workspace navigation">
+      <div class="side-nav-head">
+        <div class="side-nav-kicker">Mini-MES</div>
+        <div class="side-nav-title">Sales Workspace</div>
+      </div>
+      <div class="side-nav-body">
+        <div class="side-nav-group">
+          <div class="side-nav-label">Core Modules</div>
+          <button type="button" class="side-nav-item active">Sales &amp; Orders</button>
+          <button type="button" class="side-nav-item">Product &amp; Engineering</button>
+          <button type="button" class="side-nav-item">Planning</button>
+          <button type="button" class="side-nav-item">Procurement</button>
+          <button type="button" class="side-nav-item">Inventory &amp; Warehouse</button>
+          <button type="button" class="side-nav-item">Production</button>
+          <button type="button" class="side-nav-item">Quality</button>
+          <button type="button" class="side-nav-item">Shipping &amp; Logistics</button>
+          <button type="button" class="side-nav-item">Finance &amp; Costing</button>
+          <button type="button" class="side-nav-item">Reports &amp; Master Data</button>
+        </div>
+      </div>
+    </aside>
+    <main class="workspace">
   <div class="sticky-shell">
   <div class="topbar">
     <div class="topbar-main">
+      <div class="title-row">
+        <h1>Sales Order:</h1>
+        <span class="title-order-no">SO-20260328-001</span>
+      </div>
+      <div class="top-meta top-meta-ref">
+        <div class="meta-group">
+          <span class="meta-label">Overall Risk:</span>
+          <span class="badge amber">Medium</span>
+        </div>
+        <span class="meta-divider" aria-hidden="true"></span>
+        <div class="meta-group">
+          <span id="route-text" class="route-text">Order Route: Local</span>
+        </div>
+        <div class="route-segmented" role="group" aria-label="Order Route">
+          <button type="button" class="route-segment active" data-value="Local">Local</button>
+          <button type="button" class="route-segment" data-value="Overseas">Overseas</button>
+        </div>
+        <span id="type-badge" class="badge blue hidden">Order Route Â· Local</span>
+      </div>
       <div class="object-kicker">Sales Coordination</div>
       <div>
       <h1>Sales Order</h1>
@@ -363,9 +535,9 @@ window.addEventListener('DOMContentLoaded',()=>{
     <div class="actions">
       <div class="action-row">
         <div class="action-cluster">
-          <button class="btn">Back</button>
-          <button class="btn emphasis">Edit</button>
-          <button class="btn primary">Save</button>
+          <button class="btn btn-text">Back</button>
+          <button class="btn emphasis"><span class="btn-icon" aria-hidden="true">✎</span>Edit</button>
+          <button class="btn primary"><span class="btn-icon" aria-hidden="true">💾</span>Save Changes</button>
         </div>
       </div>
     </div>
@@ -373,22 +545,17 @@ window.addEventListener('DOMContentLoaded',()=>{
 
   <div class="toolbar-shell">
     <div class="switch-bar">
-      <div class="toolbar-group">
-        <label for="section-select">Display Section</label>
-        <div id="section-dropdown" class="mock-dropdown">
-          <button id="section-dropdown-toggle" type="button" class="mock-dropdown-toggle" aria-haspopup="listbox" aria-expanded="false">
-            <span id="section-dropdown-label">Order Summary</span>
-          </button>
-          <ul class="mock-dropdown-menu" role="listbox" aria-label="Display Section options">
-            <li><button type="button" class="mock-dropdown-item active" data-value="summary">Order Summary</button></li>
-            <li><button type="button" class="mock-dropdown-item" data-value="commercial">Commercial Terms</button></li>
-            <li><button type="button" class="mock-dropdown-item" data-value="items">Order Items</button></li>
-            <li><button type="button" class="mock-dropdown-item" data-value="risk">Risk Status</button></li>
-            <li><button type="button" class="mock-dropdown-item" data-value="procurement">Procurement</button></li>
-            <li><button type="button" class="mock-dropdown-item" data-value="delivery">Shipping Detail</button></li>
-            <li><button type="button" class="mock-dropdown-item" data-value="log">Change Log</button></li>
-          </ul>
-          <select id="section-select" class="mock-dropdown-native" tabindex="-1" aria-hidden="true">
+      <div class="tabs-shell">
+        <div class="tab-list" role="tablist" aria-label="Sales Order sections">
+          <button type="button" class="workspace-tab active" role="tab" aria-selected="true" data-value="summary">Order Summary</button>
+          <button type="button" class="workspace-tab" role="tab" aria-selected="false" data-value="commercial">Commercial Terms</button>
+          <button type="button" class="workspace-tab" role="tab" aria-selected="false" data-value="items">Order Items</button>
+          <button type="button" class="workspace-tab" role="tab" aria-selected="false" data-value="risk">Risk Status</button>
+          <button type="button" class="workspace-tab" role="tab" aria-selected="false" data-value="procurement">Procurement</button>
+          <button type="button" class="workspace-tab" role="tab" aria-selected="false" data-value="delivery">Shipping Detail</button>
+          <button type="button" class="workspace-tab" role="tab" aria-selected="false" data-value="log">Change Log</button>
+        </div>
+        <select id="section-select" class="mock-dropdown-native" tabindex="-1" aria-hidden="true">
           <option value="summary">Order Summary</option>
           <option value="commercial">Commercial Terms</option>
           <option value="items">Order Items</option>
@@ -396,32 +563,20 @@ window.addEventListener('DOMContentLoaded',()=>{
           <option value="procurement">Procurement</option>
           <option value="delivery">Shipping Detail</option>
           <option value="log">Change Log</option>
-          </select>
-        </div>
+        </select>
       </div>
 
-      <div class="toolbar-group">
-        <label for="type-select">Order Route</label>
-        <div id="route-dropdown" class="mock-dropdown mock-dropdown--compact">
-          <button type="button" class="mock-dropdown-toggle" aria-haspopup="listbox" aria-expanded="false">
-            <span id="route-dropdown-label">Local</span>
-          </button>
-          <ul class="mock-dropdown-menu" role="listbox" aria-label="Order Route options">
-            <li><button type="button" class="mock-dropdown-item active" data-value="Local">Local</button></li>
-            <li><button type="button" class="mock-dropdown-item" data-value="Overseas">Overseas</button></li>
-          </ul>
-          <select id="type-select" class="mock-dropdown-native" tabindex="-1" aria-hidden="true">
-            <option selected>Local</option>
-            <option>Overseas</option>
-          </select>
-        </div>
-      </div>
     </div>
+    <select id="type-select" class="mock-dropdown-native" tabindex="-1" aria-hidden="true">
+      <option selected>Local</option>
+      <option>Overseas</option>
+    </select>
   </div>
+  <div id="zoom-notice" class="zoom-notice" aria-hidden="true"><strong>Best viewed at 100% browser zoom.</strong><span>The workspace stays usable, but layout is optimized for the recommended zoom level.</span></div>
   </div>
 
-  <div id="summary" class="section-pane">
-    <div class="section-title">Order Summary</div>
+  <div class="workspace-main">
+  <div id="summary" class="section-pane data-pane">
     <div class="section section-scroll">
       <div class="summary-sheet">
         <table>
@@ -479,8 +634,7 @@ window.addEventListener('DOMContentLoaded',()=>{
     </div>
   </div>
 
-  <div id="commercial" class="section-pane hidden">
-    <div class="section-title">Commercial Terms</div>
+  <div id="commercial" class="section-pane compact-pane hidden">
     <div class="section section-scroll">
       <div class="table-wrap">
         <table>
@@ -520,8 +674,7 @@ window.addEventListener('DOMContentLoaded',()=>{
     </div>
   </div>
 
-  <div id="items" class="section-pane hidden">
-    <div class="section-title">Order Items</div>
+  <div id="items" class="section-pane data-pane hidden">
     <div class="section section-scroll">
       <div class="table-wrap">
         <table>
@@ -586,8 +739,7 @@ window.addEventListener('DOMContentLoaded',()=>{
     </div>
   </div>
 
-  <div id="risk" class="section-pane hidden">
-    <div class="section-title">Risk Status</div>
+  <div id="risk" class="section-pane compact-pane hidden">
     <div class="section section-scroll">
       <div class="table-wrap">
         <table>
@@ -604,10 +756,8 @@ window.addEventListener('DOMContentLoaded',()=>{
     </div>
   </div>
 
-  <div id="procurement" class="section-pane hidden">
-    <div class="section-title procurement-title">Procurement</div>
+  <div id="procurement" class="section-pane procurement-pane data-pane hidden">
     <div class="section procurement-section">
-      <div class="procurement-sequence-note">Rows follow BOM/SOP process sequence from earlier-use materials to later-use materials.</div>
       <div class="table-wrap procurement-wrap">
         <table class="procurement-table">
           <thead><tr><th>Process Step</th><th>BOM Material</th><th>Where Used</th><th>Usage in BOM</th><th>Supplier Name</th><th>Supplier Type</th><th>Supplier Location</th><th>Supply Lead Time</th><th>Stage Due Date</th><th>Supplier Promised Date</th><th>Supplier Promised Qty</th><th>Required Qty</th><th>Criticality</th><th>Action Summary</th></tr></thead>
@@ -621,8 +771,7 @@ window.addEventListener('DOMContentLoaded',()=>{
     </div>
   </div>
 
-  <div id="delivery" class="section-pane hidden">
-    <div id="delivery-title" class="section-title">Shipping Detail</div>
+  <div id="delivery" class="section-pane data-pane hidden">
     <div class="section section-scroll">
       <div class="table-wrap">
         <table>
@@ -670,8 +819,7 @@ window.addEventListener('DOMContentLoaded',()=>{
     </div>
   </div>
 
-  <div id="log" class="section-pane hidden">
-    <div class="section-title">Change Log</div>
+  <div id="log" class="section-pane data-pane hidden">
     <div class="section section-scroll">
       <div class="table-wrap">
         <table>
@@ -683,6 +831,9 @@ window.addEventListener('DOMContentLoaded',()=>{
         </table>
       </div>
     </div>
+  </div>
+  </div>
+  </main>
   </div>
 </div>
 </body>
