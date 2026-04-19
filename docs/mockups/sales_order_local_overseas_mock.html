@@ -157,6 +157,8 @@ body{margin:0;background:linear-gradient(180deg,#fefefe 0%,var(--bg) 180px,#f8f8
 .module-entry-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-soft)}
 .module-entry-value{font-size:20px;font-weight:700;line-height:1.2;color:var(--title)}
 .module-entry-help{font-size:12px;line-height:1.5;color:var(--muted)}
+.module-entry-empty{padding:4px 0 2px}
+.module-entry-empty .module-entry-value{font-size:18px}
 .module-action-zone{display:grid;gap:10px}
 .module-action-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .module-action-card{display:grid;gap:8px;min-height:112px;padding:14px 15px;border:1px solid var(--line);border-radius:14px;background:var(--surface-card);color:var(--text);text-align:left;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.8)}
@@ -377,7 +379,7 @@ const ACTION_CONFIG={
   close:{label:'Close / Cancel', tag:'Lookup First', rule:'Search and select an existing record before closing or cancelling it.'},
   delete:{label:'Delete', tag:'Restricted', rule:'Search and select an existing record first. This action stays visually restricted and secondary.'}
 };
-let currentModule='sales-orders';
+let currentModule='';
 let currentAction='';
 function showSection(){
   const value=document.getElementById('section-select').value;
@@ -394,14 +396,17 @@ function showSection(){
   });
 }
 function syncModuleEntry(){
-  const moduleMeta=MODULE_CONFIG[currentModule];
+  const moduleMeta=currentModule?MODULE_CONFIG[currentModule]:null;
   const actionMeta=ACTION_CONFIG[currentAction];
   const toolbar=document.getElementById('sales-tab-toolbar');
   const stepModule=document.getElementById('module-step-module');
   const stepAction=document.getElementById('module-step-action');
   const stepFlow=document.getElementById('module-step-flow');
+  const entryBody=document.getElementById('module-entry-body');
+  const entryEmpty=document.getElementById('module-entry-empty');
   const selectedModule=document.getElementById('selected-module-name');
   const moduleHelp=document.getElementById('selected-module-help');
+  const actionZone=document.getElementById('module-action-zone');
   const flowNote=document.getElementById('module-flow-note');
   const flowPlaceholder=document.getElementById('module-flow-placeholder');
   const flowTitle=document.getElementById('module-flow-title');
@@ -409,16 +414,36 @@ function syncModuleEntry(){
   const actionStatus=document.getElementById('module-action-status');
   const isSales=currentModule==='sales-orders';
 
-  if(selectedModule)selectedModule.textContent=moduleMeta.label;
-  if(moduleHelp)moduleHelp.textContent='Universal module rule: choose the next action before entering any record or form flow.';
-  if(actionStatus)actionStatus.textContent=actionMeta?actionMeta.rule:'Choose the next action to open the correct record / form path.';
-
   document.querySelectorAll('.side-nav-item[data-module]').forEach(item=>{
     item.classList.toggle('active',item.dataset.module===currentModule);
   });
   document.querySelectorAll('.module-action-card').forEach(card=>{
     card.classList.toggle('active',card.dataset.action===currentAction);
   });
+
+  if(!moduleMeta){
+    if(entryBody)entryBody.classList.add('hidden');
+    if(entryEmpty)entryEmpty.classList.remove('hidden');
+    if(actionZone)actionZone.classList.add('hidden');
+    if(toolbar)toolbar.classList.add('hidden');
+    if(flowNote)flowNote.classList.add('hidden');
+    if(flowPlaceholder)flowPlaceholder.classList.add('hidden');
+    document.querySelectorAll('.section-pane').forEach(el=>el.classList.add('hidden'));
+    if(stepModule){
+      stepModule.classList.add('active');
+      stepModule.classList.remove('done');
+    }
+    if(stepAction)stepAction.classList.remove('active','done');
+    if(stepFlow)stepFlow.classList.remove('active','done');
+    return;
+  }
+
+  if(entryBody)entryBody.classList.remove('hidden');
+  if(entryEmpty)entryEmpty.classList.add('hidden');
+  if(actionZone)actionZone.classList.remove('hidden');
+  if(selectedModule)selectedModule.textContent=moduleMeta.label;
+  if(moduleHelp)moduleHelp.textContent='Universal module rule: choose the next action before entering any record or form flow.';
+  if(actionStatus)actionStatus.textContent=actionMeta?actionMeta.rule:'Choose the next action to reveal the correct record / form path.';
 
   if(stepModule){
     stepModule.classList.add('done');
@@ -436,7 +461,7 @@ function syncModuleEntry(){
   if(!currentAction){
     if(toolbar)toolbar.classList.add('hidden');
     if(flowNote)flowNote.classList.add('hidden');
-    if(flowPlaceholder)flowPlaceholder.classList.remove('hidden');
+    if(flowPlaceholder)flowPlaceholder.classList.add('hidden');
     if(flowTitle)flowTitle.textContent='Step 3 opens after the next action is chosen';
     if(flowBody)flowBody.innerHTML='<strong>Core Module → Action → Record / Form.</strong> Choose one universal action above. <strong>Create / Add</strong> opens a new draft without asking for a key first, while <strong>Search / Find</strong>, <strong>View</strong>, <strong>Edit / Update</strong>, <strong>Close / Cancel</strong>, and <strong>Delete</strong> all require lookup and record selection first.';
     document.querySelectorAll('.section-pane').forEach(el=>el.classList.add('hidden'));
@@ -445,7 +470,9 @@ function syncModuleEntry(){
 
   if(isSales){
     if(toolbar)toolbar.classList.remove('hidden');
-    if(flowPlaceholder)flowPlaceholder.classList.add('hidden');
+    if(flowPlaceholder)flowPlaceholder.classList.remove('hidden');
+    if(flowTitle)flowTitle.textContent='Sales Order mock flow · '+actionMeta.label;
+    if(flowBody)flowBody.innerHTML='<strong>Selected module:</strong> '+moduleMeta.label+'<br><strong>Selected action:</strong> '+actionMeta.label+'<br><strong>Rule:</strong> '+actionMeta.rule+'<br>The current mock reuses the Sales Order shell below as the step-3 record / form surface.';
     if(flowNote){
       flowNote.classList.remove('hidden');
       flowNote.innerHTML='<strong>'+moduleMeta.label+' · '+actionMeta.label+'</strong><br>'+actionMeta.rule+' The current mock reuses the Sales Order shell below as the step-3 record / form surface.';
@@ -631,7 +658,7 @@ window.addEventListener('DOMContentLoaded',()=>{
       <div class="side-nav-body">
         <div class="side-nav-group">
           <div class="side-nav-label">Core Modules</div>
-          <button type="button" class="side-nav-item active" data-module="sales-orders">Sales &amp; Orders</button>
+          <button type="button" class="side-nav-item" data-module="sales-orders">Sales &amp; Orders</button>
           <button type="button" class="side-nav-item" data-module="product-engineering">Product &amp; Engineering</button>
           <button type="button" class="side-nav-item" data-module="planning">Planning</button>
           <button type="button" class="side-nav-item" data-module="procurement">Procurement</button>
@@ -722,17 +749,22 @@ window.addEventListener('DOMContentLoaded',()=>{
 
   <div class="module-entry-panel">
     <div class="module-step-row">
-      <div id="module-step-module" class="module-step"><span class="module-step-index">1</span><span>Select Core Module</span></div>
-      <div id="module-step-action" class="module-step active"><span class="module-step-index">2</span><span>Select Next Action</span></div>
+      <div id="module-step-module" class="module-step active"><span class="module-step-index">1</span><span>Select Core Module</span></div>
+      <div id="module-step-action" class="module-step"><span class="module-step-index">2</span><span>Select Next Action</span></div>
       <div id="module-step-flow" class="module-step"><span class="module-step-index">3</span><span>Enter record / form flow</span></div>
     </div>
-    <div class="module-entry-body">
+    <div id="module-entry-empty" class="module-entry-empty">
+      <div class="module-entry-label">Universal Entry Rule</div>
+      <div class="module-entry-value">Select a Core Module first</div>
+      <div class="module-entry-help">The next-step action selector stays hidden until a core module is chosen. After that, the shared action pattern opens for that module.</div>
+    </div>
+    <div id="module-entry-body" class="module-entry-body hidden">
       <div class="module-entry-summary">
         <div class="module-entry-label">Selected Core Module</div>
         <div id="selected-module-name" class="module-entry-value">Sales &amp; Orders</div>
         <div id="selected-module-help" class="module-entry-help">Universal module rule: choose the next action before entering any record or form flow.</div>
       </div>
-      <div class="module-action-zone">
+      <div id="module-action-zone" class="module-action-zone">
         <div class="module-action-grid">
           <button type="button" class="module-action-card" data-action="create">
             <span class="module-action-tag">Draft Ready</span>
@@ -771,7 +803,7 @@ window.addEventListener('DOMContentLoaded',()=>{
   </div>
 
   <div id="module-flow-note" class="module-flow-note hidden"></div>
-  <div id="module-flow-placeholder" class="module-flow-placeholder">
+  <div id="module-flow-placeholder" class="module-flow-placeholder hidden">
     <div class="module-flow-card">
       <div class="module-entry-label">Step 3 · Enter Record / Form Flow</div>
       <div id="module-flow-title" class="module-flow-title">Step 3 opens after the next action is chosen</div>
