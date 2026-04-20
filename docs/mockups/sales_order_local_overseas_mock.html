@@ -383,6 +383,30 @@ td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line
 .order-items-table .waiver-cell .badge{max-width:100%}
 .order-items-table .remark-cell{min-width:220px}
 .order-items-table .waiver-cell{min-width:170px}
+.order-items-parent-row td:first-child{
+  font-weight:700;
+  color:var(--title);
+}
+.order-items-subrow td{
+  background:#f9fbfc;
+  font-size:13px;
+  color:var(--muted-strong);
+}
+.order-items-subrow td:first-child{
+  color:transparent;
+}
+.order-items-subrow .subrow-label{
+  padding-left:28px;
+  color:var(--text);
+  font-weight:600;
+}
+.order-items-subrow .batch-cell{
+  font-weight:600;
+  color:var(--title);
+}
+.order-items-subrow .remark-cell{
+  color:var(--muted-strong);
+}
 .order-items-total-row td{
   background:var(--surface-card);
   font-weight:700;
@@ -1058,19 +1082,55 @@ window.addEventListener('DOMContentLoaded',()=>{
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr class="order-items-parent-row">
               <td>Order Item 001</td>
               <td>NBR-SL100W-A01</td>
               <td>SL-NB-100W</td>
-              <td>100W Solar LED Street Light, local delivery batch</td>
+              <td>100W Solar LED Street Light, staged customer release</td>
               <td class="qty-cell">900</td>
               <td class="uom-cell">pcs</td>
               <td class="date-cell">2026-05-20</td>
               <td class="buffer-cell">2 WD</td>
-              <td class="batch-cell">Batch 1/3</td>
+              <td class="batch-cell">Split Delivery, 3 batches</td>
               <td class="status-cell"><span class="badge steel">New Build</span></td>
               <td class="waiver-cell"><span class="badge controlled">No open waiver</span></td>
-              <td class="remark-cell">New customer launch order row. Packaging label set follows NorthBay local distribution format.</td>
+              <td class="remark-cell">One original customer order item with a partial-delivery plan. Child rows below show the 3 shipment batches under this same Order Item.</td>
+            </tr>
+            <tr class="order-items-subrow">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="subrow-label">Partial Delivery Plan</td>
+              <td class="qty-cell">300</td>
+              <td class="uom-cell">pcs</td>
+              <td class="date-cell">2026-05-14</td>
+              <td class="buffer-cell">6 WD</td>
+              <td class="batch-cell">Delivery Batch 1 of 3</td>
+              <td colspan="3" class="remark-cell">First customer-requested release under Order Item 001.</td>
+            </tr>
+            <tr class="order-items-subrow">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="subrow-label">Partial Delivery Plan</td>
+              <td class="qty-cell">300</td>
+              <td class="uom-cell">pcs</td>
+              <td class="date-cell">2026-05-18</td>
+              <td class="buffer-cell">4 WD</td>
+              <td class="batch-cell">Delivery Batch 2 of 3</td>
+              <td colspan="3" class="remark-cell">Second planned release for the same original Order Item.</td>
+            </tr>
+            <tr class="order-items-subrow">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="subrow-label">Partial Delivery Plan</td>
+              <td class="qty-cell">300</td>
+              <td class="uom-cell">pcs</td>
+              <td class="date-cell">2026-05-20</td>
+              <td class="buffer-cell">2 WD</td>
+              <td class="batch-cell">Delivery Batch 3 of 3</td>
+              <td colspan="3" class="remark-cell">Final release completes Order Item 001 before the overall commit date.</td>
             </tr>
             <tr>
               <td>Order Item 002</td>
@@ -1081,7 +1141,7 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td class="uom-cell">pcs</td>
               <td class="date-cell">2026-05-15</td>
               <td class="buffer-cell">5 WD</td>
-              <td class="batch-cell">Batch 2/3</td>
+              <td class="batch-cell">Full delivery</td>
               <td class="status-cell"><span class="badge steel">Repeat Build</span></td>
               <td class="waiver-cell">WS-2026-014</td>
               <td class="remark-cell">Follow previous approved build. Driver-label update is covered by the approved waiver reference.</td>
@@ -1095,19 +1155,19 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td class="uom-cell">set</td>
               <td class="date-cell">2026-05-22</td>
               <td class="buffer-cell">0 WD</td>
-              <td class="batch-cell">Batch 3/3</td>
+              <td class="batch-cell">Full delivery</td>
               <td class="status-cell"><span class="badge bundled">Accessory Bundle</span></td>
               <td class="waiver-cell"><span class="badge controlled">No open waiver</span></td>
               <td class="remark-cell">Kitting quantity follows the combined shipment readiness plan and must stay aligned with the main lighting order items.</td>
             </tr>
             <tr class="order-items-total-row">
               <td>Total</td>
-              <td colspan="3">3 order rows in current sales order view</td>
+              <td colspan="3">3 order items in current sales order view</td>
               <td class="qty-cell">2,800</td>
               <td class="uom-cell">mixed</td>
               <td class="date-cell"></td>
               <td class="buffer-cell"></td>
-              <td class="batch-cell">3 batches</td>
+              <td class="batch-cell">1 split item / 3 batches</td>
               <td class="status-cell"><span class="badge steel">Mixed</span></td>
               <td class="waiver-cell">1 reference used</td>
               <td class="remark-cell">Read-only aggregate row for mock-stage review.</td>
