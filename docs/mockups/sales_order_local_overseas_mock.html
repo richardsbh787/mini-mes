@@ -720,6 +720,45 @@ function syncSummaryWarning(){
     text.textContent='Overall Commit Date is '+lateDays+' day'+(lateDays===1?'':'s')+' later than Customer Request Date. Customer-facing commitment follow-up is needed.';
   }
 }
+function parseYmdDate(value){
+  const match=/^(\d{4})-(\d{2})-(\d{2})$/.exec((value||'').trim());
+  if(!match)return null;
+  const year=Number(match[1]);
+  const monthIndex=Number(match[2])-1;
+  const day=Number(match[3]);
+  const date=new Date(Date.UTC(year,monthIndex,day));
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+function formatSafetyBuffer(fgReadyText,planShipText){
+  const planShipValue=(planShipText||'').trim();
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(planShipValue))return '—';
+
+  const fgReadyDate=parseYmdDate(fgReadyText);
+  const planShipDate=parseYmdDate(planShipValue);
+  if(!fgReadyDate||!planShipDate)return '—';
+  if(planShipDate<fgReadyDate)return '0 WD';
+
+  const cursor=new Date(fgReadyDate.getTime());
+  let workingDays=0;
+  while(cursor<=planShipDate){
+    const dayOfWeek=cursor.getUTCDay();
+    if(dayOfWeek!==0&&dayOfWeek!==6){
+      workingDays+=1;
+    }
+    cursor.setUTCDate(cursor.getUTCDate()+1);
+  }
+  return workingDays+' WD';
+}
+function syncOrderItemsSafetyBuffer(){
+  document.querySelectorAll('#items tbody tr').forEach(row=>{
+    if(row.classList.contains('order-items-total-row'))return;
+    const fgReadyCell=row.querySelector('.fg-ready-date');
+    const planShipCell=row.querySelector('.plan-ship-date');
+    const bufferCell=row.querySelector('.buffer-cell');
+    if(!fgReadyCell||!planShipCell||!bufferCell)return;
+    bufferCell.textContent=formatSafetyBuffer(fgReadyCell.textContent,planShipCell.textContent);
+  });
+}
 function syncType(){
   const type=document.getElementById('type-select').value;
   const typeBadge=document.getElementById('type-badge');
@@ -823,6 +862,7 @@ window.addEventListener('DOMContentLoaded',()=>{
   syncOrderType();
   syncOrderState();
   syncSummaryWarning();
+  syncOrderItemsSafetyBuffer();
   updateZoomNotice();
   window.addEventListener('resize',updateZoomNotice);
   if(window.visualViewport){
@@ -1090,9 +1130,9 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td>100W Solar LED Street Light, staged customer release</td>
               <td class="qty-cell">900</td>
               <td class="uom-cell">pcs</td>
-              <td class="date-cell">2026-05-20</td>
-              <td class="date-cell">By batch plan</td>
-              <td class="buffer-cell">2 WD</td>
+              <td class="date-cell fg-ready-date">2026-05-20</td>
+              <td class="date-cell plan-ship-date">By batch plan</td>
+              <td class="buffer-cell">—</td>
               <td class="batch-cell">Split Delivery, 3 batches</td>
               <td class="status-cell"><span class="badge steel">New Build</span></td>
               <td class="waiver-cell"><span class="badge controlled">No open waiver</span></td>
@@ -1105,9 +1145,9 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td class="subrow-label">Partial Delivery Plan</td>
               <td class="qty-cell">300</td>
               <td class="uom-cell">pcs</td>
-              <td class="date-cell">2026-05-14</td>
-              <td class="date-cell">2026-05-15</td>
-              <td class="buffer-cell">6 WD</td>
+              <td class="date-cell fg-ready-date">2026-05-14</td>
+              <td class="date-cell plan-ship-date">2026-05-15</td>
+              <td class="buffer-cell">—</td>
               <td class="batch-cell">Delivery Batch 1 of 3</td>
               <td colspan="3" class="remark-cell">First customer-requested release under Order Item 001.</td>
             </tr>
@@ -1118,9 +1158,9 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td class="subrow-label">Partial Delivery Plan</td>
               <td class="qty-cell">300</td>
               <td class="uom-cell">pcs</td>
-              <td class="date-cell">2026-05-18</td>
-              <td class="date-cell">2026-05-19</td>
-              <td class="buffer-cell">4 WD</td>
+              <td class="date-cell fg-ready-date">2026-05-18</td>
+              <td class="date-cell plan-ship-date">2026-05-19</td>
+              <td class="buffer-cell">—</td>
               <td class="batch-cell">Delivery Batch 2 of 3</td>
               <td colspan="3" class="remark-cell">Second planned release for the same original Order Item.</td>
             </tr>
@@ -1131,9 +1171,9 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td class="subrow-label">Partial Delivery Plan</td>
               <td class="qty-cell">300</td>
               <td class="uom-cell">pcs</td>
-              <td class="date-cell">2026-05-20</td>
-              <td class="date-cell">2026-05-21</td>
-              <td class="buffer-cell">2 WD</td>
+              <td class="date-cell fg-ready-date">2026-05-20</td>
+              <td class="date-cell plan-ship-date">2026-05-21</td>
+              <td class="buffer-cell">—</td>
               <td class="batch-cell">Delivery Batch 3 of 3</td>
               <td colspan="3" class="remark-cell">Final release completes Order Item 001 before the overall commit date.</td>
             </tr>
@@ -1144,9 +1184,9 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td>150W Solar LED Street Light, repeat assortment</td>
               <td class="qty-cell">500</td>
               <td class="uom-cell">pcs</td>
-              <td class="date-cell">2026-05-15</td>
-              <td class="date-cell">2026-05-18</td>
-              <td class="buffer-cell">5 WD</td>
+              <td class="date-cell fg-ready-date">2026-05-15</td>
+              <td class="date-cell plan-ship-date">2026-05-18</td>
+              <td class="buffer-cell">—</td>
               <td class="batch-cell">Full delivery</td>
               <td class="status-cell"><span class="badge steel">Repeat Build</span></td>
               <td class="waiver-cell">WS-2026-014</td>
@@ -1159,9 +1199,9 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td>Mounting accessory kit for mixed wattage order rows</td>
               <td class="qty-cell">1,400</td>
               <td class="uom-cell">set</td>
-              <td class="date-cell">2026-05-22</td>
-              <td class="date-cell">2026-05-22</td>
-              <td class="buffer-cell">0 WD</td>
+              <td class="date-cell fg-ready-date">2026-05-22</td>
+              <td class="date-cell plan-ship-date">2026-05-22</td>
+              <td class="buffer-cell">—</td>
               <td class="batch-cell">Full delivery</td>
               <td class="status-cell"><span class="badge bundled">Accessory Bundle</span></td>
               <td class="waiver-cell"><span class="badge controlled">No open waiver</span></td>
