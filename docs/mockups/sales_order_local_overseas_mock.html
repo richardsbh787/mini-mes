@@ -144,40 +144,19 @@ body{margin:0;background:linear-gradient(180deg,#fefefe 0%,var(--bg) 180px,#f8f8
 .zoom-notice{display:none;align-items:center;gap:8px;margin:10px 24px 0;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:rgba(250,251,252,.96);color:var(--muted);font-size:12px;line-height:1.35}
 .zoom-notice.show{display:inline-flex}
 .zoom-notice strong{color:var(--text);font-weight:700}
-.module-entry-panel{margin:10px 0 12px;padding:16px 18px;border:1px solid var(--line);border-radius:16px;background:rgba(252,253,254,.96);box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 2px 6px rgba(67,89,112,.03)}
-.module-step-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px}
-.module-step{display:flex;align-items:center;gap:8px;padding:7px 11px;border:1px solid var(--soft-border);border-radius:999px;background:var(--surface-card);color:var(--muted);font-size:11px;font-weight:600;line-height:1}
-.module-step-index{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:999px;background:var(--surface-muted);color:var(--muted);font-size:10px;font-weight:700}
-.module-step.active{border-color:#c7d8e6;background:var(--primary-soft);color:var(--title)}
-.module-step.active .module-step-index{background:#dbe8f2;color:var(--blue)}
-.module-step.done{border-color:#d4e6dc;background:var(--secondary-soft);color:#4c6f5e}
-.module-step.done .module-step-index{background:#dceee4;color:var(--secondary)}
-.module-entry-body{display:grid;grid-template-columns:minmax(220px,260px) minmax(0,1fr);gap:16px;align-items:start}
-.module-entry-summary{display:grid;gap:8px}
+.side-nav-action-shell{display:grid;gap:2px;margin:6px 0 6px 12px;padding:6px 0 2px 14px;border-left:1px solid var(--soft-border)}
+.side-nav-action-item{display:block;width:100%;padding:7px 4px;border:none;background:transparent;color:var(--muted);font-size:12px;font-weight:600;line-height:1.35;text-align:left;cursor:pointer}
+.side-nav-action-item:hover{color:var(--text)}
+.side-nav-action-item.active{color:var(--blue)}
+.side-nav-action-item.restricted{color:#8e6262}
+.side-nav-action-item.restricted.active{color:#8e6262}
+.side-nav-action-status{padding:6px 4px 0;color:var(--muted-soft);font-size:11px;line-height:1.45}
+.module-flow-note{display:none}
+.module-flow-placeholder{margin:12px 0 8px;padding:0 24px}
+.module-flow-card{padding:10px 0 12px;border:none;border-top:1px solid var(--soft-border);border-radius:0;background:transparent;box-shadow:none}
 .module-entry-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-soft)}
-.module-entry-value{font-size:20px;font-weight:700;line-height:1.2;color:var(--title)}
-.module-entry-help{font-size:12px;line-height:1.5;color:var(--muted)}
-.module-entry-empty{padding:4px 0 2px}
-.module-entry-empty .module-entry-value{font-size:18px}
-.module-action-zone{display:grid;gap:10px}
-.module-action-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.module-action-card{display:grid;gap:8px;min-height:112px;padding:14px 15px;border:1px solid var(--line);border-radius:14px;background:var(--surface-card);color:var(--text);text-align:left;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.8)}
-.module-action-card:hover{border-color:#c7d8e6;background:#f8fbfd}
-.module-action-card.active{border-color:#c7d8e6;background:var(--primary-soft);box-shadow:inset 0 1px 0 rgba(255,255,255,.86),0 0 0 1px rgba(79,127,168,.06)}
-.module-action-card.restricted{border-style:dashed;color:var(--muted);background:#fcfbfb}
-.module-action-card.restricted:hover{border-color:#d8c6c9;background:#f9f4f4}
-.module-action-card.restricted.active{border-color:#d8c6c9;background:#f5eded}
-.module-action-name{font-size:14px;font-weight:700;line-height:1.25;color:inherit}
-.module-action-rule{font-size:12px;line-height:1.45;color:var(--muted)}
-.module-action-tag{display:inline-flex;align-items:center;justify-content:center;width:max-content;padding:5px 9px;border-radius:999px;border:1px solid var(--soft-border);background:var(--surface-muted);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-soft)}
-.module-action-card.active .module-action-tag{border-color:#c7d8e6;background:#dbe8f2;color:var(--blue)}
-.module-action-card.restricted .module-action-tag{border-color:#e2d7d9;background:#f6eff0;color:#8e6262}
-.module-flow-note{margin:0 0 10px;padding:10px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface-card);color:var(--muted);font-size:12px;line-height:1.5}
-.module-flow-note strong{color:var(--title)}
-.module-flow-placeholder{margin:0 0 10px}
-.module-flow-card{padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--surface-card);box-shadow:inset 0 1px 0 rgba(255,255,255,.82),0 2px 6px rgba(67,89,112,.03)}
-.module-flow-title{font-size:18px;font-weight:700;line-height:1.25;color:var(--title);margin-bottom:10px}
-.module-flow-body{font-size:13px;line-height:1.6;color:var(--muted)}
+.module-flow-title{font-size:15px;font-weight:700;line-height:1.3;color:var(--title);margin-bottom:6px}
+.module-flow-body{font-size:12px;line-height:1.6;color:var(--muted)}
 .module-flow-body strong{color:var(--title)}
 .mock-dropdown{position:relative;min-width:290px}
 .mock-dropdown--compact{min-width:180px}
@@ -344,8 +323,6 @@ td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line
   .side-nav{position:relative;top:auto;min-height:auto;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
   .workspace{padding:0 14px 28px 0;min-height:auto;height:auto}
   .workspace-main{min-height:auto}
-  .module-entry-body{grid-template-columns:1fr}
-  .module-action-grid{grid-template-columns:1fr}
   .topbar{flex-direction:column}
   .actions{justify-content:flex-start}
   .actions{align-items:flex-start}
@@ -400,66 +377,37 @@ function syncModuleEntry(){
   const actionMeta=ACTION_CONFIG[currentAction];
   const isSales=currentModule==='sales-orders';
   const isSalesView=isSales&&currentAction==='view';
-  const modulePanel=document.getElementById('module-entry-panel');
+  const sidebarActionShell=document.getElementById('sidebar-action-shell');
+  const sidebarActionStatus=document.getElementById('sidebar-action-status');
   const toolbar=document.getElementById('sales-tab-toolbar');
-  const stepModule=document.getElementById('module-step-module');
-  const stepAction=document.getElementById('module-step-action');
-  const stepFlow=document.getElementById('module-step-flow');
-  const entryBody=document.getElementById('module-entry-body');
-  const entryEmpty=document.getElementById('module-entry-empty');
-  const selectedModule=document.getElementById('selected-module-name');
-  const moduleHelp=document.getElementById('selected-module-help');
-  const actionZone=document.getElementById('module-action-zone');
   const flowNote=document.getElementById('module-flow-note');
   const flowPlaceholder=document.getElementById('module-flow-placeholder');
   const flowTitle=document.getElementById('module-flow-title');
   const flowBody=document.getElementById('module-flow-body');
-  const actionStatus=document.getElementById('module-action-status');
+  const activeModuleButton=document.querySelector(`.side-nav-item[data-module="${currentModule}"]`);
 
   document.querySelectorAll('.side-nav-item[data-module]').forEach(item=>{
     item.classList.toggle('active',item.dataset.module===currentModule);
   });
-  document.querySelectorAll('.module-action-card').forEach(card=>{
+  document.querySelectorAll('.side-nav-action-item').forEach(card=>{
     card.classList.toggle('active',card.dataset.action===currentAction);
   });
 
   if(!moduleMeta){
-    if(modulePanel)modulePanel.classList.remove('hidden');
-    if(entryBody)entryBody.classList.add('hidden');
-    if(entryEmpty)entryEmpty.classList.remove('hidden');
-    if(actionZone)actionZone.classList.add('hidden');
+    if(sidebarActionShell)sidebarActionShell.classList.add('hidden');
     if(toolbar)toolbar.classList.add('hidden');
     if(flowNote)flowNote.classList.add('hidden');
     if(flowPlaceholder)flowPlaceholder.classList.add('hidden');
     document.querySelectorAll('.section-pane').forEach(el=>el.classList.add('hidden'));
-    if(stepModule){
-      stepModule.classList.add('active');
-      stepModule.classList.remove('done');
-    }
-    if(stepAction)stepAction.classList.remove('active','done');
-    if(stepFlow)stepFlow.classList.remove('active','done');
     return;
   }
 
-  if(entryBody)entryBody.classList.remove('hidden');
-  if(entryEmpty)entryEmpty.classList.add('hidden');
-  if(actionZone)actionZone.classList.remove('hidden');
-  if(modulePanel)modulePanel.classList.remove('hidden');
-  if(selectedModule)selectedModule.textContent=moduleMeta.label;
-  if(moduleHelp)moduleHelp.textContent='Universal module rule: choose the next action before entering any record or form flow.';
-  if(actionStatus)actionStatus.textContent=actionMeta?actionMeta.rule:'Choose the next action to reveal the correct record / form path.';
-
-  if(stepModule){
-    stepModule.classList.add('done');
-    stepModule.classList.remove('active');
+  if(sidebarActionShell&&activeModuleButton){
+    activeModuleButton.insertAdjacentElement('afterend',sidebarActionShell);
+    sidebarActionShell.classList.remove('hidden');
   }
-  if(stepAction){
-    stepAction.classList.toggle('active',!currentAction);
-    stepAction.classList.toggle('done',!!currentAction);
-  }
-  if(stepFlow){
-    stepFlow.classList.toggle('active',!!currentAction);
-    stepFlow.classList.toggle('done',false);
+  if(sidebarActionStatus){
+    sidebarActionStatus.textContent=actionMeta?actionMeta.rule:'Choose the next action in the sidebar to open the correct record / form path.';
   }
 
   if(!currentAction){
@@ -467,13 +415,12 @@ function syncModuleEntry(){
     if(flowNote)flowNote.classList.add('hidden');
     if(flowPlaceholder)flowPlaceholder.classList.add('hidden');
     if(flowTitle)flowTitle.textContent='Step 3 opens after the next action is chosen';
-    if(flowBody)flowBody.innerHTML='<strong>Core Module → Action → Record / Form.</strong> Choose one universal action above. <strong>Create / Add</strong> opens a new draft without asking for a key first, while <strong>Search / Find</strong>, <strong>View</strong>, <strong>Edit / Update</strong>, <strong>Close / Cancel</strong>, and <strong>Delete</strong> all require lookup and record selection first.';
+    if(flowBody)flowBody.innerHTML='<strong>Core Module → Action → Record / Form.</strong> Choose one sidebar action first. <strong>Create / Add</strong> opens a new draft without asking for a key first, while <strong>Search / Find</strong>, <strong>View</strong>, <strong>Edit / Update</strong>, <strong>Close / Cancel</strong>, and <strong>Delete</strong> all require lookup and record selection first.';
     document.querySelectorAll('.section-pane').forEach(el=>el.classList.add('hidden'));
     return;
   }
 
   if(isSalesView){
-    if(modulePanel)modulePanel.classList.add('hidden');
     if(toolbar)toolbar.classList.remove('hidden');
     if(flowPlaceholder)flowPlaceholder.classList.add('hidden');
     if(flowTitle)flowTitle.textContent='Sales Order mock flow · '+actionMeta.label;
@@ -529,7 +476,7 @@ function setupModuleNavigation(){
   });
 }
 function setupActionSelector(){
-  document.querySelectorAll('.module-action-card[data-action]').forEach(card=>{
+  document.querySelectorAll('.side-nav-action-item[data-action]').forEach(card=>{
     card.addEventListener('click',()=>{
       currentAction=card.dataset.action;
       syncModuleEntry();
@@ -700,6 +647,15 @@ window.addEventListener('DOMContentLoaded',()=>{
           <button type="button" class="side-nav-item" data-module="shipping-logistics">Shipping &amp; Logistics</button>
           <button type="button" class="side-nav-item" data-module="finance-costing">Finance &amp; Costing</button>
           <button type="button" class="side-nav-item" data-module="reports-master-data">Reports &amp; Master Data</button>
+          <div id="sidebar-action-shell" class="side-nav-action-shell hidden">
+            <button type="button" class="side-nav-action-item" data-action="create">Create / Add</button>
+            <button type="button" class="side-nav-action-item" data-action="search">Search / Find</button>
+            <button type="button" class="side-nav-action-item" data-action="view">View</button>
+            <button type="button" class="side-nav-action-item" data-action="edit">Edit / Update</button>
+            <button type="button" class="side-nav-action-item" data-action="close">Close / Cancel</button>
+            <button type="button" class="side-nav-action-item restricted" data-action="delete">Delete</button>
+            <div id="sidebar-action-status" class="side-nav-action-status">Choose the next action in the sidebar to open the correct record / form path.</div>
+          </div>
         </div>
       </div>
     </aside>
@@ -779,67 +735,12 @@ window.addEventListener('DOMContentLoaded',()=>{
   <div id="zoom-notice" class="zoom-notice" aria-hidden="true"><strong>Best viewed at 100% browser zoom.</strong><span>The workspace stays usable, but layout is optimized for the recommended zoom level.</span></div>
   </div>
 
-  <div id="module-entry-panel" class="module-entry-panel">
-    <div class="module-step-row">
-      <div id="module-step-module" class="module-step active"><span class="module-step-index">1</span><span>Select Core Module</span></div>
-      <div id="module-step-action" class="module-step"><span class="module-step-index">2</span><span>Select Next Action</span></div>
-      <div id="module-step-flow" class="module-step"><span class="module-step-index">3</span><span>Enter record / form flow</span></div>
-    </div>
-    <div id="module-entry-empty" class="module-entry-empty">
-      <div class="module-entry-label">Universal Entry Rule</div>
-      <div class="module-entry-value">Select a Core Module first</div>
-      <div class="module-entry-help">The next-step action selector stays hidden until a core module is chosen. After that, the shared action pattern opens for that module.</div>
-    </div>
-    <div id="module-entry-body" class="module-entry-body hidden">
-      <div class="module-entry-summary">
-        <div class="module-entry-label">Selected Core Module</div>
-        <div id="selected-module-name" class="module-entry-value">Sales &amp; Orders</div>
-        <div id="selected-module-help" class="module-entry-help">Universal module rule: choose the next action before entering any record or form flow.</div>
-      </div>
-      <div id="module-action-zone" class="module-action-zone">
-        <div class="module-action-grid">
-          <button type="button" class="module-action-card" data-action="create">
-            <span class="module-action-tag">Draft Ready</span>
-            <span class="module-action-name">Create / Add</span>
-            <span class="module-action-rule">Start a new draft or new record immediately. No key is required first.</span>
-          </button>
-          <button type="button" class="module-action-card" data-action="search">
-            <span class="module-action-tag">Lookup First</span>
-            <span class="module-action-name">Search / Find</span>
-            <span class="module-action-rule">Enter search conditions or a key before continuing to record selection.</span>
-          </button>
-          <button type="button" class="module-action-card" data-action="view">
-            <span class="module-action-tag">Lookup First</span>
-            <span class="module-action-name">View</span>
-            <span class="module-action-rule">Search and select an existing record before opening the read-only flow.</span>
-          </button>
-          <button type="button" class="module-action-card" data-action="edit">
-            <span class="module-action-tag">Lookup First</span>
-            <span class="module-action-name">Edit / Update</span>
-            <span class="module-action-rule">Search and select an existing record before editing or updating it.</span>
-          </button>
-          <button type="button" class="module-action-card" data-action="close">
-            <span class="module-action-tag">Lookup First</span>
-            <span class="module-action-name">Close / Cancel</span>
-            <span class="module-action-rule">Search and select the existing record before closing or cancelling it.</span>
-          </button>
-          <button type="button" class="module-action-card restricted" data-action="delete">
-            <span class="module-action-tag">Restricted</span>
-            <span class="module-action-name">Delete</span>
-            <span class="module-action-rule">Search and select the existing record first. Keep this action secondary and controlled.</span>
-          </button>
-        </div>
-        <div id="module-action-status" class="module-entry-help">Choose the next action to open the correct record / form path.</div>
-      </div>
-    </div>
-  </div>
-
   <div id="module-flow-note" class="module-flow-note hidden"></div>
   <div id="module-flow-placeholder" class="module-flow-placeholder hidden">
     <div class="module-flow-card">
       <div class="module-entry-label">Step 3 · Enter Record / Form Flow</div>
       <div id="module-flow-title" class="module-flow-title">Step 3 opens after the next action is chosen</div>
-      <div id="module-flow-body" class="module-flow-body"><strong>Core Module → Action → Record / Form.</strong> Choose one universal action above. <strong>Create / Add</strong> opens a new draft without asking for a key first, while <strong>Search / Find</strong>, <strong>View</strong>, <strong>Edit / Update</strong>, <strong>Close / Cancel</strong>, and <strong>Delete</strong> all require lookup and record selection first.</div>
+      <div id="module-flow-body" class="module-flow-body"><strong>Core Module → Action → Record / Form.</strong> Choose one sidebar action first. <strong>Create / Add</strong> opens a new draft without asking for a key first, while <strong>Search / Find</strong>, <strong>View</strong>, <strong>Edit / Update</strong>, <strong>Close / Cancel</strong>, and <strong>Delete</strong> all require lookup and record selection first.</div>
     </div>
   </div>
 
