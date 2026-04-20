@@ -336,6 +336,10 @@ td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line
   overflow:hidden;
   text-overflow:ellipsis;
 }
+.order-items-strip .support-text{
+  grid-column:1 / -1;
+  margin-top:2px;
+}
 .order-items-table{
   flex:1;
   min-height:0;
@@ -843,7 +847,7 @@ window.addEventListener('DOMContentLoaded',()=>{
             <td class="value"><div>Alex Chen</div><button class="contact-toggle" type="button" onclick="toggleContact('sales-contact', this)">Show Contact</button><div id="sales-contact" class="contact-details">Email: alexchen.nb@northbay.com<br>Mobile / WhatsApp: +60 12-345 6789<br>WeChat: alexchen_nb<br>LINE: alexchen-sales</div></td>
             <td class="value">2026-03-28</td>
             <td class="value">2026-05-15</td>
-            <td class="value">2026-05-22<div class="support-text">Commit Lead Time: 37 working days (MY / CN holiday-adjusted mock)</div></td>
+            <td class="value">2026-05-22<div class="support-text">Customer-facing overall commit date for the whole Sales Order. Each Order Item FG Ready Date should stay on or before this date. Commit Lead Time: 37 working days (MY / CN holiday-adjusted mock)</div></td>
           </tr>
         </table>
       </div>
@@ -910,6 +914,7 @@ window.addEventListener('DOMContentLoaded',()=>{
             <div class="order-items-meta-label">Status</div>
             <div class="order-items-meta-value">Open / Release Coordination In Progress</div>
           </div>
+          <div class="support-text">FG Ready Date in this tab means the finished goods for each Order Item should be ready by that date. It is an item-level finished-goods readiness target, not a stock-in date, and it should not be later than the Sales Order Overall Commit Date.</div>
         </div>
 
         <div class="table-wrap order-items-table">
@@ -922,7 +927,7 @@ window.addEventListener('DOMContentLoaded',()=>{
                 <th>Product Description</th>
                 <th>Qty</th>
                 <th>UOM</th>
-                <th>Required Date</th>
+                <th>FG Ready Date</th>
                 <th>Item Status</th>
                 <th>New Spec / Waiver Ref No.</th>
                 <th>Remark</th>
