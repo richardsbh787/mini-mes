@@ -1061,7 +1061,7 @@ window.addEventListener('DOMContentLoaded',()=>{
       <div class="order-items-meta-strip">
         <span class="order-items-meta-label">Overall Commit Date</span>
         <span class="order-items-meta-value">2026-05-22</span>
-        <span class="support-text">Order-level customer-facing commit date. FG Ready Date stays as the row-level internal readiness target.</span>
+        <span class="support-text">Order-level customer-facing commit date. FG Ready Date stays as the row-level internal readiness target, and Plan Ship Date stays at the item or delivery-batch planning level.</span>
       </div>
       <div class="table-wrap order-items-table">
         <table>
@@ -1074,6 +1074,7 @@ window.addEventListener('DOMContentLoaded',()=>{
               <th>Qty</th>
               <th>UOM</th>
               <th>FG Ready Date</th>
+              <th>Plan Ship Date</th>
               <th>Safety Buffer (WD)</th>
               <th>Delivery Batch</th>
               <th>Order Type</th>
@@ -1090,11 +1091,12 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td class="qty-cell">900</td>
               <td class="uom-cell">pcs</td>
               <td class="date-cell">2026-05-20</td>
+              <td class="date-cell">By batch plan</td>
               <td class="buffer-cell">2 WD</td>
               <td class="batch-cell">Split Delivery, 3 batches</td>
               <td class="status-cell"><span class="badge steel">New Build</span></td>
               <td class="waiver-cell"><span class="badge controlled">No open waiver</span></td>
-              <td class="remark-cell">One original customer order item with a partial-delivery plan. Child rows below show the 3 shipment batches under this same Order Item.</td>
+              <td class="remark-cell">One original customer order item with a partial-delivery plan. Child rows below show the 3 shipment batches and their own planned ship dates under this same Order Item.</td>
             </tr>
             <tr class="order-items-subrow">
               <td></td>
@@ -1104,6 +1106,7 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td class="qty-cell">300</td>
               <td class="uom-cell">pcs</td>
               <td class="date-cell">2026-05-14</td>
+              <td class="date-cell">2026-05-15</td>
               <td class="buffer-cell">6 WD</td>
               <td class="batch-cell">Delivery Batch 1 of 3</td>
               <td colspan="3" class="remark-cell">First customer-requested release under Order Item 001.</td>
@@ -1116,6 +1119,7 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td class="qty-cell">300</td>
               <td class="uom-cell">pcs</td>
               <td class="date-cell">2026-05-18</td>
+              <td class="date-cell">2026-05-19</td>
               <td class="buffer-cell">4 WD</td>
               <td class="batch-cell">Delivery Batch 2 of 3</td>
               <td colspan="3" class="remark-cell">Second planned release for the same original Order Item.</td>
@@ -1128,6 +1132,7 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td class="qty-cell">300</td>
               <td class="uom-cell">pcs</td>
               <td class="date-cell">2026-05-20</td>
+              <td class="date-cell">2026-05-21</td>
               <td class="buffer-cell">2 WD</td>
               <td class="batch-cell">Delivery Batch 3 of 3</td>
               <td colspan="3" class="remark-cell">Final release completes Order Item 001 before the overall commit date.</td>
@@ -1140,6 +1145,7 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td class="qty-cell">500</td>
               <td class="uom-cell">pcs</td>
               <td class="date-cell">2026-05-15</td>
+              <td class="date-cell">2026-05-18</td>
               <td class="buffer-cell">5 WD</td>
               <td class="batch-cell">Full delivery</td>
               <td class="status-cell"><span class="badge steel">Repeat Build</span></td>
@@ -1154,6 +1160,7 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td class="qty-cell">1,400</td>
               <td class="uom-cell">set</td>
               <td class="date-cell">2026-05-22</td>
+              <td class="date-cell">2026-05-22</td>
               <td class="buffer-cell">0 WD</td>
               <td class="batch-cell">Full delivery</td>
               <td class="status-cell"><span class="badge bundled">Accessory Bundle</span></td>
@@ -1166,6 +1173,7 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td class="qty-cell">2,800</td>
               <td class="uom-cell">mixed</td>
               <td class="date-cell"></td>
+              <td class="date-cell">mixed</td>
               <td class="buffer-cell"></td>
               <td class="batch-cell">1 split item / 3 batches</td>
               <td class="status-cell"><span class="badge steel">Mixed</span></td>
