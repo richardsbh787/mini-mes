@@ -81,6 +81,20 @@ body{margin:0;background:linear-gradient(180deg,#fefefe 0%,var(--bg) 180px,#f8f8
 .badge.bundled{background:var(--badge-steel-bg);border-color:var(--badge-steel-border);color:var(--badge-steel-text)}
 .badge.watching{background:var(--badge-yellow-bg);border-color:var(--badge-yellow-border);color:var(--badge-yellow-text)}
 .overdue-date{color:var(--date-alert);font-weight:600}
+.summary-warning{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  margin-top:12px;
+  padding:10px 12px;
+  border:1px solid #d9e4eb;
+  border-radius:12px;
+  background:rgba(241,247,251,.92);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.8);
+}
+.summary-warning-copy{display:grid;gap:2px;min-width:0}
+.summary-warning-title{font-size:12px;font-weight:700;color:var(--title)}
+.summary-warning-text{font-size:12px;line-height:1.5;color:var(--muted)}
 .procurement-section{padding:var(--tab-content-top-gap) 0 12px}
 .table-wrap.procurement-wrap{position:relative;display:block;width:100%;height:auto;min-height:420px;flex:1;padding-bottom:8px;border:1px solid var(--line);border-radius:var(--panel-radius);background:#fdfefe;overflow:visible;scroll-padding-bottom:8px;box-shadow:inset 0 1px 0 rgba(255,255,255,.7)}
 .procurement-table{width:max-content;min-width:1880px;border-collapse:separate;border-spacing:0;table-layout:fixed}
@@ -118,7 +132,9 @@ body{margin:0;background:linear-gradient(180deg,#fefefe 0%,var(--bg) 180px,#f8f8
 .bom-usage-text{display:block;font-size:12px;font-weight:600;color:var(--text);line-height:1.4}
 .promised-date-cell{display:grid;gap:4px}
 .promised-date-inline{display:inline-block;white-space:nowrap}
-.warning-date{display:inline-flex;align-items:center;padding:7px 12px;border-radius:999px;background:#eef5f8;border:1px solid #d7e2e8;color:var(--date-alert);font-weight:600;line-height:1;white-space:nowrap}
+.warning-date{display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;border:1px solid #d7e2e8;background:#eef5f8;color:var(--date-alert);font-size:10px;font-weight:700;line-height:1;letter-spacing:.02em;white-space:nowrap;box-shadow:inset 0 1px 0 rgba(255,255,255,.72)}
+.warning-date.watching-date{background:var(--badge-yellow-bg);border-color:var(--badge-yellow-border);color:var(--badge-yellow-text)}
+.warning-date.critical-date{background:var(--risk-critical-bg);border-color:var(--risk-critical-border);color:var(--risk-critical-text)}
 .action-summary{display:grid;gap:5px;min-width:0}
 .action-summary-line{display:block;line-height:1.35;color:#3e556d}
 .action-summary-key{font-size:11px;font-weight:700;letter-spacing:.2px;text-transform:uppercase;color:var(--muted)}
@@ -133,6 +149,20 @@ body{margin:0;background:linear-gradient(180deg,#fefefe 0%,var(--bg) 180px,#f8f8
 .btn.emphasis:hover{background:#deebf5;border-color:#b7cddd;color:var(--primary-hover)}
 .btn.primary:hover{background:var(--primary-hover);border-color:var(--primary-hover)}
 .btn.secondary:hover{background:#e3f0e9;border-color:var(--secondary-hover);color:var(--secondary-hover)}
+.btn.primary[disabled]{
+  background:#eef4f7;
+  border-color:#d9e4eb;
+  color:#8da1b3;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.82);
+  cursor:not-allowed;
+}
+.btn.primary[disabled]:hover{background:#eef4f7;border-color:#d9e4eb;color:#8da1b3}
+.btn.emphasis.is-editing{
+  background:#f2f7fa;
+  border-color:#d7e4ec;
+  color:var(--title);
+}
+.btn.emphasis.is-editing:hover{background:#f2f7fa;border-color:#d7e4ec;color:var(--title)}
 .btn-text{background:transparent;border-color:transparent;box-shadow:none;padding:0 8px;color:var(--muted)}
 .btn-text:hover{background:transparent;color:var(--text)}
 .btn-icon{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;margin-right:6px;font-size:0;line-height:1}
@@ -325,6 +355,7 @@ td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line
 .order-items-table .date-cell,
 .order-items-table .status-cell{text-align:center}
 .order-items-table .status-cell .badge{max-width:100%}
+.order-items-table .waiver-cell .badge{max-width:100%}
 .order-items-table .remark-cell{min-width:220px}
 .order-items-table .waiver-cell{min-width:170px}
 .order-items-total-row td{
@@ -332,7 +363,16 @@ td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line
   font-weight:700;
 }
 .order-items-total-row td:first-child{color:var(--title)}
-.note{font-size:var(--note-font-size);color:var(--muted);margin-top:10px;line-height:var(--note-line-height)}.contact-toggle{display:inline-block;margin-top:6px;font-size:12px;color:var(--blue);background:none;border:none;padding:0;cursor:pointer;text-decoration:underline}.contact-details{display:none;margin-top:6px;font-size:var(--note-font-size);color:var(--muted);line-height:1.5}.contact-details.show{display:block}.support-text{margin-top:6px;font-size:var(--note-font-size);color:var(--muted);line-height:var(--note-line-height)}.view-only{display:block}.draft-only{display:none}body[data-order-state="draft"] .view-only{display:none}body[data-order-state="draft"] .draft-only{display:block}
+.route-active-row td{
+  background:rgba(234,242,248,.55);
+}
+.route-active-row td:first-child{
+  box-shadow:inset 3px 0 0 #9db8cf;
+  font-weight:700;
+  color:var(--title);
+}
+.table-wrap tbody tr.route-active-row:hover td{background:rgba(234,242,248,.68)}
+.note{font-size:var(--note-font-size);color:var(--muted);margin-top:10px;line-height:var(--note-line-height)}.contact-toggle{display:inline-block;margin-top:6px;font-size:12px;color:var(--blue);background:none;border:none;padding:0;cursor:pointer;text-decoration:underline}.contact-details{display:none;margin-top:6px;font-size:var(--note-font-size);color:var(--muted);line-height:1.5}.contact-details.show{display:block}.support-text{margin-top:6px;font-size:var(--note-font-size);color:var(--muted);line-height:var(--note-line-height)}.view-only{display:block}.draft-only{display:none}body[data-order-state="edit"] .view-only{display:none}body[data-order-state="edit"] .draft-only{display:block}
 .tab-content-viewport,.section-scroll,.summary-sheet,.textarea-line,.items-sheet,.table-wrap.procurement-wrap{
   scrollbar-width:thin;
   scrollbar-color:var(--scroll-thumb) var(--scroll-track);
@@ -384,6 +424,7 @@ const ACTION_CONFIG={
 };
 let currentModule='';
 let currentAction='';
+let currentOrderState='view';
 function showSection(){
   const value=document.getElementById('section-select').value;
   document.querySelectorAll('.section-pane').forEach(el=>el.classList.add('hidden'));
@@ -551,6 +592,75 @@ function toggleContact(id,btn){
   const isShown=el.classList.toggle('show');
   btn.textContent=isShown ? 'Hide Contact' : 'Show Contact';
 }
+function syncOrderState(){
+  const body=document.body;
+  const editButton=document.getElementById('edit-button');
+  const saveButton=document.getElementById('save-button');
+  if(body){
+    body.setAttribute('data-order-state',currentOrderState);
+  }
+  if(editButton){
+    const isEditing=currentOrderState==='edit';
+    editButton.classList.toggle('is-editing',isEditing);
+    editButton.setAttribute('aria-pressed',isEditing?'true':'false');
+    const editButtonLabel=document.getElementById('edit-button-label');
+    if(editButtonLabel){
+      editButtonLabel.textContent=isEditing?'Editing':'Edit';
+    }
+  }
+  if(saveButton){
+    const canSave=currentOrderState==='edit';
+    saveButton.disabled=!canSave;
+    saveButton.setAttribute('aria-disabled',canSave?'false':'true');
+  }
+}
+function setupHeaderActions(){
+  const editButton=document.getElementById('edit-button');
+  const saveButton=document.getElementById('save-button');
+  const backButton=document.getElementById('back-button');
+  if(editButton){
+    editButton.addEventListener('click',()=>{
+      currentOrderState='edit';
+      syncOrderState();
+    });
+  }
+  if(saveButton){
+    saveButton.addEventListener('click',()=>{
+      if(currentOrderState!=='edit')return;
+      currentOrderState='view';
+      syncOrderState();
+    });
+  }
+  if(backButton){
+    backButton.addEventListener('click',()=>{
+      if(currentOrderState==='edit'){
+        currentOrderState='view';
+        syncOrderState();
+      }
+    });
+  }
+}
+function syncSummaryWarning(){
+  const requestDateCell=document.getElementById('customer-request-date');
+  const commitDateCell=document.getElementById('overall-commit-date');
+  const warning=document.getElementById('summary-overdue-warning');
+  const text=document.getElementById('summary-overdue-text');
+  if(!requestDateCell||!commitDateCell||!warning||!text)return;
+
+  const requestDateText=requestDateCell.dataset.date||requestDateCell.textContent.trim();
+  const commitDateText=commitDateCell.dataset.date||commitDateCell.textContent.trim();
+  const requestDate=new Date(requestDateText+'T00:00:00');
+  const commitDate=new Date(commitDateText+'T00:00:00');
+  const isValidDates=!Number.isNaN(requestDate.getTime())&&!Number.isNaN(commitDate.getTime());
+  const isLate=isValidDates&&commitDate>requestDate;
+
+  warning.classList.toggle('hidden',!isLate);
+  if(isLate){
+    const msPerDay=24*60*60*1000;
+    const lateDays=Math.round((commitDate-requestDate)/msPerDay);
+    text.textContent='Overall Commit Date is '+lateDays+' day'+(lateDays===1?'':'s')+' later than Customer Request Date. Customer-facing commitment follow-up is needed.';
+  }
+}
 function syncType(){
   const type=document.getElementById('type-select').value;
   const typeBadge=document.getElementById('type-badge');
@@ -560,6 +670,9 @@ function syncType(){
   const commercialOverseas=document.getElementById('commercial-overseas');
   const deliveryLocalRow=document.getElementById('delivery-local-row');
   const deliveryOverseasRow=document.getElementById('delivery-overseas-row');
+  [commercialLocal,commercialOverseas,deliveryLocalRow,deliveryOverseasRow].forEach(row=>{
+    if(row)row.classList.remove('route-active-row');
+  });
   document.querySelectorAll('.route-segment').forEach(button=>{
     button.classList.toggle('active',button.dataset.value===type);
   });
@@ -573,6 +686,8 @@ function syncType(){
     commercialOverseas.classList.add('hidden');
     deliveryLocalRow.classList.remove('hidden');
     deliveryOverseasRow.classList.add('hidden');
+    commercialLocal.classList.add('route-active-row');
+    deliveryLocalRow.classList.add('route-active-row');
   } else {
     typeBadge.textContent='Order Route · Overseas';
     typeBadge.className='badge amber';
@@ -582,6 +697,8 @@ function syncType(){
     commercialLocal.classList.add('hidden');
     deliveryOverseasRow.classList.remove('hidden');
     deliveryLocalRow.classList.add('hidden');
+    commercialOverseas.classList.add('route-active-row');
+    deliveryOverseasRow.classList.add('route-active-row');
   }
 }
 function setupRouteSegmented(){
@@ -640,10 +757,13 @@ window.addEventListener('DOMContentLoaded',()=>{
   setupActionSelector();
   setupRouteSegmented();
   setupSectionTabs();
+  setupHeaderActions();
   applyInitialStateFromQuery();
   syncModuleEntry();
   syncType();
   syncOrderType();
+  syncOrderState();
+  syncSummaryWarning();
   updateZoomNotice();
   window.addEventListener('resize',updateZoomNotice);
   if(window.visualViewport){
@@ -721,9 +841,9 @@ window.addEventListener('DOMContentLoaded',()=>{
     <div class="actions">
       <div class="action-row">
         <div class="action-cluster">
-          <button class="btn btn-text">Back</button>
-          <button class="btn emphasis"><span class="btn-icon" aria-hidden="true">✎</span>Edit</button>
-          <button class="btn primary"><span class="btn-icon" aria-hidden="true">💾</span>Save Changes</button>
+          <button id="back-button" class="btn btn-text">Back</button>
+          <button id="edit-button" class="btn emphasis" aria-pressed="false"><span class="btn-icon" aria-hidden="true">✎</span><span id="edit-button-label">Edit</span></button>
+          <button id="save-button" class="btn primary" disabled aria-disabled="true"><span class="btn-icon" aria-hidden="true">💾</span>Save Changes</button>
         </div>
       </div>
     </div>
@@ -818,10 +938,17 @@ window.addEventListener('DOMContentLoaded',()=>{
             <td class="value"><div>Emily Carter</div><button class="contact-toggle" type="button" onclick="toggleContact('buyer-contact', this)">Show Contact</button><div id="buyer-contact" class="contact-details">Role: Buyer<br>Email: emily.carter@northbayretail.com</div></td>
             <td class="value"><div>Alex Chen</div><button class="contact-toggle" type="button" onclick="toggleContact('sales-contact', this)">Show Contact</button><div id="sales-contact" class="contact-details">Email: alexchen.nb@northbay.com<br>Mobile / WhatsApp: +60 12-345 6789<br>WeChat: alexchen_nb<br>LINE: alexchen-sales</div></td>
             <td class="value">2026-03-28</td>
-            <td class="value">2026-05-15</td>
-            <td class="value">2026-05-22<div class="support-text">Customer-facing overall commit date for the whole Sales Order. Each Order Item FG Ready Date should stay on or before this date. Commit Lead Time: 37 working days (MY / CN holiday-adjusted mock)</div></td>
+            <td id="customer-request-date" class="value" data-date="2026-05-15">2026-05-15</td>
+            <td id="overall-commit-date" class="value" data-date="2026-05-22">2026-05-22<div class="support-text">Customer-facing overall commit date for the whole Sales Order. Each Order Item FG Ready Date should stay on or before this date. Commit Lead Time: 37 working days (MY / CN holiday-adjusted mock)</div></td>
           </tr>
         </table>
+      </div>
+      <div id="summary-overdue-warning" class="summary-warning hidden">
+        <span class="badge watching">Watching</span>
+        <div class="summary-warning-copy">
+          <div class="summary-warning-title">Commit date is later than requested date</div>
+          <div id="summary-overdue-text" class="summary-warning-text"></div>
+        </div>
       </div>
       <div class="block"><div class="block-label">Commerce Team</div><div id="commerce-team" class="block-value">Local Commerce Team</div></div>
       <div class="block summary-note"><div class="block-label">Internal Remark</div><div class="block-value">Need weekly readiness check by procurement and production planning.</div></div>
@@ -897,8 +1024,8 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td class="qty-cell">900</td>
               <td class="uom-cell">pcs</td>
               <td class="date-cell">2026-04-28</td>
-              <td class="status-cell">1st Order</td>
-              <td class="waiver-cell">No open waiver</td>
+              <td class="status-cell"><span class="badge steel">1st Order</span></td>
+              <td class="waiver-cell"><span class="badge controlled">No open waiver</span></td>
               <td class="remark-cell">New customer launch order row. Packaging label set follows NorthBay local distribution format.</td>
             </tr>
             <tr>
@@ -909,7 +1036,7 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td class="qty-cell">500</td>
               <td class="uom-cell">pcs</td>
               <td class="date-cell">2026-05-03</td>
-              <td class="status-cell">Normal Repeat</td>
+              <td class="status-cell"><span class="badge steel">Normal Repeat</span></td>
               <td class="waiver-cell">WS-2026-014</td>
               <td class="remark-cell">Follow previous approved build. Driver-label update is covered by the approved waiver reference.</td>
             </tr>
@@ -922,7 +1049,7 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td class="uom-cell">set</td>
               <td class="date-cell">2026-05-03</td>
               <td class="status-cell"><span class="badge bundled">Bundled</span></td>
-              <td class="waiver-cell">No open waiver</td>
+              <td class="waiver-cell"><span class="badge controlled">No open waiver</span></td>
               <td class="remark-cell">Kitting quantity follows the combined shipment readiness plan and must stay aligned with the main lighting order items.</td>
             </tr>
             <tr class="order-items-total-row">
@@ -931,7 +1058,7 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td class="qty-cell">2,800</td>
               <td class="uom-cell">mixed</td>
               <td class="date-cell">2026-05-03</td>
-              <td class="status-cell">Open</td>
+              <td class="status-cell"><span class="badge steel">Open</span></td>
               <td class="waiver-cell">1 reference used</td>
               <td class="remark-cell">Read-only aggregate row for mock-stage review.</td>
             </tr>
@@ -964,8 +1091,8 @@ window.addEventListener('DOMContentLoaded',()=>{
         <table class="procurement-table">
           <thead><tr><th>Process Step</th><th>BOM Material</th><th>Where Used</th><th>Usage in BOM</th><th>Supplier Name</th><th>Supplier Type</th><th>Supplier Location</th><th>Supply Lead Time</th><th>Stage Due Date</th><th>Supplier Promised Date</th><th>Supplier Promised Qty</th><th>Required Qty</th><th>Criticality</th><th>Action Summary</th></tr></thead>
           <tbody>
-            <tr><td><div class="process-cue"><span class="process-main">S10</span><span class="process-sub">Pre-Stage</span></div></td><td><div class="bom-material"><span class="material-name">Label Set</span><span class="material-meta">Label-Set-NB</span><span class="material-desc">Adhesive product label for finished unit identification</span></div></td><td class="usage-cell"><span class="where-used-text">PP</span></td><td><span class="bom-usage-text">1 PCS / SET</span></td><td>PrintMark Industrial Labels Sdn. Bhd.</td><td>Local</td><td>Klang, Selangor</td><td>5 working days</td><td>2026-05-08</td><td><span class="promised-date-inline"><span class="warning-date">2026-05-09</span></span></td><td>400 pcs</td><td>900 pcs</td><td><span class="badge critical">Critical</span></td><td><div class="action-summary"><span class="action-summary-line"><span class="action-summary-key">Gap:</span> Need 900 pcs by S10 pre-stage on 2026-05-08; only 400 pcs is promised one day late and 500 pcs is still open.</span><span class="action-summary-line"><span class="action-summary-key">Supplier:</span> Splitting print and lamination into two shifts; first 400 pcs confirmed on 2026-05-09.</span><span class="action-summary-line"><span class="action-summary-key">Action:</span> Purchaser is pushing earlier partial release while planner prepares priority-unit staging.</span></div></td></tr>
-            <tr><td><div class="process-cue"><span class="process-main">S30</span><span class="process-sub">Final Assembly</span></div></td><td><div class="bom-material"><span class="material-name">LED Driver 150W</span><span class="material-meta">DRV-150W-NB</span><span class="material-desc">150W constant-current LED driver for NB export finished unit</span></div></td><td class="usage-cell"><span class="where-used-text">Assy</span></td><td><span class="bom-usage-text">1 PCS / UNIT</span></td><td>NovaPower Electronics Co., Ltd.</td><td>Overseas</td><td>Shenzhen, China</td><td>12 working days + cross-border transit</td><td>2026-05-06</td><td><div class="promised-date-cell"><span class="promised-date-inline">2026-05-05</span><span class="promised-date-inline"><span class="warning-date">2026-05-11</span></span></div></td><td>300 pcs / 200 pcs</td><td>500 pcs</td><td><span class="badge watching">Watching</span></td><td><div class="action-summary"><span class="action-summary-line"><span class="action-summary-key">Gap:</span> Need 500 pcs by S30 final assembly on 2026-05-06; only 300 pcs is promised before cut-off and 200 pcs lands later.</span><span class="action-summary-line"><span class="action-summary-key">Supplier:</span> 300 pcs by air for 2026-05-05; remaining 200 pcs targeted for 2026-05-11.</span><span class="action-summary-line"><span class="action-summary-key">Action:</span> Planner resequences 100W output first while purchaser chases daily forwarder confirmation.</span></div></td></tr>
+            <tr><td><div class="process-cue"><span class="process-main">S10</span><span class="process-sub">Pre-Stage</span></div></td><td><div class="bom-material"><span class="material-name">Label Set</span><span class="material-meta">Label-Set-NB</span><span class="material-desc">Adhesive product label for finished unit identification</span></div></td><td class="usage-cell"><span class="where-used-text">PP</span></td><td><span class="bom-usage-text">1 PCS / SET</span></td><td>PrintMark Industrial Labels Sdn. Bhd.</td><td>Local</td><td>Klang, Selangor</td><td>5 working days</td><td>2026-05-08</td><td><span class="promised-date-inline"><span class="warning-date critical-date">2026-05-09</span></span></td><td>400 pcs</td><td>900 pcs</td><td><span class="badge critical">Critical</span></td><td><div class="action-summary"><span class="action-summary-line"><span class="action-summary-key">Gap:</span> Need 900 pcs by S10 pre-stage on 2026-05-08; only 400 pcs is promised one day late and 500 pcs is still open.</span><span class="action-summary-line"><span class="action-summary-key">Supplier:</span> Splitting print and lamination into two shifts; first 400 pcs confirmed on 2026-05-09.</span><span class="action-summary-line"><span class="action-summary-key">Action:</span> Purchaser is pushing earlier partial release while planner prepares priority-unit staging.</span></div></td></tr>
+            <tr><td><div class="process-cue"><span class="process-main">S30</span><span class="process-sub">Final Assembly</span></div></td><td><div class="bom-material"><span class="material-name">LED Driver 150W</span><span class="material-meta">DRV-150W-NB</span><span class="material-desc">150W constant-current LED driver for NB export finished unit</span></div></td><td class="usage-cell"><span class="where-used-text">Assy</span></td><td><span class="bom-usage-text">1 PCS / UNIT</span></td><td>NovaPower Electronics Co., Ltd.</td><td>Overseas</td><td>Shenzhen, China</td><td>12 working days + cross-border transit</td><td>2026-05-06</td><td><div class="promised-date-cell"><span class="promised-date-inline">2026-05-05</span><span class="promised-date-inline"><span class="warning-date watching-date">2026-05-11</span></span></div></td><td>300 pcs / 200 pcs</td><td>500 pcs</td><td><span class="badge watching">Watching</span></td><td><div class="action-summary"><span class="action-summary-line"><span class="action-summary-key">Gap:</span> Need 500 pcs by S30 final assembly on 2026-05-06; only 300 pcs is promised before cut-off and 200 pcs lands later.</span><span class="action-summary-line"><span class="action-summary-key">Supplier:</span> 300 pcs by air for 2026-05-05; remaining 200 pcs targeted for 2026-05-11.</span><span class="action-summary-line"><span class="action-summary-key">Action:</span> Planner resequences 100W output first while purchaser chases daily forwarder confirmation.</span></div></td></tr>
             <tr><td><div class="process-cue"><span class="process-main">S40</span><span class="process-sub">Packing</span></div></td><td><div class="bom-material"><span class="material-name">Driver Carton</span><span class="material-meta">CTN-DRV-NB</span><span class="material-desc">Printed outer carton for finished driver packing and shipment</span></div></td><td class="usage-cell"><span class="where-used-text">Packing</span></td><td><span class="bom-usage-text">1 PCS / UNIT</span></td><td>BrightPak Carton Industries</td><td>Local</td><td>Shah Alam, Selangor</td><td>3 working days</td><td>2026-05-18</td><td>2026-05-16</td><td>1,400 pcs</td><td>1,400 pcs</td><td><span class="badge ready">Ready</span></td><td><div class="action-summary"><span class="action-summary-line"><span class="action-summary-key">Gap:</span> Full 1,400 pcs need is covered before S40 packing use; no open qty gap.</span><span class="action-summary-line"><span class="action-summary-key">Supplier:</span> Full call-off confirmed by 2026-05-16 with one emergency top-up slot reserved.</span><span class="action-summary-line"><span class="action-summary-key">Action:</span> Planner keeps the standard call-off plan active and triggers top-up only if FG output runs ahead.</span></div></td></tr>
           </tbody>
         </table>
