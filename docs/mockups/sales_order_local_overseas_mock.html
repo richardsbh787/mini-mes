@@ -372,6 +372,16 @@ td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line
   color:var(--title);
 }
 .table-wrap tbody tr.route-active-row:hover td{background:rgba(234,242,248,.68)}
+.risk-status-table .badge.watching{
+  background:#f6f1e5;
+  border-color:#e6d7b8;
+  color:#866b36;
+}
+.risk-status-table .badge.controlled{
+  background:#eef4ef;
+  border-color:#d8e4db;
+  color:#5f7f6d;
+}
 .note{font-size:var(--note-font-size);color:var(--muted);margin-top:10px;line-height:var(--note-line-height)}.contact-toggle{display:inline-block;margin-top:6px;font-size:12px;color:var(--blue);background:none;border:none;padding:0;cursor:pointer;text-decoration:underline}.contact-details{display:none;margin-top:6px;font-size:var(--note-font-size);color:var(--muted);line-height:1.5}.contact-details.show{display:block}.support-text{margin-top:6px;font-size:var(--note-font-size);color:var(--muted);line-height:var(--note-line-height)}.view-only{display:block}.draft-only{display:none}body[data-order-state="edit"] .view-only{display:none}body[data-order-state="edit"] .draft-only{display:block}
 .tab-content-viewport,.section-scroll,.summary-sheet,.textarea-line,.items-sheet,.table-wrap.procurement-wrap{
   scrollbar-width:thin;
@@ -1070,13 +1080,13 @@ window.addEventListener('DOMContentLoaded',()=>{
 
   <div id="risk" class="section-pane compact-pane hidden">
     <div class="section section-scroll">
-      <div class="table-wrap">
+      <div class="table-wrap risk-status-table">
         <table>
           <thead><tr><th>Risk Area</th><th>Current Status</th><th>Remark</th></tr></thead>
           <tbody>
-            <tr><td>Material Risk</td><td><span class="badge amber">Medium</span></td><td><div>1. Label-set ETA is close to pre-stage need date.</div><div>2. Staging may slip with only a 2-day buffer left.</div><div>3. Purchaser is expediting split release with supplier.</div></td></tr>
-            <tr><td>Supplier Risk</td><td><span class="badge amber">Medium</span></td><td><div>1. 150W driver inbound still depends on overseas forward timing.</div><div>2. Final assembly recovery window may tighten next.</div><div>3. Supplier is advancing 300 units by air first.</div></td></tr>
-            <tr><td>Capacity Risk</td><td><span class="badge amber">Medium</span></td><td><div>1. Line loading is near the weekly limit for mixed output.</div><div>2. Second-batch start may slide if supply slips.</div><div>3. Planner is reviewing resequencing now.</div></td></tr>
+            <tr><td>Material Risk</td><td><span class="badge watching">Medium</span></td><td><div>1. Label-set ETA is close to pre-stage need date.</div><div>2. Staging may slip with only a 2-day buffer left.</div><div>3. Purchaser is expediting split release with supplier.</div></td></tr>
+            <tr><td>Supplier Risk</td><td><span class="badge watching">Medium</span></td><td><div>1. 150W driver inbound still depends on overseas forward timing.</div><div>2. Final assembly recovery window may tighten next.</div><div>3. Supplier is advancing 300 units by air first.</div></td></tr>
+            <tr><td>Capacity Risk</td><td><span class="badge watching">Medium</span></td><td><div>1. Line loading is near the weekly limit for mixed output.</div><div>2. Second-batch start may slide if supply slips.</div><div>3. Planner is reviewing resequencing now.</div></td></tr>
             <tr><td>Change Risk</td><td><span class="badge controlled">Controlled</span></td><td><div>1. No new customer spec or quantity change is open now.</div><div>2. Any late change would hit label and packing sequence first.</div><div>3. Sales admin is holding the change confirmation gate.</div></td></tr>
             <tr><td>Route / Site Risk</td><td><span class="badge controlled">Controlled</span></td><td><div>1. Local site unloading starts only after 2:00 PM.</div><div>2. Same-day truck turnaround may slip if dispatch moves late.</div><div>3. Logistics is aligning an earlier loading slot.</div></td></tr>
           </tbody>
