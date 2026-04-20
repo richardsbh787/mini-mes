@@ -308,6 +308,53 @@ td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line
 .items-sheet table{width:100%;border-collapse:collapse;font-size:14px}
 .items-sheet th{height:var(--table-header-height);padding:12px 12px;font-size:var(--table-header-font-size);font-weight:var(--table-header-font-weight);line-height:var(--table-header-line-height);color:var(--text);background:var(--surface-header);border-bottom:1px solid var(--line-strong);text-transform:var(--table-header-text-transform);letter-spacing:var(--table-header-letter-spacing);vertical-align:middle}
 .items-sheet td{padding:13px 12px;font-size:15px;color:var(--text);border-bottom:1px solid var(--line)}
+.order-items-layout{display:flex;flex-direction:column;gap:14px;min-height:100%}
+.order-items-strip{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(180px,1fr));
+  gap:12px;
+  padding:12px 14px;
+  border:1px solid var(--soft-border);
+  border-radius:14px;
+  background:rgba(247,250,252,.94);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.78);
+}
+.order-items-meta{display:grid;gap:4px;min-width:0}
+.order-items-meta-label{
+  font-size:11px;
+  font-weight:700;
+  line-height:1.2;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+.order-items-meta-value{
+  font-size:15px;
+  line-height:1.4;
+  color:var(--text);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.order-items-table{
+  flex:1;
+  min-height:0;
+  border-radius:16px;
+  overflow:visible;
+}
+.order-items-table table{min-width:1480px}
+.order-items-table td{font-size:14px}
+.order-items-table .qty-cell,
+.order-items-table .uom-cell,
+.order-items-table .date-cell,
+.order-items-table .status-cell{text-align:center}
+.order-items-table .remark-cell{min-width:220px}
+.order-items-table .waiver-cell{min-width:170px}
+.order-items-total-row td{
+  background:var(--surface-card);
+  font-weight:700;
+}
+.order-items-total-row td:first-child{color:var(--title)}
 .note{font-size:var(--note-font-size);color:var(--muted);margin-top:10px;line-height:var(--note-line-height)}.contact-toggle{display:inline-block;margin-top:6px;font-size:12px;color:var(--blue);background:none;border:none;padding:0;cursor:pointer;text-decoration:underline}.contact-details{display:none;margin-top:6px;font-size:var(--note-font-size);color:var(--muted);line-height:1.5}.contact-details.show{display:block}.support-text{margin-top:6px;font-size:var(--note-font-size);color:var(--muted);line-height:var(--note-line-height)}.view-only{display:block}.draft-only{display:none}body[data-order-state="draft"] .view-only{display:none}body[data-order-state="draft"] .draft-only{display:block}
 .tab-content-viewport,.section-scroll,.summary-sheet,.textarea-line,.items-sheet,.table-wrap.procurement-wrap{
   scrollbar-width:thin;
@@ -334,6 +381,7 @@ td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line
   .switch-bar{align-items:flex-start}
   .tabs-shell{flex-basis:100%}
   .toolbar-route{width:100%}
+  .order-items-strip{grid-template-columns:1fr}
   table,.summary-sheet table{min-width:900px}
 }
 </style>
@@ -848,65 +896,88 @@ window.addEventListener('DOMContentLoaded',()=>{
 
   <div id="items" class="section-pane data-pane hidden">
     <div class="section section-scroll">
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Item No.</th>
-              <th>Model No.</th>
-              <th>Model Description</th>
-              <th>BOM Version</th>
-              <th>Order Qty</th>
-              <th>UOM</th>
-              <th>Unit Price</th>
-              <th>Amount</th>
-              <th>Item Status</th>
-              <th>Remark</th>
-              <th>Need By Before (Date)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>001</td>
-              <td>SL-NB-100W</td>
-              <td>100W Solar LED Street Light</td>
-              <td>BOM-NB-07</td>
-              <td>900</td>
-              <td>pcs</td>
-              <td>MYR 12.80</td>
-              <td>MYR 11,520.00</td>
-              <td>1st Order</td>
-              <td>New customer launch batch.</td>
-              <td>2026-04-28</td>
-            </tr>
-            <tr>
-              <td>002</td>
-              <td>SL-NB-150W</td>
-              <td>150W Solar LED Street Light</td>
-              <td>BOM-NB-05</td>
-              <td>500</td>
-              <td>pcs</td>
-              <td>MYR 15.20</td>
-              <td>MYR 7,600.00</td>
-              <td>Normal Repeat</td>
-              <td>Follow previous approved build.</td>
-              <td>2026-05-03</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td><strong>Total</strong></td>
-              <td><strong>1,400</strong></td>
-              <td><strong>pcs</strong></td>
-              <td></td>
-              <td><strong>MYR 19,120.00</strong></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="order-items-layout">
+        <div class="order-items-strip">
+          <div class="order-items-meta">
+            <div class="order-items-meta-label">Sales Order No.</div>
+            <div class="order-items-meta-value">SO-20260328-014</div>
+          </div>
+          <div class="order-items-meta">
+            <div class="order-items-meta-label">Order Route</div>
+            <div class="order-items-meta-value">Local Delivery</div>
+          </div>
+          <div class="order-items-meta">
+            <div class="order-items-meta-label">Status</div>
+            <div class="order-items-meta-value">Open / Release Coordination In Progress</div>
+          </div>
+        </div>
+
+        <div class="table-wrap order-items-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Order Item No.</th>
+                <th>Customer Part No.</th>
+                <th>Internal Part No.</th>
+                <th>Product Description</th>
+                <th>Qty</th>
+                <th>UOM</th>
+                <th>Required Date</th>
+                <th>Item Status</th>
+                <th>New Spec / Waiver Ref No.</th>
+                <th>Remark</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Order Item 001</td>
+                <td>NBR-SL100W-A01</td>
+                <td>SL-NB-100W</td>
+                <td>100W Solar LED Street Light, local delivery batch</td>
+                <td class="qty-cell">900</td>
+                <td class="uom-cell">pcs</td>
+                <td class="date-cell">2026-04-28</td>
+                <td class="status-cell">1st Order</td>
+                <td class="waiver-cell">No open waiver</td>
+                <td class="remark-cell">New customer launch order row. Packaging label set follows NorthBay local distribution format.</td>
+              </tr>
+              <tr>
+                <td>Order Item 002</td>
+                <td>NBR-SL150W-B03</td>
+                <td>SL-NB-150W</td>
+                <td>150W Solar LED Street Light, repeat assortment</td>
+                <td class="qty-cell">500</td>
+                <td class="uom-cell">pcs</td>
+                <td class="date-cell">2026-05-03</td>
+                <td class="status-cell">Normal Repeat</td>
+                <td class="waiver-cell">WS-2026-014</td>
+                <td class="remark-cell">Follow previous approved build. Driver-label update is covered by the approved waiver reference.</td>
+              </tr>
+              <tr>
+                <td>Order Item 003</td>
+                <td>NBR-ACC-KIT04</td>
+                <td>ACC-NB-MOUNT</td>
+                <td>Mounting accessory kit for mixed wattage order rows</td>
+                <td class="qty-cell">1,400</td>
+                <td class="uom-cell">set</td>
+                <td class="date-cell">2026-05-03</td>
+                <td class="status-cell">Bundled Release</td>
+                <td class="waiver-cell">No open waiver</td>
+                <td class="remark-cell">Kitting quantity follows the combined shipment readiness plan and must stay aligned with the main lighting order items.</td>
+              </tr>
+              <tr class="order-items-total-row">
+                <td>Total</td>
+                <td colspan="3">3 order rows in current sales order view</td>
+                <td class="qty-cell">2,800</td>
+                <td class="uom-cell">mixed</td>
+                <td class="date-cell">2026-05-03</td>
+                <td class="status-cell">Open</td>
+                <td class="waiver-cell">1 reference used</td>
+                <td class="remark-cell">Read-only aggregate row for mock-stage review.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
