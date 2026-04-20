@@ -400,6 +400,7 @@ function syncModuleEntry(){
   const actionMeta=ACTION_CONFIG[currentAction];
   const isSales=currentModule==='sales-orders';
   const isSalesView=isSales&&currentAction==='view';
+  const modulePanel=document.getElementById('module-entry-panel');
   const toolbar=document.getElementById('sales-tab-toolbar');
   const stepModule=document.getElementById('module-step-module');
   const stepAction=document.getElementById('module-step-action');
@@ -423,6 +424,7 @@ function syncModuleEntry(){
   });
 
   if(!moduleMeta){
+    if(modulePanel)modulePanel.classList.remove('hidden');
     if(entryBody)entryBody.classList.add('hidden');
     if(entryEmpty)entryEmpty.classList.remove('hidden');
     if(actionZone)actionZone.classList.add('hidden');
@@ -442,6 +444,7 @@ function syncModuleEntry(){
   if(entryBody)entryBody.classList.remove('hidden');
   if(entryEmpty)entryEmpty.classList.add('hidden');
   if(actionZone)actionZone.classList.remove('hidden');
+  if(modulePanel)modulePanel.classList.remove('hidden');
   if(selectedModule)selectedModule.textContent=moduleMeta.label;
   if(moduleHelp)moduleHelp.textContent='Universal module rule: choose the next action before entering any record or form flow.';
   if(actionStatus)actionStatus.textContent=actionMeta?actionMeta.rule:'Choose the next action to reveal the correct record / form path.';
@@ -470,12 +473,13 @@ function syncModuleEntry(){
   }
 
   if(isSalesView){
+    if(modulePanel)modulePanel.classList.add('hidden');
     if(toolbar)toolbar.classList.remove('hidden');
     if(flowPlaceholder)flowPlaceholder.classList.add('hidden');
     if(flowTitle)flowTitle.textContent='Sales Order mock flow · '+actionMeta.label;
     if(flowBody)flowBody.innerHTML='<strong>Selected module:</strong> '+moduleMeta.label+'<br><strong>Selected action:</strong> '+actionMeta.label+'<br><strong>Rule:</strong> '+actionMeta.rule+'<br>The Sales Order shell below remains mounted as one persistent read-only record surface while you move across its tabs.';
     if(flowNote){
-      flowNote.classList.remove('hidden');
+      flowNote.classList.add('hidden');
       flowNote.innerHTML='<strong>'+moduleMeta.label+' · '+actionMeta.label+'</strong><br>'+actionMeta.rule+' The current mock reuses the Sales Order shell below as the step-3 record / form surface.';
     }
     showSection();
@@ -491,6 +495,28 @@ function syncModuleEntry(){
     flowBody.innerHTML=isSales
       ? '<strong>Selected module:</strong> '+moduleMeta.label+'<br><strong>Selected action:</strong> '+actionMeta.label+'<br><strong>Rule:</strong> '+actionMeta.rule+'<br>The Sales Order detail shell stays closed here. This state keeps the shared action-entry layer only; the full read-only Sales Order tabs reopen only after <strong>View</strong> is selected.'
       : '<strong>Selected module:</strong> '+moduleMeta.label+'<br><strong>Selected action:</strong> '+actionMeta.label+'<br><strong>Rule:</strong> '+actionMeta.rule+'<br>This mock layer shows the shared entry pattern for every core module before any record/form flow opens.';
+  }
+}
+function applyInitialStateFromQuery(){
+  const params=new URLSearchParams(window.location.search);
+  const sectionSelect=document.getElementById('section-select');
+  const typeSelect=document.getElementById('type-select');
+  const moduleParam=params.get('module');
+  const actionParam=params.get('action');
+  const sectionParam=params.get('section');
+  const routeParam=params.get('route');
+
+  if(moduleParam&&MODULE_CONFIG[moduleParam]){
+    currentModule=moduleParam;
+  }
+  if(actionParam&&ACTION_CONFIG[actionParam]){
+    currentAction=actionParam;
+  }
+  if(sectionSelect&&sectionParam&&[...sectionSelect.options].some(option=>option.value===sectionParam)){
+    sectionSelect.value=sectionParam;
+  }
+  if(typeSelect&&(routeParam==='Local'||routeParam==='Overseas')){
+    typeSelect.value=routeParam;
   }
 }
 function setupModuleNavigation(){
@@ -641,6 +667,7 @@ window.addEventListener('DOMContentLoaded',()=>{
   setupActionSelector();
   setupRouteSegmented();
   setupSectionTabs();
+  applyInitialStateFromQuery();
   syncModuleEntry();
   syncType();
   syncOrderType();
@@ -752,7 +779,7 @@ window.addEventListener('DOMContentLoaded',()=>{
   <div id="zoom-notice" class="zoom-notice" aria-hidden="true"><strong>Best viewed at 100% browser zoom.</strong><span>The workspace stays usable, but layout is optimized for the recommended zoom level.</span></div>
   </div>
 
-  <div class="module-entry-panel">
+  <div id="module-entry-panel" class="module-entry-panel">
     <div class="module-step-row">
       <div id="module-step-module" class="module-step active"><span class="module-step-index">1</span><span>Select Core Module</span></div>
       <div id="module-step-action" class="module-step"><span class="module-step-index">2</span><span>Select Next Action</span></div>
