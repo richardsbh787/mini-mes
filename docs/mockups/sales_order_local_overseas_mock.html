@@ -342,17 +342,42 @@ td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line
 .items-sheet table{width:100%;border-collapse:collapse;font-size:14px}
 .items-sheet th{height:var(--table-header-height);padding:12px 12px;font-size:var(--table-header-font-size);font-weight:var(--table-header-font-weight);line-height:var(--table-header-line-height);color:var(--text);background:var(--surface-header);border-bottom:1px solid var(--line-strong);text-transform:var(--table-header-text-transform);letter-spacing:var(--table-header-letter-spacing);vertical-align:middle}
 .items-sheet td{padding:13px 12px;font-size:15px;color:var(--text);border-bottom:1px solid var(--line)}
+.order-items-meta-strip{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:12px;
+  padding:9px 12px;
+  border:1px solid var(--soft-border);
+  border-radius:12px;
+  background:rgba(250,251,252,.92);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.82);
+}
+.order-items-meta-label{
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+.order-items-meta-value{
+  font-size:14px;
+  font-weight:700;
+  color:var(--title);
+}
 .order-items-table{
   flex:1;
   min-height:0;
   border-radius:16px;
   overflow:visible;
 }
-.order-items-table table{min-width:1480px}
+.order-items-table table{min-width:1660px}
 .order-items-table td{font-size:14px}
 .order-items-table .qty-cell,
 .order-items-table .uom-cell,
 .order-items-table .date-cell,
+.order-items-table .buffer-cell,
+.order-items-table .batch-cell,
 .order-items-table .status-cell{text-align:center}
 .order-items-table .status-cell .badge{max-width:100%}
 .order-items-table .waiver-cell .badge{max-width:100%}
@@ -1009,6 +1034,11 @@ window.addEventListener('DOMContentLoaded',()=>{
 
   <div id="items" class="section-pane data-pane hidden">
     <div class="section section-scroll">
+      <div class="order-items-meta-strip">
+        <span class="order-items-meta-label">Overall Commit Date</span>
+        <span class="order-items-meta-value">2026-05-22</span>
+        <span class="support-text">Order-level customer-facing commit date. FG Ready Date stays as the row-level internal readiness target.</span>
+      </div>
       <div class="table-wrap order-items-table">
         <table>
           <thead>
@@ -1020,7 +1050,9 @@ window.addEventListener('DOMContentLoaded',()=>{
               <th>Qty</th>
               <th>UOM</th>
               <th>FG Ready Date</th>
-              <th>Item Status</th>
+              <th>Safety Buffer (WD)</th>
+              <th>Delivery Batch</th>
+              <th>Order Type</th>
               <th>New Spec / Waiver Ref No.</th>
               <th>Remark</th>
             </tr>
@@ -1033,8 +1065,10 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td>100W Solar LED Street Light, local delivery batch</td>
               <td class="qty-cell">900</td>
               <td class="uom-cell">pcs</td>
-              <td class="date-cell">2026-04-28</td>
-              <td class="status-cell"><span class="badge steel">1st Order</span></td>
+              <td class="date-cell">2026-05-20</td>
+              <td class="buffer-cell">2 WD</td>
+              <td class="batch-cell">Batch 1/3</td>
+              <td class="status-cell"><span class="badge steel">New Build</span></td>
               <td class="waiver-cell"><span class="badge controlled">No open waiver</span></td>
               <td class="remark-cell">New customer launch order row. Packaging label set follows NorthBay local distribution format.</td>
             </tr>
@@ -1045,8 +1079,10 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td>150W Solar LED Street Light, repeat assortment</td>
               <td class="qty-cell">500</td>
               <td class="uom-cell">pcs</td>
-              <td class="date-cell">2026-05-03</td>
-              <td class="status-cell"><span class="badge steel">Normal Repeat</span></td>
+              <td class="date-cell">2026-05-15</td>
+              <td class="buffer-cell">5 WD</td>
+              <td class="batch-cell">Batch 2/3</td>
+              <td class="status-cell"><span class="badge steel">Repeat Build</span></td>
               <td class="waiver-cell">WS-2026-014</td>
               <td class="remark-cell">Follow previous approved build. Driver-label update is covered by the approved waiver reference.</td>
             </tr>
@@ -1057,8 +1093,10 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td>Mounting accessory kit for mixed wattage order rows</td>
               <td class="qty-cell">1,400</td>
               <td class="uom-cell">set</td>
-              <td class="date-cell">2026-05-03</td>
-              <td class="status-cell"><span class="badge bundled">Bundled</span></td>
+              <td class="date-cell">2026-05-22</td>
+              <td class="buffer-cell">0 WD</td>
+              <td class="batch-cell">Batch 3/3</td>
+              <td class="status-cell"><span class="badge bundled">Accessory Bundle</span></td>
               <td class="waiver-cell"><span class="badge controlled">No open waiver</span></td>
               <td class="remark-cell">Kitting quantity follows the combined shipment readiness plan and must stay aligned with the main lighting order items.</td>
             </tr>
@@ -1067,8 +1105,10 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td colspan="3">3 order rows in current sales order view</td>
               <td class="qty-cell">2,800</td>
               <td class="uom-cell">mixed</td>
-              <td class="date-cell">2026-05-03</td>
-              <td class="status-cell"><span class="badge steel">Open</span></td>
+              <td class="date-cell"></td>
+              <td class="buffer-cell"></td>
+              <td class="batch-cell">3 batches</td>
+              <td class="status-cell"><span class="badge steel">Mixed</span></td>
               <td class="waiver-cell">1 reference used</td>
               <td class="remark-cell">Read-only aggregate row for mock-stage review.</td>
             </tr>
