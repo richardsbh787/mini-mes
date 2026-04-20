@@ -97,48 +97,50 @@ body{margin:0;background:linear-gradient(180deg,#fefefe 0%,var(--bg) 180px,#f8f8
 .summary-warning-text{font-size:12px;line-height:1.5;color:var(--muted)}
 .procurement-section{padding:var(--tab-content-top-gap) 0 12px}
 .table-wrap.procurement-wrap{position:relative;display:block;width:100%;height:auto;min-height:420px;flex:1;padding-bottom:8px;border:1px solid var(--line);border-radius:var(--panel-radius);background:#fdfefe;overflow:visible;scroll-padding-bottom:8px;box-shadow:inset 0 1px 0 rgba(255,255,255,.7)}
-.procurement-table{width:max-content;min-width:1610px;border-collapse:separate;border-spacing:0;table-layout:fixed}
+.procurement-table{width:max-content;min-width:1480px;border-collapse:separate;border-spacing:0;table-layout:fixed}
 .procurement-table thead th{position:sticky;top:0;z-index:16;height:var(--table-header-height);padding:12px 10px;background:var(--surface-header);border-bottom:1px solid var(--line-strong);font-size:var(--table-header-font-size);font-weight:var(--table-header-font-weight);letter-spacing:var(--table-header-letter-spacing);line-height:var(--table-header-line-height);text-transform:var(--table-header-text-transform);vertical-align:middle;color:var(--text);box-shadow:0 1px 0 var(--line-strong)}
-.procurement-table tbody td{padding:10px 10px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.35;background:#fdfefe}
+.procurement-table tbody td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.4;background:#fdfefe}
 .procurement-table tbody tr:nth-child(even) td{background:#fdfefe}
 .procurement-table tbody tr:hover td{background:var(--row-hover)}
 .procurement-table tbody tr:last-child td{border-bottom:none}
-.procurement-table th:nth-child(1),.procurement-table td:nth-child(1){width:112px}
-.procurement-table th:nth-child(2),.procurement-table td:nth-child(2){width:276px;white-space:normal;overflow-wrap:anywhere;word-break:break-word}
-.procurement-table th:nth-child(3),.procurement-table td:nth-child(3){width:144px}
-.procurement-table th:nth-child(4),.procurement-table td:nth-child(4){width:270px}
-.procurement-table th:nth-child(5),.procurement-table td:nth-child(5){width:118px}
-.procurement-table th:nth-child(6),.procurement-table td:nth-child(6){width:120px}
-.procurement-table th:nth-child(7),.procurement-table td:nth-child(7){width:120px}
-.procurement-table th:nth-child(8),.procurement-table td:nth-child(8){width:168px}
-.procurement-table th:nth-child(9),.procurement-table td:nth-child(9){width:130px}
-.procurement-table th:nth-child(10),.procurement-table td:nth-child(10){width:430px}
+.procurement-table th:nth-child(1),.procurement-table td:nth-child(1){width:102px}
+.procurement-table th:nth-child(2),.procurement-table td:nth-child(2){width:290px;white-space:normal;overflow-wrap:anywhere;word-break:break-word}
+.procurement-table th:nth-child(3),.procurement-table td:nth-child(3){width:120px}
+.procurement-table th:nth-child(4),.procurement-table td:nth-child(4){width:284px}
+.procurement-table th:nth-child(5),.procurement-table td:nth-child(5){width:108px}
+.procurement-table th:nth-child(6),.procurement-table td:nth-child(6){width:102px}
+.procurement-table th:nth-child(7),.procurement-table td:nth-child(7){width:102px}
+.procurement-table th:nth-child(8),.procurement-table td:nth-child(8){width:146px}
+.procurement-table th:nth-child(9),.procurement-table td:nth-child(9){width:108px}
+.procurement-table th:nth-child(10),.procurement-table td:nth-child(10){width:318px}
 .procurement-table td:nth-child(1),.procurement-table td:nth-child(2),.procurement-table td:nth-child(3){color:#314a65}
 .procurement-table th:nth-child(5),.procurement-table td:nth-child(5),.procurement-table th:nth-child(6),.procurement-table td:nth-child(6),.procurement-table th:nth-child(7),.procurement-table td:nth-child(7),.procurement-table th:nth-child(8),.procurement-table td:nth-child(8),.procurement-table th:nth-child(9),.procurement-table td:nth-child(9){white-space:nowrap}
 .procurement-table td:nth-child(10){white-space:normal;overflow-wrap:anywhere;word-break:break-word}
 .process-cue{display:grid;gap:2px;padding:2px 0}
-.process-main{font-size:12px;font-weight:700;color:var(--title)}
-.process-sub{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-soft)}
-.bom-material{display:grid;gap:4px}
-.material-name{font-size:13px;font-weight:700;color:var(--title)}
-.material-meta{display:block;font-size:12px;font-weight:700;line-height:1.35;color:var(--muted)}
-.material-desc{display:block;font-size:12px;font-weight:600;line-height:1.4;color:var(--muted)}
+.process-main{font-size:13px;font-weight:700;color:var(--title)}
+.process-sub{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-soft)}
+.bom-material{display:grid;gap:3px}
+.material-name{font-size:14px;font-weight:700;color:var(--title);line-height:1.3}
+.material-meta{display:block;font-size:12px;font-weight:700;line-height:1.3;color:var(--muted)}
+.material-desc{display:block;font-size:12px;font-weight:600;line-height:1.32;color:var(--muted)}
 .usage-cell{vertical-align:middle}
 .where-used-text{display:block;font-size:11px;font-weight:700;color:var(--blue);line-height:1.3}
 .bom-usage-text{display:block;font-size:12px;font-weight:600;color:var(--text);line-height:1.4}
-.support-stack{display:grid;gap:3px}
-.support-stack-line{display:flex;align-items:baseline;gap:6px;min-width:0}
-.support-stack-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-soft)}
-.support-stack-value{font-size:12px;font-weight:600;line-height:1.35;color:var(--text)}
-.support-stack-value.muted{color:var(--muted)}
-.qty-emphasis{font-size:13px;font-weight:700;color:var(--title)}
+.support-stack{display:grid;gap:2px}
+.support-stack-line{display:flex;align-items:baseline;gap:4px;min-width:0}
+.support-stack-label{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-soft)}
+.support-stack-value{font-size:11px;font-weight:600;line-height:1.25;color:var(--text)}
+.support-stack-value.muted{color:#6e8296}
+.supplier-primary,.scan-date,.scan-promise,.qty-emphasis{font-size:14px;font-weight:700;line-height:1.28;color:var(--title)}
+.scan-date,.scan-promise{display:inline-block}
+.qty-emphasis{letter-spacing:.01em}
 .promised-date-cell{display:grid;gap:4px}
 .promised-date-inline{display:inline-block;white-space:nowrap}
 .warning-date{display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;border:1px solid #d7e2e8;background:#eef5f8;color:var(--date-alert);font-size:10px;font-weight:700;line-height:1;letter-spacing:.02em;white-space:nowrap;box-shadow:inset 0 1px 0 rgba(255,255,255,.72)}
 .warning-date.watching-date{background:var(--badge-yellow-bg);border-color:var(--badge-yellow-border);color:var(--badge-yellow-text)}
 .warning-date.critical-date{background:var(--risk-critical-bg);border-color:var(--risk-critical-border);color:var(--risk-critical-text)}
-.action-summary{display:grid;gap:5px;min-width:0}
-.action-summary-line{display:block;line-height:1.35;color:#3e556d}
+.action-summary{display:grid;gap:4px;min-width:0}
+.action-summary-line{display:block;font-size:12px;line-height:1.38;color:#3e556d}
 .action-summary-key{font-size:11px;font-weight:700;letter-spacing:.2px;text-transform:uppercase;color:var(--muted)}
 .actions{display:flex;align-items:flex-start;min-width:0;padding-top:2px;padding-right:0}
 .action-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
@@ -1251,8 +1253,8 @@ window.addEventListener('DOMContentLoaded',()=>{
         <table class="procurement-table">
           <thead><tr><th>Process Step</th><th>BOM Material</th><th>BOM Use</th><th>Supplier</th><th>Need By Date</th><th>Required Qty</th><th>SML Qty</th><th>Promise Date for SML Qty</th><th>Criticality</th><th>Action Summary</th></tr></thead>
           <tbody>
-            <tr><td><div class="process-cue"><span class="process-main">S10</span><span class="process-sub">Pre-Stage</span></div></td><td><div class="bom-material"><span class="material-name">Label Set</span><span class="material-meta">Label-Set-NB</span><span class="material-desc">Adhesive product label for finished unit identification</span></div></td><td class="usage-cell"><div class="support-stack"><div class="support-stack-line"><span class="support-stack-label">Used</span><span class="support-stack-value muted">PP</span></div><div class="support-stack-line"><span class="support-stack-label">Usage</span><span class="support-stack-value">1 pcs</span></div></div></td><td><div class="support-stack"><span class="support-stack-value">PrintMark Industrial Labels Sdn. Bhd.</span><div class="support-stack-line"><span class="support-stack-value muted">Local</span><span class="support-stack-value muted">Klang, Selangor</span></div><div class="support-stack-line"><span class="support-stack-label">Lead</span><span class="support-stack-value muted">5 WD</span></div></div></td><td>2026-05-08</td><td><span class="qty-emphasis">900 pcs</span></td><td><span class="qty-emphasis">500 pcs</span></td><td><span class="support-text">Tentative 2026-05-11</span></td><td><span class="badge critical">Critical</span></td><td><div class="action-summary"><span class="action-summary-line"><span class="action-summary-key">Gap:</span> 500 pcs is still short against the 2026-05-08 pre-stage need, so this material remains on the exception list.</span><span class="action-summary-line"><span class="action-summary-key">Why chasing:</span> Supplier split output covers only part of the label demand and the balance is still outside the need-by point.</span><span class="action-summary-line"><span class="action-summary-key">Planner follow-up:</span> Hold priority-unit staging, confirm whether partial label receipt can support the next build slice, and escalate the open balance daily.</span></div></td></tr>
-            <tr><td><div class="process-cue"><span class="process-main">S30</span><span class="process-sub">Final Assembly</span></div></td><td><div class="bom-material"><span class="material-name">LED Driver 150W</span><span class="material-meta">DRV-150W-NB</span><span class="material-desc">150W constant-current LED driver for NB export finished unit</span></div></td><td class="usage-cell"><div class="support-stack"><div class="support-stack-line"><span class="support-stack-label">Used</span><span class="support-stack-value muted">Assy</span></div><div class="support-stack-line"><span class="support-stack-label">Usage</span><span class="support-stack-value">1 pcs</span></div></div></td><td><div class="support-stack"><span class="support-stack-value">NovaPower Electronics Co., Ltd.</span><div class="support-stack-line"><span class="support-stack-value muted">Overseas</span><span class="support-stack-value muted">Shenzhen, China</span></div><div class="support-stack-line"><span class="support-stack-label">Lead</span><span class="support-stack-value muted">12 WD</span></div></div></td><td>2026-05-06</td><td><span class="qty-emphasis">500 pcs</span></td><td><span class="qty-emphasis">200 pcs</span></td><td><span class="support-text">Tentative 2026-05-11</span></td><td><span class="badge watching">Watching</span></td><td><div class="action-summary"><span class="action-summary-line"><span class="action-summary-key">Gap:</span> 200 pcs remains short for the 2026-05-06 final-assembly point, so planner recovery is still required.</span><span class="action-summary-line"><span class="action-summary-key">Why chasing:</span> The first air shipment covers only 300 pcs and the remaining balance lands after the assembly need date.</span><span class="action-summary-line"><span class="action-summary-key">Planner follow-up:</span> Resequence 100W output first, keep daily ETA confirmation with purchasing, and reserve the next assembly slot for the late driver balance.</span></div></td></tr>
+            <tr><td><div class="process-cue"><span class="process-main">S10</span><span class="process-sub">Pre-Stage</span></div></td><td><div class="bom-material"><span class="material-name">Label Set</span><span class="material-meta">Label-Set-NB</span><span class="material-desc">Adhesive product label for finished unit identification</span></div></td><td class="usage-cell"><div class="support-stack"><div class="support-stack-line"><span class="support-stack-label">Used</span><span class="support-stack-value muted">PP</span></div><div class="support-stack-line"><span class="support-stack-label">Usage</span><span class="support-stack-value">1 pcs</span></div></div></td><td><div class="support-stack"><span class="supplier-primary">PrintMark Industrial Labels Sdn. Bhd.</span><div class="support-stack-line"><span class="support-stack-value muted">Local</span><span class="support-stack-value muted">Klang, Selangor</span></div><div class="support-stack-line"><span class="support-stack-label">Lead</span><span class="support-stack-value muted">5 WD</span></div></div></td><td><span class="scan-date">2026-05-08</span></td><td><span class="qty-emphasis">900 pcs</span></td><td><span class="qty-emphasis">500 pcs</span></td><td><span class="scan-promise">2026-05-11</span></td><td><span class="badge critical">Critical</span></td><td><div class="action-summary"><span class="action-summary-line"><span class="action-summary-key">Gap:</span> 500 pcs is still short against the 2026-05-08 pre-stage need, so this material remains on the exception list.</span><span class="action-summary-line"><span class="action-summary-key">Why chasing:</span> Supplier split output covers only part of the label demand and the balance is still outside the need-by point.</span><span class="action-summary-line"><span class="action-summary-key">Planner follow-up:</span> Hold priority-unit staging, confirm whether partial label receipt can support the next build slice, and escalate the open balance daily.</span></div></td></tr>
+            <tr><td><div class="process-cue"><span class="process-main">S30</span><span class="process-sub">Final Assembly</span></div></td><td><div class="bom-material"><span class="material-name">LED Driver 150W</span><span class="material-meta">DRV-150W-NB</span><span class="material-desc">150W constant-current LED driver for NB export finished unit</span></div></td><td class="usage-cell"><div class="support-stack"><div class="support-stack-line"><span class="support-stack-label">Used</span><span class="support-stack-value muted">Assy</span></div><div class="support-stack-line"><span class="support-stack-label">Usage</span><span class="support-stack-value">1 pcs</span></div></div></td><td><div class="support-stack"><span class="supplier-primary">NovaPower Electronics Co., Ltd.</span><div class="support-stack-line"><span class="support-stack-value muted">Overseas</span><span class="support-stack-value muted">Shenzhen, China</span></div><div class="support-stack-line"><span class="support-stack-label">Lead</span><span class="support-stack-value muted">12 WD</span></div></div></td><td><span class="scan-date">2026-05-06</span></td><td><span class="qty-emphasis">500 pcs</span></td><td><span class="qty-emphasis">200 pcs</span></td><td><span class="scan-promise">2026-05-11</span></td><td><span class="badge watching">Watching</span></td><td><div class="action-summary"><span class="action-summary-line"><span class="action-summary-key">Gap:</span> 200 pcs remains short for the 2026-05-06 final-assembly point, so planner recovery is still required.</span><span class="action-summary-line"><span class="action-summary-key">Why chasing:</span> The first air shipment covers only 300 pcs and the remaining balance lands after the assembly need date.</span><span class="action-summary-line"><span class="action-summary-key">Planner follow-up:</span> Resequence 100W output first, keep daily ETA confirmation with purchasing, and reserve the next assembly slot for the late driver balance.</span></div></td></tr>
           </tbody>
         </table>
       </div>
