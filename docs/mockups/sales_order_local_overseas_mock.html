@@ -186,7 +186,11 @@ body{margin:0;background:linear-gradient(180deg,#fefefe 0%,var(--bg) 180px,#f8f8
 .zoom-notice.show{display:inline-flex}
 .zoom-notice strong{color:var(--text);font-weight:700}
 .side-nav-action-shell{display:grid;gap:2px;margin:6px 0 6px 12px;padding:6px 0 2px 14px;border-left:1px solid var(--soft-border)}
-.master-module-shell{margin-top:6px}
+.master-module-shell{display:grid;gap:6px;max-height:220px;margin-top:6px;overflow-y:auto;padding-right:6px;scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) transparent}
+.master-module-shell::-webkit-scrollbar{width:8px}
+.master-module-shell::-webkit-scrollbar-track{background:transparent}
+.master-module-shell::-webkit-scrollbar-thumb{background:var(--scroll-thumb);border-radius:999px;border:2px solid transparent;background-clip:padding-box}
+.master-module-shell::-webkit-scrollbar-thumb:hover{background:var(--scroll-thumb-hover);background-clip:padding-box}
 .side-nav-action-item{display:block;width:100%;padding:7px 10px;border:1px solid transparent;border-radius:999px;background:transparent;color:var(--muted);font-size:12px;font-weight:600;line-height:1.35;text-align:left;cursor:pointer;box-shadow:none;transition:background .16s ease,border-color .16s ease,color .16s ease,box-shadow .16s ease}
 .side-nav-action-item:hover{color:var(--text);background:rgba(241,247,251,.9);border-color:#e0e9f0}
 .side-nav-action-item.active{background:linear-gradient(180deg,#fdfefe 0%,#eaf2f8 100%);border-color:#c9d9e6;color:var(--blue);box-shadow:inset 0 1px 0 rgba(255,255,255,.92),0 2px 6px rgba(79,127,168,.12)}
@@ -639,6 +643,7 @@ const ACTION_CONFIG={
 };
 let currentModule='';
 let currentAction='';
+let currentMasterModule='';
 let currentOrderState='view';
 const SALES_ORDER_VIEW_NO='SO-20260328-001';
 const SALES_ORDER_CREATE_DEFAULT_DATE='2026-04-21';
@@ -799,15 +804,15 @@ function renderMasterStage(){
   const headerCopy=document.getElementById('master-stage-copy');
   const content=document.getElementById('master-stage-content');
   if(!stage||!headerTitle||!headerCopy||!content)return;
-  if(!isMasterModule(currentModule)||!currentAction){
+  if(currentModule!=='reports-master-data'||!isMasterModule(currentMasterModule)||!currentAction){
     stage.classList.add('hidden');
     content.innerHTML='';
     return;
   }
-  const moduleMeta=MODULE_CONFIG[currentModule];
-  const state=getMasterState(currentModule);
-  const records=filterMasterRecords(currentModule,state.query);
-  const selectedRecord=getMasterRecordById(currentModule,state.selectedId)||records[0]||getMasterRecords(currentModule)[0]||null;
+  const moduleMeta=MODULE_CONFIG[currentMasterModule];
+  const state=getMasterState(currentMasterModule);
+  const records=filterMasterRecords(currentMasterModule,state.query);
+  const selectedRecord=getMasterRecordById(currentMasterModule,state.selectedId)||records[0]||getMasterRecords(currentMasterModule)[0]||null;
   if(selectedRecord&&state.selectedId!==selectedRecord.id){
     state.selectedId=selectedRecord.id;
   } else if(!selectedRecord){
@@ -823,13 +828,13 @@ function renderMasterStage(){
         : 'Delete remains a restricted mock action and removes the selected record from the in-page master dataset only.';
   let html='';
   if(currentAction==='create'){
-    html='<div class="create-sheet"><div class="create-sheet-inner"><div class="master-stage-note">Mock add only. This does not persist outside the current page session.</div>'+renderMasterFieldRows(currentModule,'master-create',getMasterDefaultRecord(currentModule))+'<div class="btn-row"><button type="button" class="btn primary" data-master-create-save="true">Add Mock Record</button></div></div></div>';
+    html='<div class="create-sheet"><div class="create-sheet-inner"><div class="master-stage-note">Mock add only. This does not persist outside the current page session.</div>'+renderMasterFieldRows(currentMasterModule,'master-create',getMasterDefaultRecord(currentMasterModule))+'<div class="btn-row"><button type="button" class="btn primary" data-master-create-save="true">Add Mock Record</button></div></div></div>';
   } else if(currentAction==='search'){
-    html='<div class="master-stage-toolbar"><input id="master-search-input" class="input-line" type="text" placeholder="Search master record" value="'+escapeHtml(state.query)+'" data-master-search="true" /><div class="master-stage-toolbar-copy">Search / Find stays the read-entry path for master records too.</div></div>'+renderMasterTable(currentModule,records,'search');
+    html='<div class="master-stage-toolbar"><input id="master-search-input" class="input-line" type="text" placeholder="Search master record" value="'+escapeHtml(state.query)+'" data-master-search="true" /><div class="master-stage-toolbar-copy">Search / Find stays the read-entry path for master records too.</div></div>'+renderMasterTable(currentMasterModule,records,'search');
   } else if(currentAction==='edit'){
-    html='<div class="master-stage-edit-grid"><div class="master-stage-grid"><div class="master-stage-toolbar"><input id="master-search-input" class="input-line" type="text" placeholder="Search master record" value="'+escapeHtml(state.query)+'" data-master-search="true" /><div class="master-stage-toolbar-copy">Select a record first, then edit on the right.</div></div>'+renderMasterTable(currentModule,records,'edit')+'</div><div class="create-sheet"><div class="create-sheet-inner">'+(selectedRecord?renderMasterFieldRows(currentModule,'master-edit',selectedRecord)+'<div class="btn-row"><button type="button" class="btn primary" data-master-edit-save="'+selectedRecord.id+'">Save Mock Update</button></div>':'<div class="master-stage-empty">Select one record from the list to edit.</div>')+'</div></div></div>';
+    html='<div class="master-stage-edit-grid"><div class="master-stage-grid"><div class="master-stage-toolbar"><input id="master-search-input" class="input-line" type="text" placeholder="Search master record" value="'+escapeHtml(state.query)+'" data-master-search="true" /><div class="master-stage-toolbar-copy">Select a record first, then edit on the right.</div></div>'+renderMasterTable(currentMasterModule,records,'edit')+'</div><div class="create-sheet"><div class="create-sheet-inner">'+(selectedRecord?renderMasterFieldRows(currentMasterModule,'master-edit',selectedRecord)+'<div class="btn-row"><button type="button" class="btn primary" data-master-edit-save="'+selectedRecord.id+'">Save Mock Update</button></div>':'<div class="master-stage-empty">Select one record from the list to edit.</div>')+'</div></div></div>';
   } else if(currentAction==='delete'){
-    html='<div class="master-stage-toolbar"><input id="master-search-input" class="input-line" type="text" placeholder="Search master record" value="'+escapeHtml(state.query)+'" data-master-search="true" /><div class="master-stage-toolbar-copy master-delete-note">Delete is mock-stage only and visually restricted on purpose.</div></div>'+renderMasterTable(currentModule,records,'delete');
+    html='<div class="master-stage-toolbar"><input id="master-search-input" class="input-line" type="text" placeholder="Search master record" value="'+escapeHtml(state.query)+'" data-master-search="true" /><div class="master-stage-toolbar-copy master-delete-note">Delete is mock-stage only and visually restricted on purpose.</div></div>'+renderMasterTable(currentMasterModule,records,'delete');
   }
   content.innerHTML=html;
   stage.classList.remove('hidden');
@@ -967,7 +972,7 @@ function syncModuleEntry(){
   const actionMeta=ACTION_CONFIG[currentAction];
   const isSales=currentModule==='sales-orders';
   const isSalesShellAction=isSales&&(currentAction==='search'||currentAction==='create');
-  const isMasterParentSelection=currentModule==='reports-master-data'||isMasterModule(currentModule);
+  const isMasterParentSelection=currentModule==='reports-master-data';
   const sidebarActionShell=document.getElementById('sidebar-action-shell');
   const masterModuleShell=document.getElementById('master-module-shell');
   const sidebarActionStatus=document.getElementById('sidebar-action-status');
@@ -980,11 +985,10 @@ function syncModuleEntry(){
   const reportsModuleButton=document.querySelector('.side-nav-item[data-module="reports-master-data"]');
 
   document.querySelectorAll('.side-nav-item[data-module]').forEach(item=>{
-    const isActive=item.dataset.module===currentModule||(item.dataset.module==='reports-master-data'&&isMasterParentSelection);
-    item.classList.toggle('active',isActive);
+    item.classList.toggle('active',item.dataset.module===currentModule);
   });
   document.querySelectorAll('.master-module-item').forEach(item=>{
-    item.classList.toggle('active',item.dataset.masterModule===currentModule);
+    item.classList.toggle('active',item.dataset.masterModule===currentMasterModule);
   });
   document.querySelectorAll('.side-nav-action-item').forEach(card=>{
     card.classList.toggle('active',card.dataset.action===currentAction);
@@ -1004,14 +1008,14 @@ function syncModuleEntry(){
 
   if(masterModuleShell&&reportsModuleButton){
     reportsModuleButton.insertAdjacentElement('afterend',masterModuleShell);
-    masterModuleShell.classList.toggle('hidden',!isMasterParentSelection);
+    masterModuleShell.classList.toggle('hidden',!isMasterParentSelection||!currentAction);
   }
   if(sidebarActionShell&&activeModuleButton){
     activeModuleButton.insertAdjacentElement('afterend',sidebarActionShell);
     sidebarActionShell.classList.remove('hidden');
   }
-  if(sidebarActionShell&&isMasterModule(currentModule)&&masterModuleShell){
-    masterModuleShell.insertAdjacentElement('afterend',sidebarActionShell);
+  if(sidebarActionShell&&currentModule==='reports-master-data'&&masterModuleShell){
+    sidebarActionShell.insertAdjacentElement('afterend',masterModuleShell);
     sidebarActionShell.classList.remove('hidden');
   }
   if(sidebarActionStatus){
@@ -1020,7 +1024,7 @@ function syncModuleEntry(){
 
   if(!currentAction){
     if(toolbar)toolbar.classList.add('hidden');
-    if(sidebarActionShell)sidebarActionShell.classList.toggle('hidden',currentModule==='reports-master-data');
+    if(sidebarActionShell)sidebarActionShell.classList.toggle('hidden',false);
     if(flowNote)flowNote.classList.add('hidden');
     if(flowPlaceholder)flowPlaceholder.classList.remove('hidden');
     if(flowTitle)flowTitle.textContent=currentModule==='reports-master-data'?'Master Data maintenance opens after a master module is chosen':'Step 3 opens after the next action is chosen';
@@ -1054,11 +1058,15 @@ function syncModuleEntry(){
     return;
   }
 
-  if(isMasterModule(currentModule)){
+  if(currentModule==='reports-master-data'){
     if(toolbar)toolbar.classList.add('hidden');
     document.querySelectorAll('.section-pane').forEach(el=>el.classList.add('hidden'));
     if(flowNote)flowNote.classList.add('hidden');
-    if(flowPlaceholder)flowPlaceholder.classList.add('hidden');
+    if(flowPlaceholder)flowPlaceholder.classList.toggle('hidden',!!currentMasterModule);
+    if(flowTitle)flowTitle.textContent=currentMasterModule?MODULE_CONFIG[currentMasterModule].flowTitle+' · '+actionMeta.label:'Choose a master module';
+    if(flowBody)flowBody.innerHTML=currentMasterModule
+      ? '<strong>Selected module:</strong> '+MODULE_CONFIG[currentMasterModule].label+'<br><strong>Selected action:</strong> '+actionMeta.label+'<br><strong>Rule:</strong> '+actionMeta.rule+'<br>The maintenance surface on the right follows the selected action/master pair within this mock-stage shared pattern.'
+      : '<strong>Selected action:</strong> '+actionMeta.label+'<br><strong>Next step:</strong> choose one master module from the list below to open the matching maintenance surface.';
     renderMasterStage();
     syncFlowActionUi();
     return;
@@ -1082,12 +1090,19 @@ function applyInitialStateFromQuery(){
   const sectionSelect=document.getElementById('section-select');
   const typeSelect=document.getElementById('type-select');
   const moduleParam=params.get('module');
+  const masterParam=params.get('master');
   const actionParam=params.get('action');
   const sectionParam=params.get('section');
   const routeParam=params.get('route');
 
   if(moduleParam&&MODULE_CONFIG[moduleParam]){
     currentModule=moduleParam;
+  }
+  if(masterParam&&isMasterModule(masterParam)){
+    if(!currentModule){
+      currentModule='reports-master-data';
+    }
+    currentMasterModule=masterParam;
   }
   if(actionParam&&ACTION_CONFIG[actionParam]){
     currentAction=actionParam;
@@ -1104,6 +1119,7 @@ function setupModuleNavigation(){
     item.addEventListener('click',()=>{
       currentModule=item.dataset.module;
       currentAction='';
+      currentMasterModule='';
       syncModuleEntry();
     });
   });
@@ -1111,8 +1127,8 @@ function setupModuleNavigation(){
 function setupMasterModuleNavigation(){
   document.querySelectorAll('.master-module-item[data-master-module]').forEach(item=>{
     item.addEventListener('click',()=>{
-      currentModule=item.dataset.masterModule;
-      currentAction='';
+      currentModule='reports-master-data';
+      currentMasterModule=item.dataset.masterModule;
       syncModuleEntry();
     });
   });
@@ -1129,7 +1145,7 @@ function syncMasterSourceConsumers(){
   renderCreateMasterDropdowns();
   syncBuyerMasterFields();
   syncSalesPersonMasterFields();
-  if(currentAction==='create'){
+  if(currentModule==='sales-orders'&&currentAction==='create'){
     createFormSnapshot=getCreateFormState();
     syncCreateFormActions();
   }
@@ -1139,7 +1155,7 @@ function setupMasterStageInteractions(){
   if(!stage)return;
   stage.addEventListener('input',event=>{
     if(event.target.matches('[data-master-search]')){
-      const state=getMasterState(currentModule);
+      const state=getMasterState(currentMasterModule);
       if(!state)return;
       state.query=event.target.value;
       renderMasterStage();
@@ -1148,7 +1164,7 @@ function setupMasterStageInteractions(){
   stage.addEventListener('click',event=>{
     const selectButton=event.target.closest('[data-master-select-id]');
     if(selectButton){
-      const state=getMasterState(currentModule);
+      const state=getMasterState(currentMasterModule);
       if(state){
         state.selectedId=selectButton.dataset.masterSelectId||selectButton.getAttribute('data-master-select-id');
         renderMasterStage();
@@ -1157,11 +1173,11 @@ function setupMasterStageInteractions(){
     }
     const createButton=event.target.closest('[data-master-create-save]');
     if(createButton){
-      const nextRecord=readMasterFormValues(currentModule,'master-create');
-      nextRecord.id=generateMasterRecordId(currentModule);
-      const nextRecords=[...getMasterRecords(currentModule),nextRecord];
-      setMasterRecords(currentModule,nextRecords);
-      const state=getMasterState(currentModule);
+      const nextRecord=readMasterFormValues(currentMasterModule,'master-create');
+      nextRecord.id=generateMasterRecordId(currentMasterModule);
+      const nextRecords=[...getMasterRecords(currentMasterModule),nextRecord];
+      setMasterRecords(currentMasterModule,nextRecords);
+      const state=getMasterState(currentMasterModule);
       state.selectedId=nextRecord.id;
       state.query='';
       syncMasterSourceConsumers();
@@ -1171,10 +1187,10 @@ function setupMasterStageInteractions(){
     const editButton=event.target.closest('[data-master-edit-save]');
     if(editButton){
       const recordId=editButton.getAttribute('data-master-edit-save');
-      const nextValues=readMasterFormValues(currentModule,'master-edit');
-      const nextRecords=getMasterRecords(currentModule).map(record=>record.id===recordId?{...record,...nextValues}:record);
-      setMasterRecords(currentModule,nextRecords);
-      const state=getMasterState(currentModule);
+      const nextValues=readMasterFormValues(currentMasterModule,'master-edit');
+      const nextRecords=getMasterRecords(currentMasterModule).map(record=>record.id===recordId?{...record,...nextValues}:record);
+      setMasterRecords(currentMasterModule,nextRecords);
+      const state=getMasterState(currentMasterModule);
       state.selectedId=recordId;
       syncMasterSourceConsumers();
       renderMasterStage();
@@ -1183,9 +1199,9 @@ function setupMasterStageInteractions(){
     const deleteButton=event.target.closest('[data-master-delete-id]');
     if(deleteButton){
       const recordId=deleteButton.getAttribute('data-master-delete-id');
-      const nextRecords=getMasterRecords(currentModule).filter(record=>record.id!==recordId);
-      setMasterRecords(currentModule,nextRecords);
-      const state=getMasterState(currentModule);
+      const nextRecords=getMasterRecords(currentMasterModule).filter(record=>record.id!==recordId);
+      setMasterRecords(currentMasterModule,nextRecords);
+      const state=getMasterState(currentMasterModule);
       state.selectedId=nextRecords[0]?.id||'';
       syncMasterSourceConsumers();
       renderMasterStage();
@@ -1270,7 +1286,7 @@ function syncFlowActionUi(){
   const saveButton=document.getElementById('save-button');
   if(body){
     body.setAttribute('data-flow-action',currentAction||'');
-    body.setAttribute('data-master-stage',(currentModule==='reports-master-data'||isMasterModule(currentModule))?'true':'false');
+    body.setAttribute('data-master-stage',currentModule==='reports-master-data'?'true':'false');
   }
   if(titleOrderNo){
     titleOrderNo.textContent=currentAction==='create'?getCreateSalesOrderNo():SALES_ORDER_VIEW_NO;
