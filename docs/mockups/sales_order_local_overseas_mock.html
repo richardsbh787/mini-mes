@@ -350,11 +350,11 @@ td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line
 .items-sheet th{height:var(--table-header-height);padding:12px 12px;font-size:var(--table-header-font-size);font-weight:var(--table-header-font-weight);line-height:var(--table-header-line-height);color:var(--text);background:var(--surface-header);border-bottom:1px solid var(--line-strong);text-transform:var(--table-header-text-transform);letter-spacing:var(--table-header-letter-spacing);vertical-align:middle}
 .items-sheet td{padding:13px 12px;font-size:15px;color:var(--text);border-bottom:1px solid var(--line)}
 .order-items-meta-strip{
-  display:flex;
+  display:inline-flex;
   align-items:center;
-  gap:12px;
+  gap:10px;
   margin-bottom:14px;
-  padding:10px 14px;
+  padding:8px 12px;
   border:1px solid var(--soft-border);
   border-radius:12px;
   background:rgba(250,251,252,.92);
@@ -363,8 +363,7 @@ td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line
 .order-items-meta-label{
   font-size:11px;
   font-weight:700;
-  letter-spacing:.08em;
-  text-transform:uppercase;
+  letter-spacing:.03em;
   color:var(--muted);
 }
 .order-items-meta-value{
@@ -378,9 +377,21 @@ td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line
   border-radius:16px;
   overflow:visible;
 }
-.order-items-table table{min-width:1520px}
+.order-items-table table{min-width:1410px}
 .order-items-table th{padding:13px 10px}
 .order-items-table td{padding:15px 10px;font-size:14px;line-height:1.45}
+.order-items-table th:nth-child(1),.order-items-table td:nth-child(1){width:112px}
+.order-items-table th:nth-child(2),.order-items-table td:nth-child(2){width:128px}
+.order-items-table th:nth-child(3),.order-items-table td:nth-child(3){width:128px}
+.order-items-table th:nth-child(4),.order-items-table td:nth-child(4){width:248px}
+.order-items-table th:nth-child(5),.order-items-table td:nth-child(5){width:96px}
+.order-items-table th:nth-child(6),.order-items-table td:nth-child(6){width:118px}
+.order-items-table th:nth-child(7),.order-items-table td:nth-child(7){width:118px}
+.order-items-table th:nth-child(8),.order-items-table td:nth-child(8){width:114px}
+.order-items-table th:nth-child(9),.order-items-table td:nth-child(9){width:138px}
+.order-items-table th:nth-child(10),.order-items-table td:nth-child(10){width:116px}
+.order-items-table th:nth-child(11),.order-items-table td:nth-child(11){width:138px}
+.order-items-table th:nth-child(12),.order-items-table td:nth-child(12){width:172px}
 .order-items-table .qty-cell,
 .order-items-table .date-cell,
 .order-items-table .buffer-cell,
@@ -388,10 +399,23 @@ td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line
 .order-items-table .status-cell{text-align:center}
 .order-items-table .status-cell .badge{max-width:100%}
 .order-items-table .waiver-cell .badge{max-width:100%}
-.order-items-table .remark-cell{min-width:250px}
-.order-items-table .waiver-cell{min-width:170px}
+.order-items-table .remark-cell{
+  min-width:0;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.4;
+}
+.order-items-table .remark-summary{
+  display:-webkit-box;
+  overflow:hidden;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+  line-clamp:2;
+}
+.order-items-table .waiver-cell{min-width:0}
 .order-items-table .qty-cell{font-weight:700;color:var(--title);text-align:center;white-space:nowrap}
 .order-items-table .date-cell{font-size:13px;line-height:1.2;color:#3a526a;white-space:nowrap}
+.order-items-table .product-cell{font-weight:600;color:var(--title)}
 .order-items-parent-row td:first-child{
   font-weight:700;
   color:var(--title);
@@ -400,19 +424,35 @@ td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line
   background:#fdfefe;
 }
 .order-items-subrow td{
-  padding-top:12px;
-  padding-bottom:12px;
+  padding-top:10px;
+  padding-bottom:10px;
   background:#f9fbfc;
   font-size:13px;
-  color:var(--muted-strong);
+  color:var(--muted);
+  border-bottom:1px solid #e7eef3;
 }
 .order-items-subrow td:first-child{
   color:transparent;
 }
+.order-items-subrow td:nth-child(-n+3){
+  background:linear-gradient(90deg,#fdfefe 0,#fdfefe 14px,#f5f8fa 14px,#f5f8fa 100%);
+}
 .order-items-subrow .subrow-label{
-  padding-left:22px;
-  color:var(--text);
+  position:relative;
+  padding-left:34px;
+  color:var(--muted);
   font-weight:600;
+  font-size:11px;
+  letter-spacing:.03em;
+}
+.order-items-subrow .subrow-label::before{
+  content:"";
+  position:absolute;
+  left:18px;
+  top:50%;
+  width:10px;
+  height:1px;
+  background:#bfd0dc;
 }
 .order-items-subrow .batch-cell{
   font-weight:600;
@@ -421,9 +461,10 @@ td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line
 .order-items-subrow .qty-cell,
 .order-items-subrow .date-cell{
   font-size:13px;
+  color:var(--title);
 }
 .order-items-subrow .remark-cell{
-  color:var(--muted-strong);
+  color:var(--muted);
 }
 .order-items-total-row td{
   background:var(--surface-card);
@@ -1138,7 +1179,6 @@ window.addEventListener('DOMContentLoaded',()=>{
       <div class="order-items-meta-strip">
         <span class="order-items-meta-label">Overall Commit Date</span>
         <span class="order-items-meta-value" data-date-display="2026-05-22">2026-05-22</span>
-        <span class="support-text">Order-level customer-facing commit date. FG Ready Date stays as the row-level internal readiness target, and Plan Ship Date stays at the item or delivery-batch planning level.</span>
       </div>
       <div class="table-wrap order-items-table">
         <table>
@@ -1163,7 +1203,7 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td>Order Item 001</td>
               <td>NBR-SL100W-A01</td>
               <td>SL-NB-100W</td>
-              <td>100W Solar LED Street Light, staged customer release</td>
+              <td class="product-cell">100W Solar LED Street Light, staged customer release</td>
               <td class="qty-cell">900 pcs</td>
               <td class="date-cell fg-ready-date" data-date="2026-05-20" data-date-display="2026-05-20">2026-05-20</td>
               <td class="date-cell plan-ship-date">By batch plan</td>
@@ -1171,7 +1211,7 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td class="batch-cell">Split Delivery, 3 batches</td>
               <td class="status-cell"><span class="badge steel">New Build</span></td>
               <td class="waiver-cell"><span class="badge controlled">No open waiver</span></td>
-              <td class="remark-cell">One original customer order item with a partial-delivery plan. Child rows below show the 3 shipment batches and their own planned ship dates under this same Order Item.</td>
+              <td class="remark-cell"><span class="remark-summary">One original customer order item with a partial-delivery plan. Child rows below show the 3 shipment batches and their own planned ship dates under this same Order Item.</span></td>
             </tr>
             <tr class="order-items-subrow">
               <td></td>
@@ -1183,7 +1223,7 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td class="date-cell plan-ship-date" data-date="2026-05-15" data-date-display="2026-05-15">2026-05-15</td>
               <td class="buffer-cell">—</td>
               <td class="batch-cell">Delivery Batch 1 of 3</td>
-              <td colspan="3" class="remark-cell">First customer-requested release under Order Item 001.</td>
+              <td colspan="3" class="remark-cell"><span class="remark-summary">First customer-requested release under Order Item 001.</span></td>
             </tr>
             <tr class="order-items-subrow">
               <td></td>
@@ -1195,7 +1235,7 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td class="date-cell plan-ship-date" data-date="2026-05-19" data-date-display="2026-05-19">2026-05-19</td>
               <td class="buffer-cell">—</td>
               <td class="batch-cell">Delivery Batch 2 of 3</td>
-              <td colspan="3" class="remark-cell">Second planned release for the same original Order Item.</td>
+              <td colspan="3" class="remark-cell"><span class="remark-summary">Second planned release for the same original Order Item.</span></td>
             </tr>
             <tr class="order-items-subrow">
               <td></td>
@@ -1207,13 +1247,13 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td class="date-cell plan-ship-date" data-date="2026-05-21" data-date-display="2026-05-21">2026-05-21</td>
               <td class="buffer-cell">—</td>
               <td class="batch-cell">Delivery Batch 3 of 3</td>
-              <td colspan="3" class="remark-cell">Final release completes Order Item 001 before the overall commit date.</td>
+              <td colspan="3" class="remark-cell"><span class="remark-summary">Final release completes Order Item 001 before the overall commit date.</span></td>
             </tr>
             <tr>
               <td>Order Item 002</td>
               <td>NBR-SL150W-B03</td>
               <td>SL-NB-150W</td>
-              <td>150W Solar LED Street Light, repeat assortment</td>
+              <td class="product-cell">150W Solar LED Street Light, repeat assortment</td>
               <td class="qty-cell">500 pcs</td>
               <td class="date-cell fg-ready-date" data-date="2026-05-15" data-date-display="2026-05-15">2026-05-15</td>
               <td class="date-cell plan-ship-date" data-date="2026-05-18" data-date-display="2026-05-18">2026-05-18</td>
@@ -1221,13 +1261,13 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td class="batch-cell">Full delivery</td>
               <td class="status-cell"><span class="badge steel">Repeat Build</span></td>
               <td class="waiver-cell">WS-2026-014</td>
-              <td class="remark-cell">Follow previous approved build. Driver-label update is covered by the approved waiver reference.</td>
+              <td class="remark-cell"><span class="remark-summary">Follow previous approved build. Driver-label update is covered by the approved waiver reference.</span></td>
             </tr>
             <tr>
               <td>Order Item 003</td>
               <td>NBR-ACC-KIT04</td>
               <td>ACC-NB-MOUNT</td>
-              <td>Mounting accessory kit for mixed wattage order rows</td>
+              <td class="product-cell">Mounting accessory kit for mixed wattage order rows</td>
               <td class="qty-cell">1,400 set</td>
               <td class="date-cell fg-ready-date" data-date="2026-05-22" data-date-display="2026-05-22">2026-05-22</td>
               <td class="date-cell plan-ship-date" data-date="2026-05-22" data-date-display="2026-05-22">2026-05-22</td>
@@ -1235,7 +1275,7 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td class="batch-cell">Full delivery</td>
               <td class="status-cell"><span class="badge bundled">Accessory Bundle</span></td>
               <td class="waiver-cell"><span class="badge controlled">No open waiver</span></td>
-              <td class="remark-cell">Kitting quantity follows the combined shipment readiness plan and must stay aligned with the main lighting order items.</td>
+              <td class="remark-cell"><span class="remark-summary">Kitting quantity follows the combined shipment readiness plan and must stay aligned with the main lighting order items.</span></td>
             </tr>
             <tr class="order-items-total-row">
               <td>Total</td>
@@ -1247,7 +1287,7 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td class="batch-cell">1 split item / 3 batches</td>
               <td class="status-cell"><span class="badge steel">Mixed</span></td>
               <td class="waiver-cell">1 reference used</td>
-              <td class="remark-cell">Read-only aggregate row for mock-stage review.</td>
+              <td class="remark-cell"><span class="remark-summary">Read-only aggregate row for mock-stage review.</span></td>
             </tr>
           </tbody>
         </table>
