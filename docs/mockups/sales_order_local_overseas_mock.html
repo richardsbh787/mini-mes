@@ -514,6 +514,9 @@ body[data-flow-action="create"] .workspace-tab:not([data-value="summary"]):hover
 .create-order-shell{display:grid;gap:10px;max-width:1040px;margin:0 auto}
 .create-form-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:4px 2px 2px}
 .create-form-title{font-size:18px;font-weight:700;color:var(--title);line-height:1.25}
+.create-form-tools{display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-wrap:wrap}
+.create-form-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.create-form-actions .btn{height:32px;padding:0 12px}
 .master-data-menu{position:relative}
 .master-data-toggle{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 11px;border:1px solid var(--soft-border);border-radius:999px;background:rgba(252,253,254,.92);color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;list-style:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.82)}
 .master-data-toggle::-webkit-details-marker{display:none}
@@ -609,12 +612,103 @@ let currentModule='';
 let currentAction='';
 let currentOrderState='view';
 const SALES_ORDER_VIEW_NO='SO-20260328-001';
-const SALES_ORDER_CREATE_NO='SO-2026-17-000123';
+const SALES_ORDER_CREATE_DEFAULT_DATE='2026-04-21';
+const SALES_ORDER_CREATE_RUNNING_NO='000123';
+let createFormSnapshot=null;
 const BUYER_OPTIONS_BY_CUSTOMER={
   'NorthBay Retail Group':['Emily Carter','Jason Lim'],
   'Atlas Distribution Sdn. Bhd.':['Siti Zaleha','Kelvin Ong'],
   'Harborline Projects Pte. Ltd.':['Rachel Tan','Darren Goh']
 };
+function getCreateSalesOrderNo(){
+  const entryDateInput=document.getElementById('create-order-entry-date');
+  const rawValue=(entryDateInput&&entryDateInput.value?entryDateInput.value:SALES_ORDER_CREATE_DEFAULT_DATE).trim();
+  const normalized=/^\d{4}-\d{2}-\d{2}$/.test(rawValue)?rawValue.replace(/-/g,''):SALES_ORDER_CREATE_DEFAULT_DATE.replace(/-/g,'');
+  return 'SO-'+normalized+'-'+SALES_ORDER_CREATE_RUNNING_NO;
+}
+function syncCreateSalesOrderNo(){
+  const createOrderNo=document.getElementById('create-sales-order-no');
+  const nextOrderNo=getCreateSalesOrderNo();
+  if(createOrderNo){
+    createOrderNo.innerHTML='<code>'+nextOrderNo+'</code>';
+  }
+  if(currentAction==='create'){
+    const titleOrderNo=document.getElementById('title-order-no');
+    if(titleOrderNo)titleOrderNo.textContent=nextOrderNo;
+  }
+}
+function getCreateFormState(){
+  const fields=[
+    'create-customer-input',
+    'create-buyer-input',
+    'create-buyer-contact',
+    'create-buyer-email',
+    'create-buyer-others',
+    'create-salesperson-input',
+    'create-sales-contact',
+    'create-sales-email',
+    'create-sales-others',
+    'create-customer-po-input',
+    'create-order-entry-date',
+    'create-customer-required-date',
+    'create-overall-commit-date'
+  ];
+  const state={orderType:'',route:''};
+  fields.forEach(id=>{
+    const node=document.getElementById(id);
+    state[id]=node?node.value:'';
+  });
+  const orderTypeSelect=document.getElementById('order-type-select');
+  const routeSelect=document.getElementById('type-select');
+  state.orderType=orderTypeSelect?orderTypeSelect.value:'';
+  state.route=routeSelect?routeSelect.value:'';
+  return state;
+}
+function applyCreateFormState(state){
+  if(!state)return;
+  Object.entries(state).forEach(([key,value])=>{
+    if(key==='orderType'||key==='route')return;
+    const node=document.getElementById(key);
+    if(node)node.value=value;
+  });
+  const customerInput=document.getElementById('create-customer-input');
+  if(customerInput)populateBuyerOptions(customerInput.value.trim());
+  const buyerInput=document.getElementById('create-buyer-input');
+  if(buyerInput&&Object.prototype.hasOwnProperty.call(state,'create-buyer-input')){
+    buyerInput.value=state['create-buyer-input'];
+  }
+  const orderTypeSelect=document.getElementById('order-type-select');
+  if(orderTypeSelect&&state.orderType){
+    orderTypeSelect.value=state.orderType;
+  }
+  syncOrderType();
+  const routeSelect=document.getElementById('type-select');
+  if(routeSelect&&state.route){
+    routeSelect.value=state.route;
+  }
+  syncType();
+  syncCreateSalesOrderNo();
+  syncSummaryWarning();
+  syncCreateFormActions();
+}
+function isCreateFormDirty(){
+  if(!createFormSnapshot)return false;
+  return JSON.stringify(getCreateFormState())!==JSON.stringify(createFormSnapshot);
+}
+function syncCreateFormActions(){
+  const createUndoButton=document.getElementById('create-undo-button');
+  const createSaveButton=document.getElementById('create-save-button');
+  const isCreate=currentAction==='create';
+  const isDirty=isCreate&&isCreateFormDirty();
+  if(createUndoButton){
+    createUndoButton.disabled=!isDirty;
+    createUndoButton.setAttribute('aria-disabled',isDirty?'false':'true');
+  }
+  if(createSaveButton){
+    createSaveButton.disabled=!isCreate;
+    createSaveButton.setAttribute('aria-disabled',isCreate?'false':'true');
+  }
+}
 function showSection(){
   const value=document.getElementById('section-select').value;
   document.querySelectorAll('.section-pane').forEach(el=>el.classList.add('hidden'));
@@ -813,6 +907,7 @@ function syncOrderState(){
     saveButton.disabled=!canSave;
     saveButton.setAttribute('aria-disabled',canSave?'false':'true');
   }
+  syncCreateFormActions();
   syncFlowActionUi();
 }
 function syncFlowActionUi(){
@@ -825,7 +920,7 @@ function syncFlowActionUi(){
     body.setAttribute('data-flow-action',currentAction||'');
   }
   if(titleOrderNo){
-    titleOrderNo.textContent=currentAction==='create'?SALES_ORDER_CREATE_NO:SALES_ORDER_VIEW_NO;
+    titleOrderNo.textContent=currentAction==='create'?getCreateSalesOrderNo():SALES_ORDER_VIEW_NO;
   }
   if(topRiskBadge){
     if(currentAction==='create'){
@@ -850,6 +945,7 @@ function syncFlowActionUi(){
     }
     saveButton.innerHTML='<span class="btn-icon" aria-hidden="true"></span>'+(currentAction==='create'?'Save Draft':'Save Changes');
   }
+  syncCreateFormActions();
   syncSummaryWarning();
 }
 function setupHeaderActions(){
@@ -1083,6 +1179,10 @@ function setupCreateForm(){
   const requiredDateInput=document.getElementById('create-customer-required-date');
   const commitDateInput=document.getElementById('create-overall-commit-date');
   const entryDateInput=document.getElementById('create-order-entry-date');
+  const orderTypeSelect=document.getElementById('order-type-select');
+  const routeSelect=document.getElementById('type-select');
+  const createUndoButton=document.getElementById('create-undo-button');
+  const createSaveButton=document.getElementById('create-save-button');
   if(customerInput){
     customerInput.addEventListener('input',()=>populateBuyerOptions(customerInput.value.trim()));
     customerInput.addEventListener('change',()=>populateBuyerOptions(customerInput.value.trim()));
@@ -1093,11 +1193,56 @@ function setupCreateForm(){
     input.addEventListener('input',syncSummaryWarning);
     input.addEventListener('change',syncSummaryWarning);
   });
+  if(entryDateInput){
+    entryDateInput.addEventListener('input',()=>{
+      syncCreateSalesOrderNo();
+      syncCreateFormActions();
+    });
+    entryDateInput.addEventListener('change',()=>{
+      syncCreateSalesOrderNo();
+      syncCreateFormActions();
+    });
+  }
+  const trackedCreateFields=[
+    customerInput,
+    document.getElementById('create-buyer-input'),
+    document.getElementById('create-buyer-contact'),
+    document.getElementById('create-buyer-email'),
+    document.getElementById('create-buyer-others'),
+    document.getElementById('create-salesperson-input'),
+    document.getElementById('create-sales-contact'),
+    document.getElementById('create-sales-email'),
+    document.getElementById('create-sales-others'),
+    document.getElementById('create-customer-po-input'),
+    entryDateInput,
+    requiredDateInput,
+    commitDateInput,
+    orderTypeSelect,
+    routeSelect
+  ].filter(Boolean);
+  trackedCreateFields.forEach(input=>{
+    input.addEventListener('input',syncCreateFormActions);
+    input.addEventListener('change',syncCreateFormActions);
+  });
+  if(createUndoButton){
+    createUndoButton.addEventListener('click',()=>{
+      applyCreateFormState(createFormSnapshot);
+    });
+  }
+  if(createSaveButton){
+    createSaveButton.addEventListener('click',()=>{
+      createFormSnapshot=getCreateFormState();
+      syncCreateFormActions();
+    });
+  }
   if(masterDataMenu){
     document.addEventListener('click',event=>{
       if(!masterDataMenu.contains(event.target))masterDataMenu.removeAttribute('open');
     });
   }
+  syncCreateSalesOrderNo();
+  createFormSnapshot=getCreateFormState();
+  syncCreateFormActions();
 }
 function setupSectionTabs(){
   const sectionSelect=document.getElementById('section-select');
@@ -1264,13 +1409,19 @@ window.addEventListener('DOMContentLoaded',()=>{
       <div class="create-order-shell create-only">
         <div class="create-form-head">
           <div class="create-form-title">Create / Add Sales Order</div>
-          <details id="master-data-menu" class="master-data-menu">
-            <summary class="master-data-toggle">Master Data</summary>
-            <div class="master-data-panel">
-              <button type="button" class="master-data-option">Import Excel</button>
-              <button type="button" class="master-data-option">Link Google Sheet</button>
+          <div class="create-form-tools">
+            <details id="master-data-menu" class="master-data-menu">
+              <summary class="master-data-toggle">Master Data</summary>
+              <div class="master-data-panel">
+                <button type="button" class="master-data-option">Import Excel</button>
+                <button type="button" class="master-data-option">Link Google Sheet</button>
+              </div>
+            </details>
+            <div class="create-form-actions">
+              <button id="create-undo-button" type="button" class="btn emphasis" disabled aria-disabled="true">Undo</button>
+              <button id="create-save-button" type="button" class="btn primary">Save</button>
             </div>
-          </details>
+          </div>
         </div>
         <div class="create-sheet">
           <div class="create-sheet-inner">
@@ -1278,7 +1429,7 @@ window.addEventListener('DOMContentLoaded',()=>{
               <div class="create-row">
                 <label class="create-label" for="create-sales-order-no">Sales Order No</label>
                 <div class="create-field-wrap">
-                  <div id="create-sales-order-no" class="read-only-input"><code>SO-2026-17-000123</code></div>
+                  <div id="create-sales-order-no" class="read-only-input"><code>SO-20260421-000123</code></div>
                 </div>
               </div>
               <div class="create-row">
