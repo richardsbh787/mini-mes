@@ -332,10 +332,10 @@ body{margin:0;background:linear-gradient(180deg,#fefefe 0%,var(--bg) 180px,#f8f8
 .section-pane.data-pane#items .table-wrap,
 .section-pane.data-pane#delivery .table-wrap,
 .section-pane.data-pane#log .table-wrap{flex:1;min-height:0;overflow:visible}
-.field-row,.edit-row{padding:14px 0;border-top:1px solid var(--line)}.summary-sheet{border:1px solid var(--line);border-radius:var(--panel-radius);overflow:visible;background:var(--surface-soft);box-shadow:inset 0 1px 0 rgba(255,255,255,.82),0 2px 6px rgba(67,89,112,.035)}.summary-sheet table{width:100%;min-width:max(1080px,var(--content-grid-min-width));border-collapse:collapse;font-size:14px}.summary-sheet td{padding:14px 16px;border-bottom:1px solid var(--soft-border);vertical-align:top}.summary-sheet .label{width:180px;height:var(--table-header-height);padding:12px 16px;font-size:var(--table-header-font-size);font-weight:var(--table-header-font-weight);line-height:var(--table-header-line-height);color:var(--text);background:var(--surface-header);letter-spacing:var(--table-header-letter-spacing);text-transform:var(--table-header-text-transform);vertical-align:middle}.summary-sheet .value{min-width:180px;background:var(--surface-card)}.summary-note{padding-top:0}
+.field-row,.edit-row{padding:14px 0;border-top:1px solid var(--line)}.summary-sheet{max-width:1320px;margin:0 auto;border:1px solid var(--line);border-radius:var(--panel-radius);overflow:visible;background:var(--surface-soft);box-shadow:inset 0 1px 0 rgba(255,255,255,.82),0 2px 6px rgba(67,89,112,.035)}.summary-sheet table{width:100%;min-width:0;table-layout:fixed;border-collapse:collapse;font-size:14px}.summary-sheet td{padding:12px 14px;border-bottom:1px solid var(--soft-border);vertical-align:top}.summary-sheet .label{width:11.11%;height:var(--table-header-height);padding:11px 12px;font-size:var(--table-header-font-size);font-weight:var(--table-header-font-weight);line-height:var(--table-header-line-height);color:var(--text);background:var(--surface-header);letter-spacing:var(--table-header-letter-spacing);text-transform:var(--table-header-text-transform);vertical-align:middle}.summary-sheet .value{min-width:0;background:var(--surface-card);font-size:14px;line-height:1.4}.summary-note{padding-top:0}
 .field-label,.edit-label,.block-label{font-size:12px;font-weight:700;color:var(--blue);margin-bottom:8px;letter-spacing:.08px}
 .field-value,.block-value{font-size:15px;line-height:1.45;color:#314a65}
-.block{margin-top:10px;border:1px solid var(--soft-border);border-radius:14px;background:var(--surface-card);padding:16px 17px;box-shadow:inset 0 1px 0 rgba(255,255,255,.82),0 1px 3px rgba(67,89,112,.02)}
+.block{max-width:1320px;margin:10px auto 0;border:1px solid var(--soft-border);border-radius:14px;background:var(--surface-card);padding:14px 16px;box-shadow:inset 0 1px 0 rgba(255,255,255,.82),0 1px 3px rgba(67,89,112,.02)}
 .route-display{display:grid;grid-template-columns:220px 1fr 220px 1fr;column-gap:18px;align-items:start;padding:0 0 14px;border-bottom:1px solid var(--line)}
 .input-line,.select-line,.textarea-line{width:100%;font-size:14px;line-height:1.45;color:var(--text);background:#fefefe;border:1px solid var(--line);padding:9px 12px;outline:none;border-radius:8px;box-shadow:none}
 .select-line{height:38px;padding-right:28px}
@@ -353,8 +353,8 @@ td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line
   display:flex;
   align-items:center;
   gap:12px;
-  margin-bottom:12px;
-  padding:9px 12px;
+  margin-bottom:14px;
+  padding:10px 14px;
   border:1px solid var(--soft-border);
   border-radius:12px;
   background:rgba(250,251,252,.92);
@@ -378,23 +378,30 @@ td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line
   border-radius:16px;
   overflow:visible;
 }
-.order-items-table table{min-width:1660px}
-.order-items-table td{font-size:14px}
+.order-items-table table{min-width:1520px}
+.order-items-table th{padding:13px 10px}
+.order-items-table td{padding:15px 10px;font-size:14px;line-height:1.45}
 .order-items-table .qty-cell,
-.order-items-table .uom-cell,
 .order-items-table .date-cell,
 .order-items-table .buffer-cell,
 .order-items-table .batch-cell,
 .order-items-table .status-cell{text-align:center}
 .order-items-table .status-cell .badge{max-width:100%}
 .order-items-table .waiver-cell .badge{max-width:100%}
-.order-items-table .remark-cell{min-width:220px}
+.order-items-table .remark-cell{min-width:250px}
 .order-items-table .waiver-cell{min-width:170px}
+.order-items-table .qty-cell{font-weight:700;color:var(--title);white-space:nowrap}
+.order-items-table .date-cell{font-size:13px;line-height:1.4;color:#3a526a}
 .order-items-parent-row td:first-child{
   font-weight:700;
   color:var(--title);
 }
+.order-items-parent-row td{
+  background:#fdfefe;
+}
 .order-items-subrow td{
+  padding-top:12px;
+  padding-bottom:12px;
   background:#f9fbfc;
   font-size:13px;
   color:var(--muted-strong);
@@ -403,13 +410,17 @@ td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line
   color:transparent;
 }
 .order-items-subrow .subrow-label{
-  padding-left:28px;
+  padding-left:22px;
   color:var(--text);
   font-weight:600;
 }
 .order-items-subrow .batch-cell{
   font-weight:600;
   color:var(--title);
+}
+.order-items-subrow .qty-cell,
+.order-items-subrow .date-cell{
+  font-size:13px;
 }
 .order-items-subrow .remark-cell{
   color:var(--muted-strong);
@@ -736,6 +747,22 @@ function parseYmdDate(value){
   const date=new Date(Date.UTC(year,monthIndex,day));
   return Number.isNaN(date.getTime()) ? null : date;
 }
+function formatMockDisplayDate(value){
+  const date=parseYmdDate(value);
+  if(!date)return value;
+  const weekdays=['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  const day=String(date.getUTCDate()).padStart(2,'0');
+  const month=String(date.getUTCMonth()+1).padStart(2,'0');
+  const year=String(date.getUTCFullYear()).slice(-2);
+  return day+'-'+month+'-'+year+' ('+weekdays[date.getUTCDay()]+')';
+}
+function syncMockDisplayDates(){
+  document.querySelectorAll('[data-date-display]').forEach(node=>{
+    const raw=node.dataset.dateDisplay||node.dataset.date||'';
+    if(!raw)return;
+    node.textContent=formatMockDisplayDate(raw);
+  });
+}
 function formatSafetyBuffer(fgReadyText,planShipText){
   const planShipValue=(planShipText||'').trim();
   if(!/^\d{4}-\d{2}-\d{2}$/.test(planShipValue))return '—';
@@ -763,7 +790,9 @@ function syncOrderItemsSafetyBuffer(){
     const planShipCell=row.querySelector('.plan-ship-date');
     const bufferCell=row.querySelector('.buffer-cell');
     if(!fgReadyCell||!planShipCell||!bufferCell)return;
-    bufferCell.textContent=formatSafetyBuffer(fgReadyCell.textContent,planShipCell.textContent);
+    const fgReadyValue=fgReadyCell.dataset.date||fgReadyCell.textContent;
+    const planShipValue=planShipCell.dataset.date||planShipCell.textContent;
+    bufferCell.textContent=formatSafetyBuffer(fgReadyValue,planShipValue);
   });
 }
 function syncType(){
@@ -869,6 +898,7 @@ window.addEventListener('DOMContentLoaded',()=>{
   syncOrderType();
   syncOrderState();
   syncSummaryWarning();
+  syncMockDisplayDates();
   syncOrderItemsSafetyBuffer();
   updateZoomNotice();
   window.addEventListener('resize',updateZoomNotice);
@@ -1043,9 +1073,9 @@ window.addEventListener('DOMContentLoaded',()=>{
             <td class="value">NorthBay Retail Group</td>
             <td class="value"><div>Emily Carter</div><button class="contact-toggle" type="button" onclick="toggleContact('buyer-contact', this)">Show Contact</button><div id="buyer-contact" class="contact-details">Role: Buyer<br>Email: emily.carter@northbayretail.com</div></td>
             <td class="value"><div>Alex Chen</div><button class="contact-toggle" type="button" onclick="toggleContact('sales-contact', this)">Show Contact</button><div id="sales-contact" class="contact-details">Email: alexchen.nb@northbay.com<br>Mobile / WhatsApp: +60 12-345 6789<br>WeChat: alexchen_nb<br>LINE: alexchen-sales</div></td>
-            <td class="value">2026-03-28</td>
-            <td id="customer-request-date" class="value" data-date="2026-05-15">2026-05-15</td>
-            <td id="overall-commit-date" class="value" data-date="2026-05-22">2026-05-22<div class="support-text">Customer-facing overall commit date for the whole Sales Order. Each Order Item FG Ready Date should stay on or before this date. Commit Lead Time: 37 working days (MY / CN holiday-adjusted mock)</div></td>
+            <td class="value" data-date-display="2026-03-28">2026-03-28</td>
+            <td id="customer-request-date" class="value" data-date="2026-05-15" data-date-display="2026-05-15">2026-05-15</td>
+            <td id="overall-commit-date" class="value" data-date="2026-05-22"><span data-date-display="2026-05-22">2026-05-22</span><div class="support-text">Customer-facing overall commit date for the whole Sales Order. Each Order Item FG Ready Date should stay on or before this date. Commit Lead Time: 37 working days (MY / CN holiday-adjusted mock)</div></td>
           </tr>
         </table>
       </div>
@@ -1107,7 +1137,7 @@ window.addEventListener('DOMContentLoaded',()=>{
     <div class="section section-scroll">
       <div class="order-items-meta-strip">
         <span class="order-items-meta-label">Overall Commit Date</span>
-        <span class="order-items-meta-value">2026-05-22</span>
+        <span class="order-items-meta-value" data-date-display="2026-05-22">2026-05-22</span>
         <span class="support-text">Order-level customer-facing commit date. FG Ready Date stays as the row-level internal readiness target, and Plan Ship Date stays at the item or delivery-batch planning level.</span>
       </div>
       <div class="table-wrap order-items-table">
@@ -1119,7 +1149,6 @@ window.addEventListener('DOMContentLoaded',()=>{
               <th>Internal Part No.</th>
               <th>Product Description</th>
               <th>Qty</th>
-              <th>UOM</th>
               <th>FG Ready Date</th>
               <th>Plan Ship Date</th>
               <th>Safety Buffer (WD)</th>
@@ -1135,9 +1164,8 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td>NBR-SL100W-A01</td>
               <td>SL-NB-100W</td>
               <td>100W Solar LED Street Light, staged customer release</td>
-              <td class="qty-cell">900</td>
-              <td class="uom-cell">pcs</td>
-              <td class="date-cell fg-ready-date">2026-05-20</td>
+              <td class="qty-cell">900 pcs</td>
+              <td class="date-cell fg-ready-date" data-date="2026-05-20" data-date-display="2026-05-20">2026-05-20</td>
               <td class="date-cell plan-ship-date">By batch plan</td>
               <td class="buffer-cell">—</td>
               <td class="batch-cell">Split Delivery, 3 batches</td>
@@ -1150,10 +1178,9 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td></td>
               <td></td>
               <td class="subrow-label">Partial Delivery Plan</td>
-              <td class="qty-cell">300</td>
-              <td class="uom-cell">pcs</td>
-              <td class="date-cell fg-ready-date">2026-05-14</td>
-              <td class="date-cell plan-ship-date">2026-05-15</td>
+              <td class="qty-cell">300 pcs</td>
+              <td class="date-cell fg-ready-date" data-date="2026-05-14" data-date-display="2026-05-14">2026-05-14</td>
+              <td class="date-cell plan-ship-date" data-date="2026-05-15" data-date-display="2026-05-15">2026-05-15</td>
               <td class="buffer-cell">—</td>
               <td class="batch-cell">Delivery Batch 1 of 3</td>
               <td colspan="3" class="remark-cell">First customer-requested release under Order Item 001.</td>
@@ -1163,10 +1190,9 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td></td>
               <td></td>
               <td class="subrow-label">Partial Delivery Plan</td>
-              <td class="qty-cell">300</td>
-              <td class="uom-cell">pcs</td>
-              <td class="date-cell fg-ready-date">2026-05-18</td>
-              <td class="date-cell plan-ship-date">2026-05-19</td>
+              <td class="qty-cell">300 pcs</td>
+              <td class="date-cell fg-ready-date" data-date="2026-05-18" data-date-display="2026-05-18">2026-05-18</td>
+              <td class="date-cell plan-ship-date" data-date="2026-05-19" data-date-display="2026-05-19">2026-05-19</td>
               <td class="buffer-cell">—</td>
               <td class="batch-cell">Delivery Batch 2 of 3</td>
               <td colspan="3" class="remark-cell">Second planned release for the same original Order Item.</td>
@@ -1176,10 +1202,9 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td></td>
               <td></td>
               <td class="subrow-label">Partial Delivery Plan</td>
-              <td class="qty-cell">300</td>
-              <td class="uom-cell">pcs</td>
-              <td class="date-cell fg-ready-date">2026-05-20</td>
-              <td class="date-cell plan-ship-date">2026-05-21</td>
+              <td class="qty-cell">300 pcs</td>
+              <td class="date-cell fg-ready-date" data-date="2026-05-20" data-date-display="2026-05-20">2026-05-20</td>
+              <td class="date-cell plan-ship-date" data-date="2026-05-21" data-date-display="2026-05-21">2026-05-21</td>
               <td class="buffer-cell">—</td>
               <td class="batch-cell">Delivery Batch 3 of 3</td>
               <td colspan="3" class="remark-cell">Final release completes Order Item 001 before the overall commit date.</td>
@@ -1189,10 +1214,9 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td>NBR-SL150W-B03</td>
               <td>SL-NB-150W</td>
               <td>150W Solar LED Street Light, repeat assortment</td>
-              <td class="qty-cell">500</td>
-              <td class="uom-cell">pcs</td>
-              <td class="date-cell fg-ready-date">2026-05-15</td>
-              <td class="date-cell plan-ship-date">2026-05-18</td>
+              <td class="qty-cell">500 pcs</td>
+              <td class="date-cell fg-ready-date" data-date="2026-05-15" data-date-display="2026-05-15">2026-05-15</td>
+              <td class="date-cell plan-ship-date" data-date="2026-05-18" data-date-display="2026-05-18">2026-05-18</td>
               <td class="buffer-cell">—</td>
               <td class="batch-cell">Full delivery</td>
               <td class="status-cell"><span class="badge steel">Repeat Build</span></td>
@@ -1204,10 +1228,9 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td>NBR-ACC-KIT04</td>
               <td>ACC-NB-MOUNT</td>
               <td>Mounting accessory kit for mixed wattage order rows</td>
-              <td class="qty-cell">1,400</td>
-              <td class="uom-cell">set</td>
-              <td class="date-cell fg-ready-date">2026-05-22</td>
-              <td class="date-cell plan-ship-date">2026-05-22</td>
+              <td class="qty-cell">1,400 set</td>
+              <td class="date-cell fg-ready-date" data-date="2026-05-22" data-date-display="2026-05-22">2026-05-22</td>
+              <td class="date-cell plan-ship-date" data-date="2026-05-22" data-date-display="2026-05-22">2026-05-22</td>
               <td class="buffer-cell">—</td>
               <td class="batch-cell">Full delivery</td>
               <td class="status-cell"><span class="badge bundled">Accessory Bundle</span></td>
@@ -1217,8 +1240,7 @@ window.addEventListener('DOMContentLoaded',()=>{
             <tr class="order-items-total-row">
               <td>Total</td>
               <td colspan="3">3 order items in current sales order view</td>
-              <td class="qty-cell">2,800</td>
-              <td class="uom-cell">mixed</td>
+              <td class="qty-cell">2,800 mixed</td>
               <td class="date-cell"></td>
               <td class="date-cell">mixed</td>
               <td class="buffer-cell"></td>
