@@ -186,6 +186,7 @@ body{margin:0;background:linear-gradient(180deg,#fefefe 0%,var(--bg) 180px,#f8f8
 .zoom-notice.show{display:inline-flex}
 .zoom-notice strong{color:var(--text);font-weight:700}
 .side-nav-action-shell{display:grid;gap:2px;margin:6px 0 6px 12px;padding:6px 0 2px 14px;border-left:1px solid var(--soft-border)}
+.master-module-shell{margin-top:6px}
 .side-nav-action-item{display:block;width:100%;padding:7px 10px;border:1px solid transparent;border-radius:999px;background:transparent;color:var(--muted);font-size:12px;font-weight:600;line-height:1.35;text-align:left;cursor:pointer;box-shadow:none;transition:background .16s ease,border-color .16s ease,color .16s ease,box-shadow .16s ease}
 .side-nav-action-item:hover{color:var(--text);background:rgba(241,247,251,.9);border-color:#e0e9f0}
 .side-nav-action-item.active{background:linear-gradient(180deg,#fdfefe 0%,#eaf2f8 100%);border-color:#c9d9e6;color:var(--blue);box-shadow:inset 0 1px 0 rgba(255,255,255,.92),0 2px 6px rgba(79,127,168,.12)}
@@ -557,6 +558,26 @@ body[data-flow-action="create"] .route-field-shell .route-segment{min-width:68px
 body[data-flow-action="create"] #save-button{background:#eef4f7;border-color:#d9e4eb;color:#6f8598;box-shadow:inset 0 1px 0 rgba(255,255,255,.82)}
 body[data-flow-action="create"] #save-button:hover{background:#e8f0f5;border-color:#cfdee8;color:#5f7689}
 body[data-flow-action="create"] #back-button{color:#7b8ea0}
+body[data-master-stage="true"] .sticky-shell{display:none}
+.master-stage{max-width:1100px;margin:0 auto;padding:18px 0 28px}
+.master-stage-header{display:grid;gap:4px;margin-bottom:14px}
+.master-stage-kicker{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-soft)}
+.master-stage-title{font-size:22px;font-weight:700;line-height:1.2;color:var(--title)}
+.master-stage-copy{font-size:12px;line-height:1.55;color:var(--muted);max-width:760px}
+.master-stage-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.master-stage-toolbar .input-line{max-width:320px}
+.master-stage-toolbar-copy{font-size:12px;color:var(--muted)}
+.master-stage-grid{display:grid;gap:14px}
+.master-stage-edit-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(320px,.9fr);gap:16px;align-items:start}
+.master-stage .table-wrap{box-shadow:inset 0 1px 0 rgba(255,255,255,.82),0 1px 3px rgba(67,89,112,.03)}
+.master-stage table{min-width:100%}
+.master-stage .btn-row{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:12px}
+.master-stage-empty{padding:22px 18px;border:1px dashed #d6e1ea;border-radius:14px;background:rgba(252,253,254,.8);font-size:13px;line-height:1.55;color:var(--muted)}
+.master-stage-note{font-size:12px;color:var(--muted);line-height:1.55}
+.master-stage .section{padding-top:0}
+.master-status-pill{display:inline-flex;align-items:center;justify-content:center;min-height:24px;padding:4px 10px;border-radius:999px;border:1px solid #d6e1ea;background:#eef4f8;color:#5f7689;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+.master-status-pill.inactive{background:#f3e8e8;border-color:#ddcaca;color:#8e6262}
+.master-delete-note{color:#8e6262}
 .tab-content-viewport,.section-scroll,.summary-sheet,.textarea-line,.items-sheet,.table-wrap.procurement-wrap{
   scrollbar-width:thin;
   scrollbar-color:var(--scroll-thumb) var(--scroll-track);
@@ -583,6 +604,7 @@ body[data-flow-action="create"] #back-button{color:#7b8ea0}
   .tabs-shell{flex-basis:100%}
   .toolbar-route{width:100%}
   .create-form-head{flex-direction:column;align-items:flex-start}
+  .master-stage-edit-grid{grid-template-columns:1fr}
   .create-top-grid,.create-main-grid,.create-bottom-grid,.create-audit-grid{grid-template-columns:1fr}
   .create-row{grid-template-columns:1fr;gap:6px}
   .create-top-grid .create-row{justify-self:auto}
@@ -592,12 +614,14 @@ body[data-flow-action="create"] #back-button{color:#7b8ea0}
 <script>
 const MODULE_CONFIG={
   'sales-orders':{label:'Sales & Orders', flowTitle:'Sales Order mock flow'},
+  'buyer-master':{label:'Buyer Master', flowTitle:'Buyer master maintenance mock flow'},
   'product-engineering':{label:'Product & Engineering', flowTitle:'Product / engineering record flow'},
   'planning':{label:'Planning', flowTitle:'Planning record flow'},
   'procurement':{label:'Procurement', flowTitle:'Procurement record flow'},
   'inventory-warehouse':{label:'Inventory & Warehouse', flowTitle:'Inventory / warehouse record flow'},
   'production':{label:'Production', flowTitle:'Production record flow'},
   'quality':{label:'Quality', flowTitle:'Quality record flow'},
+  'sales-person-master':{label:'Sales Person Master', flowTitle:'Sales person master maintenance mock flow'},
   'shipping-logistics':{label:'Shipping & Logistics', flowTitle:'Shipping / logistics record flow'},
   'finance-costing':{label:'Finance & Costing', flowTitle:'Finance / costing record flow'},
   'reports-master-data':{label:'Reports & Master Data', flowTitle:'Report / master-data flow'}
@@ -616,29 +640,195 @@ const SALES_ORDER_VIEW_NO='SO-20260328-001';
 const SALES_ORDER_CREATE_DEFAULT_DATE='2026-04-21';
 const SALES_ORDER_CREATE_RUNNING_NO='000123';
 let createFormSnapshot=null;
-const BUYER_MASTER_LIST=[
-  {name:'Emily Carter',contact:'+60 12-345 8891',email:'emily.carter@northbayretail.com'},
-  {name:'Jason Lim',contact:'+60 16-880 2145',email:'jason.lim@northbayretail.com'},
-  {name:'Sophia Wong',contact:'+60 19-442 7308',email:'sophia.wong@northbayretail.com'}
+let buyerMasterRecords=[
+  {id:'buyer-001',name:'Emily Carter',customerCompanyName:'NorthBay Retail Group',contact:'+60 12-345 8891',email:'emily.carter@northbayretail.com',notes:'Preferred release updates by email.',status:'Active'},
+  {id:'buyer-002',name:'Jason Lim',customerCompanyName:'NorthBay Retail Group',contact:'+60 16-880 2145',email:'jason.lim@northbayretail.com',notes:'Handles repeat replenishment releases.',status:'Active'},
+  {id:'buyer-003',name:'Sophia Wong',customerCompanyName:'Atlas Distribution Sdn. Bhd.',contact:'+60 19-442 7308',email:'sophia.wong@atlasdistribution.com',notes:'Escalation contact for tender-linked orders.',status:'Inactive'}
 ];
-const SALES_PERSON_MASTER_LIST=[
-  {name:'Alex Chen',contact:'+60 12-345 6789',email:'alexchen.nb@northbay.com'},
-  {name:'Phoebe Ng',contact:'+60 17-298 4450',email:'phoebe.ng@northbay.com'},
-  {name:'Daniel Tan',contact:'+60 18-551 3277',email:'daniel.tan@northbay.com'}
+let salesPersonMasterRecords=[
+  {id:'sales-001',name:'Alex Chen',contact:'+60 12-345 6789',email:'alexchen.nb@northbay.com',notes:'Local account handover on booking confirmation.',status:'Active'},
+  {id:'sales-002',name:'Phoebe Ng',contact:'+60 17-298 4450',email:'phoebe.ng@northbay.com',notes:'Handles overseas pre-shipment follow-up.',status:'Active'},
+  {id:'sales-003',name:'Daniel Tan',contact:'+60 18-551 3277',email:'daniel.tan@northbay.com',notes:'Supports urgent replacements and insert orders.',status:'Inactive'}
 ];
-const BUYER_MASTER_BY_NAME=BUYER_MASTER_LIST.reduce((acc,record)=>{
-  acc[record.name]=record;
-  return acc;
-},{});
-const SALES_PERSON_MASTER_BY_NAME=SALES_PERSON_MASTER_LIST.reduce((acc,record)=>{
-  acc[record.name]=record;
-  return acc;
-},{});
+const MASTER_STATUS_OPTIONS=['Active','Inactive'];
+const MASTER_MODULE_FIELDS={
+  'buyer-master':[
+    {key:'name',label:'Buyer Name',type:'text'},
+    {key:'customerCompanyName',label:'Customer Company Name',type:'text'},
+    {key:'contact',label:'Buyer Contact No',type:'text'},
+    {key:'email',label:'Buyer Email',type:'email'},
+    {key:'notes',label:'Notes / Remark',type:'textarea'},
+    {key:'status',label:'Status',type:'select'}
+  ],
+  'sales-person-master':[
+    {key:'name',label:'Sales Person Name',type:'text'},
+    {key:'contact',label:'Sales Person Contact No',type:'text'},
+    {key:'email',label:'Sales Person Email',type:'email'},
+    {key:'notes',label:'Notes / Remark',type:'textarea'},
+    {key:'status',label:'Status',type:'select'}
+  ]
+};
+const masterUiState={
+  'buyer-master':{query:'',selectedId:'buyer-001'},
+  'sales-person-master':{query:'',selectedId:'sales-001'}
+};
+function escapeHtml(value){
+  return String(value??'').replace(/[&<>"']/g,char=>({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
+  }[char]));
+}
+function isMasterModule(moduleId){
+  return moduleId==='buyer-master'||moduleId==='sales-person-master';
+}
+function getMasterRecords(moduleId){
+  return moduleId==='buyer-master' ? buyerMasterRecords : moduleId==='sales-person-master' ? salesPersonMasterRecords : [];
+}
+function setMasterRecords(moduleId,nextRecords){
+  if(moduleId==='buyer-master'){
+    buyerMasterRecords=nextRecords;
+  } else if(moduleId==='sales-person-master'){
+    salesPersonMasterRecords=nextRecords;
+  }
+}
+function getMasterState(moduleId){
+  return masterUiState[moduleId];
+}
+function getMasterDefaultRecord(moduleId){
+  return moduleId==='buyer-master'
+    ? {name:'',customerCompanyName:'',contact:'',email:'',notes:'',status:'Active'}
+    : {name:'',contact:'',email:'',notes:'',status:'Active'};
+}
+function getMasterRecordById(moduleId,recordId){
+  return getMasterRecords(moduleId).find(record=>record.id===recordId)||null;
+}
+function filterMasterRecords(moduleId,query){
+  const normalized=(query||'').trim().toLowerCase();
+  const records=getMasterRecords(moduleId);
+  if(!normalized)return records;
+  return records.filter(record=>Object.values(record).some(value=>String(value??'').toLowerCase().includes(normalized)));
+}
+function getMasterTableColumns(moduleId){
+  return moduleId==='buyer-master'
+    ? ['name','customerCompanyName','contact','email','status']
+    : ['name','contact','email','status'];
+}
+function getMasterColumnLabel(moduleId,key){
+  const field=(MASTER_MODULE_FIELDS[moduleId]||[]).find(item=>item.key===key);
+  return field?field.label:key;
+}
 function getBuyerMasterRecord(name){
-  return BUYER_MASTER_BY_NAME[name]||BUYER_MASTER_LIST[0];
+  return buyerMasterRecords.find(record=>record.name===name)||buyerMasterRecords[0];
 }
 function getSalesPersonMasterRecord(name){
-  return SALES_PERSON_MASTER_BY_NAME[name]||SALES_PERSON_MASTER_LIST[0];
+  return salesPersonMasterRecords.find(record=>record.name===name)||salesPersonMasterRecords[0];
+}
+function generateMasterRecordId(moduleId){
+  const prefix=moduleId==='buyer-master'?'buyer':'sales';
+  const nextNumber=getMasterRecords(moduleId).reduce((maxValue,record)=>{
+    const match=/(\d+)$/.exec(record.id||'');
+    return Math.max(maxValue,match?Number(match[1]):0);
+  },0)+1;
+  return prefix+'-'+String(nextNumber).padStart(3,'0');
+}
+function renderDropdownOptions(dropdownId,selectId,records,selectedValue){
+  const dropdown=document.getElementById(dropdownId);
+  const hiddenSelect=document.getElementById(selectId);
+  const menu=dropdown?dropdown.querySelector('.mock-dropdown-menu'):null;
+  if(!dropdown||!hiddenSelect||!menu)return '';
+  const labels=records.map(record=>record.name);
+  const nextValue=labels.includes(selectedValue)?selectedValue:(labels[0]||'');
+  menu.innerHTML=records.map(record=>'<li><button type="button" class="mock-dropdown-item'+(record.name===nextValue?' active':'')+'" data-value="'+escapeHtml(record.name)+'">'+escapeHtml(record.name)+'</button></li>').join('');
+  hiddenSelect.innerHTML=records.map(record=>'<option'+(record.name===nextValue?' selected':'')+'>'+escapeHtml(record.name)+'</option>').join('');
+  hiddenSelect.value=nextValue;
+  if(typeof dropdown.__syncSelection==='function'){
+    dropdown.__syncSelection();
+  }
+  return nextValue;
+}
+function renderCreateMasterDropdowns(){
+  const buyerSelected=renderDropdownOptions('create-buyer-dropdown','create-buyer-select',buyerMasterRecords,document.getElementById('create-buyer-select')?.value||'');
+  const salesSelected=renderDropdownOptions('create-salesperson-dropdown','create-salesperson-select',salesPersonMasterRecords,document.getElementById('create-salesperson-select')?.value||'');
+  if(buyerSelected){
+    syncBuyerMasterFields();
+  }
+  if(salesSelected){
+    syncSalesPersonMasterFields();
+  }
+}
+function renderMasterFieldRows(moduleId,prefix,record){
+  return (MASTER_MODULE_FIELDS[moduleId]||[]).map(field=>{
+    const value=record?.[field.key]??'';
+    if(field.type==='textarea'){
+      return '<div class="create-row"><label class="create-label" for="'+prefix+'-'+field.key+'">'+field.label+'</label><div class="create-field-wrap"><textarea id="'+prefix+'-'+field.key+'" class="textarea-line">'+escapeHtml(value)+'</textarea></div></div>';
+    }
+    if(field.type==='select'){
+      return '<div class="create-row"><label class="create-label" for="'+prefix+'-'+field.key+'">'+field.label+'</label><div class="create-field-wrap"><select id="'+prefix+'-'+field.key+'" class="select-line">'+MASTER_STATUS_OPTIONS.map(option=>'<option'+(option===value?' selected':'')+'>'+option+'</option>').join('')+'</select></div></div>';
+    }
+    return '<div class="create-row"><label class="create-label" for="'+prefix+'-'+field.key+'">'+field.label+'</label><div class="create-field-wrap"><input id="'+prefix+'-'+field.key+'" class="input-line" type="'+field.type+'" value="'+escapeHtml(value)+'" /></div></div>';
+  }).join('');
+}
+function readMasterFormValues(moduleId,prefix){
+  const record={};
+  (MASTER_MODULE_FIELDS[moduleId]||[]).forEach(field=>{
+    const node=document.getElementById(prefix+'-'+field.key);
+    record[field.key]=node?node.value.trim():'';
+  });
+  return record;
+}
+function getMasterStatusPill(status){
+  const normalized=(status||'').toLowerCase();
+  return '<span class="master-status-pill'+(normalized==='inactive'?' inactive':'')+'">'+escapeHtml(status||'Active')+'</span>';
+}
+function renderMasterTable(moduleId,records,mode){
+  const columns=getMasterTableColumns(moduleId);
+  const actionLabel=mode==='search'?'Open':'Select';
+  const actionClass=mode==='search'?'btn emphasis':'btn emphasis';
+  return '<div class="table-wrap"><table><thead><tr>'+columns.map(column=>'<th>'+getMasterColumnLabel(moduleId,column)+'</th>').join('')+'<th>Action</th></tr></thead><tbody>'+(records.length?records.map(record=>'<tr><td>'+escapeHtml(record.name)+'</td>'+(moduleId==='buyer-master'?'<td>'+escapeHtml(record.customerCompanyName)+'</td>':'')+'<td>'+escapeHtml(record.contact)+'</td><td>'+escapeHtml(record.email)+'</td><td>'+getMasterStatusPill(record.status)+'</td><td>'+(mode==='delete'?'<button type="button" class="btn secondary" data-master-delete-id="'+record.id+'">Delete</button>':'<button type="button" class="'+actionClass+'" data-master-select-id="'+record.id+'">'+actionLabel+'</button>')+'</td></tr>').join(''):'<tr><td colspan="'+(columns.length+1)+'"><div class="master-stage-empty">No mock master record matches the current search.</div></td></tr>')+'</tbody></table></div>';
+}
+function renderMasterStage(){
+  const stage=document.getElementById('master-stage');
+  const headerTitle=document.getElementById('master-stage-title');
+  const headerCopy=document.getElementById('master-stage-copy');
+  const content=document.getElementById('master-stage-content');
+  if(!stage||!headerTitle||!headerCopy||!content)return;
+  if(!isMasterModule(currentModule)||!currentAction){
+    stage.classList.add('hidden');
+    content.innerHTML='';
+    return;
+  }
+  const moduleMeta=MODULE_CONFIG[currentModule];
+  const state=getMasterState(currentModule);
+  const records=filterMasterRecords(currentModule,state.query);
+  const selectedRecord=getMasterRecordById(currentModule,state.selectedId)||records[0]||getMasterRecords(currentModule)[0]||null;
+  if(selectedRecord&&state.selectedId!==selectedRecord.id){
+    state.selectedId=selectedRecord.id;
+  } else if(!selectedRecord){
+    state.selectedId='';
+  }
+  headerTitle.textContent=moduleMeta.label+' · '+ACTION_CONFIG[currentAction].label;
+  headerCopy.textContent=currentAction==='create'
+    ? 'Mock-stage master maintenance only. Add a new in-page record to the shared master source used by Sales Order Create / Add.'
+    : currentAction==='search'
+      ? 'Search the current in-file master dataset and review the lightweight record list.'
+      : currentAction==='edit'
+        ? 'Select one record first, then update the editable fields below. Changes stay in mock page state only.'
+        : 'Delete remains a restricted mock action and removes the selected record from the in-page master dataset only.';
+  let html='';
+  if(currentAction==='create'){
+    html='<div class="create-sheet"><div class="create-sheet-inner"><div class="master-stage-note">Mock add only. This does not persist outside the current page session.</div>'+renderMasterFieldRows(currentModule,'master-create',getMasterDefaultRecord(currentModule))+'<div class="btn-row"><button type="button" class="btn primary" data-master-create-save="true">Add Mock Record</button></div></div></div>';
+  } else if(currentAction==='search'){
+    html='<div class="master-stage-toolbar"><input id="master-search-input" class="input-line" type="text" placeholder="Search master record" value="'+escapeHtml(state.query)+'" data-master-search="true" /><div class="master-stage-toolbar-copy">Search / Find stays the read-entry path for master records too.</div></div>'+renderMasterTable(currentModule,records,'search');
+  } else if(currentAction==='edit'){
+    html='<div class="master-stage-edit-grid"><div class="master-stage-grid"><div class="master-stage-toolbar"><input id="master-search-input" class="input-line" type="text" placeholder="Search master record" value="'+escapeHtml(state.query)+'" data-master-search="true" /><div class="master-stage-toolbar-copy">Select a record first, then edit on the right.</div></div>'+renderMasterTable(currentModule,records,'edit')+'</div><div class="create-sheet"><div class="create-sheet-inner">'+(selectedRecord?renderMasterFieldRows(currentModule,'master-edit',selectedRecord)+'<div class="btn-row"><button type="button" class="btn primary" data-master-edit-save="'+selectedRecord.id+'">Save Mock Update</button></div>':'<div class="master-stage-empty">Select one record from the list to edit.</div>')+'</div></div></div>';
+  } else if(currentAction==='delete'){
+    html='<div class="master-stage-toolbar"><input id="master-search-input" class="input-line" type="text" placeholder="Search master record" value="'+escapeHtml(state.query)+'" data-master-search="true" /><div class="master-stage-toolbar-copy master-delete-note">Delete is mock-stage only and visually restricted on purpose.</div></div>'+renderMasterTable(currentModule,records,'delete');
+  }
+  content.innerHTML=html;
+  stage.classList.remove('hidden');
 }
 function syncMockDropdownValue(dropdownId,selectId,value){
   const dropdown=document.getElementById(dropdownId);
@@ -655,8 +845,8 @@ function syncBuyerMasterFields(){
   const buyerEmail=document.getElementById('create-buyer-email');
   if(!buyerSelect||!buyerContact||!buyerEmail)return;
   const record=getBuyerMasterRecord(buyerSelect.value);
-  buyerContact.value=record.contact;
-  buyerEmail.value=record.email;
+  buyerContact.value=record?record.contact:'';
+  buyerEmail.value=record?record.email:'';
 }
 function syncSalesPersonMasterFields(){
   const salespersonSelect=document.getElementById('create-salesperson-select');
@@ -664,8 +854,8 @@ function syncSalesPersonMasterFields(){
   const salesEmail=document.getElementById('create-sales-email');
   if(!salespersonSelect||!salesContact||!salesEmail)return;
   const record=getSalesPersonMasterRecord(salespersonSelect.value);
-  salesContact.value=record.contact;
-  salesEmail.value=record.email;
+  salesContact.value=record?record.contact:'';
+  salesEmail.value=record?record.email:'';
 }
 function getCreateSalesOrderNo(){
   const entryDateInput=document.getElementById('create-order-entry-date');
@@ -773,7 +963,9 @@ function syncModuleEntry(){
   const actionMeta=ACTION_CONFIG[currentAction];
   const isSales=currentModule==='sales-orders';
   const isSalesShellAction=isSales&&(currentAction==='search'||currentAction==='create');
+  const isMasterParentSelection=currentModule==='reports-master-data'||isMasterModule(currentModule);
   const sidebarActionShell=document.getElementById('sidebar-action-shell');
+  const masterModuleShell=document.getElementById('master-module-shell');
   const sidebarActionStatus=document.getElementById('sidebar-action-status');
   const toolbar=document.getElementById('sales-tab-toolbar');
   const flowNote=document.getElementById('module-flow-note');
@@ -781,9 +973,14 @@ function syncModuleEntry(){
   const flowTitle=document.getElementById('module-flow-title');
   const flowBody=document.getElementById('module-flow-body');
   const activeModuleButton=document.querySelector(`.side-nav-item[data-module="${currentModule}"]`);
+  const reportsModuleButton=document.querySelector('.side-nav-item[data-module="reports-master-data"]');
 
   document.querySelectorAll('.side-nav-item[data-module]').forEach(item=>{
-    item.classList.toggle('active',item.dataset.module===currentModule);
+    const isActive=item.dataset.module===currentModule||(item.dataset.module==='reports-master-data'&&isMasterParentSelection);
+    item.classList.toggle('active',isActive);
+  });
+  document.querySelectorAll('.master-module-item').forEach(item=>{
+    item.classList.toggle('active',item.dataset.masterModule===currentModule);
   });
   document.querySelectorAll('.side-nav-action-item').forEach(card=>{
     card.classList.toggle('active',card.dataset.action===currentAction);
@@ -791,16 +988,26 @@ function syncModuleEntry(){
 
   if(!moduleMeta){
     if(sidebarActionShell)sidebarActionShell.classList.add('hidden');
+    if(masterModuleShell)masterModuleShell.classList.add('hidden');
     if(toolbar)toolbar.classList.add('hidden');
     if(flowNote)flowNote.classList.add('hidden');
-    if(flowPlaceholder)flowPlaceholder.classList.add('hidden');
+    if(flowPlaceholder)flowPlaceholder.classList.remove('hidden');
     document.querySelectorAll('.section-pane').forEach(el=>el.classList.add('hidden'));
+    renderMasterStage();
     syncFlowActionUi();
     return;
   }
 
+  if(masterModuleShell&&reportsModuleButton){
+    reportsModuleButton.insertAdjacentElement('afterend',masterModuleShell);
+    masterModuleShell.classList.toggle('hidden',!isMasterParentSelection);
+  }
   if(sidebarActionShell&&activeModuleButton){
     activeModuleButton.insertAdjacentElement('afterend',sidebarActionShell);
+    sidebarActionShell.classList.remove('hidden');
+  }
+  if(sidebarActionShell&&isMasterModule(currentModule)&&masterModuleShell){
+    masterModuleShell.insertAdjacentElement('afterend',sidebarActionShell);
     sidebarActionShell.classList.remove('hidden');
   }
   if(sidebarActionStatus){
@@ -809,11 +1016,15 @@ function syncModuleEntry(){
 
   if(!currentAction){
     if(toolbar)toolbar.classList.add('hidden');
+    if(sidebarActionShell)sidebarActionShell.classList.toggle('hidden',currentModule==='reports-master-data');
     if(flowNote)flowNote.classList.add('hidden');
-    if(flowPlaceholder)flowPlaceholder.classList.add('hidden');
-    if(flowTitle)flowTitle.textContent='Step 3 opens after the next action is chosen';
-    if(flowBody)flowBody.innerHTML='<strong>Core Module → Action → Record / Form.</strong> Choose one sidebar action first. <strong>Create / Add</strong> opens a new draft without asking for a key first, while <strong>Search / Find</strong>, <strong>Edit / Update</strong>, <strong>Close / Cancel</strong>, and <strong>Delete</strong> all require lookup and record selection first.';
+    if(flowPlaceholder)flowPlaceholder.classList.remove('hidden');
+    if(flowTitle)flowTitle.textContent=currentModule==='reports-master-data'?'Master Data maintenance opens after a master module is chosen':'Step 3 opens after the next action is chosen';
+    if(flowBody)flowBody.innerHTML=currentModule==='reports-master-data'
+      ? '<strong>Selected module:</strong> Reports &amp; Master Data<br><strong>Next step:</strong> choose <strong>Buyer Master</strong> or <strong>Sales Person Master</strong> first, then choose one action from the shared action strip.'
+      : '<strong>Core Module → Action → Record / Form.</strong> Choose one sidebar action first. <strong>Create / Add</strong> opens a new draft without asking for a key first, while <strong>Search / Find</strong>, <strong>Edit / Update</strong>, <strong>Close / Cancel</strong>, and <strong>Delete</strong> all require lookup and record selection first.';
     document.querySelectorAll('.section-pane').forEach(el=>el.classList.add('hidden'));
+    renderMasterStage();
     syncFlowActionUi();
     return;
   }
@@ -833,8 +1044,19 @@ function syncModuleEntry(){
       const sectionSelect=document.getElementById('section-select');
       if(sectionSelect)sectionSelect.value='summary';
     }
+    renderMasterStage();
     syncFlowActionUi();
     showSection();
+    return;
+  }
+
+  if(isMasterModule(currentModule)){
+    if(toolbar)toolbar.classList.add('hidden');
+    document.querySelectorAll('.section-pane').forEach(el=>el.classList.add('hidden'));
+    if(flowNote)flowNote.classList.add('hidden');
+    if(flowPlaceholder)flowPlaceholder.classList.add('hidden');
+    renderMasterStage();
+    syncFlowActionUi();
     return;
   }
 
@@ -848,6 +1070,7 @@ function syncModuleEntry(){
       ? '<strong>Selected module:</strong> '+moduleMeta.label+'<br><strong>Selected action:</strong> '+actionMeta.label+'<br><strong>Rule:</strong> '+actionMeta.rule+'<br>The Sales Order detail shell stays closed here. This state keeps the shared action-entry layer only; the read-only Sales Order tabs reopen only after <strong>Search / Find</strong> selection.'
       : '<strong>Selected module:</strong> '+moduleMeta.label+'<br><strong>Selected action:</strong> '+actionMeta.label+'<br><strong>Rule:</strong> '+actionMeta.rule+'<br>This mock layer shows the shared entry pattern for every core module before any record/form flow opens.';
   }
+  renderMasterStage();
   syncFlowActionUi();
 }
 function applyInitialStateFromQuery(){
@@ -881,6 +1104,15 @@ function setupModuleNavigation(){
     });
   });
 }
+function setupMasterModuleNavigation(){
+  document.querySelectorAll('.master-module-item[data-master-module]').forEach(item=>{
+    item.addEventListener('click',()=>{
+      currentModule=item.dataset.masterModule;
+      currentAction='';
+      syncModuleEntry();
+    });
+  });
+}
 function setupActionSelector(){
   document.querySelectorAll('.side-nav-action-item[data-action]').forEach(card=>{
     card.addEventListener('click',()=>{
@@ -889,40 +1121,110 @@ function setupActionSelector(){
     });
   });
 }
+function syncMasterSourceConsumers(){
+  renderCreateMasterDropdowns();
+  syncBuyerMasterFields();
+  syncSalesPersonMasterFields();
+  if(currentAction==='create'){
+    createFormSnapshot=getCreateFormState();
+    syncCreateFormActions();
+  }
+}
+function setupMasterStageInteractions(){
+  const stage=document.getElementById('master-stage');
+  if(!stage)return;
+  stage.addEventListener('input',event=>{
+    if(event.target.matches('[data-master-search]')){
+      const state=getMasterState(currentModule);
+      if(!state)return;
+      state.query=event.target.value;
+      renderMasterStage();
+    }
+  });
+  stage.addEventListener('click',event=>{
+    const selectButton=event.target.closest('[data-master-select-id]');
+    if(selectButton){
+      const state=getMasterState(currentModule);
+      if(state){
+        state.selectedId=selectButton.dataset.masterSelectId||selectButton.getAttribute('data-master-select-id');
+        renderMasterStage();
+      }
+      return;
+    }
+    const createButton=event.target.closest('[data-master-create-save]');
+    if(createButton){
+      const nextRecord=readMasterFormValues(currentModule,'master-create');
+      nextRecord.id=generateMasterRecordId(currentModule);
+      const nextRecords=[...getMasterRecords(currentModule),nextRecord];
+      setMasterRecords(currentModule,nextRecords);
+      const state=getMasterState(currentModule);
+      state.selectedId=nextRecord.id;
+      state.query='';
+      syncMasterSourceConsumers();
+      renderMasterStage();
+      return;
+    }
+    const editButton=event.target.closest('[data-master-edit-save]');
+    if(editButton){
+      const recordId=editButton.getAttribute('data-master-edit-save');
+      const nextValues=readMasterFormValues(currentModule,'master-edit');
+      const nextRecords=getMasterRecords(currentModule).map(record=>record.id===recordId?{...record,...nextValues}:record);
+      setMasterRecords(currentModule,nextRecords);
+      const state=getMasterState(currentModule);
+      state.selectedId=recordId;
+      syncMasterSourceConsumers();
+      renderMasterStage();
+      return;
+    }
+    const deleteButton=event.target.closest('[data-master-delete-id]');
+    if(deleteButton){
+      const recordId=deleteButton.getAttribute('data-master-delete-id');
+      const nextRecords=getMasterRecords(currentModule).filter(record=>record.id!==recordId);
+      setMasterRecords(currentModule,nextRecords);
+      const state=getMasterState(currentModule);
+      state.selectedId=nextRecords[0]?.id||'';
+      syncMasterSourceConsumers();
+      renderMasterStage();
+    }
+  });
+}
 function setupMockDropdown(dropdownId,selectId,labelId,onChange){
   const dropdown=document.getElementById(dropdownId);
   const hiddenSelect=document.getElementById(selectId);
   const toggle=dropdown?dropdown.querySelector('.mock-dropdown-toggle'):null;
   const label=document.getElementById(labelId);
   if(!dropdown||!hiddenSelect||!toggle||!label)return;
-
-  const items=[...dropdown.querySelectorAll('.mock-dropdown-item')];
   const setOpen=(isOpen)=>{
     dropdown.classList.toggle('open',isOpen);
     toggle.setAttribute('aria-expanded',isOpen?'true':'false');
   };
   const sync=()=>{
+    const items=[...dropdown.querySelectorAll('.mock-dropdown-item')];
     const current=hiddenSelect.value;
     const selected=items.find(item=>item.dataset.value===current);
-    label.textContent=selected?selected.textContent:hiddenSelect.options[hiddenSelect.selectedIndex].text;
+    label.textContent=selected?selected.textContent:(hiddenSelect.options[hiddenSelect.selectedIndex]?.text||'');
     items.forEach(item=>item.classList.toggle('active',item.dataset.value===current));
   };
-
-  toggle.addEventListener('click',()=>setOpen(!dropdown.classList.contains('open')));
-  items.forEach(item=>{
-    item.addEventListener('click',()=>{
+  if(!dropdown.__bound){
+    toggle.addEventListener('click',()=>setOpen(!dropdown.classList.contains('open')));
+    dropdown.addEventListener('click',event=>{
+      const item=event.target.closest('.mock-dropdown-item');
+      if(!item)return;
       hiddenSelect.value=item.dataset.value;
       sync();
-      if(onChange)onChange();
+      if(typeof dropdown.__onChange==='function')dropdown.__onChange();
       setOpen(false);
     });
-  });
-  document.addEventListener('click',event=>{
-    if(!dropdown.contains(event.target))setOpen(false);
-  });
-  document.addEventListener('keydown',event=>{
-    if(event.key==='Escape')setOpen(false);
-  });
+    document.addEventListener('click',event=>{
+      if(!dropdown.contains(event.target))setOpen(false);
+    });
+    document.addEventListener('keydown',event=>{
+      if(event.key==='Escape')setOpen(false);
+    });
+    dropdown.__bound=true;
+  }
+  dropdown.__onChange=onChange;
+  dropdown.__setOpen=setOpen;
   dropdown.__syncSelection=sync;
   sync();
   setOpen(false);
@@ -964,6 +1266,7 @@ function syncFlowActionUi(){
   const saveButton=document.getElementById('save-button');
   if(body){
     body.setAttribute('data-flow-action',currentAction||'');
+    body.setAttribute('data-master-stage',(currentModule==='reports-master-data'||isMasterModule(currentModule))?'true':'false');
   }
   if(titleOrderNo){
     titleOrderNo.textContent=currentAction==='create'?getCreateSalesOrderNo():SALES_ORDER_VIEW_NO;
@@ -1269,6 +1572,7 @@ function setupCreateForm(){
       if(!masterDataMenu.contains(event.target))masterDataMenu.removeAttribute('open');
     });
   }
+  renderCreateMasterDropdowns();
   syncBuyerMasterFields();
   syncSalesPersonMasterFields();
   syncCreateSalesOrderNo();
@@ -1304,7 +1608,9 @@ window.addEventListener('DOMContentLoaded',()=>{
     syncCreateFormActions();
   });
   setupModuleNavigation();
+  setupMasterModuleNavigation();
   setupActionSelector();
+  setupMasterStageInteractions();
   setupRouteSegmented();
   setupSectionTabs();
   setupHeaderActions();
@@ -1346,6 +1652,10 @@ window.addEventListener('DOMContentLoaded',()=>{
           <button type="button" class="side-nav-item" data-module="shipping-logistics">Shipping &amp; Logistics</button>
           <button type="button" class="side-nav-item" data-module="finance-costing">Finance &amp; Costing</button>
           <button type="button" class="side-nav-item" data-module="reports-master-data">Reports &amp; Master Data</button>
+          <div id="master-module-shell" class="side-nav-action-shell master-module-shell hidden">
+            <button type="button" class="side-nav-action-item master-module-item" data-master-module="buyer-master">Buyer Master</button>
+            <button type="button" class="side-nav-action-item master-module-item" data-master-module="sales-person-master">Sales Person Master</button>
+          </div>
           <div id="sidebar-action-shell" class="side-nav-action-shell hidden">
             <button type="button" class="side-nav-action-item" data-action="create">Create / Add</button>
             <button type="button" class="side-nav-action-item" data-action="search">Search / Find</button>
@@ -1439,6 +1749,14 @@ window.addEventListener('DOMContentLoaded',()=>{
       <div id="module-flow-title" class="module-flow-title">Step 3 opens after the next action is chosen</div>
       <div id="module-flow-body" class="module-flow-body"><strong>Core Module → Action → Record / Form.</strong> Choose one sidebar action first. <strong>Create / Add</strong> opens a new draft without asking for a key first, while <strong>Search / Find</strong>, <strong>Edit / Update</strong>, <strong>Close / Cancel</strong>, and <strong>Delete</strong> all require lookup and record selection first.</div>
     </div>
+  </div>
+  <div id="master-stage" class="master-stage hidden">
+    <div class="master-stage-header">
+      <div class="master-stage-kicker">Mock Master Maintenance</div>
+      <div id="master-stage-title" class="master-stage-title">Master Data</div>
+      <div id="master-stage-copy" class="master-stage-copy"></div>
+    </div>
+    <div id="master-stage-content"></div>
   </div>
 
   <div id="workspace-main" class="workspace-main">
