@@ -186,11 +186,25 @@ body{margin:0;background:linear-gradient(180deg,#fefefe 0%,var(--bg) 180px,#f8f8
 .zoom-notice.show{display:inline-flex}
 .zoom-notice strong{color:var(--text);font-weight:700}
 .side-nav-action-shell{display:grid;gap:2px;margin:6px 0 6px 12px;padding:6px 0 2px 14px;border-left:1px solid var(--soft-border)}
-.master-module-shell{display:grid;gap:6px;max-height:220px;margin-top:6px;overflow-y:auto;padding-right:6px;scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) transparent}
-.master-module-shell::-webkit-scrollbar{width:8px}
-.master-module-shell::-webkit-scrollbar-track{background:transparent}
-.master-module-shell::-webkit-scrollbar-thumb{background:var(--scroll-thumb);border-radius:999px;border:2px solid transparent;background-clip:padding-box}
-.master-module-shell::-webkit-scrollbar-thumb:hover{background:var(--scroll-thumb-hover);background-clip:padding-box}
+.master-module-shell{
+  display:grid;
+  gap:6px;
+  height:236px;
+  margin-top:8px;
+  padding:10px 8px 10px 10px;
+  overflow-y:scroll;
+  scrollbar-gutter:stable;
+  border:1px solid #d8e3eb;
+  border-radius:14px;
+  background:linear-gradient(180deg,#fbfdfe 0%,#f3f7fa 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 1px 2px rgba(67,89,112,.04);
+  scrollbar-width:thin;
+  scrollbar-color:var(--scroll-thumb) var(--scroll-track);
+}
+.master-module-shell::-webkit-scrollbar{width:10px}
+.master-module-shell::-webkit-scrollbar-track{background:var(--scroll-track);border-radius:999px}
+.master-module-shell::-webkit-scrollbar-thumb{background:var(--scroll-thumb);border-radius:999px;border:2px solid var(--scroll-track)}
+.master-module-shell::-webkit-scrollbar-thumb:hover{background:var(--scroll-thumb-hover)}
 .side-nav-action-item{display:block;width:100%;padding:7px 10px;border:1px solid transparent;border-radius:999px;background:transparent;color:var(--muted);font-size:12px;font-weight:600;line-height:1.35;text-align:left;cursor:pointer;box-shadow:none;transition:background .16s ease,border-color .16s ease,color .16s ease,box-shadow .16s ease}
 .side-nav-action-item:hover{color:var(--text);background:rgba(241,247,251,.9);border-color:#e0e9f0}
 .side-nav-action-item.active{background:linear-gradient(180deg,#fdfefe 0%,#eaf2f8 100%);border-color:#c9d9e6;color:var(--blue);box-shadow:inset 0 1px 0 rgba(255,255,255,.92),0 2px 6px rgba(79,127,168,.12)}
@@ -623,6 +637,12 @@ body[data-master-stage="true"] .sticky-shell{display:none}
 const MODULE_CONFIG={
   'sales-orders':{label:'Sales & Orders', flowTitle:'Sales Order mock flow'},
   'buyer-master':{label:'Buyer Master', flowTitle:'Buyer master maintenance mock flow'},
+  'third-party-transport-master':{label:'3rd Party Transport', flowTitle:'3rd party transport maintenance mock flow'},
+  'billing-party-master':{label:'Billing Party', flowTitle:'Billing party maintenance mock flow'},
+  'delivery-zone-master':{label:'Delivery Zone', flowTitle:'Delivery zone maintenance mock flow'},
+  'forwarder-master':{label:'Forwarder Master', flowTitle:'Forwarder maintenance mock flow'},
+  'warehouse-master':{label:'Warehouse Master', flowTitle:'Warehouse maintenance mock flow'},
+  'customer-group-master':{label:'Customer Group', flowTitle:'Customer group maintenance mock flow'},
   'product-engineering':{label:'Product & Engineering', flowTitle:'Product / engineering record flow'},
   'planning':{label:'Planning', flowTitle:'Planning record flow'},
   'procurement':{label:'Procurement', flowTitle:'Procurement record flow'},
@@ -659,6 +679,34 @@ let salesPersonMasterRecords=[
   {id:'sales-002',name:'Phoebe Ng',contact:'+60 17-298 4450',email:'phoebe.ng@northbay.com',notes:'Handles overseas pre-shipment follow-up.',status:'Active'},
   {id:'sales-003',name:'Daniel Tan',contact:'+60 18-551 3277',email:'daniel.tan@northbay.com',notes:'Supports urgent replacements and insert orders.',status:'Inactive'}
 ];
+let masterMockRecords={
+  'buyer-master':buyerMasterRecords,
+  'sales-person-master':salesPersonMasterRecords,
+  'third-party-transport-master':[
+    {id:'transport-001',name:'SwiftLine Logistics',contact:'+60 12-490 1180',email:'ops@swiftline-logistics.com',notes:'Local last-mile carrier for urgent dispatches.',status:'Active'},
+    {id:'transport-002',name:'Pacific Haulage',contact:'+60 16-703 2281',email:'control@pacifichaulage.com',notes:'Supports consolidated inter-state transport lanes.',status:'Active'}
+  ],
+  'billing-party-master':[
+    {id:'billing-001',name:'NorthBay Retail Group HQ',customerCompanyName:'NorthBay Retail Group',contact:'+60 3-2201 1188',email:'ap@northbayretail.com',notes:'Centralized billing for chain-wide purchase orders.',status:'Active'},
+    {id:'billing-002',name:'Atlas Distribution Finance',customerCompanyName:'Atlas Distribution Sdn. Bhd.',contact:'+60 3-5102 4470',email:'finance@atlasdistribution.com',notes:'Tender-linked invoices require project code mention.',status:'Active'}
+  ],
+  'delivery-zone-master':[
+    {id:'zone-001',name:'Central Klang Valley',notes:'Same-day release window before 2 PM.',status:'Active'},
+    {id:'zone-002',name:'Northern Region',notes:'Lead time typically plus one transport day.',status:'Active'}
+  ],
+  'forwarder-master':[
+    {id:'forwarder-001',name:'BluePort Forwarding',contact:'+60 12-780 9911',email:'booking@blueportfwd.com',notes:'Handles export documentation for overseas orders.',status:'Active'},
+    {id:'forwarder-002',name:'HarborBridge Freight',contact:'+60 17-440 7712',email:'cs@harborbridgefreight.com',notes:'Preferred lane for mixed pallet shipments.',status:'Inactive'}
+  ],
+  'warehouse-master':[
+    {id:'warehouse-001',name:'Raw Material Hub A',contact:'+60 3-8801 2201',email:'wh.a@northbay.com',notes:'Primary inbound warehouse for local stock receipt.',status:'Active'},
+    {id:'warehouse-002',name:'Finished Goods Hub B',contact:'+60 3-8801 2248',email:'wh.b@northbay.com',notes:'Outbound staging for customer-ready pallets.',status:'Active'}
+  ],
+  'customer-group-master':[
+    {id:'group-001',name:'Modern Trade',notes:'Chain-store customers with centralized planning windows.',status:'Active'},
+    {id:'group-002',name:'Project / Tender',notes:'Order mix usually requires milestone-based releases.',status:'Active'}
+  ]
+};
 const MASTER_STATUS_OPTIONS=['Active','Inactive'];
 const MASTER_MODULE_FIELDS={
   'buyer-master':[
@@ -675,11 +723,56 @@ const MASTER_MODULE_FIELDS={
     {key:'email',label:'Sales Person Email',type:'email'},
     {key:'notes',label:'Notes / Remark',type:'textarea'},
     {key:'status',label:'Status',type:'select'}
+  ],
+  'third-party-transport-master':[
+    {key:'name',label:'Transport Name',type:'text'},
+    {key:'contact',label:'Transport Contact No',type:'text'},
+    {key:'email',label:'Transport Email',type:'email'},
+    {key:'notes',label:'Notes / Remark',type:'textarea'},
+    {key:'status',label:'Status',type:'select'}
+  ],
+  'billing-party-master':[
+    {key:'name',label:'Billing Party Name',type:'text'},
+    {key:'customerCompanyName',label:'Customer Company Name',type:'text'},
+    {key:'contact',label:'Billing Contact No',type:'text'},
+    {key:'email',label:'Billing Email',type:'email'},
+    {key:'notes',label:'Notes / Remark',type:'textarea'},
+    {key:'status',label:'Status',type:'select'}
+  ],
+  'delivery-zone-master':[
+    {key:'name',label:'Delivery Zone Name',type:'text'},
+    {key:'notes',label:'Notes / Remark',type:'textarea'},
+    {key:'status',label:'Status',type:'select'}
+  ],
+  'forwarder-master':[
+    {key:'name',label:'Forwarder Name',type:'text'},
+    {key:'contact',label:'Forwarder Contact No',type:'text'},
+    {key:'email',label:'Forwarder Email',type:'email'},
+    {key:'notes',label:'Notes / Remark',type:'textarea'},
+    {key:'status',label:'Status',type:'select'}
+  ],
+  'warehouse-master':[
+    {key:'name',label:'Warehouse Name',type:'text'},
+    {key:'contact',label:'Warehouse Contact No',type:'text'},
+    {key:'email',label:'Warehouse Email',type:'email'},
+    {key:'notes',label:'Notes / Remark',type:'textarea'},
+    {key:'status',label:'Status',type:'select'}
+  ],
+  'customer-group-master':[
+    {key:'name',label:'Customer Group Name',type:'text'},
+    {key:'notes',label:'Notes / Remark',type:'textarea'},
+    {key:'status',label:'Status',type:'select'}
   ]
 };
 const masterUiState={
   'buyer-master':{query:'',selectedId:'buyer-001'},
-  'sales-person-master':{query:'',selectedId:'sales-001'}
+  'sales-person-master':{query:'',selectedId:'sales-001'},
+  'third-party-transport-master':{query:'',selectedId:'transport-001'},
+  'billing-party-master':{query:'',selectedId:'billing-001'},
+  'delivery-zone-master':{query:'',selectedId:'zone-001'},
+  'forwarder-master':{query:'',selectedId:'forwarder-001'},
+  'warehouse-master':{query:'',selectedId:'warehouse-001'},
+  'customer-group-master':{query:'',selectedId:'group-001'}
 };
 function escapeHtml(value){
   return String(value??'').replace(/[&<>"']/g,char=>({
@@ -691,25 +784,31 @@ function escapeHtml(value){
   }[char]));
 }
 function isMasterModule(moduleId){
-  return moduleId==='buyer-master'||moduleId==='sales-person-master';
+  return Boolean(MASTER_MODULE_FIELDS[moduleId]);
 }
 function getMasterRecords(moduleId){
-  return moduleId==='buyer-master' ? buyerMasterRecords : moduleId==='sales-person-master' ? salesPersonMasterRecords : [];
+  return masterMockRecords[moduleId]||[];
 }
 function setMasterRecords(moduleId,nextRecords){
   if(moduleId==='buyer-master'){
     buyerMasterRecords=nextRecords;
-  } else if(moduleId==='sales-person-master'){
+  }
+  if(moduleId==='sales-person-master'){
     salesPersonMasterRecords=nextRecords;
+  }
+  if(masterMockRecords[moduleId]){
+    masterMockRecords[moduleId]=nextRecords;
   }
 }
 function getMasterState(moduleId){
   return masterUiState[moduleId];
 }
 function getMasterDefaultRecord(moduleId){
-  return moduleId==='buyer-master'
-    ? {name:'',customerCompanyName:'',contact:'',email:'',notes:'',status:'Active'}
-    : {name:'',contact:'',email:'',notes:'',status:'Active'};
+  const record={};
+  (MASTER_MODULE_FIELDS[moduleId]||[]).forEach(field=>{
+    record[field.key]=field.type==='select' ? 'Active' : '';
+  });
+  return record;
 }
 function getMasterRecordById(moduleId,recordId){
   return getMasterRecords(moduleId).find(record=>record.id===recordId)||null;
@@ -721,9 +820,9 @@ function filterMasterRecords(moduleId,query){
   return records.filter(record=>Object.values(record).some(value=>String(value??'').toLowerCase().includes(normalized)));
 }
 function getMasterTableColumns(moduleId){
-  return moduleId==='buyer-master'
-    ? ['name','customerCompanyName','contact','email','status']
-    : ['name','contact','email','status'];
+  return (MASTER_MODULE_FIELDS[moduleId]||[])
+    .filter(field=>field.key!=='notes')
+    .map(field=>field.key);
 }
 function getMasterColumnLabel(moduleId,key){
   const field=(MASTER_MODULE_FIELDS[moduleId]||[]).find(item=>item.key===key);
@@ -736,7 +835,7 @@ function getSalesPersonMasterRecord(name){
   return salesPersonMasterRecords.find(record=>record.name===name)||salesPersonMasterRecords[0];
 }
 function generateMasterRecordId(moduleId){
-  const prefix=moduleId==='buyer-master'?'buyer':'sales';
+  const prefix=(moduleId||'master').replace(/-master$/,'').replace(/[^a-z0-9]+/g,'-');
   const nextNumber=getMasterRecords(moduleId).reduce((maxValue,record)=>{
     const match=/(\d+)$/.exec(record.id||'');
     return Math.max(maxValue,match?Number(match[1]):0);
@@ -796,7 +895,7 @@ function renderMasterTable(moduleId,records,mode){
   const columns=getMasterTableColumns(moduleId);
   const actionLabel=mode==='search'?'Open':'Select';
   const actionClass=mode==='search'?'btn emphasis':'btn emphasis';
-  return '<div class="table-wrap"><table><thead><tr>'+columns.map(column=>'<th>'+getMasterColumnLabel(moduleId,column)+'</th>').join('')+'<th>Action</th></tr></thead><tbody>'+(records.length?records.map(record=>'<tr><td>'+escapeHtml(record.name)+'</td>'+(moduleId==='buyer-master'?'<td>'+escapeHtml(record.customerCompanyName)+'</td>':'')+'<td>'+escapeHtml(record.contact)+'</td><td>'+escapeHtml(record.email)+'</td><td>'+getMasterStatusPill(record.status)+'</td><td>'+(mode==='delete'?'<button type="button" class="btn secondary" data-master-delete-id="'+record.id+'">Delete</button>':'<button type="button" class="'+actionClass+'" data-master-select-id="'+record.id+'">'+actionLabel+'</button>')+'</td></tr>').join(''):'<tr><td colspan="'+(columns.length+1)+'"><div class="master-stage-empty">No mock master record matches the current search.</div></td></tr>')+'</tbody></table></div>';
+  return '<div class="table-wrap"><table><thead><tr>'+columns.map(column=>'<th>'+getMasterColumnLabel(moduleId,column)+'</th>').join('')+'<th>Action</th></tr></thead><tbody>'+(records.length?records.map(record=>'<tr>'+columns.map(column=>'<td>'+(column==='status'?getMasterStatusPill(record[column]):escapeHtml(record[column]??''))+'</td>').join('')+'<td>'+(mode==='delete'?'<button type="button" class="btn secondary" data-master-delete-id="'+record.id+'">Delete</button>':'<button type="button" class="'+actionClass+'" data-master-select-id="'+record.id+'">'+actionLabel+'</button>')+'</td></tr>').join(''):'<tr><td colspan="'+(columns.length+1)+'"><div class="master-stage-empty">No mock master record matches the current search.</div></td></tr>')+'</tbody></table></div>';
 }
 function renderMasterStage(){
   const stage=document.getElementById('master-stage');
@@ -1029,7 +1128,7 @@ function syncModuleEntry(){
     if(flowPlaceholder)flowPlaceholder.classList.remove('hidden');
     if(flowTitle)flowTitle.textContent=currentModule==='reports-master-data'?'Master Data maintenance opens after a master module is chosen':'Step 3 opens after the next action is chosen';
     if(flowBody)flowBody.innerHTML=currentModule==='reports-master-data'
-      ? '<strong>Selected module:</strong> Reports &amp; Master Data<br><strong>Next step:</strong> choose <strong>Buyer Master</strong> or <strong>Sales Person Master</strong> first, then choose one action from the shared action strip.'
+      ? '<strong>Selected module:</strong> Reports &amp; Master Data<br><strong>Next step:</strong> choose one action from the shared action strip first, then pick the required master module from the scrollable list below it.'
       : '<strong>Core Module → Action → Record / Form.</strong> Choose one sidebar action first. <strong>Create / Add</strong> opens a new draft without asking for a key first, while <strong>Search / Find</strong>, <strong>Edit / Update</strong>, <strong>Close / Cancel</strong>, and <strong>Delete</strong> all require lookup and record selection first.';
     document.querySelectorAll('.section-pane').forEach(el=>el.classList.add('hidden'));
     renderMasterStage();
@@ -1675,6 +1774,12 @@ window.addEventListener('DOMContentLoaded',()=>{
           <div id="master-module-shell" class="side-nav-action-shell master-module-shell hidden">
             <button type="button" class="side-nav-action-item master-module-item" data-master-module="buyer-master">Buyer Master</button>
             <button type="button" class="side-nav-action-item master-module-item" data-master-module="sales-person-master">Sales Person Master</button>
+            <button type="button" class="side-nav-action-item master-module-item" data-master-module="third-party-transport-master">3rd Party Transport</button>
+            <button type="button" class="side-nav-action-item master-module-item" data-master-module="billing-party-master">Billing Party</button>
+            <button type="button" class="side-nav-action-item master-module-item" data-master-module="delivery-zone-master">Delivery Zone</button>
+            <button type="button" class="side-nav-action-item master-module-item" data-master-module="forwarder-master">Forwarder Master</button>
+            <button type="button" class="side-nav-action-item master-module-item" data-master-module="warehouse-master">Warehouse Master</button>
+            <button type="button" class="side-nav-action-item master-module-item" data-master-module="customer-group-master">Customer Group</button>
           </div>
           <div id="sidebar-action-shell" class="side-nav-action-shell hidden">
             <button type="button" class="side-nav-action-item" data-action="create">Create / Add</button>
