@@ -336,18 +336,6 @@ body{margin:0;background:linear-gradient(180deg,#fefefe 0%,var(--bg) 180px,#f8f8
 .field-label,.edit-label,.block-label{font-size:12px;font-weight:700;color:var(--blue);margin-bottom:8px;letter-spacing:.08px}
 .field-value,.block-value{font-size:15px;line-height:1.45;color:#314a65}
 .block{border:1px solid var(--soft-border);border-radius:14px;background:var(--surface-card);padding:14px 16px;box-shadow:inset 0 1px 0 rgba(255,255,255,.82),0 1px 3px rgba(67,89,112,.02)}
-.summary-helper-note{
-  max-width:1320px;
-  margin:10px auto 0;
-  padding:10px 14px;
-  border:1px solid var(--soft-border);
-  border-radius:12px;
-  background:rgba(250,251,252,.92);
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.55;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.82);
-}
 .summary-lower-grid{
   max-width:1320px;
   margin:10px auto 0;
@@ -1171,7 +1159,6 @@ window.addEventListener('DOMContentLoaded',()=>{
           <div id="summary-overdue-text" class="summary-warning-text"></div>
         </div>
       </div>
-      <div class="summary-helper-note">Overall Commit Date is the customer-facing order-level commitment. Each Order Item FG Ready Date should stay on or before this date. Commit Lead Time: 37 working days (MY / CN holiday-adjusted mock).</div>
       <div class="summary-lower-grid">
         <div class="block"><div class="block-label">Commerce Team</div><div id="commerce-team" class="block-value">Local Commerce Team</div></div>
         <div class="block summary-note"><div class="block-label">Shipment / Delivery Coordination Issue</div><div class="block-value">This block can carry either local delivery coordination notes or overseas shipping / customs coordination notes, depending on selected order route.</div></div>
