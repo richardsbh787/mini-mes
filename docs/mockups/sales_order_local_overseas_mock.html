@@ -50,10 +50,10 @@ body{margin:0;background:linear-gradient(180deg,#fefefe 0%,var(--bg) 180px,#f8f8
 .sticky-shell{position:sticky;top:0;z-index:50;margin:0 0 4px;background:rgba(251,253,254,.965);backdrop-filter:blur(14px);border-top:none;border-right:none;border-bottom:1px solid var(--line-strong);border-left:none;border-radius:0;box-shadow:0 1px 0 rgba(214,225,234,.78),0 12px 26px rgba(79,127,168,.05);overflow:visible}
 .topbar{display:flex;justify-content:space-between;gap:24px;align-items:center;min-height:var(--topbar-height);padding:18px 28px 12px;background:linear-gradient(180deg,#fcfdfe 0%,#f7f9fb 100%);border-bottom:1px solid var(--line)}
 .topbar-main{display:flex;flex-direction:column;gap:10px;min-width:0}
-.title-row{display:flex;align-items:center;gap:8px;min-width:0}
-.topbar h1{margin:0;font-size:24px;font-weight:700;color:var(--title);letter-spacing:.1px;white-space:nowrap}
+.title-row{display:flex;align-items:baseline;gap:8px;min-width:0}
+.topbar h1{margin:0;font-size:24px;font-weight:700;line-height:1;color:var(--title);letter-spacing:.1px;white-space:nowrap}
 .title-divider{color:var(--muted-soft);font-size:20px;font-weight:500;line-height:1}
-.title-order-no{font-size:18px;font-weight:600;color:var(--muted);line-height:1.2;white-space:nowrap}
+.title-order-no{display:inline-flex;align-items:baseline;font-size:18px;font-weight:600;line-height:1;color:var(--muted);white-space:nowrap}
 .object-kicker,.object-number{display:none}
 .topbar-main > .object-kicker + div{display:none}
 .top-meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:0}
@@ -390,8 +390,8 @@ td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line
 .order-items-table .waiver-cell .badge{max-width:100%}
 .order-items-table .remark-cell{min-width:250px}
 .order-items-table .waiver-cell{min-width:170px}
-.order-items-table .qty-cell{font-weight:700;color:var(--title);white-space:nowrap}
-.order-items-table .date-cell{font-size:13px;line-height:1.4;color:#3a526a}
+.order-items-table .qty-cell{font-weight:700;color:var(--title);text-align:center;white-space:nowrap}
+.order-items-table .date-cell{font-size:13px;line-height:1.2;color:#3a526a;white-space:nowrap}
 .order-items-parent-row td:first-child{
   font-weight:700;
   color:var(--title);
