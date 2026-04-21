@@ -511,27 +511,33 @@ body[data-flow-action="create"] .create-only{display:block}
 body[data-flow-action="create"] .create-hidden{display:none!important}
 body[data-flow-action="create"] .workspace-tab:not([data-value="summary"]){opacity:.42;pointer-events:none}
 body[data-flow-action="create"] .workspace-tab:not([data-value="summary"]):hover{color:var(--muted)}
-.create-order-shell{display:grid;gap:16px;max-width:1080px;margin:0 auto}
-.create-form-card{border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,#fcfdfe 0%,#f9fbfd 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.82),0 2px 6px rgba(67,89,112,.03);overflow:hidden}
-.create-form-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:18px 20px 14px;border-bottom:1px solid var(--soft-border);background:rgba(252,253,254,.92)}
-.create-form-title{font-size:18px;font-weight:700;color:var(--title);line-height:1.3}
-.create-form-subtitle{margin-top:4px;font-size:12px;line-height:1.6;color:var(--muted)}
-.import-entry-strip{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
-.import-entry-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-soft)}
-.import-entry-btn{height:30px;padding:0 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface-card);color:var(--muted);font-size:12px;font-weight:600;box-shadow:inset 0 1px 0 rgba(255,255,255,.78)}
-.import-entry-btn:hover{background:var(--row-hover);color:var(--text)}
-.create-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 18px;padding:18px 20px 20px}
-.create-field{display:grid;gap:7px;min-width:0}
+.create-order-shell{display:grid;gap:12px;max-width:980px;margin:0 auto}
+.create-form-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:4px 2px 0}
+.create-form-title{font-size:18px;font-weight:700;color:var(--title);line-height:1.25}
+.master-data-menu{position:relative}
+.master-data-toggle{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 11px;border:1px solid var(--soft-border);border-radius:999px;background:rgba(252,253,254,.9);color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;list-style:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.82)}
+.master-data-toggle::-webkit-details-marker{display:none}
+.master-data-toggle::after{content:"";width:10px;height:10px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5 6 7.5 9 4.5' fill='none' stroke='%236B8096' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center;background-size:10px 10px}
+.master-data-menu[open] .master-data-toggle{border-color:#c8d7e3;background:#f8fbfd;color:var(--text)}
+.master-data-panel{position:absolute;top:calc(100% + 8px);right:0;display:grid;gap:6px;min-width:160px;padding:8px;border:1px solid var(--line);border-radius:12px;background:#fefefe;box-shadow:0 10px 24px rgba(79,127,168,.10),0 1px 2px rgba(47,74,102,.08);z-index:95}
+.master-data-option{height:30px;padding:0 10px;border:1px solid transparent;border-radius:8px;background:transparent;color:var(--text);font-size:12px;font-weight:600;text-align:left}
+.master-data-option:hover{background:var(--row-hover)}
+.create-sections{display:grid;gap:12px}
+.create-section-card{border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,#fcfdfe 0%,#f9fbfd 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.82),0 2px 6px rgba(67,89,112,.03);overflow:hidden}
+.create-section-head{padding:12px 18px 10px;border-bottom:1px solid var(--soft-border);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-soft)}
+.create-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 16px;padding:14px 18px 16px}
+.create-field{display:grid;gap:6px;min-width:0}
 .create-label{font-size:12px;font-weight:700;color:var(--blue);letter-spacing:.08px}
-.create-label-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.field-assist{font-size:11px;color:var(--muted-soft);line-height:1.45}
 .read-only-input{display:flex;align-items:center;min-height:38px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:#f5f8fa;color:var(--title);font-size:14px;font-weight:700;box-shadow:inset 0 1px 0 rgba(255,255,255,.78)}
 .read-only-input code{font-family:Consolas,"SFMono-Regular",Menlo,monospace;font-size:13px}
-.date-line{min-height:38px;appearance:none;-webkit-appearance:none}
-.search-field-wrap{display:grid;gap:6px}
-.search-hint{font-size:11px;line-height:1.5;color:var(--muted)}
-.route-field-shell{display:grid;gap:8px}
+.date-line{min-height:38px}
+.route-field-shell{display:grid;gap:4px}
 .route-field-shell .route-segmented{align-self:flex-start}
+body[data-flow-action="create"] .route-field-shell .route-segmented{padding:2px}
+body[data-flow-action="create"] .route-field-shell .route-segment{min-width:72px;height:32px;padding:0 12px;font-size:12px}
+body[data-flow-action="create"] #save-button{background:#eef4f7;border-color:#d9e4eb;color:#6f8598;box-shadow:inset 0 1px 0 rgba(255,255,255,.82)}
+body[data-flow-action="create"] #save-button:hover{background:#e8f0f5;border-color:#cfdee8;color:#5f7689}
+body[data-flow-action="create"] #back-button{color:#7b8ea0}
 .tab-content-viewport,.section-scroll,.summary-sheet,.textarea-line,.items-sheet,.table-wrap.procurement-wrap{
   scrollbar-width:thin;
   scrollbar-color:var(--scroll-thumb) var(--scroll-track);
@@ -557,8 +563,7 @@ body[data-flow-action="create"] .workspace-tab:not([data-value="summary"]):hover
   .switch-bar{align-items:flex-start}
   .tabs-shell{flex-basis:100%}
   .toolbar-route{width:100%}
-  .create-form-head{flex-direction:column;align-items:flex-start}
-  .import-entry-strip{justify-content:flex-start}
+  .create-form-head{align-items:flex-start}
   .create-form-grid{grid-template-columns:1fr}
   table,.summary-sheet table{min-width:900px}
 }
@@ -871,9 +876,9 @@ function syncSummaryWarning(){
   const isCreate=currentAction==='create';
   const requestDateText=isCreate&&createRequiredDate?createRequiredDate.value:(requestDateCell.dataset.date||requestDateCell.textContent.trim());
   const commitDateText=isCreate&&createCommitDate?createCommitDate.value:(commitDateCell.dataset.date||commitDateCell.textContent.trim());
-  const requestDate=new Date(requestDateText+'T00:00:00');
-  const commitDate=new Date(commitDateText+'T00:00:00');
-  const isValidDates=!Number.isNaN(requestDate.getTime())&&!Number.isNaN(commitDate.getTime());
+  const requestDate=isCreate?parseCreateDisplayDate(requestDateText):new Date(requestDateText+'T00:00:00');
+  const commitDate=isCreate?parseCreateDisplayDate(commitDateText):new Date(commitDateText+'T00:00:00');
+  const isValidDates=!!requestDate&&!!commitDate&&!Number.isNaN(requestDate.getTime())&&!Number.isNaN(commitDate.getTime());
   const isLate=isValidDates&&commitDate>requestDate;
 
   warning.classList.toggle('hidden',!isLate);
@@ -883,6 +888,23 @@ function syncSummaryWarning(){
     title.textContent='Commit date is later than customer '+(isCreate?'required':'requested')+' date';
     text.textContent='Overall Commit Date is '+lateDays+' day'+(lateDays===1?'':'s')+' later than Customer '+(isCreate?'Required':'Request')+' Date. Customer-facing commitment follow-up is needed.';
   }
+}
+function parseCreateDisplayDate(value){
+  const match=/^(\d{2})-(\d{2})-(\d{2})$/.exec((value||'').trim());
+  if(!match)return null;
+  const day=Number(match[1]);
+  const monthIndex=Number(match[2])-1;
+  const year=2000+Number(match[3]);
+  const date=new Date(Date.UTC(year,monthIndex,day));
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+function formatCreateDisplayDate(value){
+  const date=parseYmdDate(value);
+  if(!date)return value;
+  const day=String(date.getUTCDate()).padStart(2,'0');
+  const month=String(date.getUTCMonth()+1).padStart(2,'0');
+  const year=String(date.getUTCFullYear()).slice(-2);
+  return day+'-'+month+'-'+year;
 }
 function parseYmdDate(value){
   const match=/^(\d{4})-(\d{2})-(\d{2})$/.exec((value||'').trim());
@@ -1032,31 +1054,40 @@ function syncRouteField(){
 function populateBuyerOptions(customerName){
   const buyerList=document.getElementById('buyer-master-list');
   const buyerInput=document.getElementById('create-buyer-input');
-  const buyerHint=document.getElementById('buyer-link-hint');
-  if(!buyerList||!buyerInput||!buyerHint)return;
+  if(!buyerList||!buyerInput)return;
   const buyers=BUYER_OPTIONS_BY_CUSTOMER[customerName]||[];
   buyerList.innerHTML=buyers.map(name=>'<option value="'+name+'"></option>').join('');
   if(!buyers.includes(buyerInput.value)){
     buyerInput.value=buyers[0]||'';
   }
-  buyerHint.textContent=buyers.length
-    ? 'Buyer options follow the selected customer master in this mock.'
-    : 'Choose a customer company first to load the linked buyer list.';
 }
 function setupCreateForm(){
   const customerInput=document.getElementById('create-customer-input');
+  const masterDataMenu=document.getElementById('master-data-menu');
   const requiredDateInput=document.getElementById('create-customer-required-date');
   const commitDateInput=document.getElementById('create-overall-commit-date');
+  const entryDateInput=document.getElementById('create-order-entry-date');
+  const createDateInputs=[entryDateInput,requiredDateInput,commitDateInput].filter(Boolean);
   if(customerInput){
     customerInput.addEventListener('input',()=>populateBuyerOptions(customerInput.value.trim()));
     customerInput.addEventListener('change',()=>populateBuyerOptions(customerInput.value.trim()));
     populateBuyerOptions(customerInput.value.trim());
   }
+  createDateInputs.forEach(input=>{
+    if(input.dataset.isoValue){
+      input.value=formatCreateDisplayDate(input.dataset.isoValue);
+    }
+  });
   [requiredDateInput,commitDateInput].forEach(input=>{
     if(!input)return;
     input.addEventListener('input',syncSummaryWarning);
     input.addEventListener('change',syncSummaryWarning);
   });
+  if(masterDataMenu){
+    document.addEventListener('click',event=>{
+      if(!masterDataMenu.contains(event.target))masterDataMenu.removeAttribute('open');
+    });
+  }
 }
 function setupSectionTabs(){
   const sectionSelect=document.getElementById('section-select');
@@ -1222,114 +1253,99 @@ window.addEventListener('DOMContentLoaded',()=>{
   <div id="summary" class="section-pane data-pane">
     <div class="section section-scroll">
       <div class="create-order-shell create-only">
-        <div class="create-form-card">
-          <div class="create-form-head">
-            <div>
-              <div class="create-form-title">Create / Add Sales Order</div>
-              <div class="create-form-subtitle">Keep the first pass simple: capture the commercial header, pick the route, and let the draft open with the generated sales order number already reserved.</div>
+        <div class="create-form-head">
+          <div class="create-form-title">Create / Add Sales Order</div>
+          <details id="master-data-menu" class="master-data-menu">
+            <summary class="master-data-toggle">Master Data</summary>
+            <div class="master-data-panel">
+              <button type="button" class="master-data-option">Import Excel</button>
+              <button type="button" class="master-data-option">Link Google Sheet</button>
             </div>
-            <div class="import-entry-strip" aria-label="Mock master data entry points">
-              <span class="import-entry-label">Master Data Source</span>
-              <button type="button" class="import-entry-btn">Import Excel</button>
-              <button type="button" class="import-entry-btn">Link Google Sheet</button>
-            </div>
-          </div>
-          <div class="create-form-grid">
-            <div class="create-field">
-              <label class="create-label" for="create-sales-order-no">Sales Order No</label>
-              <div id="create-sales-order-no" class="read-only-input"><code>SO-2026-17-000123</code></div>
-              <div class="field-assist">Auto-generated mock format: <code>SO-YYYY-WW-RUNNINGNO</code>. Running number stays continuous across the year and does not reset by week.</div>
-            </div>
-            <div class="create-field">
-              <label class="create-label" for="order-type-select">Order Type</label>
-              <div id="order-type-dropdown" class="mock-dropdown mock-dropdown--field">
-                <button type="button" class="mock-dropdown-toggle" aria-haspopup="listbox" aria-expanded="false">
-                  <span id="order-type-dropdown-label">Repeated</span>
-                </button>
-                <ul class="mock-dropdown-menu" role="listbox" aria-label="Order Type options">
-                  <li><button type="button" class="mock-dropdown-item" data-value="Sample">Sample</button></li>
-                  <li><button type="button" class="mock-dropdown-item" data-value="1st Order">1st Order</button></li>
-                  <li><button type="button" class="mock-dropdown-item active" data-value="Repeated">Repeated</button></li>
-                  <li><button type="button" class="mock-dropdown-item" data-value="Replacement">Replacement</button></li>
-                  <li><button type="button" class="mock-dropdown-item" data-value="Insert Order">Insert Order</button></li>
-                  <li><button type="button" class="mock-dropdown-item" data-value="Top Urgent">Top Urgent</button></li>
-                </ul>
-                <select id="order-type-select" class="mock-dropdown-native" tabindex="-1" aria-hidden="true">
-                  <option>Sample</option>
-                  <option>1st Order</option>
-                  <option selected>Repeated</option>
-                  <option>Replacement</option>
-                  <option>Insert Order</option>
-                  <option>Top Urgent</option>
-                </select>
+          </details>
+        </div>
+        <div class="create-sections">
+          <div class="create-section-card">
+            <div class="create-section-head">Core Header Fields</div>
+            <div class="create-form-grid">
+              <div class="create-field">
+                <label class="create-label" for="create-sales-order-no">Sales Order No</label>
+                <div id="create-sales-order-no" class="read-only-input"><code>SO-2026-17-000123</code></div>
               </div>
-            </div>
-            <div class="create-field">
-              <label class="create-label" for="create-customer-po-input">Customer PO No</label>
-              <input id="create-customer-po-input" class="input-line" type="text" value="PO-20260421-NBR-118" />
-            </div>
-            <div class="create-field">
-              <div class="create-label-row">
+              <div class="create-field">
+                <label class="create-label" for="order-type-select">Order Type</label>
+                <div id="order-type-dropdown" class="mock-dropdown mock-dropdown--field">
+                  <button type="button" class="mock-dropdown-toggle" aria-haspopup="listbox" aria-expanded="false">
+                    <span id="order-type-dropdown-label">Repeated</span>
+                  </button>
+                  <ul class="mock-dropdown-menu" role="listbox" aria-label="Order Type options">
+                    <li><button type="button" class="mock-dropdown-item" data-value="Sample">Sample</button></li>
+                    <li><button type="button" class="mock-dropdown-item" data-value="1st Order">1st Order</button></li>
+                    <li><button type="button" class="mock-dropdown-item active" data-value="Repeated">Repeated</button></li>
+                    <li><button type="button" class="mock-dropdown-item" data-value="Replacement">Replacement</button></li>
+                    <li><button type="button" class="mock-dropdown-item" data-value="Insert Order">Insert Order</button></li>
+                    <li><button type="button" class="mock-dropdown-item" data-value="Top Urgent">Top Urgent</button></li>
+                  </ul>
+                  <select id="order-type-select" class="mock-dropdown-native" tabindex="-1" aria-hidden="true">
+                    <option>Sample</option>
+                    <option>1st Order</option>
+                    <option selected>Repeated</option>
+                    <option>Replacement</option>
+                    <option>Insert Order</option>
+                    <option>Top Urgent</option>
+                  </select>
+                </div>
+              </div>
+              <div class="create-field">
                 <label class="create-label" for="create-customer-input">Customer Company Name</label>
-                <span class="field-assist">Search from imported customer master</span>
-              </div>
-              <div class="search-field-wrap">
                 <input id="create-customer-input" class="input-line" list="customer-master-list" type="text" value="NorthBay Retail Group" />
                 <datalist id="customer-master-list">
                   <option value="NorthBay Retail Group"></option>
                   <option value="Atlas Distribution Sdn. Bhd."></option>
                   <option value="Harborline Projects Pte. Ltd."></option>
                 </datalist>
-                <div class="search-hint">Mock source: customer master imported from Excel / Google Sheet.</div>
               </div>
-            </div>
-            <div class="create-field">
-              <div class="create-label-row">
+              <div class="create-field">
                 <label class="create-label" for="create-buyer-input">Buyer / Buyer Information</label>
-                <span class="field-assist">Search from linked buyer master</span>
-              </div>
-              <div class="search-field-wrap">
                 <input id="create-buyer-input" class="input-line" list="buyer-master-list" type="text" value="Emily Carter" />
                 <datalist id="buyer-master-list"></datalist>
-                <div id="buyer-link-hint" class="search-hint">Buyer options follow the selected customer master in this mock.</div>
               </div>
-            </div>
-            <div class="create-field">
-              <div class="create-label-row">
+              <div class="create-field">
                 <label class="create-label" for="create-salesperson-input">Sales Person / Information</label>
-                <span class="field-assist">Search from salesperson master</span>
-              </div>
-              <div class="search-field-wrap">
                 <input id="create-salesperson-input" class="input-line" list="salesperson-master-list" type="text" value="Alex Chen" />
                 <datalist id="salesperson-master-list">
                   <option value="Alex Chen"></option>
                   <option value="Phoebe Ng"></option>
                   <option value="Daniel Tan"></option>
                 </datalist>
-                <div class="search-hint">Mock source: salesperson master imported from Excel / Google Sheet.</div>
               </div>
             </div>
-            <div class="create-field">
-              <label class="create-label" for="create-order-entry-date">Order Entry Date</label>
-              <input id="create-order-entry-date" class="input-line date-line" type="date" value="2026-04-21" />
-            </div>
-            <div class="create-field">
-              <label class="create-label" for="create-customer-required-date">Customer Required Date</label>
-              <input id="create-customer-required-date" class="input-line date-line" type="date" value="2026-05-15" />
-            </div>
-            <div class="create-field">
-              <label class="create-label" for="create-overall-commit-date">Overall Commit Date</label>
-              <input id="create-overall-commit-date" class="input-line date-line" type="date" value="2026-05-22" />
-            </div>
-            <div class="create-field">
-              <div class="create-label-row">
-                <span class="create-label">Order Route</span>
-                <span class="field-assist">Keep Local / Overseas visible before item entry starts</span>
+          </div>
+          <div class="create-section-card">
+            <div class="create-section-head">Date and Order Setup</div>
+            <div class="create-form-grid">
+              <div class="create-field">
+                <label class="create-label" for="create-customer-po-input">Customer PO No</label>
+                <input id="create-customer-po-input" class="input-line" type="text" value="PO-20260421-NBR-118" />
               </div>
-              <div class="route-field-shell">
-                <div class="route-segmented" role="group" aria-label="Create Sales Order Route">
-                  <button type="button" class="route-segment active" data-route-field="true" data-value="Local">Local</button>
-                  <button type="button" class="route-segment" data-route-field="true" data-value="Overseas">Overseas</button>
+              <div class="create-field">
+                <label class="create-label" for="create-order-entry-date">Order Entry Date</label>
+                <input id="create-order-entry-date" class="input-line date-line" type="text" inputmode="numeric" value="21-04-26" data-iso-value="2026-04-21" />
+              </div>
+              <div class="create-field">
+                <label class="create-label" for="create-customer-required-date">Customer Required Date</label>
+                <input id="create-customer-required-date" class="input-line date-line" type="text" inputmode="numeric" value="15-05-26" data-iso-value="2026-05-15" />
+              </div>
+              <div class="create-field">
+                <label class="create-label" for="create-overall-commit-date">Overall Commit Date</label>
+                <input id="create-overall-commit-date" class="input-line date-line" type="text" inputmode="numeric" value="22-05-26" data-iso-value="2026-05-22" />
+              </div>
+              <div class="create-field">
+                <label class="create-label">Order Route</label>
+                <div class="route-field-shell">
+                  <div class="route-segmented" role="group" aria-label="Create Sales Order Route">
+                    <button type="button" class="route-segment active" data-route-field="true" data-value="Local">Local</button>
+                    <button type="button" class="route-segment" data-route-field="true" data-value="Overseas">Overseas</button>
+                  </div>
                 </div>
               </div>
             </div>
