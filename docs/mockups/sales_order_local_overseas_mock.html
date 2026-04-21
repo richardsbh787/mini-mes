@@ -549,6 +549,7 @@ body[data-flow-action="create"] .create-sheet .input-line:hover,
 body[data-flow-action="create"] .create-sheet .mock-dropdown-toggle:hover{background:#e8eef2;border-color:#c9d6e1}
 .date-line{min-height:38px}
 .date-line::-webkit-calendar-picker-indicator{cursor:pointer;opacity:.72}
+.auto-fill-line[readonly]{color:var(--title);font-weight:600;cursor:default}
 .route-field-shell{display:grid;justify-content:flex-start}
 .route-field-shell .route-segmented{align-self:flex-start}
 body[data-flow-action="create"] .route-field-shell .route-segmented{padding:2px;background:#eef3f6;border-color:#d3dde6}
@@ -615,11 +616,57 @@ const SALES_ORDER_VIEW_NO='SO-20260328-001';
 const SALES_ORDER_CREATE_DEFAULT_DATE='2026-04-21';
 const SALES_ORDER_CREATE_RUNNING_NO='000123';
 let createFormSnapshot=null;
-const BUYER_OPTIONS_BY_CUSTOMER={
-  'NorthBay Retail Group':['Emily Carter','Jason Lim'],
-  'Atlas Distribution Sdn. Bhd.':['Siti Zaleha','Kelvin Ong'],
-  'Harborline Projects Pte. Ltd.':['Rachel Tan','Darren Goh']
-};
+const BUYER_MASTER_LIST=[
+  {name:'Emily Carter',contact:'+60 12-345 8891',email:'emily.carter@northbayretail.com'},
+  {name:'Jason Lim',contact:'+60 16-880 2145',email:'jason.lim@northbayretail.com'},
+  {name:'Sophia Wong',contact:'+60 19-442 7308',email:'sophia.wong@northbayretail.com'}
+];
+const SALES_PERSON_MASTER_LIST=[
+  {name:'Alex Chen',contact:'+60 12-345 6789',email:'alexchen.nb@northbay.com'},
+  {name:'Phoebe Ng',contact:'+60 17-298 4450',email:'phoebe.ng@northbay.com'},
+  {name:'Daniel Tan',contact:'+60 18-551 3277',email:'daniel.tan@northbay.com'}
+];
+const BUYER_MASTER_BY_NAME=BUYER_MASTER_LIST.reduce((acc,record)=>{
+  acc[record.name]=record;
+  return acc;
+},{});
+const SALES_PERSON_MASTER_BY_NAME=SALES_PERSON_MASTER_LIST.reduce((acc,record)=>{
+  acc[record.name]=record;
+  return acc;
+},{});
+function getBuyerMasterRecord(name){
+  return BUYER_MASTER_BY_NAME[name]||BUYER_MASTER_LIST[0];
+}
+function getSalesPersonMasterRecord(name){
+  return SALES_PERSON_MASTER_BY_NAME[name]||SALES_PERSON_MASTER_LIST[0];
+}
+function syncMockDropdownValue(dropdownId,selectId,value){
+  const dropdown=document.getElementById(dropdownId);
+  const hiddenSelect=document.getElementById(selectId);
+  if(!dropdown||!hiddenSelect)return;
+  hiddenSelect.value=value;
+  if(typeof dropdown.__syncSelection==='function'){
+    dropdown.__syncSelection();
+  }
+}
+function syncBuyerMasterFields(){
+  const buyerSelect=document.getElementById('create-buyer-select');
+  const buyerContact=document.getElementById('create-buyer-contact');
+  const buyerEmail=document.getElementById('create-buyer-email');
+  if(!buyerSelect||!buyerContact||!buyerEmail)return;
+  const record=getBuyerMasterRecord(buyerSelect.value);
+  buyerContact.value=record.contact;
+  buyerEmail.value=record.email;
+}
+function syncSalesPersonMasterFields(){
+  const salespersonSelect=document.getElementById('create-salesperson-select');
+  const salesContact=document.getElementById('create-sales-contact');
+  const salesEmail=document.getElementById('create-sales-email');
+  if(!salespersonSelect||!salesContact||!salesEmail)return;
+  const record=getSalesPersonMasterRecord(salespersonSelect.value);
+  salesContact.value=record.contact;
+  salesEmail.value=record.email;
+}
 function getCreateSalesOrderNo(){
   const entryDateInput=document.getElementById('create-order-entry-date');
   const rawValue=(entryDateInput&&entryDateInput.value?entryDateInput.value:SALES_ORDER_CREATE_DEFAULT_DATE).trim();
@@ -640,13 +687,9 @@ function syncCreateSalesOrderNo(){
 function getCreateFormState(){
   const fields=[
     'create-customer-input',
-    'create-buyer-input',
-    'create-buyer-contact',
-    'create-buyer-email',
+    'create-buyer-select',
     'create-buyer-others',
-    'create-salesperson-input',
-    'create-sales-contact',
-    'create-sales-email',
+    'create-salesperson-select',
     'create-sales-others',
     'create-customer-po-input',
     'create-order-entry-date',
@@ -671,12 +714,14 @@ function applyCreateFormState(state){
     const node=document.getElementById(key);
     if(node)node.value=value;
   });
-  const customerInput=document.getElementById('create-customer-input');
-  if(customerInput)populateBuyerOptions(customerInput.value.trim());
-  const buyerInput=document.getElementById('create-buyer-input');
-  if(buyerInput&&Object.prototype.hasOwnProperty.call(state,'create-buyer-input')){
-    buyerInput.value=state['create-buyer-input'];
+  if(Object.prototype.hasOwnProperty.call(state,'create-buyer-select')){
+    syncMockDropdownValue('create-buyer-dropdown','create-buyer-select',state['create-buyer-select']);
   }
+  syncBuyerMasterFields();
+  if(Object.prototype.hasOwnProperty.call(state,'create-salesperson-select')){
+    syncMockDropdownValue('create-salesperson-dropdown','create-salesperson-select',state['create-salesperson-select']);
+  }
+  syncSalesPersonMasterFields();
   const orderTypeSelect=document.getElementById('order-type-select');
   if(orderTypeSelect&&state.orderType){
     orderTypeSelect.value=state.orderType;
@@ -878,6 +923,7 @@ function setupMockDropdown(dropdownId,selectId,labelId,onChange){
   document.addEventListener('keydown',event=>{
     if(event.key==='Escape')setOpen(false);
   });
+  dropdown.__syncSelection=sync;
   sync();
   setOpen(false);
 }
@@ -1163,31 +1209,18 @@ function syncRouteField(){
     button.classList.toggle('active',button.dataset.value===hiddenSelect.value);
   });
 }
-function populateBuyerOptions(customerName){
-  const buyerList=document.getElementById('buyer-master-list');
-  const buyerInput=document.getElementById('create-buyer-input');
-  if(!buyerList||!buyerInput)return;
-  const buyers=BUYER_OPTIONS_BY_CUSTOMER[customerName]||[];
-  buyerList.innerHTML=buyers.map(name=>'<option value="'+name+'"></option>').join('');
-  if(!buyers.includes(buyerInput.value)){
-    buyerInput.value=buyers[0]||'';
-  }
-}
 function setupCreateForm(){
   const customerInput=document.getElementById('create-customer-input');
   const masterDataMenu=document.getElementById('master-data-menu');
   const requiredDateInput=document.getElementById('create-customer-required-date');
   const commitDateInput=document.getElementById('create-overall-commit-date');
   const entryDateInput=document.getElementById('create-order-entry-date');
+  const buyerSelect=document.getElementById('create-buyer-select');
+  const salespersonSelect=document.getElementById('create-salesperson-select');
   const orderTypeSelect=document.getElementById('order-type-select');
   const routeSelect=document.getElementById('type-select');
   const createUndoButton=document.getElementById('create-undo-button');
   const createSaveButton=document.getElementById('create-save-button');
-  if(customerInput){
-    customerInput.addEventListener('input',()=>populateBuyerOptions(customerInput.value.trim()));
-    customerInput.addEventListener('change',()=>populateBuyerOptions(customerInput.value.trim()));
-    populateBuyerOptions(customerInput.value.trim());
-  }
   [requiredDateInput,commitDateInput].forEach(input=>{
     if(!input)return;
     input.addEventListener('input',syncSummaryWarning);
@@ -1205,13 +1238,9 @@ function setupCreateForm(){
   }
   const trackedCreateFields=[
     customerInput,
-    document.getElementById('create-buyer-input'),
-    document.getElementById('create-buyer-contact'),
-    document.getElementById('create-buyer-email'),
+    buyerSelect,
     document.getElementById('create-buyer-others'),
-    document.getElementById('create-salesperson-input'),
-    document.getElementById('create-sales-contact'),
-    document.getElementById('create-sales-email'),
+    salespersonSelect,
     document.getElementById('create-sales-others'),
     document.getElementById('create-customer-po-input'),
     entryDateInput,
@@ -1240,6 +1269,8 @@ function setupCreateForm(){
       if(!masterDataMenu.contains(event.target))masterDataMenu.removeAttribute('open');
     });
   }
+  syncBuyerMasterFields();
+  syncSalesPersonMasterFields();
   syncCreateSalesOrderNo();
   createFormSnapshot=getCreateFormState();
   syncCreateFormActions();
@@ -1264,6 +1295,14 @@ function setupSectionTabs(){
 window.addEventListener('DOMContentLoaded',()=>{
   window.__salesWorkspaceBaseDpr=window.devicePixelRatio||1;
   setupMockDropdown('order-type-dropdown','order-type-select','order-type-dropdown-label',syncOrderType);
+  setupMockDropdown('create-buyer-dropdown','create-buyer-select','create-buyer-dropdown-label',()=>{
+    syncBuyerMasterFields();
+    syncCreateFormActions();
+  });
+  setupMockDropdown('create-salesperson-dropdown','create-salesperson-select','create-salesperson-dropdown-label',()=>{
+    syncSalesPersonMasterFields();
+    syncCreateFormActions();
+  });
   setupModuleNavigation();
   setupActionSelector();
   setupRouteSegmented();
@@ -1473,22 +1512,35 @@ window.addEventListener('DOMContentLoaded',()=>{
             <div class="create-main-grid">
               <div class="create-column">
                 <div class="create-row">
-                  <label class="create-label" for="create-buyer-input">Buyer Name</label>
+                  <label class="create-label" for="create-buyer-select">Buyer Name</label>
                   <div class="create-field-wrap">
-                    <input id="create-buyer-input" class="input-line" list="buyer-master-list" type="text" value="Emily Carter" />
-                    <datalist id="buyer-master-list"></datalist>
+                    <div id="create-buyer-dropdown" class="mock-dropdown mock-dropdown--field">
+                      <button type="button" class="mock-dropdown-toggle" aria-haspopup="listbox" aria-expanded="false">
+                        <span id="create-buyer-dropdown-label">Emily Carter</span>
+                      </button>
+                      <ul class="mock-dropdown-menu" role="listbox" aria-label="Buyer master list options">
+                        <li><button type="button" class="mock-dropdown-item active" data-value="Emily Carter">Emily Carter</button></li>
+                        <li><button type="button" class="mock-dropdown-item" data-value="Jason Lim">Jason Lim</button></li>
+                        <li><button type="button" class="mock-dropdown-item" data-value="Sophia Wong">Sophia Wong</button></li>
+                      </ul>
+                      <select id="create-buyer-select" class="mock-dropdown-native" tabindex="-1" aria-hidden="true">
+                        <option selected>Emily Carter</option>
+                        <option>Jason Lim</option>
+                        <option>Sophia Wong</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
                 <div class="create-row">
                   <label class="create-label" for="create-buyer-contact">Buyer Contact No</label>
                   <div class="create-field-wrap">
-                    <input id="create-buyer-contact" class="input-line" type="text" value="+60 12-345 8891" />
+                    <input id="create-buyer-contact" class="input-line auto-fill-line" type="text" value="+60 12-345 8891" readonly />
                   </div>
                 </div>
                 <div class="create-row">
                   <label class="create-label" for="create-buyer-email">Buyer Email</label>
                   <div class="create-field-wrap">
-                    <input id="create-buyer-email" class="input-line" type="text" value="emily.carter@northbayretail.com" />
+                    <input id="create-buyer-email" class="input-line auto-fill-line" type="text" value="emily.carter@northbayretail.com" readonly />
                   </div>
                 </div>
                 <div class="create-row">
@@ -1500,26 +1552,35 @@ window.addEventListener('DOMContentLoaded',()=>{
               </div>
               <div class="create-column">
                 <div class="create-row">
-                  <label class="create-label" for="create-salesperson-input">Sales Person Name</label>
+                  <label class="create-label" for="create-salesperson-select">Sales Person Name</label>
                   <div class="create-field-wrap">
-                    <input id="create-salesperson-input" class="input-line" list="salesperson-master-list" type="text" value="Alex Chen" />
-                    <datalist id="salesperson-master-list">
-                      <option value="Alex Chen"></option>
-                      <option value="Phoebe Ng"></option>
-                      <option value="Daniel Tan"></option>
-                    </datalist>
+                    <div id="create-salesperson-dropdown" class="mock-dropdown mock-dropdown--field">
+                      <button type="button" class="mock-dropdown-toggle" aria-haspopup="listbox" aria-expanded="false">
+                        <span id="create-salesperson-dropdown-label">Alex Chen</span>
+                      </button>
+                      <ul class="mock-dropdown-menu" role="listbox" aria-label="Sales person master list options">
+                        <li><button type="button" class="mock-dropdown-item active" data-value="Alex Chen">Alex Chen</button></li>
+                        <li><button type="button" class="mock-dropdown-item" data-value="Phoebe Ng">Phoebe Ng</button></li>
+                        <li><button type="button" class="mock-dropdown-item" data-value="Daniel Tan">Daniel Tan</button></li>
+                      </ul>
+                      <select id="create-salesperson-select" class="mock-dropdown-native" tabindex="-1" aria-hidden="true">
+                        <option selected>Alex Chen</option>
+                        <option>Phoebe Ng</option>
+                        <option>Daniel Tan</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
                 <div class="create-row">
                   <label class="create-label" for="create-sales-contact">Sales Person Contact No</label>
                   <div class="create-field-wrap">
-                    <input id="create-sales-contact" class="input-line" type="text" value="+60 12-345 6789" />
+                    <input id="create-sales-contact" class="input-line auto-fill-line" type="text" value="+60 12-345 6789" readonly />
                   </div>
                 </div>
                 <div class="create-row">
                   <label class="create-label" for="create-sales-email">Sales Person Email</label>
                   <div class="create-field-wrap">
-                    <input id="create-sales-email" class="input-line" type="text" value="alexchen.nb@northbay.com" />
+                    <input id="create-sales-email" class="input-line auto-fill-line" type="text" value="alexchen.nb@northbay.com" readonly />
                   </div>
                 </div>
                 <div class="create-row">
