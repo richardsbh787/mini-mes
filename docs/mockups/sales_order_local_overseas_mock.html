@@ -506,6 +506,32 @@ td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line
   color:#5f7f6d;
 }
 .note{font-size:var(--note-font-size);color:var(--muted);margin-top:10px;line-height:var(--note-line-height)}.contact-toggle{display:inline-block;margin-top:6px;font-size:12px;color:var(--blue);background:none;border:none;padding:0;cursor:pointer;text-decoration:underline}.contact-details{display:none;margin-top:6px;font-size:var(--note-font-size);color:var(--muted);line-height:1.5}.contact-details.show{display:block}.support-text{margin-top:6px;font-size:var(--note-font-size);color:var(--muted);line-height:var(--note-line-height)}.view-only{display:block}.draft-only{display:none}body[data-order-state="edit"] .view-only{display:none}body[data-order-state="edit"] .draft-only{display:block}
+.create-only{display:none}
+body[data-flow-action="create"] .create-only{display:block}
+body[data-flow-action="create"] .create-hidden{display:none!important}
+body[data-flow-action="create"] .workspace-tab:not([data-value="summary"]){opacity:.42;pointer-events:none}
+body[data-flow-action="create"] .workspace-tab:not([data-value="summary"]):hover{color:var(--muted)}
+.create-order-shell{display:grid;gap:16px;max-width:1080px;margin:0 auto}
+.create-form-card{border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,#fcfdfe 0%,#f9fbfd 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.82),0 2px 6px rgba(67,89,112,.03);overflow:hidden}
+.create-form-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:18px 20px 14px;border-bottom:1px solid var(--soft-border);background:rgba(252,253,254,.92)}
+.create-form-title{font-size:18px;font-weight:700;color:var(--title);line-height:1.3}
+.create-form-subtitle{margin-top:4px;font-size:12px;line-height:1.6;color:var(--muted)}
+.import-entry-strip{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.import-entry-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-soft)}
+.import-entry-btn{height:30px;padding:0 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface-card);color:var(--muted);font-size:12px;font-weight:600;box-shadow:inset 0 1px 0 rgba(255,255,255,.78)}
+.import-entry-btn:hover{background:var(--row-hover);color:var(--text)}
+.create-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 18px;padding:18px 20px 20px}
+.create-field{display:grid;gap:7px;min-width:0}
+.create-label{font-size:12px;font-weight:700;color:var(--blue);letter-spacing:.08px}
+.create-label-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.field-assist{font-size:11px;color:var(--muted-soft);line-height:1.45}
+.read-only-input{display:flex;align-items:center;min-height:38px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:#f5f8fa;color:var(--title);font-size:14px;font-weight:700;box-shadow:inset 0 1px 0 rgba(255,255,255,.78)}
+.read-only-input code{font-family:Consolas,"SFMono-Regular",Menlo,monospace;font-size:13px}
+.date-line{min-height:38px;appearance:none;-webkit-appearance:none}
+.search-field-wrap{display:grid;gap:6px}
+.search-hint{font-size:11px;line-height:1.5;color:var(--muted)}
+.route-field-shell{display:grid;gap:8px}
+.route-field-shell .route-segmented{align-self:flex-start}
 .tab-content-viewport,.section-scroll,.summary-sheet,.textarea-line,.items-sheet,.table-wrap.procurement-wrap{
   scrollbar-width:thin;
   scrollbar-color:var(--scroll-thumb) var(--scroll-track);
@@ -531,6 +557,9 @@ td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line
   .switch-bar{align-items:flex-start}
   .tabs-shell{flex-basis:100%}
   .toolbar-route{width:100%}
+  .create-form-head{flex-direction:column;align-items:flex-start}
+  .import-entry-strip{justify-content:flex-start}
+  .create-form-grid{grid-template-columns:1fr}
   table,.summary-sheet table{min-width:900px}
 }
 </style>
@@ -558,6 +587,13 @@ const ACTION_CONFIG={
 let currentModule='';
 let currentAction='';
 let currentOrderState='view';
+const SALES_ORDER_VIEW_NO='SO-20260328-001';
+const SALES_ORDER_CREATE_NO='SO-2026-17-000123';
+const BUYER_OPTIONS_BY_CUSTOMER={
+  'NorthBay Retail Group':['Emily Carter','Jason Lim'],
+  'Atlas Distribution Sdn. Bhd.':['Siti Zaleha','Kelvin Ong'],
+  'Harborline Projects Pte. Ltd.':['Rachel Tan','Darren Goh']
+};
 function showSection(){
   const value=document.getElementById('section-select').value;
   document.querySelectorAll('.section-pane').forEach(el=>el.classList.add('hidden'));
@@ -576,7 +612,7 @@ function syncModuleEntry(){
   const moduleMeta=currentModule?MODULE_CONFIG[currentModule]:null;
   const actionMeta=ACTION_CONFIG[currentAction];
   const isSales=currentModule==='sales-orders';
-  const isSalesView=isSales&&currentAction==='view';
+  const isSalesShellAction=isSales&&(currentAction==='view'||currentAction==='create');
   const sidebarActionShell=document.getElementById('sidebar-action-shell');
   const sidebarActionStatus=document.getElementById('sidebar-action-status');
   const toolbar=document.getElementById('sales-tab-toolbar');
@@ -599,6 +635,7 @@ function syncModuleEntry(){
     if(flowNote)flowNote.classList.add('hidden');
     if(flowPlaceholder)flowPlaceholder.classList.add('hidden');
     document.querySelectorAll('.section-pane').forEach(el=>el.classList.add('hidden'));
+    syncFlowActionUi();
     return;
   }
 
@@ -617,18 +654,26 @@ function syncModuleEntry(){
     if(flowTitle)flowTitle.textContent='Step 3 opens after the next action is chosen';
     if(flowBody)flowBody.innerHTML='<strong>Core Module → Action → Record / Form.</strong> Choose one sidebar action first. <strong>Create / Add</strong> opens a new draft without asking for a key first, while <strong>Search / Find</strong>, <strong>View</strong>, <strong>Edit / Update</strong>, <strong>Close / Cancel</strong>, and <strong>Delete</strong> all require lookup and record selection first.';
     document.querySelectorAll('.section-pane').forEach(el=>el.classList.add('hidden'));
+    syncFlowActionUi();
     return;
   }
 
-  if(isSalesView){
+  if(isSalesShellAction){
     if(toolbar)toolbar.classList.remove('hidden');
     if(flowPlaceholder)flowPlaceholder.classList.add('hidden');
     if(flowTitle)flowTitle.textContent='Sales Order mock flow · '+actionMeta.label;
-    if(flowBody)flowBody.innerHTML='<strong>Selected module:</strong> '+moduleMeta.label+'<br><strong>Selected action:</strong> '+actionMeta.label+'<br><strong>Rule:</strong> '+actionMeta.rule+'<br>The Sales Order shell below remains mounted as one persistent read-only record surface while you move across its tabs.';
+    if(flowBody)flowBody.innerHTML=currentAction==='create'
+      ? '<strong>Selected module:</strong> '+moduleMeta.label+'<br><strong>Selected action:</strong> '+actionMeta.label+'<br><strong>Rule:</strong> '+actionMeta.rule+'<br>The Sales Order shell below opens directly in a focused Create / Add form. The header, tabs, and route toggle stay in the same design system while the operator captures only the minimum draft fields first.'
+      : '<strong>Selected module:</strong> '+moduleMeta.label+'<br><strong>Selected action:</strong> '+actionMeta.label+'<br><strong>Rule:</strong> '+actionMeta.rule+'<br>The Sales Order shell below remains mounted as one persistent read-only record surface while you move across its tabs.';
     if(flowNote){
       flowNote.classList.add('hidden');
       flowNote.innerHTML='<strong>'+moduleMeta.label+' · '+actionMeta.label+'</strong><br>'+actionMeta.rule+' The current mock reuses the Sales Order shell below as the step-3 record / form surface.';
     }
+    if(currentAction==='create'){
+      const sectionSelect=document.getElementById('section-select');
+      if(sectionSelect)sectionSelect.value='summary';
+    }
+    syncFlowActionUi();
     showSection();
     return;
   }
@@ -643,6 +688,7 @@ function syncModuleEntry(){
       ? '<strong>Selected module:</strong> '+moduleMeta.label+'<br><strong>Selected action:</strong> '+actionMeta.label+'<br><strong>Rule:</strong> '+actionMeta.rule+'<br>The Sales Order detail shell stays closed here. This state keeps the shared action-entry layer only; the full read-only Sales Order tabs reopen only after <strong>View</strong> is selected.'
       : '<strong>Selected module:</strong> '+moduleMeta.label+'<br><strong>Selected action:</strong> '+actionMeta.label+'<br><strong>Rule:</strong> '+actionMeta.rule+'<br>This mock layer shows the shared entry pattern for every core module before any record/form flow opens.';
   }
+  syncFlowActionUi();
 }
 function applyInitialStateFromQuery(){
   const params=new URLSearchParams(window.location.search);
@@ -746,6 +792,44 @@ function syncOrderState(){
     saveButton.disabled=!canSave;
     saveButton.setAttribute('aria-disabled',canSave?'false':'true');
   }
+  syncFlowActionUi();
+}
+function syncFlowActionUi(){
+  const body=document.body;
+  const titleOrderNo=document.getElementById('title-order-no');
+  const topRiskBadge=document.getElementById('top-risk-badge');
+  const editButton=document.getElementById('edit-button');
+  const saveButton=document.getElementById('save-button');
+  if(body){
+    body.setAttribute('data-flow-action',currentAction||'');
+  }
+  if(titleOrderNo){
+    titleOrderNo.textContent=currentAction==='create'?SALES_ORDER_CREATE_NO:SALES_ORDER_VIEW_NO;
+  }
+  if(topRiskBadge){
+    if(currentAction==='create'){
+      topRiskBadge.textContent='Draft Ready';
+      topRiskBadge.className='badge blue';
+    } else {
+      topRiskBadge.textContent='Medium';
+      topRiskBadge.className='badge amber';
+    }
+  }
+  if(editButton){
+    editButton.classList.toggle('hidden',currentAction==='create');
+  }
+  if(saveButton){
+    if(currentAction==='create'){
+      saveButton.disabled=false;
+      saveButton.setAttribute('aria-disabled','false');
+    } else {
+      const canSave=currentOrderState==='edit';
+      saveButton.disabled=!canSave;
+      saveButton.setAttribute('aria-disabled',canSave?'false':'true');
+    }
+    saveButton.innerHTML='<span class="btn-icon" aria-hidden="true"></span>'+(currentAction==='create'?'Save Draft':'Save Changes');
+  }
+  syncSummaryWarning();
 }
 function setupHeaderActions(){
   const editButton=document.getElementById('edit-button');
@@ -759,6 +843,7 @@ function setupHeaderActions(){
   }
   if(saveButton){
     saveButton.addEventListener('click',()=>{
+      if(currentAction==='create')return;
       if(currentOrderState!=='edit')return;
       currentOrderState='view';
       syncOrderState();
@@ -777,11 +862,15 @@ function syncSummaryWarning(){
   const requestDateCell=document.getElementById('customer-request-date');
   const commitDateCell=document.getElementById('overall-commit-date');
   const warning=document.getElementById('summary-overdue-warning');
+  const title=document.querySelector('#summary-overdue-warning .summary-warning-title');
   const text=document.getElementById('summary-overdue-text');
-  if(!requestDateCell||!commitDateCell||!warning||!text)return;
+  const createRequiredDate=document.getElementById('create-customer-required-date');
+  const createCommitDate=document.getElementById('create-overall-commit-date');
+  if(!requestDateCell||!commitDateCell||!warning||!text||!title)return;
 
-  const requestDateText=requestDateCell.dataset.date||requestDateCell.textContent.trim();
-  const commitDateText=commitDateCell.dataset.date||commitDateCell.textContent.trim();
+  const isCreate=currentAction==='create';
+  const requestDateText=isCreate&&createRequiredDate?createRequiredDate.value:(requestDateCell.dataset.date||requestDateCell.textContent.trim());
+  const commitDateText=isCreate&&createCommitDate?createCommitDate.value:(commitDateCell.dataset.date||commitDateCell.textContent.trim());
   const requestDate=new Date(requestDateText+'T00:00:00');
   const commitDate=new Date(commitDateText+'T00:00:00');
   const isValidDates=!Number.isNaN(requestDate.getTime())&&!Number.isNaN(commitDate.getTime());
@@ -791,7 +880,8 @@ function syncSummaryWarning(){
   if(isLate){
     const msPerDay=24*60*60*1000;
     const lateDays=Math.round((commitDate-requestDate)/msPerDay);
-    text.textContent='Overall Commit Date is '+lateDays+' day'+(lateDays===1?'':'s')+' later than Customer Request Date. Customer-facing commitment follow-up is needed.';
+    title.textContent='Commit date is later than customer '+(isCreate?'required':'requested')+' date';
+    text.textContent='Overall Commit Date is '+lateDays+' day'+(lateDays===1?'':'s')+' later than Customer '+(isCreate?'Required':'Request')+' Date. Customer-facing commitment follow-up is needed.';
   }
 }
 function parseYmdDate(value){
@@ -866,6 +956,7 @@ function syncType(){
   document.querySelectorAll('.route-segment').forEach(button=>{
     button.classList.toggle('active',button.dataset.value===type);
   });
+  syncRouteField();
 
   if(type==='Local'){
     typeBadge.textContent='Order Route · Local';
@@ -895,6 +986,13 @@ function setupRouteSegmented(){
   const hiddenSelect=document.getElementById('type-select');
   if(!hiddenSelect)return;
   document.querySelectorAll('.route-segment').forEach(button=>{
+    if(button.dataset.routeField==='true')return;
+    button.addEventListener('click',()=>{
+      hiddenSelect.value=button.dataset.value;
+      syncType();
+    });
+  });
+  document.querySelectorAll('.route-segment[data-route-field]').forEach(button=>{
     button.addEventListener('click',()=>{
       hiddenSelect.value=button.dataset.value;
       syncType();
@@ -924,11 +1022,48 @@ function syncOrderType(){
     orderTypeDisplay.textContent=orderTypeSelect.value;
   }
 }
+function syncRouteField(){
+  const hiddenSelect=document.getElementById('type-select');
+  if(!hiddenSelect)return;
+  document.querySelectorAll('.route-segment[data-route-field]').forEach(button=>{
+    button.classList.toggle('active',button.dataset.value===hiddenSelect.value);
+  });
+}
+function populateBuyerOptions(customerName){
+  const buyerList=document.getElementById('buyer-master-list');
+  const buyerInput=document.getElementById('create-buyer-input');
+  const buyerHint=document.getElementById('buyer-link-hint');
+  if(!buyerList||!buyerInput||!buyerHint)return;
+  const buyers=BUYER_OPTIONS_BY_CUSTOMER[customerName]||[];
+  buyerList.innerHTML=buyers.map(name=>'<option value="'+name+'"></option>').join('');
+  if(!buyers.includes(buyerInput.value)){
+    buyerInput.value=buyers[0]||'';
+  }
+  buyerHint.textContent=buyers.length
+    ? 'Buyer options follow the selected customer master in this mock.'
+    : 'Choose a customer company first to load the linked buyer list.';
+}
+function setupCreateForm(){
+  const customerInput=document.getElementById('create-customer-input');
+  const requiredDateInput=document.getElementById('create-customer-required-date');
+  const commitDateInput=document.getElementById('create-overall-commit-date');
+  if(customerInput){
+    customerInput.addEventListener('input',()=>populateBuyerOptions(customerInput.value.trim()));
+    customerInput.addEventListener('change',()=>populateBuyerOptions(customerInput.value.trim()));
+    populateBuyerOptions(customerInput.value.trim());
+  }
+  [requiredDateInput,commitDateInput].forEach(input=>{
+    if(!input)return;
+    input.addEventListener('input',syncSummaryWarning);
+    input.addEventListener('change',syncSummaryWarning);
+  });
+}
 function setupSectionTabs(){
   const sectionSelect=document.getElementById('section-select');
   if(!sectionSelect)return;
   document.querySelectorAll('.workspace-tab').forEach(tab=>{
     tab.addEventListener('click',()=>{
+      if(currentAction==='create'&&tab.dataset.value!=='summary')return;
       sectionSelect.value=tab.dataset.value;
       showSection();
     });
@@ -948,6 +1083,7 @@ window.addEventListener('DOMContentLoaded',()=>{
   setupRouteSegmented();
   setupSectionTabs();
   setupHeaderActions();
+  setupCreateForm();
   applyInitialStateFromQuery();
   syncModuleEntry();
   syncType();
@@ -964,7 +1100,7 @@ window.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 </head>
-<body data-order-state="view">
+<body data-order-state="view" data-flow-action="">
 <div class="page">
   <div class="layout-shell">
     <aside class="side-nav" aria-label="Sales Order workspace navigation">
@@ -1002,12 +1138,12 @@ window.addEventListener('DOMContentLoaded',()=>{
     <div class="topbar-main">
       <div class="title-row">
         <h1>Sales Order:</h1>
-        <span class="title-order-no">SO-20260328-001</span>
+        <span id="title-order-no" class="title-order-no">SO-20260328-001</span>
       </div>
       <div class="top-meta top-meta-ref">
         <div class="meta-group">
           <span class="meta-label">Overall Risk:</span>
-          <span class="badge amber">Medium</span>
+          <span id="top-risk-badge" class="badge amber">Medium</span>
         </div>
         <span class="meta-divider" aria-hidden="true"></span>
         <div class="meta-group">
@@ -1085,7 +1221,122 @@ window.addEventListener('DOMContentLoaded',()=>{
   <div id="tab-content-viewport" class="tab-content-viewport">
   <div id="summary" class="section-pane data-pane">
     <div class="section section-scroll">
-      <div class="summary-sheet">
+      <div class="create-order-shell create-only">
+        <div class="create-form-card">
+          <div class="create-form-head">
+            <div>
+              <div class="create-form-title">Create / Add Sales Order</div>
+              <div class="create-form-subtitle">Keep the first pass simple: capture the commercial header, pick the route, and let the draft open with the generated sales order number already reserved.</div>
+            </div>
+            <div class="import-entry-strip" aria-label="Mock master data entry points">
+              <span class="import-entry-label">Master Data Source</span>
+              <button type="button" class="import-entry-btn">Import Excel</button>
+              <button type="button" class="import-entry-btn">Link Google Sheet</button>
+            </div>
+          </div>
+          <div class="create-form-grid">
+            <div class="create-field">
+              <label class="create-label" for="create-sales-order-no">Sales Order No</label>
+              <div id="create-sales-order-no" class="read-only-input"><code>SO-2026-17-000123</code></div>
+              <div class="field-assist">Auto-generated mock format: <code>SO-YYYY-WW-RUNNINGNO</code>. Running number stays continuous across the year and does not reset by week.</div>
+            </div>
+            <div class="create-field">
+              <label class="create-label" for="order-type-select">Order Type</label>
+              <div id="order-type-dropdown" class="mock-dropdown mock-dropdown--field">
+                <button type="button" class="mock-dropdown-toggle" aria-haspopup="listbox" aria-expanded="false">
+                  <span id="order-type-dropdown-label">Repeated</span>
+                </button>
+                <ul class="mock-dropdown-menu" role="listbox" aria-label="Order Type options">
+                  <li><button type="button" class="mock-dropdown-item" data-value="Sample">Sample</button></li>
+                  <li><button type="button" class="mock-dropdown-item" data-value="1st Order">1st Order</button></li>
+                  <li><button type="button" class="mock-dropdown-item active" data-value="Repeated">Repeated</button></li>
+                  <li><button type="button" class="mock-dropdown-item" data-value="Replacement">Replacement</button></li>
+                  <li><button type="button" class="mock-dropdown-item" data-value="Insert Order">Insert Order</button></li>
+                  <li><button type="button" class="mock-dropdown-item" data-value="Top Urgent">Top Urgent</button></li>
+                </ul>
+                <select id="order-type-select" class="mock-dropdown-native" tabindex="-1" aria-hidden="true">
+                  <option>Sample</option>
+                  <option>1st Order</option>
+                  <option selected>Repeated</option>
+                  <option>Replacement</option>
+                  <option>Insert Order</option>
+                  <option>Top Urgent</option>
+                </select>
+              </div>
+            </div>
+            <div class="create-field">
+              <label class="create-label" for="create-customer-po-input">Customer PO No</label>
+              <input id="create-customer-po-input" class="input-line" type="text" value="PO-20260421-NBR-118" />
+            </div>
+            <div class="create-field">
+              <div class="create-label-row">
+                <label class="create-label" for="create-customer-input">Customer Company Name</label>
+                <span class="field-assist">Search from imported customer master</span>
+              </div>
+              <div class="search-field-wrap">
+                <input id="create-customer-input" class="input-line" list="customer-master-list" type="text" value="NorthBay Retail Group" />
+                <datalist id="customer-master-list">
+                  <option value="NorthBay Retail Group"></option>
+                  <option value="Atlas Distribution Sdn. Bhd."></option>
+                  <option value="Harborline Projects Pte. Ltd."></option>
+                </datalist>
+                <div class="search-hint">Mock source: customer master imported from Excel / Google Sheet.</div>
+              </div>
+            </div>
+            <div class="create-field">
+              <div class="create-label-row">
+                <label class="create-label" for="create-buyer-input">Buyer / Buyer Information</label>
+                <span class="field-assist">Search from linked buyer master</span>
+              </div>
+              <div class="search-field-wrap">
+                <input id="create-buyer-input" class="input-line" list="buyer-master-list" type="text" value="Emily Carter" />
+                <datalist id="buyer-master-list"></datalist>
+                <div id="buyer-link-hint" class="search-hint">Buyer options follow the selected customer master in this mock.</div>
+              </div>
+            </div>
+            <div class="create-field">
+              <div class="create-label-row">
+                <label class="create-label" for="create-salesperson-input">Sales Person / Information</label>
+                <span class="field-assist">Search from salesperson master</span>
+              </div>
+              <div class="search-field-wrap">
+                <input id="create-salesperson-input" class="input-line" list="salesperson-master-list" type="text" value="Alex Chen" />
+                <datalist id="salesperson-master-list">
+                  <option value="Alex Chen"></option>
+                  <option value="Phoebe Ng"></option>
+                  <option value="Daniel Tan"></option>
+                </datalist>
+                <div class="search-hint">Mock source: salesperson master imported from Excel / Google Sheet.</div>
+              </div>
+            </div>
+            <div class="create-field">
+              <label class="create-label" for="create-order-entry-date">Order Entry Date</label>
+              <input id="create-order-entry-date" class="input-line date-line" type="date" value="2026-04-21" />
+            </div>
+            <div class="create-field">
+              <label class="create-label" for="create-customer-required-date">Customer Required Date</label>
+              <input id="create-customer-required-date" class="input-line date-line" type="date" value="2026-05-15" />
+            </div>
+            <div class="create-field">
+              <label class="create-label" for="create-overall-commit-date">Overall Commit Date</label>
+              <input id="create-overall-commit-date" class="input-line date-line" type="date" value="2026-05-22" />
+            </div>
+            <div class="create-field">
+              <div class="create-label-row">
+                <span class="create-label">Order Route</span>
+                <span class="field-assist">Keep Local / Overseas visible before item entry starts</span>
+              </div>
+              <div class="route-field-shell">
+                <div class="route-segmented" role="group" aria-label="Create Sales Order Route">
+                  <button type="button" class="route-segment active" data-route-field="true" data-value="Local">Local</button>
+                  <button type="button" class="route-segment" data-route-field="true" data-value="Overseas">Overseas</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="summary-sheet create-hidden">
         <table>
           <tr>
             <td class="label">Sales Order No.</td>
@@ -1100,30 +1351,7 @@ window.addEventListener('DOMContentLoaded',()=>{
           </tr>
           <tr>
             <td class="value">SO-20260328-001</td>
-              <td class="value">
-                <div id="order-type-display" class="view-only">Normal</div>
-                <div id="order-type-dropdown" class="mock-dropdown mock-dropdown--field draft-only">
-                  <button type="button" class="mock-dropdown-toggle" aria-haspopup="listbox" aria-expanded="false">
-                    <span id="order-type-dropdown-label">Normal</span>
-                  </button>
-                  <ul class="mock-dropdown-menu" role="listbox" aria-label="Order Type options">
-                    <li><button type="button" class="mock-dropdown-item active" data-value="Normal">Normal</button></li>
-                    <li><button type="button" class="mock-dropdown-item" data-value="Sample">Sample</button></li>
-                    <li><button type="button" class="mock-dropdown-item" data-value="Insert Order">Insert Order</button></li>
-                    <li><button type="button" class="mock-dropdown-item" data-value="Replacement">Replacement</button></li>
-                    <li><button type="button" class="mock-dropdown-item" data-value="Spare Part Only">Spare Part Only</button></li>
-                    <li><button type="button" class="mock-dropdown-item" data-value="Top Urgent">Top Urgent</button></li>
-                  </ul>
-                  <select id="order-type-select" class="mock-dropdown-native" tabindex="-1" aria-hidden="true">
-                    <option selected>Normal</option>
-                    <option>Sample</option>
-                    <option>Insert Order</option>
-                    <option>Replacement</option>
-                    <option>Spare Part Only</option>
-                    <option>Top Urgent</option>
-                  </select>
-                </div>
-              </td>
+              <td class="value"><div id="order-type-display" class="view-only">Normal</div></td>
             <td class="value">PO-20260328-NB</td>
             <td class="value">NorthBay Retail Group</td>
             <td class="value"><div>Emily Carter</div><button class="contact-toggle" type="button" onclick="toggleContact('buyer-contact', this)">Show Contact</button><div id="buyer-contact" class="contact-details">Role: Buyer<br>Email: emily.carter@northbayretail.com</div></td>
