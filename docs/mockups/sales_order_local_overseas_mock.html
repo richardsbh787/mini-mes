@@ -583,8 +583,7 @@ const MODULE_CONFIG={
 };
 const ACTION_CONFIG={
   create:{label:'Create / Add', tag:'Draft Ready', rule:'No key is required first. Open a new draft or new-record flow directly.'},
-  search:{label:'Search / Find', tag:'Lookup First', rule:'Enter search conditions or a search key before continuing.'},
-  view:{label:'View', tag:'Lookup First', rule:'Search and select an existing record before opening the read-only flow.'},
+  search:{label:'Search / Find', tag:'Lookup First', rule:'Search and select an existing record to open the read-only order view.'},
   edit:{label:'Edit / Update', tag:'Lookup First', rule:'Search and select an existing record before editing it.'},
   close:{label:'Close / Cancel', tag:'Lookup First', rule:'Search and select an existing record before closing or cancelling it.'},
   delete:{label:'Delete', tag:'Restricted', rule:'Search and select an existing record first. This action stays visually restricted and secondary.'}
@@ -617,7 +616,7 @@ function syncModuleEntry(){
   const moduleMeta=currentModule?MODULE_CONFIG[currentModule]:null;
   const actionMeta=ACTION_CONFIG[currentAction];
   const isSales=currentModule==='sales-orders';
-  const isSalesShellAction=isSales&&(currentAction==='view'||currentAction==='create');
+  const isSalesShellAction=isSales&&(currentAction==='search'||currentAction==='create');
   const sidebarActionShell=document.getElementById('sidebar-action-shell');
   const sidebarActionStatus=document.getElementById('sidebar-action-status');
   const toolbar=document.getElementById('sales-tab-toolbar');
@@ -657,7 +656,7 @@ function syncModuleEntry(){
     if(flowNote)flowNote.classList.add('hidden');
     if(flowPlaceholder)flowPlaceholder.classList.add('hidden');
     if(flowTitle)flowTitle.textContent='Step 3 opens after the next action is chosen';
-    if(flowBody)flowBody.innerHTML='<strong>Core Module → Action → Record / Form.</strong> Choose one sidebar action first. <strong>Create / Add</strong> opens a new draft without asking for a key first, while <strong>Search / Find</strong>, <strong>View</strong>, <strong>Edit / Update</strong>, <strong>Close / Cancel</strong>, and <strong>Delete</strong> all require lookup and record selection first.';
+    if(flowBody)flowBody.innerHTML='<strong>Core Module → Action → Record / Form.</strong> Choose one sidebar action first. <strong>Create / Add</strong> opens a new draft without asking for a key first, while <strong>Search / Find</strong>, <strong>Edit / Update</strong>, <strong>Close / Cancel</strong>, and <strong>Delete</strong> all require lookup and record selection first.';
     document.querySelectorAll('.section-pane').forEach(el=>el.classList.add('hidden'));
     syncFlowActionUi();
     return;
@@ -669,7 +668,7 @@ function syncModuleEntry(){
     if(flowTitle)flowTitle.textContent='Sales Order mock flow · '+actionMeta.label;
     if(flowBody)flowBody.innerHTML=currentAction==='create'
       ? '<strong>Selected module:</strong> '+moduleMeta.label+'<br><strong>Selected action:</strong> '+actionMeta.label+'<br><strong>Rule:</strong> '+actionMeta.rule+'<br>The Sales Order shell below opens directly in a focused Create / Add form. The header, tabs, and route toggle stay in the same design system while the operator captures only the minimum draft fields first.'
-      : '<strong>Selected module:</strong> '+moduleMeta.label+'<br><strong>Selected action:</strong> '+actionMeta.label+'<br><strong>Rule:</strong> '+actionMeta.rule+'<br>The Sales Order shell below remains mounted as one persistent read-only record surface while you move across its tabs.';
+      : '<strong>Selected module:</strong> '+moduleMeta.label+'<br><strong>Selected action:</strong> '+actionMeta.label+'<br><strong>Rule:</strong> '+actionMeta.rule+'<br>After the order is found and selected, the Sales Order shell below opens as the persistent read-only record surface.';
     if(flowNote){
       flowNote.classList.add('hidden');
       flowNote.innerHTML='<strong>'+moduleMeta.label+' · '+actionMeta.label+'</strong><br>'+actionMeta.rule+' The current mock reuses the Sales Order shell below as the step-3 record / form surface.';
@@ -690,7 +689,7 @@ function syncModuleEntry(){
   if(flowTitle)flowTitle.textContent=moduleMeta.flowTitle+' · '+actionMeta.label;
   if(flowBody){
     flowBody.innerHTML=isSales
-      ? '<strong>Selected module:</strong> '+moduleMeta.label+'<br><strong>Selected action:</strong> '+actionMeta.label+'<br><strong>Rule:</strong> '+actionMeta.rule+'<br>The Sales Order detail shell stays closed here. This state keeps the shared action-entry layer only; the full read-only Sales Order tabs reopen only after <strong>View</strong> is selected.'
+      ? '<strong>Selected module:</strong> '+moduleMeta.label+'<br><strong>Selected action:</strong> '+actionMeta.label+'<br><strong>Rule:</strong> '+actionMeta.rule+'<br>The Sales Order detail shell stays closed here. This state keeps the shared action-entry layer only; the read-only Sales Order tabs reopen only after <strong>Search / Find</strong> selection.'
       : '<strong>Selected module:</strong> '+moduleMeta.label+'<br><strong>Selected action:</strong> '+actionMeta.label+'<br><strong>Rule:</strong> '+actionMeta.rule+'<br>This mock layer shows the shared entry pattern for every core module before any record/form flow opens.';
   }
   syncFlowActionUi();
@@ -1155,7 +1154,6 @@ window.addEventListener('DOMContentLoaded',()=>{
           <div id="sidebar-action-shell" class="side-nav-action-shell hidden">
             <button type="button" class="side-nav-action-item" data-action="create">Create / Add</button>
             <button type="button" class="side-nav-action-item" data-action="search">Search / Find</button>
-            <button type="button" class="side-nav-action-item" data-action="view">View</button>
             <button type="button" class="side-nav-action-item" data-action="edit">Edit / Update</button>
             <button type="button" class="side-nav-action-item restricted" data-action="delete">Delete</button>
             <div id="sidebar-action-status" class="side-nav-action-status">Choose the next action in the sidebar to open the correct record / form path.</div>
@@ -1244,7 +1242,7 @@ window.addEventListener('DOMContentLoaded',()=>{
     <div class="module-flow-card">
       <div class="module-entry-label">Step 3 · Enter Record / Form Flow</div>
       <div id="module-flow-title" class="module-flow-title">Step 3 opens after the next action is chosen</div>
-      <div id="module-flow-body" class="module-flow-body"><strong>Core Module → Action → Record / Form.</strong> Choose one sidebar action first. <strong>Create / Add</strong> opens a new draft without asking for a key first, while <strong>Search / Find</strong>, <strong>View</strong>, <strong>Edit / Update</strong>, <strong>Close / Cancel</strong>, and <strong>Delete</strong> all require lookup and record selection first.</div>
+      <div id="module-flow-body" class="module-flow-body"><strong>Core Module → Action → Record / Form.</strong> Choose one sidebar action first. <strong>Create / Add</strong> opens a new draft without asking for a key first, while <strong>Search / Find</strong>, <strong>Edit / Update</strong>, <strong>Close / Cancel</strong>, and <strong>Delete</strong> all require lookup and record selection first.</div>
     </div>
   </div>
 
