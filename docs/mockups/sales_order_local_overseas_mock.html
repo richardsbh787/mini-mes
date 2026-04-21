@@ -528,6 +528,7 @@ body[data-flow-action="create"] .workspace-tab:not([data-value="summary"]):hover
 .create-top-grid .create-row:last-child{justify-self:end;min-width:0}
 .create-main-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 28px;padding:14px 0}
 .create-bottom-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px 28px;padding-top:14px;border-top:1px solid var(--soft-border)}
+.create-audit-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px 28px;padding-top:14px;margin-top:14px;border-top:1px solid var(--soft-border)}
 .create-column{display:grid;gap:10px;min-width:0}
 .create-row{display:grid;grid-template-columns:148px minmax(0,1fr);align-items:center;gap:12px;min-width:0}
 .create-row.create-route-row{align-items:start}
@@ -544,6 +545,7 @@ body[data-flow-action="create"] .create-sheet .mock-dropdown-toggle{
 body[data-flow-action="create"] .create-sheet .input-line:hover,
 body[data-flow-action="create"] .create-sheet .mock-dropdown-toggle:hover{background:#e8eef2;border-color:#c9d6e1}
 .date-line{min-height:38px}
+.date-line::-webkit-calendar-picker-indicator{cursor:pointer;opacity:.72}
 .route-field-shell{display:grid;justify-content:flex-start}
 .route-field-shell .route-segmented{align-self:flex-start}
 body[data-flow-action="create"] .route-field-shell .route-segmented{padding:2px;background:#eef3f6;border-color:#d3dde6}
@@ -577,7 +579,7 @@ body[data-flow-action="create"] #back-button{color:#7b8ea0}
   .tabs-shell{flex-basis:100%}
   .toolbar-route{width:100%}
   .create-form-head{flex-direction:column;align-items:flex-start}
-  .create-top-grid,.create-main-grid,.create-bottom-grid{grid-template-columns:1fr}
+  .create-top-grid,.create-main-grid,.create-bottom-grid,.create-audit-grid{grid-template-columns:1fr}
   .create-row{grid-template-columns:1fr;gap:6px}
   .create-top-grid .create-row:last-child{justify-self:auto}
   table,.summary-sheet table{min-width:900px}
@@ -890,8 +892,8 @@ function syncSummaryWarning(){
   const isCreate=currentAction==='create';
   const requestDateText=isCreate&&createRequiredDate?createRequiredDate.value:(requestDateCell.dataset.date||requestDateCell.textContent.trim());
   const commitDateText=isCreate&&createCommitDate?createCommitDate.value:(commitDateCell.dataset.date||commitDateCell.textContent.trim());
-  const requestDate=isCreate?parseCreateDisplayDate(requestDateText):new Date(requestDateText+'T00:00:00');
-  const commitDate=isCreate?parseCreateDisplayDate(commitDateText):new Date(commitDateText+'T00:00:00');
+  const requestDate=isCreate?parseYmdDate(requestDateText):new Date(requestDateText+'T00:00:00');
+  const commitDate=isCreate?parseYmdDate(commitDateText):new Date(commitDateText+'T00:00:00');
   const isValidDates=!!requestDate&&!!commitDate&&!Number.isNaN(requestDate.getTime())&&!Number.isNaN(commitDate.getTime());
   const isLate=isValidDates&&commitDate>requestDate;
 
@@ -1081,17 +1083,11 @@ function setupCreateForm(){
   const requiredDateInput=document.getElementById('create-customer-required-date');
   const commitDateInput=document.getElementById('create-overall-commit-date');
   const entryDateInput=document.getElementById('create-order-entry-date');
-  const createDateInputs=[entryDateInput,requiredDateInput,commitDateInput].filter(Boolean);
   if(customerInput){
     customerInput.addEventListener('input',()=>populateBuyerOptions(customerInput.value.trim()));
     customerInput.addEventListener('change',()=>populateBuyerOptions(customerInput.value.trim()));
     populateBuyerOptions(customerInput.value.trim());
   }
-  createDateInputs.forEach(input=>{
-    if(input.dataset.isoValue){
-      input.value=formatCreateDisplayDate(input.dataset.isoValue);
-    }
-  });
   [requiredDateInput,commitDateInput].forEach(input=>{
     if(!input)return;
     input.addEventListener('input',syncSummaryWarning);
@@ -1393,19 +1389,19 @@ window.addEventListener('DOMContentLoaded',()=>{
               <div class="create-row">
                 <label class="create-label" for="create-order-entry-date">Order Entry Date</label>
                 <div class="create-field-wrap">
-                  <input id="create-order-entry-date" class="input-line date-line" type="text" inputmode="numeric" value="21-04-26" data-iso-value="2026-04-21" />
+                  <input id="create-order-entry-date" class="input-line date-line" type="date" value="2026-04-21" />
                 </div>
               </div>
               <div class="create-row">
                 <label class="create-label" for="create-customer-required-date">Customer Required Date</label>
                 <div class="create-field-wrap">
-                  <input id="create-customer-required-date" class="input-line date-line" type="text" inputmode="numeric" value="15-05-26" data-iso-value="2026-05-15" />
+                  <input id="create-customer-required-date" class="input-line date-line" type="date" value="2026-05-15" />
                 </div>
               </div>
               <div class="create-row">
                 <label class="create-label" for="create-overall-commit-date">Overall Commit Date</label>
                 <div class="create-field-wrap">
-                  <input id="create-overall-commit-date" class="input-line date-line" type="text" inputmode="numeric" value="22-05-26" data-iso-value="2026-05-22" />
+                  <input id="create-overall-commit-date" class="input-line date-line" type="date" value="2026-05-22" />
                 </div>
               </div>
               <div class="create-row create-route-row">
@@ -1419,16 +1415,18 @@ window.addEventListener('DOMContentLoaded',()=>{
                   </div>
                 </div>
               </div>
-              <div class="create-row">
-                <label class="create-label" for="create-entered-at">Entered At</label>
-                <div class="create-field-wrap">
-                  <div id="create-entered-at" class="read-only-input">21-04-26 09:42</div>
-                </div>
-              </div>
+            </div>
+            <div class="create-audit-grid">
               <div class="create-row">
                 <label class="create-label" for="create-entered-by">Entered By</label>
                 <div class="create-field-wrap">
                   <div id="create-entered-by" class="read-only-input">Ruichen Tan</div>
+                </div>
+              </div>
+              <div class="create-row">
+                <label class="create-label" for="create-entered-at">Entered At</label>
+                <div class="create-field-wrap">
+                  <div id="create-entered-at" class="read-only-input">21-04-26 09:42</div>
                 </div>
               </div>
             </div>
