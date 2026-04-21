@@ -335,7 +335,35 @@ body{margin:0;background:linear-gradient(180deg,#fefefe 0%,var(--bg) 180px,#f8f8
 .field-row,.edit-row{padding:14px 0;border-top:1px solid var(--line)}.summary-sheet{max-width:1320px;margin:0 auto;border:1px solid var(--line);border-radius:var(--panel-radius);overflow:visible;background:var(--surface-soft);box-shadow:inset 0 1px 0 rgba(255,255,255,.82),0 2px 6px rgba(67,89,112,.035)}.summary-sheet table{width:100%;min-width:0;table-layout:fixed;border-collapse:collapse;font-size:14px}.summary-sheet td{padding:12px 14px;border-bottom:1px solid var(--soft-border);vertical-align:top}.summary-sheet .label{width:11.11%;height:var(--table-header-height);padding:11px 12px;font-size:var(--table-header-font-size);font-weight:var(--table-header-font-weight);line-height:var(--table-header-line-height);color:var(--text);background:var(--surface-header);letter-spacing:var(--table-header-letter-spacing);text-transform:var(--table-header-text-transform);vertical-align:middle}.summary-sheet .value{min-width:0;background:var(--surface-card);font-size:14px;line-height:1.4}.summary-note{padding-top:0}
 .field-label,.edit-label,.block-label{font-size:12px;font-weight:700;color:var(--blue);margin-bottom:8px;letter-spacing:.08px}
 .field-value,.block-value{font-size:15px;line-height:1.45;color:#314a65}
-.block{max-width:1320px;margin:10px auto 0;border:1px solid var(--soft-border);border-radius:14px;background:var(--surface-card);padding:14px 16px;box-shadow:inset 0 1px 0 rgba(255,255,255,.82),0 1px 3px rgba(67,89,112,.02)}
+.block{border:1px solid var(--soft-border);border-radius:14px;background:var(--surface-card);padding:14px 16px;box-shadow:inset 0 1px 0 rgba(255,255,255,.82),0 1px 3px rgba(67,89,112,.02)}
+.summary-helper-note{
+  max-width:1320px;
+  margin:10px auto 0;
+  padding:10px 14px;
+  border:1px solid var(--soft-border);
+  border-radius:12px;
+  background:rgba(250,251,252,.92);
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.55;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.82);
+}
+.summary-lower-grid{
+  max-width:1320px;
+  margin:10px auto 0;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px 12px;
+  align-items:start;
+}
+.summary-lower-grid .block{
+  margin:0;
+  min-height:100%;
+}
+.summary-lower-grid .block-value{
+  font-size:14px;
+  line-height:1.42;
+}
 .route-display{display:grid;grid-template-columns:220px 1fr 220px 1fr;column-gap:18px;align-items:start;padding:0 0 14px;border-bottom:1px solid var(--line)}
 .input-line,.select-line,.textarea-line{width:100%;font-size:14px;line-height:1.45;color:var(--text);background:#fefefe;border:1px solid var(--line);padding:9px 12px;outline:none;border-radius:8px;box-shadow:none}
 .select-line{height:38px;padding-right:28px}
@@ -377,7 +405,7 @@ td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line
   border-radius:16px;
   overflow:visible;
 }
-.order-items-table table{min-width:1410px}
+.order-items-table table{min-width:1392px}
 .order-items-table th{padding:13px 10px}
 .order-items-table td{padding:15px 10px;font-size:14px;line-height:1.45}
 .order-items-table th:nth-child(1),.order-items-table td:nth-child(1){width:112px}
@@ -388,10 +416,10 @@ td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line
 .order-items-table th:nth-child(6),.order-items-table td:nth-child(6){width:118px}
 .order-items-table th:nth-child(7),.order-items-table td:nth-child(7){width:118px}
 .order-items-table th:nth-child(8),.order-items-table td:nth-child(8){width:114px}
-.order-items-table th:nth-child(9),.order-items-table td:nth-child(9){width:138px}
-.order-items-table th:nth-child(10),.order-items-table td:nth-child(10){width:116px}
-.order-items-table th:nth-child(11),.order-items-table td:nth-child(11){width:138px}
-.order-items-table th:nth-child(12),.order-items-table td:nth-child(12){width:172px}
+.order-items-table th:nth-child(9),.order-items-table td:nth-child(9){width:152px}
+.order-items-table th:nth-child(10),.order-items-table td:nth-child(10){width:108px}
+.order-items-table th:nth-child(11),.order-items-table td:nth-child(11){width:128px}
+.order-items-table th:nth-child(12),.order-items-table td:nth-child(12){width:146px}
 .order-items-table .qty-cell,
 .order-items-table .date-cell,
 .order-items-table .buffer-cell,
@@ -412,6 +440,10 @@ td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line
   -webkit-line-clamp:2;
   line-clamp:2;
 }
+.order-items-parent-row .remark-summary{
+  -webkit-line-clamp:1;
+  line-clamp:1;
+}
 .order-items-table .waiver-cell{min-width:0}
 .order-items-table .qty-cell{font-weight:700;color:var(--title);text-align:center;white-space:nowrap}
 .order-items-table .date-cell{font-size:13px;line-height:1.2;color:#3a526a;white-space:nowrap}
@@ -431,15 +463,24 @@ td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line
   color:var(--muted);
   border-bottom:1px solid #e7eef3;
 }
-.order-items-subrow td:first-child{
-  color:transparent;
+.order-items-subrow .subrow-gutter{
+  position:relative;
+  padding:0;
+  background:#fdfefe;
+  border-bottom:1px solid #e7eef3;
 }
-.order-items-subrow td:nth-child(-n+3){
-  background:linear-gradient(90deg,#fdfefe 0,#fdfefe 14px,#f5f8fa 14px,#f5f8fa 100%);
+.order-items-subrow .subrow-gutter::after{
+  content:"";
+  position:absolute;
+  top:0;
+  bottom:0;
+  right:14px;
+  width:1px;
+  background:#dfe8ef;
 }
 .order-items-subrow .subrow-label{
   position:relative;
-  padding-left:34px;
+  padding-left:26px;
   color:var(--muted);
   font-weight:600;
   font-size:11px;
@@ -448,7 +489,7 @@ td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line
 .order-items-subrow .subrow-label::before{
   content:"";
   position:absolute;
-  left:18px;
+  left:10px;
   top:50%;
   width:10px;
   height:1px;
@@ -457,6 +498,8 @@ td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line
 .order-items-subrow .batch-cell{
   font-weight:600;
   color:var(--title);
+  white-space:nowrap;
+  font-size:12px;
 }
 .order-items-subrow .qty-cell,
 .order-items-subrow .date-cell{
@@ -517,6 +560,7 @@ td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line
   .tabs-shell{flex-basis:100%}
   .toolbar-route{width:100%}
   table,.summary-sheet table{min-width:900px}
+  .summary-lower-grid{grid-template-columns:1fr}
 }
 </style>
 <script>
@@ -1116,7 +1160,7 @@ window.addEventListener('DOMContentLoaded',()=>{
             <td class="value"><div>Alex Chen</div><button class="contact-toggle" type="button" onclick="toggleContact('sales-contact', this)">Show Contact</button><div id="sales-contact" class="contact-details">Email: alexchen.nb@northbay.com<br>Mobile / WhatsApp: +60 12-345 6789<br>WeChat: alexchen_nb<br>LINE: alexchen-sales</div></td>
             <td class="value" data-date-display="2026-03-28">2026-03-28</td>
             <td id="customer-request-date" class="value" data-date="2026-05-15" data-date-display="2026-05-15">2026-05-15</td>
-            <td id="overall-commit-date" class="value" data-date="2026-05-22"><span data-date-display="2026-05-22">2026-05-22</span><div class="support-text">Customer-facing overall commit date for the whole Sales Order. Each Order Item FG Ready Date should stay on or before this date. Commit Lead Time: 37 working days (MY / CN holiday-adjusted mock)</div></td>
+            <td id="overall-commit-date" class="value" data-date="2026-05-22"><span data-date-display="2026-05-22">2026-05-22</span></td>
           </tr>
         </table>
       </div>
@@ -1127,10 +1171,13 @@ window.addEventListener('DOMContentLoaded',()=>{
           <div id="summary-overdue-text" class="summary-warning-text"></div>
         </div>
       </div>
-      <div class="block"><div class="block-label">Commerce Team</div><div id="commerce-team" class="block-value">Local Commerce Team</div></div>
-      <div class="block summary-note"><div class="block-label">Internal Remark</div><div class="block-value">Need weekly readiness check by procurement and production planning.</div></div>
-      <div class="block"><div class="block-label">Customer Remark</div><div class="block-value">Partial shipment accepted if total lead time improves.</div></div>
-      <div class="block"><div class="block-label">Shipment / Delivery Coordination Issue</div><div class="block-value">This block can carry either local delivery coordination notes or overseas shipping / customs coordination notes, depending on selected order route.</div></div>
+      <div class="summary-helper-note">Overall Commit Date is the customer-facing order-level commitment. Each Order Item FG Ready Date should stay on or before this date. Commit Lead Time: 37 working days (MY / CN holiday-adjusted mock).</div>
+      <div class="summary-lower-grid">
+        <div class="block"><div class="block-label">Commerce Team</div><div id="commerce-team" class="block-value">Local Commerce Team</div></div>
+        <div class="block summary-note"><div class="block-label">Shipment / Delivery Coordination Issue</div><div class="block-value">This block can carry either local delivery coordination notes or overseas shipping / customs coordination notes, depending on selected order route.</div></div>
+        <div class="block summary-note"><div class="block-label">Internal Remark</div><div class="block-value">Need weekly readiness check by procurement and production planning.</div></div>
+        <div class="block"><div class="block-label">Customer Remark</div><div class="block-value">Partial shipment accepted if total lead time improves.</div></div>
+      </div>
     </div>
   </div>
 
@@ -1214,9 +1261,7 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td class="remark-cell"><span class="remark-summary">One original customer order item with a partial-delivery plan. Child rows below show the 3 shipment batches and their own planned ship dates under this same Order Item.</span></td>
             </tr>
             <tr class="order-items-subrow">
-              <td></td>
-              <td></td>
-              <td></td>
+              <td colspan="3" class="subrow-gutter" aria-hidden="true"></td>
               <td class="subrow-label">Partial Delivery Plan</td>
               <td class="qty-cell">300 pcs</td>
               <td class="date-cell fg-ready-date" data-date="2026-05-14" data-date-display="2026-05-14">2026-05-14</td>
@@ -1226,9 +1271,7 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td colspan="3" class="remark-cell"><span class="remark-summary">First customer-requested release under Order Item 001.</span></td>
             </tr>
             <tr class="order-items-subrow">
-              <td></td>
-              <td></td>
-              <td></td>
+              <td colspan="3" class="subrow-gutter" aria-hidden="true"></td>
               <td class="subrow-label">Partial Delivery Plan</td>
               <td class="qty-cell">300 pcs</td>
               <td class="date-cell fg-ready-date" data-date="2026-05-18" data-date-display="2026-05-18">2026-05-18</td>
@@ -1238,9 +1281,7 @@ window.addEventListener('DOMContentLoaded',()=>{
               <td colspan="3" class="remark-cell"><span class="remark-summary">Second planned release for the same original Order Item.</span></td>
             </tr>
             <tr class="order-items-subrow">
-              <td></td>
-              <td></td>
-              <td></td>
+              <td colspan="3" class="subrow-gutter" aria-hidden="true"></td>
               <td class="subrow-label">Partial Delivery Plan</td>
               <td class="qty-cell">300 pcs</td>
               <td class="date-cell fg-ready-date" data-date="2026-05-20" data-date-display="2026-05-20">2026-05-20</td>
