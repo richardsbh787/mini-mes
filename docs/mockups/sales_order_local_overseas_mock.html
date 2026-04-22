@@ -719,12 +719,16 @@ const MODULE_WORKSPACE_CONFIG={
   'sales-orders':{
     purpose:'This workspace is used to capture, find, review, and update Sales Order records and related commercial coordination surfaces.',
     effect:'sales-order entry, customer-facing coordination, and downstream planning references',
-    selectorTitle:'Choose Order Surface',
-    selectorCopy:'Then choose which sales-order area to work on.',
+    selectorTitle:'Choose Sales Order Sub-Module',
+    selectorCopy:'Then choose which real Sales Order area to work on.',
     items:[
-      {id:'sales-order-desk',label:'Sales Order Desk',description:'Main order record and draft-entry surface.'},
-      {id:'customer-coordination',label:'Customer Coordination',description:'Buyer, salesperson, and request-alignment surface.'},
-      {id:'delivery-commit-view',label:'Delivery / Commit View',description:'Commit-date and route-linked review surface.'}
+      {id:'summary',label:'Order Summary',description:'Main sales-order summary and create/add surface.'},
+      {id:'commercial',label:'Commercial Terms',description:'Payment, term, and commercial-condition surface.'},
+      {id:'items',label:'Order Items',description:'Item-level quantity, batch, and readiness surface.'},
+      {id:'risk',label:'Risk Status',description:'Current order risk review and exception surface.'},
+      {id:'procurement',label:'Short Material List',description:'Material-gap and supplier-promise surface.'},
+      {id:'delivery',label:'Shipping Detail',description:'Route, delivery, and logistics coordination surface.'},
+      {id:'log',label:'Change Log',description:'Order change history and trace surface.'}
     ]
   },
   'product-engineering':{
@@ -1143,11 +1147,16 @@ function getSelectedWorkspaceItem(moduleId){
   const selectedId=getSelectedWorkspaceItemId(moduleId);
   return getWorkspaceItems(moduleId).find(item=>item.id===selectedId)||null;
 }
+function getSalesOrderSectionHtml(sectionId){
+  const section=document.getElementById(sectionId);
+  return section?section.innerHTML:'';
+}
 function getGenericWorkspaceGuide(moduleId){
   const moduleMeta=MODULE_CONFIG[moduleId];
   const workspaceConfig=getWorkspaceConfig(moduleId);
   const actionMeta=ACTION_CONFIG[currentAction]||null;
   const selectedItem=getSelectedWorkspaceItem(moduleId);
+  const surfaceLabel=moduleId==='sales-orders'?'Sub-Module':'Surface';
   let locationLines=[
     '<div class="master-guide-line"><strong>Module:</strong> '+moduleMeta.label+'</div>'
   ];
@@ -1175,7 +1184,7 @@ function getGenericWorkspaceGuide(moduleId){
     locationLines.push('<div class="master-guide-line"><strong>Action:</strong> Choose an action first</div>');
   }
   if(selectedItem){
-    locationLines.push('<div class="master-guide-line"><strong>Surface:</strong> '+selectedItem.label+'</div>');
+    locationLines.push('<div class="master-guide-line"><strong>'+surfaceLabel+':</strong> '+selectedItem.label+'</div>');
     screenFor=workspaceConfig.purpose+' Focus area: '+selectedItem.label+'.';
     effect=actionMeta
       ? actionMeta.label+' in '+selectedItem.label+' affects '+workspaceConfig.effect+'.'
@@ -1187,7 +1196,7 @@ function getGenericWorkspaceGuide(moduleId){
       'Save, update, or continue after checking the expected downstream effect.'
     ]:steps;
   } else {
-    locationLines.push('<div class="master-guide-line"><strong>Surface:</strong> Choose one target surface</div>');
+    locationLines.push('<div class="master-guide-line"><strong>'+surfaceLabel+':</strong> Choose one target '+(moduleId==='sales-orders'?'sub-module':'surface')+'</div>');
   }
   const notes=[
     'Mock-stage only.',
@@ -1226,27 +1235,38 @@ function renderGenericWorkspaceStage(moduleId){
     .join('');
   let mainContent=renderMasterStagePlaceholder(
     'Choose an action first',
-    'Step 1: choose one action in Column 1. Step 2: choose the target surface in Column 2. The matching module workspace will then open here.'
+    moduleId==='sales-orders'
+      ? 'Step 1: choose one action in Column 1. Step 2: choose the real Sales Order sub-module in Column 2. The matching Sales Order working content will then open here.'
+      : 'Step 1: choose one action in Column 1. Step 2: choose the target surface in Column 2. The matching module workspace will then open here.'
   );
   if(actionMeta&&!selectedItem){
     mainContent=renderMasterStagePlaceholder(
       actionMeta.label+' is selected',
-      'Step 2: choose one target surface from Column 2 so the correct '+moduleMeta.label+' workspace can open in the center panel.'
+      moduleId==='sales-orders'
+        ? 'Step 2: choose one real Sales Order sub-module from Column 2 so the correct '+moduleMeta.label+' content can open in the center panel.'
+        : 'Step 2: choose one target surface from Column 2 so the correct '+moduleMeta.label+' workspace can open in the center panel.'
     );
   }
   if(actionMeta&&selectedItem){
-    mainContent='<div class="master-stage-panel master-stage-content-panel">'+
-      '<div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Center Panel</div><div class="master-stage-panel-title">'+moduleMeta.label+' · '+selectedItem.label+'</div><div class="master-stage-panel-copy">'+workspaceConfig.purpose+'</div></div>'+
-      '<div class="master-stage-panel-body"><div class="master-stage-column">'+
-        '<div class="master-stage-placeholder"><strong>Mock work surface:</strong> '+actionMeta.label+' is now focused on '+selectedItem.label+'. This placeholder keeps the same product-family workspace pattern even where a full module mock surface is not yet built.</div>'+
-        '<div class="master-guide-list">'+
-          '<div class="master-guide-line"><strong>Selected action:</strong> '+actionMeta.label+'</div>'+
-          '<div class="master-guide-line"><strong>Selected surface:</strong> '+selectedItem.label+'</div>'+
-          '<div class="master-guide-line"><strong>What this area handles:</strong> '+selectedItem.description+'</div>'+
-          '<div class="master-guide-line"><strong>Expected effect:</strong> '+actionMeta.label+' here affects '+workspaceConfig.effect+'.</div>'+
-        '</div>'+
-      '</div></div>'+
-    '</div>';
+    if(moduleId==='sales-orders'){
+      mainContent='<div class="master-stage-panel master-stage-content-panel">'+
+        '<div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Center Panel</div><div class="master-stage-panel-title">'+moduleMeta.label+' · '+selectedItem.label+'</div><div class="master-stage-panel-copy">'+actionMeta.label+' is now paired with the real Sales Order sub-module '+selectedItem.label+'.</div></div>'+
+        '<div class="master-stage-panel-body">'+getSalesOrderSectionHtml(selectedItem.id)+'</div>'+
+      '</div>';
+    } else {
+      mainContent='<div class="master-stage-panel master-stage-content-panel">'+
+        '<div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Center Panel</div><div class="master-stage-panel-title">'+moduleMeta.label+' · '+selectedItem.label+'</div><div class="master-stage-panel-copy">'+workspaceConfig.purpose+'</div></div>'+
+        '<div class="master-stage-panel-body"><div class="master-stage-column">'+
+          '<div class="master-stage-placeholder"><strong>Mock work surface:</strong> '+actionMeta.label+' is now focused on '+selectedItem.label+'. This placeholder keeps the same product-family workspace pattern even where a full module mock surface is not yet built.</div>'+
+          '<div class="master-guide-list">'+
+            '<div class="master-guide-line"><strong>Selected action:</strong> '+actionMeta.label+'</div>'+
+            '<div class="master-guide-line"><strong>Selected surface:</strong> '+selectedItem.label+'</div>'+
+            '<div class="master-guide-line"><strong>What this area handles:</strong> '+selectedItem.description+'</div>'+
+            '<div class="master-guide-line"><strong>Expected effect:</strong> '+actionMeta.label+' here affects '+workspaceConfig.effect+'.</div>'+
+          '</div>'+
+        '</div></div>'+
+      '</div>';
+    }
   }
   headerTitle.textContent=moduleMeta.label;
   headerCopy.textContent='This module uses the same guided workspace pattern as Reports & Master Data: choose an action first, then choose the relevant surface, then continue in the center panel with the operator guide on the right.';
