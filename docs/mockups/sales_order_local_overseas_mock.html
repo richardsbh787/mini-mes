@@ -585,7 +585,7 @@ body[data-flow-action="create"] #save-button{background:#eef4f7;border-color:#d9
 body[data-flow-action="create"] #save-button:hover{background:#e8f0f5;border-color:#cfdee8;color:#5f7689}
 body[data-flow-action="create"] #back-button{color:#7b8ea0}
 body[data-master-stage="true"] .sticky-shell{display:none}
-.master-stage{max-width:1100px;margin:0 auto;padding:18px 0 28px}
+.master-stage{max-width:1540px;margin:0 auto;padding:18px 0 28px}
 .master-stage-header{display:grid;gap:4px;margin-bottom:14px}
 .master-stage-kicker{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-soft)}
 .master-stage-title{font-size:22px;font-weight:700;line-height:1.2;color:var(--title)}
@@ -601,6 +601,52 @@ body[data-master-stage="true"] .sticky-shell{display:none}
 .master-stage-empty{padding:22px 18px;border:1px dashed #d6e1ea;border-radius:14px;background:rgba(252,253,254,.8);font-size:13px;line-height:1.55;color:var(--muted)}
 .master-stage-note{font-size:12px;color:var(--muted);line-height:1.55}
 .master-stage .section{padding-top:0}
+.master-stage-shell{display:grid;grid-template-columns:200px 220px minmax(0,1fr) 300px;gap:16px;align-items:start}
+.master-stage-column{display:grid;gap:12px}
+.master-stage-panel{border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,#fcfdfe 0%,#f5f8fa 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.88),0 2px 6px rgba(67,89,112,.04)}
+.master-stage-panel-header{padding:14px 14px 10px;border-bottom:1px solid var(--soft-border)}
+.master-stage-panel-kicker{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-soft)}
+.master-stage-panel-title{margin-top:5px;font-size:15px;font-weight:700;line-height:1.35;color:var(--title)}
+.master-stage-panel-copy{margin-top:4px;font-size:12px;line-height:1.55;color:var(--muted)}
+.master-stage-panel-body{padding:12px}
+.master-stage-action-list,.master-stage-master-list{display:grid;gap:8px}
+.master-stage-action-list{padding:4px 0}
+.master-stage-master-list{max-height:420px;overflow-y:auto;scrollbar-gutter:stable;scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track)}
+.master-stage-master-list::-webkit-scrollbar{width:10px}
+.master-stage-master-list::-webkit-scrollbar-track{background:var(--scroll-track);border-radius:999px}
+.master-stage-master-list::-webkit-scrollbar-thumb{background:var(--scroll-thumb);border-radius:999px;border:2px solid var(--scroll-track)}
+.master-stage-master-list::-webkit-scrollbar-thumb:hover{background:var(--scroll-thumb-hover)}
+.master-work-action,.master-work-item{display:flex;align-items:flex-start;gap:10px;width:100%;padding:11px 12px;border:1px solid transparent;border-radius:14px;background:#f6fafc;color:var(--muted);font-size:13px;font-weight:600;line-height:1.35;text-align:left;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.88);transition:background .16s ease,border-color .16s ease,color .16s ease,box-shadow .16s ease,transform .16s ease}
+.master-work-action:hover,.master-work-item:hover{background:#eef5f9;border-color:#d1dfea;color:var(--text)}
+.master-work-action.active{background:linear-gradient(180deg,#fefefe 0%,#edf4f9 35%,#d7e6f1 100%);border-color:#bdd0de;color:var(--title);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(119,149,176,.12),0 8px 16px rgba(79,127,168,.16);transform:translateY(-1px)}
+.master-work-action.restricted.active{background:linear-gradient(180deg,#fdf9f9 0%,#f6ecec 42%,#efdfdf 100%);border-color:#ddcaca;color:#8e6262;box-shadow:inset 0 1px 0 rgba(255,255,255,.94),0 8px 16px rgba(142,98,98,.10)}
+.master-work-item{background:#f8fbfd;border-color:#dbe6ee;color:#74889b}
+.master-work-item.is-disabled{opacity:.58}
+.master-work-item.active{background:linear-gradient(180deg,#7ea7c6 0%,#527fa3 42%,#3f6c90 100%);border-color:#2f5877;color:#ffffff;box-shadow:inset 0 1px 0 rgba(255,255,255,.34),inset 0 -1px 0 rgba(37,63,84,.16),0 8px 16px rgba(63,108,144,.28);text-shadow:0 1px 0 rgba(28,49,67,.34);font-weight:700}
+.master-work-item.active:hover{background:linear-gradient(180deg,#7ea7c6 0%,#527fa3 42%,#3f6c90 100%);border-color:#2f5877;color:#ffffff}
+.master-work-icon{flex:0 0 18px;width:18px;height:18px;border-radius:999px;background-position:center;background-repeat:no-repeat;background-size:16px 16px;opacity:.9}
+.master-work-action[data-action="create"] .master-work-icon{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M8 3.25v9.5M3.25 8h9.5' fill='none' stroke='%234F7FA8' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E")}
+.master-work-action[data-action="search"] .master-work-icon{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Ccircle cx='7' cy='7' r='3.75' fill='none' stroke='%234F7FA8' stroke-width='1.4'/%3E%3Cpath d='M10.2 10.2 13 13' fill='none' stroke='%234F7FA8' stroke-width='1.4' stroke-linecap='round'/%3E%3C/svg%3E")}
+.master-work-action[data-action="edit"] .master-work-icon{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M3 11.9 3.5 13l1.1-.5 6-6-1.6-1.6-6 6Z' fill='none' stroke='%234F7FA8' stroke-width='1.2' stroke-linejoin='round'/%3E%3Cpath d='M8.8 4.8 10.4 6.4' fill='none' stroke='%234F7FA8' stroke-width='1.2' stroke-linecap='round'/%3E%3Cpath d='M3 13h10' fill='none' stroke='%234F7FA8' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E")}
+.master-work-action[data-action="delete"] .master-work-icon{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M4.25 5.25h7.5M6.25 2.75h3.5M5.2 5.25l.45 6h4.7l.45-6' fill='none' stroke='%238E6262' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M6.8 6.7v3.1M9.2 6.7v3.1' fill='none' stroke='%238E6262' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E")}
+.master-work-label{display:grid;gap:2px;min-width:0}
+.master-work-title{font-size:13px;font-weight:700;color:inherit}
+.master-work-copy{font-size:11px;line-height:1.45;color:inherit;opacity:.78}
+.master-work-item-title{font-size:13px;font-weight:700;line-height:1.35;color:inherit}
+.master-work-item-sub{font-size:11px;line-height:1.45;color:inherit;opacity:.8}
+.master-stage-content-panel{min-height:620px}
+.master-stage-content-wrap{display:grid;gap:14px}
+.master-stage-guide{position:sticky;top:16px}
+.master-guide-list{display:grid;gap:6px}
+.master-guide-line{font-size:12px;line-height:1.55;color:var(--muted)}
+.master-guide-line strong{color:var(--title)}
+.master-guide-steps{display:grid;gap:6px}
+.master-guide-step{display:flex;gap:8px;font-size:12px;line-height:1.55;color:var(--muted)}
+.master-guide-step-no{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;border-radius:999px;background:var(--primary-soft);color:var(--blue);font-size:11px;font-weight:700}
+.master-guide-note-list{display:grid;gap:6px}
+.master-guide-note{font-size:12px;line-height:1.55;color:var(--muted)}
+.master-stage-placeholder{padding:22px 18px;border:1px dashed #d6e1ea;border-radius:14px;background:rgba(252,253,254,.8);font-size:13px;line-height:1.6;color:var(--muted)}
+.master-stage-placeholder strong{color:var(--title)}
 .master-status-pill{display:inline-flex;align-items:center;justify-content:center;min-height:24px;padding:4px 10px;border-radius:999px;border:1px solid #d6e1ea;background:#eef4f8;color:#5f7689;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
 .master-status-pill.inactive{background:#f3e8e8;border-color:#ddcaca;color:#8e6262}
 .master-delete-note{color:#8e6262}
@@ -631,6 +677,9 @@ body[data-master-stage="true"] .sticky-shell{display:none}
   .tabs-shell{flex-basis:100%}
   .toolbar-route{width:100%}
   .create-form-head{flex-direction:column;align-items:flex-start}
+  .master-stage-shell{grid-template-columns:1fr}
+  .master-stage-guide{position:static}
+  .master-stage-content-panel{min-height:auto}
   .master-stage-edit-grid{grid-template-columns:1fr}
   .create-top-grid,.create-main-grid,.create-bottom-grid,.create-audit-grid{grid-template-columns:1fr}
   .create-row{grid-template-columns:1fr;gap:6px}
@@ -896,6 +945,139 @@ function getMasterStatusPill(status){
   const normalized=(status||'').toLowerCase();
   return '<span class="master-status-pill'+(normalized==='inactive'?' inactive':'')+'">'+escapeHtml(status||'Active')+'</span>';
 }
+function getMasterActionDetail(actionId){
+  const detailMap={
+    create:{
+      canDo:'Create a new master record in this mock flow.',
+      screenFor:'This page is used to add one new master record with the minimum required fields first.'
+    },
+    search:{
+      canDo:'Search existing master records and open one record for review.',
+      screenFor:'This page is used to find and review the current in-file mock records before any downstream action.'
+    },
+    edit:{
+      canDo:'Update an existing master record after selecting it from the list.',
+      screenFor:'This page is used to find one existing record, review it, and update the maintained fields in the center panel.'
+    },
+    delete:{
+      canDo:'Delete a selected master record from this mock page session.',
+      screenFor:'This page is used to remove one selected mock record in a controlled, visibly restricted delete path.'
+    }
+  };
+  return detailMap[actionId]||{
+    canDo:'Choose the next master-data action from this module.',
+    screenFor:'This page is used to maintain master records in the current mock only.'
+  };
+}
+function getMasterEffectCopy(moduleId,actionId){
+  const baseLabel=isMasterModule(moduleId)?MODULE_CONFIG[moduleId].label:'the selected master';
+  const moduleEffectMap={
+    'buyer-master':'Buyer Master records feed the Sales Order Buyer dropdown and linked buyer contact source used during Sales Order Create / Add.',
+    'sales-person-master':'Sales Person Master records refresh the linked name, contact, and email source used in Sales Order Create / Add.',
+    'third-party-transport-master':'3rd Party Transport records will support logistics assignment and downstream transport reference selection in later mock flows.',
+    'billing-party-master':'Billing Party records will support downstream billing-party selection and customer invoice-routing references.',
+    'delivery-zone-master':'Delivery Zone records will support delivery-planning defaults and route-related grouping in downstream screens.',
+    'forwarder-master':'Forwarder Master records will support export / shipping coordination choices in downstream shipment flows.',
+    'warehouse-master':'Warehouse Master records will support location choices and warehouse-linked references in later warehouse-related screens.',
+    'customer-group-master':'Customer Group records will support customer classification and downstream grouping logic in later screens.'
+  };
+  if(!moduleId||!actionId){
+    return 'After the action and master are selected, the center panel opens the matching maintenance surface for this mock.';
+  }
+  if(actionId==='create'){
+    return 'A newly added '+baseLabel+' record becomes available inside this page session and can be used by the mock screens that read from that master source.';
+  }
+  if(actionId==='search'){
+    return 'Opening a record lets the operator review the selected '+baseLabel+' entry without guessing which source row is being read.';
+  }
+  if(actionId==='edit'){
+    return moduleEffectMap[moduleId]||('Updating '+baseLabel+' refreshes the linked mock source used by downstream flows in this page session.');
+  }
+  if(actionId==='delete'){
+    return 'Deleting the selected '+baseLabel+' record removes it from this page session only. This is not yet a real database write.';
+  }
+  return moduleEffectMap[moduleId]||('Changes in '+baseLabel+' stay inside the current page-session mock only.');
+}
+function renderMasterGuidePanel(){
+  const moduleLabel=MODULE_CONFIG['reports-master-data'].label;
+  const actionMeta=ACTION_CONFIG[currentAction];
+  const masterMeta=isMasterModule(currentMasterModule)?MODULE_CONFIG[currentMasterModule]:null;
+  const actionDetail=getMasterActionDetail(currentAction);
+  let locationLines=[
+    '<div class="master-guide-line"><strong>Module:</strong> '+moduleLabel+'</div>'
+  ];
+  let canDo=actionMeta?'Choose the next target master for '+actionMeta.label+'.':'Choose an action first so the system can show the correct maintenance path.';
+  let screenFor='This page is used to maintain mock master records and explain the next step before the operator starts typing.';
+  let steps=[
+    'Choose an action in Column 1.',
+    'Choose the target master in Column 2.',
+    'Use the center panel to add, search, review, update, or delete the record.',
+    'Save or continue in the center panel after reviewing the effect.'
+  ];
+  let effect='This mock keeps the action-first, master-second rule explicit so the user always knows what the next click does.';
+  if(actionMeta){
+    locationLines.push('<div class="master-guide-line"><strong>Action:</strong> '+actionMeta.label+'</div>');
+    canDo=actionDetail.canDo;
+    screenFor=actionDetail.screenFor;
+    steps=[
+      'Action is already chosen in Column 1.',
+      'Choose one master in Column 2.',
+      'Use the center panel to continue the '+actionMeta.label+' flow.',
+      'Complete the mock action and review the result below.'
+    ];
+  } else {
+    locationLines.push('<div class="master-guide-line"><strong>Action:</strong> Choose an action first</div>');
+    locationLines.push('<div class="master-guide-line"><strong>Master:</strong> Choose after the action</div>');
+  }
+  if(actionMeta&&masterMeta){
+    locationLines.push('<div class="master-guide-line"><strong>Master:</strong> '+masterMeta.label+'</div>');
+    canDo=currentAction==='create'
+      ? 'Create a new '+masterMeta.label+' record.'
+      : currentAction==='search'
+        ? 'Search existing '+masterMeta.label+' records.'
+        : currentAction==='edit'
+          ? 'Update an existing '+masterMeta.label+' record.'
+          : 'Delete a selected '+masterMeta.label+' record.';
+    screenFor='This page is used to maintain '+masterMeta.label+' records. Records maintained here will be used by downstream screens such as Sales Order Create / Add.';
+    steps=[
+      'Action is fixed as '+actionMeta.label+'.',
+      'Master is fixed as '+masterMeta.label+'.',
+      'Use the center panel to complete the '+actionMeta.label+' work.',
+      'Save, update, delete, or continue after checking the expected effect.'
+    ];
+    effect=getMasterEffectCopy(currentMasterModule,currentAction);
+  } else if(masterMeta){
+    locationLines.push('<div class="master-guide-line"><strong>Master:</strong> '+masterMeta.label+'</div>');
+    canDo='Choose an action first so this master can open the correct maintenance path.';
+    screenFor='This page is ready to maintain '+masterMeta.label+' records, but the action still needs to be chosen first.';
+    effect='After the action is chosen, the center panel and this guide will explain what the selected master action affects.';
+  } else if(actionMeta){
+    locationLines.push('<div class="master-guide-line"><strong>Master:</strong> Choose one master from Column 2</div>');
+    effect='After the master is chosen, this panel will explain what the selected action changes and which downstream source is affected.';
+  }
+  const notes=[
+    'Mock-stage only.',
+    'Page-session only where the mock adds, updates, or deletes records.',
+    'Not yet a real database write.',
+    'Visual and flow prototype only.'
+  ];
+  return '<div class="master-stage-panel master-stage-guide">'+
+    '<div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Operator Guide</div><div class="master-stage-panel-title">Where you are and what to do next</div><div class="master-stage-panel-copy">This panel explains the current step so the operator never has to guess the next click.</div></div>'+
+    '<div class="master-stage-panel-body">'+
+      '<div class="master-stage-column">'+
+        '<div><div class="master-stage-panel-kicker">Current Location</div><div class="master-guide-list">'+locationLines.join('')+'</div></div>'+
+        '<div><div class="master-stage-panel-kicker">What You Can Do Here</div><div class="master-guide-line">'+canDo+'</div></div>'+
+        '<div><div class="master-stage-panel-kicker">What This Screen Is For</div><div class="master-guide-line">'+screenFor+'</div></div>'+
+        '<div><div class="master-stage-panel-kicker">Next Step</div><div class="master-guide-steps">'+steps.map((step,index)=>'<div class="master-guide-step"><span class="master-guide-step-no">'+(index+1)+'</span><span>'+step+'</span></div>').join('')+'</div></div>'+
+        '<div><div class="master-stage-panel-kicker">Result / Effect</div><div class="master-guide-line">'+effect+'</div></div>'+
+        '<div><div class="master-stage-panel-kicker">Important Notes</div><div class="master-guide-note-list">'+notes.map(note=>'<div class="master-guide-note">'+note+'</div>').join('')+'</div></div>'+
+      '</div>'+
+    '</div>'+
+  '</div>';
+}
+function renderMasterStagePlaceholder(title,copy){
+  return '<div class="master-stage-panel master-stage-content-panel"><div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Center Panel</div><div class="master-stage-panel-title">'+title+'</div><div class="master-stage-panel-copy">'+copy+'</div></div><div class="master-stage-panel-body"><div class="master-stage-placeholder"><strong>What to click next:</strong> '+copy+'</div></div></div>';
+}
 function renderMasterTable(moduleId,records,mode){
   const columns=getMasterTableColumns(moduleId);
   const actionLabel=mode==='search'?'Open':'Select';
@@ -908,39 +1090,61 @@ function renderMasterStage(){
   const headerCopy=document.getElementById('master-stage-copy');
   const content=document.getElementById('master-stage-content');
   if(!stage||!headerTitle||!headerCopy||!content)return;
-  if(currentModule!=='reports-master-data'||!isMasterModule(currentMasterModule)||!currentAction){
+  if(currentModule!=='reports-master-data'){
     stage.classList.add('hidden');
     content.innerHTML='';
     return;
   }
-  const moduleMeta=MODULE_CONFIG[currentMasterModule];
-  const state=getMasterState(currentMasterModule);
-  const records=filterMasterRecords(currentMasterModule,state.query);
-  const selectedRecord=getMasterRecordById(currentMasterModule,state.selectedId)||records[0]||getMasterRecords(currentMasterModule)[0]||null;
-  if(selectedRecord&&state.selectedId!==selectedRecord.id){
-    state.selectedId=selectedRecord.id;
-  } else if(!selectedRecord){
-    state.selectedId='';
+  const actionMeta=ACTION_CONFIG[currentAction]||null;
+  const moduleMeta=isMasterModule(currentMasterModule)?MODULE_CONFIG[currentMasterModule]:null;
+  headerTitle.textContent='Reports & Master Data';
+  headerCopy.textContent='First choose what to do, then choose which master to do it on. The center panel opens the matching maintenance surface, and the guide panel explains where you are, what to click next, and what the action affects.';
+  const actionButtons=Object.entries(ACTION_CONFIG)
+    .filter(([actionId])=>['create','search','edit','delete'].includes(actionId))
+    .map(([actionId,meta])=>'<button type="button" class="master-work-action'+(actionId===currentAction?' active':'')+(actionId==='delete'?' restricted':'')+'" data-stage-action="'+actionId+'" data-action="'+actionId+'"><span class="master-work-icon" aria-hidden="true"></span><span class="master-work-label"><span class="master-work-title">'+meta.label+'</span><span class="master-work-copy">'+meta.rule+'</span></span></button>')
+    .join('');
+  const masterButtons=Object.entries(MODULE_CONFIG)
+    .filter(([moduleId])=>isMasterModule(moduleId))
+    .map(([moduleId,meta])=>'<button type="button" class="master-work-item'+(!actionMeta?' is-disabled':'')+(moduleId===currentMasterModule?' active':'')+'" data-stage-master-module="'+moduleId+'"><span class="master-work-label"><span class="master-work-item-title">'+meta.label+'</span><span class="master-work-item-sub">Maintain this master under the selected action.</span></span></button>')
+    .join('');
+  let mainContent=renderMasterStagePlaceholder(
+    'Choose an action first',
+    'Step 1: choose one action in Column 1. Step 2: choose the target master in Column 2. The matching record or form surface will then open here.'
+  );
+  if(actionMeta&&!moduleMeta){
+    mainContent=renderMasterStagePlaceholder(
+      actionMeta.label+' is selected',
+      'Step 2: choose one master from Column 2 so the correct maintenance screen can open in this center panel.'
+    );
   }
-  headerTitle.textContent=moduleMeta.label+' · '+ACTION_CONFIG[currentAction].label;
-  headerCopy.textContent=currentAction==='create'
-    ? 'Mock-stage master maintenance only. Add a new in-page record to the shared master source used by Sales Order Create / Add.'
-    : currentAction==='search'
-      ? 'Search the current in-file master dataset and review the lightweight record list.'
-      : currentAction==='edit'
-        ? 'Select one record first, then update the editable fields below. Changes stay in mock page state only.'
-        : 'Delete remains a restricted mock action and removes the selected record from the in-page master dataset only.';
-  let html='';
-  if(currentAction==='create'){
-    html='<div class="create-sheet"><div class="create-sheet-inner"><div class="master-stage-note">Mock add only. This does not persist outside the current page session.</div>'+renderMasterFieldRows(currentMasterModule,'master-create',getMasterDefaultRecord(currentMasterModule))+'<div class="btn-row"><button type="button" class="btn primary" data-master-create-save="true">Add Mock Record</button></div></div></div>';
-  } else if(currentAction==='search'){
-    html='<div class="master-stage-toolbar"><input id="master-search-input" class="input-line" type="text" placeholder="Search master record" value="'+escapeHtml(state.query)+'" data-master-search="true" /><div class="master-stage-toolbar-copy">Search / Find stays the read-entry path for master records too.</div></div>'+renderMasterTable(currentMasterModule,records,'search');
-  } else if(currentAction==='edit'){
-    html='<div class="master-stage-edit-grid"><div class="master-stage-grid"><div class="master-stage-toolbar"><input id="master-search-input" class="input-line" type="text" placeholder="Search master record" value="'+escapeHtml(state.query)+'" data-master-search="true" /><div class="master-stage-toolbar-copy">Select a record first, then edit on the right.</div></div>'+renderMasterTable(currentMasterModule,records,'edit')+'</div><div class="create-sheet"><div class="create-sheet-inner">'+(selectedRecord?renderMasterFieldRows(currentMasterModule,'master-edit',selectedRecord)+'<div class="btn-row"><button type="button" class="btn primary" data-master-edit-save="'+selectedRecord.id+'">Save Mock Update</button></div>':'<div class="master-stage-empty">Select one record from the list to edit.</div>')+'</div></div></div>';
-  } else if(currentAction==='delete'){
-    html='<div class="master-stage-toolbar"><input id="master-search-input" class="input-line" type="text" placeholder="Search master record" value="'+escapeHtml(state.query)+'" data-master-search="true" /><div class="master-stage-toolbar-copy master-delete-note">Delete is mock-stage only and visually restricted on purpose.</div></div>'+renderMasterTable(currentMasterModule,records,'delete');
+  if(actionMeta&&moduleMeta){
+    const state=getMasterState(currentMasterModule);
+    const records=filterMasterRecords(currentMasterModule,state.query);
+    const selectedRecord=getMasterRecordById(currentMasterModule,state.selectedId)||records[0]||getMasterRecords(currentMasterModule)[0]||null;
+    if(selectedRecord&&state.selectedId!==selectedRecord.id){
+      state.selectedId=selectedRecord.id;
+    } else if(!selectedRecord){
+      state.selectedId='';
+    }
+    const panelHead='<div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Center Panel</div><div class="master-stage-panel-title">'+moduleMeta.label+' · '+actionMeta.label+'</div><div class="master-stage-panel-copy">'+getMasterActionDetail(currentAction).screenFor+'</div></div>';
+    let body='';
+    if(currentAction==='create'){
+      body='<div class="master-stage-panel-body"><div class="create-sheet"><div class="create-sheet-inner"><div class="master-stage-note">Mock add only. This does not persist outside the current page session.</div>'+renderMasterFieldRows(currentMasterModule,'master-create',getMasterDefaultRecord(currentMasterModule))+'<div class="btn-row"><button type="button" class="btn primary" data-master-create-save="true">Add Mock Record</button></div></div></div></div>';
+    } else if(currentAction==='search'){
+      body='<div class="master-stage-panel-body"><div class="master-stage-toolbar"><input id="master-search-input" class="input-line" type="text" placeholder="Search master record" value="'+escapeHtml(state.query)+'" data-master-search="true" /><div class="master-stage-toolbar-copy">Search / Find stays the read-entry path for master records too.</div></div>'+renderMasterTable(currentMasterModule,records,'search')+'</div>';
+    } else if(currentAction==='edit'){
+      body='<div class="master-stage-panel-body"><div class="master-stage-edit-grid"><div class="master-stage-grid"><div class="master-stage-toolbar"><input id="master-search-input" class="input-line" type="text" placeholder="Search master record" value="'+escapeHtml(state.query)+'" data-master-search="true" /><div class="master-stage-toolbar-copy">Select a record first, then edit on the right.</div></div>'+renderMasterTable(currentMasterModule,records,'edit')+'</div><div class="create-sheet"><div class="create-sheet-inner">'+(selectedRecord?renderMasterFieldRows(currentMasterModule,'master-edit',selectedRecord)+'<div class="btn-row"><button type="button" class="btn primary" data-master-edit-save="'+selectedRecord.id+'">Save Mock Update</button></div>':'<div class="master-stage-empty">Select one record from the list to edit.</div>')+'</div></div></div></div>';
+    } else if(currentAction==='delete'){
+      body='<div class="master-stage-panel-body"><div class="master-stage-toolbar"><input id="master-search-input" class="input-line" type="text" placeholder="Search master record" value="'+escapeHtml(state.query)+'" data-master-search="true" /><div class="master-stage-toolbar-copy master-delete-note">Delete is mock-stage only and visually restricted on purpose.</div></div>'+renderMasterTable(currentMasterModule,records,'delete')+'</div>';
+    }
+    mainContent='<div class="master-stage-panel master-stage-content-panel">'+panelHead+body+'</div>';
   }
-  content.innerHTML=html;
+  content.innerHTML='<div class="master-stage-shell">'+
+    '<div class="master-stage-column"><div class="master-stage-panel"><div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Column 1</div><div class="master-stage-panel-title">Choose Action</div><div class="master-stage-panel-copy">First choose what to do.</div></div><div class="master-stage-panel-body"><div class="master-stage-action-list">'+actionButtons+'</div></div></div></div>'+
+    '<div class="master-stage-column"><div class="master-stage-panel"><div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Column 2</div><div class="master-stage-panel-title">Choose Master</div><div class="master-stage-panel-copy">Then choose which master to do it on.</div></div><div class="master-stage-panel-body"><div class="master-stage-master-list">'+masterButtons+'</div></div></div></div>'+
+    '<div class="master-stage-column">'+mainContent+'</div>'+
+    '<div class="master-stage-column">'+renderMasterGuidePanel()+'</div>'+
+  '</div>';
   stage.classList.remove('hidden');
 }
 function syncMockDropdownValue(dropdownId,selectId,value){
@@ -1112,15 +1316,15 @@ function syncModuleEntry(){
 
   if(masterModuleShell&&reportsModuleButton){
     reportsModuleButton.insertAdjacentElement('afterend',masterModuleShell);
-    masterModuleShell.classList.toggle('hidden',!isMasterParentSelection||!currentAction);
+    masterModuleShell.classList.toggle('hidden',!isMasterParentSelection);
   }
   if(sidebarActionShell&&activeModuleButton){
     activeModuleButton.insertAdjacentElement('afterend',sidebarActionShell);
-    sidebarActionShell.classList.remove('hidden');
+    sidebarActionShell.classList.toggle('hidden',currentModule==='reports-master-data');
   }
   if(sidebarActionShell&&currentModule==='reports-master-data'&&masterModuleShell){
     sidebarActionShell.insertAdjacentElement('afterend',masterModuleShell);
-    sidebarActionShell.classList.remove('hidden');
+    sidebarActionShell.classList.add('hidden');
   }
   if(sidebarActionStatus){
     sidebarActionStatus.textContent=actionMeta?actionMeta.rule:'Choose the next action in the sidebar to open the correct record / form path.';
@@ -1128,12 +1332,12 @@ function syncModuleEntry(){
 
   if(!currentAction){
     if(toolbar)toolbar.classList.add('hidden');
-    if(sidebarActionShell)sidebarActionShell.classList.toggle('hidden',false);
+    if(sidebarActionShell)sidebarActionShell.classList.toggle('hidden',currentModule==='reports-master-data');
     if(flowNote)flowNote.classList.add('hidden');
-    if(flowPlaceholder)flowPlaceholder.classList.remove('hidden');
-    if(flowTitle)flowTitle.textContent=currentModule==='reports-master-data'?'Master Data maintenance opens after a master module is chosen':'Step 3 opens after the next action is chosen';
+    if(flowPlaceholder)flowPlaceholder.classList.toggle('hidden',currentModule==='reports-master-data');
+    if(flowTitle)flowTitle.textContent=currentModule==='reports-master-data'?'Reports & Master Data workspace':'Step 3 opens after the next action is chosen';
     if(flowBody)flowBody.innerHTML=currentModule==='reports-master-data'
-      ? '<strong>Selected module:</strong> Reports &amp; Master Data<br><strong>Next step:</strong> choose one action from the shared action strip first, then pick the required master module from the scrollable list below it.'
+      ? '<strong>Selected module:</strong> Reports &amp; Master Data<br><strong>Next step:</strong> use the action column first, then choose the target master beside it. The right-side guide panel explains the current step and effect.'
       : '<strong>Core Module → Action → Record / Form.</strong> Choose one sidebar action first. <strong>Create / Add</strong> opens a new draft without asking for a key first, while <strong>Search / Find</strong>, <strong>Edit / Update</strong>, <strong>Close / Cancel</strong>, and <strong>Delete</strong> all require lookup and record selection first.';
     document.querySelectorAll('.section-pane').forEach(el=>el.classList.add('hidden'));
     renderMasterStage();
@@ -1166,11 +1370,11 @@ function syncModuleEntry(){
     if(toolbar)toolbar.classList.add('hidden');
     document.querySelectorAll('.section-pane').forEach(el=>el.classList.add('hidden'));
     if(flowNote)flowNote.classList.add('hidden');
-    if(flowPlaceholder)flowPlaceholder.classList.toggle('hidden',!!currentMasterModule);
-    if(flowTitle)flowTitle.textContent=currentMasterModule?MODULE_CONFIG[currentMasterModule].flowTitle+' · '+actionMeta.label:'Choose a master module';
+    if(flowPlaceholder)flowPlaceholder.classList.add('hidden');
+    if(flowTitle)flowTitle.textContent=currentMasterModule?MODULE_CONFIG[currentMasterModule].flowTitle+' · '+actionMeta.label:'Reports & Master Data workspace';
     if(flowBody)flowBody.innerHTML=currentMasterModule
-      ? '<strong>Selected module:</strong> '+MODULE_CONFIG[currentMasterModule].label+'<br><strong>Selected action:</strong> '+actionMeta.label+'<br><strong>Rule:</strong> '+actionMeta.rule+'<br>The maintenance surface on the right follows the selected action/master pair within this mock-stage shared pattern.'
-      : '<strong>Selected action:</strong> '+actionMeta.label+'<br><strong>Next step:</strong> choose one master module from the list below to open the matching maintenance surface.';
+      ? '<strong>Selected module:</strong> '+MODULE_CONFIG[currentMasterModule].label+'<br><strong>Selected action:</strong> '+actionMeta.label+'<br><strong>Rule:</strong> '+actionMeta.rule+'<br>The 3-column workspace and guide panel stay aligned to this action/master pair.'
+      : '<strong>Selected action:</strong> '+actionMeta.label+'<br><strong>Next step:</strong> choose one master module from the master column to open the matching maintenance surface.';
     renderMasterStage();
     syncFlowActionUi();
     return;
@@ -1266,6 +1470,24 @@ function setupMasterStageInteractions(){
     }
   });
   stage.addEventListener('click',event=>{
+    const actionButton=event.target.closest('[data-stage-action]');
+    if(actionButton){
+      currentModule='reports-master-data';
+      currentAction=actionButton.getAttribute('data-stage-action')||'';
+      syncModuleEntry();
+      return;
+    }
+    const masterButton=event.target.closest('[data-stage-master-module]');
+    if(masterButton){
+      if(!currentAction){
+        syncModuleEntry();
+        return;
+      }
+      currentModule='reports-master-data';
+      currentMasterModule=masterButton.getAttribute('data-stage-master-module')||'';
+      syncModuleEntry();
+      return;
+    }
     const selectButton=event.target.closest('[data-master-select-id]');
     if(selectButton){
       const state=getMasterState(currentMasterModule);
