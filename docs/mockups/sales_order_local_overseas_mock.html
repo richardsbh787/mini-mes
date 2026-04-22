@@ -715,9 +715,111 @@ const ACTION_CONFIG={
   close:{label:'Close / Cancel', tag:'Lookup First', rule:'Search and select an existing record before closing or cancelling it.'},
   delete:{label:'Delete', tag:'Restricted', rule:'Search and select an existing record first. This action stays visually restricted and secondary.'}
 };
+const MODULE_WORKSPACE_CONFIG={
+  'sales-orders':{
+    purpose:'This workspace is used to capture, find, review, and update Sales Order records and related commercial coordination surfaces.',
+    effect:'sales-order entry, customer-facing coordination, and downstream planning references',
+    selectorTitle:'Choose Order Surface',
+    selectorCopy:'Then choose which sales-order area to work on.',
+    items:[
+      {id:'sales-order-desk',label:'Sales Order Desk',description:'Main order record and draft-entry surface.'},
+      {id:'customer-coordination',label:'Customer Coordination',description:'Buyer, salesperson, and request-alignment surface.'},
+      {id:'delivery-commit-view',label:'Delivery / Commit View',description:'Commit-date and route-linked review surface.'}
+    ]
+  },
+  'product-engineering':{
+    purpose:'This workspace is used to manage product references, drawing-related review points, and engineering-facing product setup surfaces.',
+    effect:'product references, engineering handoff readiness, and downstream build interpretation',
+    selectorTitle:'Choose Engineering Surface',
+    selectorCopy:'Then choose which product / engineering area to work on.',
+    items:[
+      {id:'product-setup',label:'Product Setup',description:'Product master and specification setup surface.'},
+      {id:'drawing-reference',label:'Drawing Reference',description:'Drawing-linked reference and review surface.'},
+      {id:'change-impact',label:'Change Impact',description:'Engineering change effect and follow-up surface.'}
+    ]
+  },
+  'planning':{
+    purpose:'This workspace is used to manage planning-related entry, review, and schedule-alignment surfaces.',
+    effect:'planning priorities, schedule visibility, and downstream execution readiness',
+    selectorTitle:'Choose Planning Surface',
+    selectorCopy:'Then choose which planning area to work on.',
+    items:[
+      {id:'planning-board',label:'Planning Board',description:'Main planning-entry and review surface.'},
+      {id:'material-alignment',label:'Material Alignment',description:'Material readiness and plan-fit review surface.'},
+      {id:'capacity-check',label:'Capacity Check',description:'Capacity load and exception-review surface.'}
+    ]
+  },
+  'procurement':{
+    purpose:'This workspace is used to manage supplier-facing, purchasing, and shortage-follow-up surfaces.',
+    effect:'supplier follow-up, purchase execution visibility, and material promise alignment',
+    selectorTitle:'Choose Procurement Surface',
+    selectorCopy:'Then choose which procurement area to work on.',
+    items:[
+      {id:'po-desk',label:'PO Desk',description:'Purchase-order entry and follow-up surface.'},
+      {id:'supplier-promise',label:'Supplier Promise',description:'Supplier ETA and commitment review surface.'},
+      {id:'shortage-watch',label:'Shortage Watch',description:'Short-material and expediting review surface.'}
+    ]
+  },
+  'inventory-warehouse':{
+    purpose:'This workspace is used to manage warehouse-facing receipt, inquiry, and movement-control surfaces.',
+    effect:'warehouse reference data, stock visibility, and downstream issue / receive alignment',
+    selectorTitle:'Choose Warehouse Surface',
+    selectorCopy:'Then choose which inventory / warehouse area to work on.',
+    items:[
+      {id:'warehouse-desk',label:'Warehouse Desk',description:'Warehouse-entry and daily handling surface.'},
+      {id:'stock-inquiry',label:'Stock Inquiry',description:'Inventory lookup and availability review surface.'},
+      {id:'movement-control',label:'Movement Control',description:'Transfer, issue, and movement-control surface.'}
+    ]
+  },
+  'production':{
+    purpose:'This workspace is used to manage production-facing start, progress, and execution-control surfaces.',
+    effect:'shopfloor execution visibility, work sequencing, and downstream completion readiness',
+    selectorTitle:'Choose Production Surface',
+    selectorCopy:'Then choose which production area to work on.',
+    items:[
+      {id:'production-board',label:'Production Board',description:'Production entry and execution surface.'},
+      {id:'wip-tracking',label:'WIP Tracking',description:'WIP progress and status-review surface.'},
+      {id:'line-control',label:'Line Control',description:'Line-level control and issue-response surface.'}
+    ]
+  },
+  'quality':{
+    purpose:'This workspace is used to manage inspection, quality review, and issue-handling surfaces.',
+    effect:'quality visibility, issue containment, and downstream release confidence',
+    selectorTitle:'Choose Quality Surface',
+    selectorCopy:'Then choose which quality area to work on.',
+    items:[
+      {id:'quality-desk',label:'Quality Desk',description:'Inspection and quality-entry surface.'},
+      {id:'issue-review',label:'Issue Review',description:'Issue triage and follow-up review surface.'},
+      {id:'release-check',label:'Release Check',description:'Release-readiness and quality hold surface.'}
+    ]
+  },
+  'shipping-logistics':{
+    purpose:'This workspace is used to manage shipment, route coordination, and logistics follow-up surfaces.',
+    effect:'shipment readiness, logistics coordination, and customer delivery execution',
+    selectorTitle:'Choose Logistics Surface',
+    selectorCopy:'Then choose which shipping / logistics area to work on.',
+    items:[
+      {id:'shipment-desk',label:'Shipment Desk',description:'Shipment planning and release surface.'},
+      {id:'route-coordination',label:'Route Coordination',description:'Route and carrier alignment surface.'},
+      {id:'delivery-follow-up',label:'Delivery Follow-up',description:'Delivery status and coordination surface.'}
+    ]
+  },
+  'finance-costing':{
+    purpose:'This workspace is used to manage finance-facing reference, costing review, and billing-alignment surfaces.',
+    effect:'cost visibility, billing references, and downstream financial interpretation',
+    selectorTitle:'Choose Finance Surface',
+    selectorCopy:'Then choose which finance / costing area to work on.',
+    items:[
+      {id:'costing-desk',label:'Costing Desk',description:'Cost review and setup surface.'},
+      {id:'billing-alignment',label:'Billing Alignment',description:'Billing-reference and invoice-alignment surface.'},
+      {id:'margin-review',label:'Margin Review',description:'Margin review and finance-visibility surface.'}
+    ]
+  }
+};
 let currentModule='';
 let currentAction='';
 let currentMasterModule='';
+let currentWorkspaceArea='';
 let currentOrderState='view';
 const SALES_ORDER_VIEW_NO='SO-20260328-001';
 const SALES_ORDER_CREATE_DEFAULT_DATE='2026-04-21';
@@ -998,6 +1100,164 @@ function getMasterEffectCopy(moduleId,actionId){
   }
   return moduleEffectMap[moduleId]||('Changes in '+baseLabel+' stay inside the current page-session mock only.');
 }
+function getWorkspaceConfig(moduleId){
+  if(moduleId==='reports-master-data'){
+    return {
+      purpose:'This workspace is used to maintain shared master-data records that feed downstream screens such as Sales Order Create / Add.',
+      effect:'shared master-data sources used across downstream screens',
+      selectorTitle:'Choose Master',
+      selectorCopy:'Then choose which master to do it on.'
+    };
+  }
+  return MODULE_WORKSPACE_CONFIG[moduleId]||{
+    purpose:'This workspace is used to keep the current module readable and guided during the mock stage.',
+    effect:'the selected module mock surface',
+    selectorTitle:'Choose Surface',
+    selectorCopy:'Then choose which surface to do it on.',
+    items:[{id:'default-surface',label:'Workspace Surface',description:'Main module workspace surface.'}]
+  };
+}
+function getWorkspaceItems(moduleId){
+  if(moduleId==='reports-master-data'){
+    return Object.entries(MODULE_CONFIG)
+      .filter(([candidateId])=>isMasterModule(candidateId))
+      .map(([candidateId,meta])=>({
+        id:candidateId,
+        label:meta.label,
+        description:'Maintain this master under the selected action.'
+      }));
+  }
+  return getWorkspaceConfig(moduleId).items||[];
+}
+function getSelectedWorkspaceItemId(moduleId){
+  return moduleId==='reports-master-data'?currentMasterModule:currentWorkspaceArea;
+}
+function setSelectedWorkspaceItemId(moduleId,itemId){
+  if(moduleId==='reports-master-data'){
+    currentMasterModule=itemId;
+  } else {
+    currentWorkspaceArea=itemId;
+  }
+}
+function getSelectedWorkspaceItem(moduleId){
+  const selectedId=getSelectedWorkspaceItemId(moduleId);
+  return getWorkspaceItems(moduleId).find(item=>item.id===selectedId)||null;
+}
+function getGenericWorkspaceGuide(moduleId){
+  const moduleMeta=MODULE_CONFIG[moduleId];
+  const workspaceConfig=getWorkspaceConfig(moduleId);
+  const actionMeta=ACTION_CONFIG[currentAction]||null;
+  const selectedItem=getSelectedWorkspaceItem(moduleId);
+  let locationLines=[
+    '<div class="master-guide-line"><strong>Module:</strong> '+moduleMeta.label+'</div>'
+  ];
+  let canDo=actionMeta?'Continue with '+actionMeta.label+' in this module.':'Choose an action first so the system can show the correct module path.';
+  let screenFor=workspaceConfig.purpose;
+  let steps=[
+    'Choose an action in Column 1.',
+    'Choose the target surface in Column 2.',
+    'Use the center panel to continue the module work.',
+    'Review the expected effect before saving or continuing.'
+  ];
+  let effect='After the action and surface are chosen, the center panel will open the matching module mock surface.';
+  if(actionMeta){
+    locationLines.push('<div class="master-guide-line"><strong>Action:</strong> '+actionMeta.label+'</div>');
+    canDo=selectedItem
+      ? actionMeta.label+' on '+selectedItem.label+'.'
+      : actionMeta.label+' in '+moduleMeta.label+'.';
+    steps=[
+      'Action is fixed as '+actionMeta.label+'.',
+      'Choose one target surface in Column 2.',
+      'Use the center panel to continue the '+actionMeta.label+' flow.',
+      'Check the effect on downstream work before continuing.'
+    ];
+  } else {
+    locationLines.push('<div class="master-guide-line"><strong>Action:</strong> Choose an action first</div>');
+  }
+  if(selectedItem){
+    locationLines.push('<div class="master-guide-line"><strong>Surface:</strong> '+selectedItem.label+'</div>');
+    screenFor=workspaceConfig.purpose+' Focus area: '+selectedItem.label+'.';
+    effect=actionMeta
+      ? actionMeta.label+' in '+selectedItem.label+' affects '+workspaceConfig.effect+'.'
+      : 'After the action is chosen, this surface will explain what the selected module action affects.';
+    steps=actionMeta?[
+      'Action is fixed as '+actionMeta.label+'.',
+      'Surface is fixed as '+selectedItem.label+'.',
+      'Use the center panel to continue the module work.',
+      'Save, update, or continue after checking the expected downstream effect.'
+    ]:steps;
+  } else {
+    locationLines.push('<div class="master-guide-line"><strong>Surface:</strong> Choose one target surface</div>');
+  }
+  const notes=[
+    'Mock-stage only.',
+    'Module labels are adapted for this mock and do not yet imply a production workflow write.',
+    'If no real content exists yet, the center panel stays as a guided placeholder surface.',
+    'Visual and flow prototype only.'
+  ];
+  return '<div class="master-stage-panel master-stage-guide">'+
+    '<div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Operator Guide</div><div class="master-stage-panel-title">Where you are and what to do next</div><div class="master-stage-panel-copy">This panel explains the current module step so the operator never has to guess the next click.</div></div>'+
+    '<div class="master-stage-panel-body"><div class="master-stage-column">'+
+      '<div><div class="master-stage-panel-kicker">Current Location</div><div class="master-guide-list">'+locationLines.join('')+'</div></div>'+
+      '<div><div class="master-stage-panel-kicker">What You Can Do Here</div><div class="master-guide-line">'+canDo+'</div></div>'+
+      '<div><div class="master-stage-panel-kicker">What This Page Is For</div><div class="master-guide-line">'+screenFor+'</div></div>'+
+      '<div><div class="master-stage-panel-kicker">Next Step</div><div class="master-guide-steps">'+steps.map((step,index)=>'<div class="master-guide-step"><span class="master-guide-step-no">'+(index+1)+'</span><span>'+step+'</span></div>').join('')+'</div></div>'+
+      '<div><div class="master-stage-panel-kicker">Result / Effect</div><div class="master-guide-line">'+effect+'</div></div>'+
+      '<div><div class="master-stage-panel-kicker">Important Notes</div><div class="master-guide-note-list">'+notes.map(note=>'<div class="master-guide-note">'+note+'</div>').join('')+'</div></div>'+
+    '</div></div>'+
+  '</div>';
+}
+function renderGenericWorkspaceStage(moduleId){
+  const stage=document.getElementById('master-stage');
+  const headerTitle=document.getElementById('master-stage-title');
+  const headerCopy=document.getElementById('master-stage-copy');
+  const content=document.getElementById('master-stage-content');
+  if(!stage||!headerTitle||!headerCopy||!content)return;
+  const moduleMeta=MODULE_CONFIG[moduleId];
+  const workspaceConfig=getWorkspaceConfig(moduleId);
+  const actionMeta=ACTION_CONFIG[currentAction]||null;
+  const selectedItem=getSelectedWorkspaceItem(moduleId);
+  const actionButtons=Object.entries(ACTION_CONFIG)
+    .filter(([actionId])=>['create','search','edit','delete'].includes(actionId))
+    .map(([actionId,meta])=>'<button type="button" class="master-work-action'+(actionId===currentAction?' active':'')+(actionId==='delete'?' restricted':'')+'" data-stage-action="'+actionId+'" data-action="'+actionId+'"><span class="master-work-icon" aria-hidden="true"></span><span class="master-work-label"><span class="master-work-title">'+meta.label+'</span><span class="master-work-copy">'+meta.rule+'</span></span></button>')
+    .join('');
+  const selectorButtons=getWorkspaceItems(moduleId)
+    .map(item=>'<button type="button" class="master-work-item'+(!actionMeta?' is-disabled':'')+(item.id===getSelectedWorkspaceItemId(moduleId)?' active':'')+'" data-stage-workspace-item="'+item.id+'"><span class="master-work-label"><span class="master-work-item-title">'+item.label+'</span><span class="master-work-item-sub">'+item.description+'</span></span></button>')
+    .join('');
+  let mainContent=renderMasterStagePlaceholder(
+    'Choose an action first',
+    'Step 1: choose one action in Column 1. Step 2: choose the target surface in Column 2. The matching module workspace will then open here.'
+  );
+  if(actionMeta&&!selectedItem){
+    mainContent=renderMasterStagePlaceholder(
+      actionMeta.label+' is selected',
+      'Step 2: choose one target surface from Column 2 so the correct '+moduleMeta.label+' workspace can open in the center panel.'
+    );
+  }
+  if(actionMeta&&selectedItem){
+    mainContent='<div class="master-stage-panel master-stage-content-panel">'+
+      '<div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Center Panel</div><div class="master-stage-panel-title">'+moduleMeta.label+' · '+selectedItem.label+'</div><div class="master-stage-panel-copy">'+workspaceConfig.purpose+'</div></div>'+
+      '<div class="master-stage-panel-body"><div class="master-stage-column">'+
+        '<div class="master-stage-placeholder"><strong>Mock work surface:</strong> '+actionMeta.label+' is now focused on '+selectedItem.label+'. This placeholder keeps the same product-family workspace pattern even where a full module mock surface is not yet built.</div>'+
+        '<div class="master-guide-list">'+
+          '<div class="master-guide-line"><strong>Selected action:</strong> '+actionMeta.label+'</div>'+
+          '<div class="master-guide-line"><strong>Selected surface:</strong> '+selectedItem.label+'</div>'+
+          '<div class="master-guide-line"><strong>What this area handles:</strong> '+selectedItem.description+'</div>'+
+          '<div class="master-guide-line"><strong>Expected effect:</strong> '+actionMeta.label+' here affects '+workspaceConfig.effect+'.</div>'+
+        '</div>'+
+      '</div></div>'+
+    '</div>';
+  }
+  headerTitle.textContent=moduleMeta.label;
+  headerCopy.textContent='This module uses the same guided workspace pattern as Reports & Master Data: choose an action first, then choose the relevant surface, then continue in the center panel with the operator guide on the right.';
+  content.innerHTML='<div class="master-stage-shell">'+
+    '<div class="master-stage-column"><div class="master-stage-panel"><div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Column 1</div><div class="master-stage-panel-title">Choose Action</div><div class="master-stage-panel-copy">First choose what to do in '+moduleMeta.label+'.</div></div><div class="master-stage-panel-body"><div class="master-stage-action-list">'+actionButtons+'</div></div></div></div>'+
+    '<div class="master-stage-column"><div class="master-stage-panel"><div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Column 2</div><div class="master-stage-panel-title">'+workspaceConfig.selectorTitle+'</div><div class="master-stage-panel-copy">'+workspaceConfig.selectorCopy+'</div></div><div class="master-stage-panel-body"><div class="master-stage-master-list">'+selectorButtons+'</div></div></div></div>'+
+    '<div class="master-stage-column">'+mainContent+'</div>'+
+    '<div class="master-stage-column">'+getGenericWorkspaceGuide(moduleId)+'</div>'+
+  '</div>';
+  stage.classList.remove('hidden');
+}
 function renderMasterGuidePanel(){
   const moduleLabel=MODULE_CONFIG['reports-master-data'].label;
   const actionMeta=ACTION_CONFIG[currentAction];
@@ -1277,20 +1537,13 @@ function showSection(){
 }
 function syncModuleEntry(){
   const moduleMeta=currentModule?MODULE_CONFIG[currentModule]:null;
-  const actionMeta=ACTION_CONFIG[currentAction];
-  const isSales=currentModule==='sales-orders';
-  const isSalesShellAction=isSales&&(currentAction==='search'||currentAction==='create');
-  const isMasterParentSelection=currentModule==='reports-master-data';
   const sidebarActionShell=document.getElementById('sidebar-action-shell');
   const masterModuleShell=document.getElementById('master-module-shell');
-  const sidebarActionStatus=document.getElementById('sidebar-action-status');
   const toolbar=document.getElementById('sales-tab-toolbar');
   const flowNote=document.getElementById('module-flow-note');
   const flowPlaceholder=document.getElementById('module-flow-placeholder');
   const flowTitle=document.getElementById('module-flow-title');
   const flowBody=document.getElementById('module-flow-body');
-  const activeModuleButton=document.querySelector(`.side-nav-item[data-module="${currentModule}"]`);
-  const reportsModuleButton=document.querySelector('.side-nav-item[data-module="reports-master-data"]');
 
   document.querySelectorAll('.side-nav-item[data-module]').forEach(item=>{
     item.classList.toggle('active',item.dataset.module===currentModule);
@@ -1314,83 +1567,21 @@ function syncModuleEntry(){
     return;
   }
 
-  if(masterModuleShell&&reportsModuleButton){
-    reportsModuleButton.insertAdjacentElement('afterend',masterModuleShell);
-    masterModuleShell.classList.toggle('hidden',!isMasterParentSelection);
-  }
-  if(sidebarActionShell&&activeModuleButton){
-    activeModuleButton.insertAdjacentElement('afterend',sidebarActionShell);
-    sidebarActionShell.classList.toggle('hidden',currentModule==='reports-master-data');
-  }
-  if(sidebarActionShell&&currentModule==='reports-master-data'&&masterModuleShell){
-    sidebarActionShell.insertAdjacentElement('afterend',masterModuleShell);
-    sidebarActionShell.classList.add('hidden');
-  }
-  if(sidebarActionStatus){
-    sidebarActionStatus.textContent=actionMeta?actionMeta.rule:'Choose the next action in the sidebar to open the correct record / form path.';
-  }
-
-  if(!currentAction){
-    if(toolbar)toolbar.classList.add('hidden');
-    if(sidebarActionShell)sidebarActionShell.classList.toggle('hidden',currentModule==='reports-master-data');
-    if(flowNote)flowNote.classList.add('hidden');
-    if(flowPlaceholder)flowPlaceholder.classList.toggle('hidden',currentModule==='reports-master-data');
-    if(flowTitle)flowTitle.textContent=currentModule==='reports-master-data'?'Reports & Master Data workspace':'Step 3 opens after the next action is chosen';
-    if(flowBody)flowBody.innerHTML=currentModule==='reports-master-data'
-      ? '<strong>Selected module:</strong> Reports &amp; Master Data<br><strong>Next step:</strong> use the action column first, then choose the target master beside it. The right-side guide panel explains the current step and effect.'
-      : '<strong>Core Module → Action → Record / Form.</strong> Choose one sidebar action first. <strong>Create / Add</strong> opens a new draft without asking for a key first, while <strong>Search / Find</strong>, <strong>Edit / Update</strong>, <strong>Close / Cancel</strong>, and <strong>Delete</strong> all require lookup and record selection first.';
-    document.querySelectorAll('.section-pane').forEach(el=>el.classList.add('hidden'));
-    renderMasterStage();
-    syncFlowActionUi();
-    return;
-  }
-
-  if(isSalesShellAction){
-    if(toolbar)toolbar.classList.remove('hidden');
-    if(flowPlaceholder)flowPlaceholder.classList.add('hidden');
-    if(flowTitle)flowTitle.textContent='Sales Order mock flow · '+actionMeta.label;
-    if(flowBody)flowBody.innerHTML=currentAction==='create'
-      ? '<strong>Selected module:</strong> '+moduleMeta.label+'<br><strong>Selected action:</strong> '+actionMeta.label+'<br><strong>Rule:</strong> '+actionMeta.rule+'<br>The Sales Order shell below opens directly in a focused Create / Add form. The header, tabs, and route toggle stay in the same design system while the operator captures only the minimum draft fields first.'
-      : '<strong>Selected module:</strong> '+moduleMeta.label+'<br><strong>Selected action:</strong> '+actionMeta.label+'<br><strong>Rule:</strong> '+actionMeta.rule+'<br>After the order is found and selected, the Sales Order shell below opens as the persistent read-only record surface.';
-    if(flowNote){
-      flowNote.classList.add('hidden');
-      flowNote.innerHTML='<strong>'+moduleMeta.label+' · '+actionMeta.label+'</strong><br>'+actionMeta.rule+' The current mock reuses the Sales Order shell below as the step-3 record / form surface.';
-    }
-    if(currentAction==='create'){
-      const sectionSelect=document.getElementById('section-select');
-      if(sectionSelect)sectionSelect.value='summary';
-    }
-    renderMasterStage();
-    syncFlowActionUi();
-    showSection();
-    return;
-  }
+  if(sidebarActionShell)sidebarActionShell.classList.add('hidden');
+  if(masterModuleShell)masterModuleShell.classList.add('hidden');
+  if(toolbar)toolbar.classList.add('hidden');
+  if(flowNote)flowNote.classList.add('hidden');
+  if(flowPlaceholder)flowPlaceholder.classList.add('hidden');
+  if(flowTitle)flowTitle.textContent=moduleMeta.label+' workspace';
+  if(flowBody)flowBody.innerHTML='<strong>Selected module:</strong> '+moduleMeta.label+'<br><strong>Pattern:</strong> action first, then target surface, then work in the center panel with the operator guide on the right.';
+  document.querySelectorAll('.section-pane').forEach(el=>el.classList.add('hidden'));
 
   if(currentModule==='reports-master-data'){
-    if(toolbar)toolbar.classList.add('hidden');
-    document.querySelectorAll('.section-pane').forEach(el=>el.classList.add('hidden'));
-    if(flowNote)flowNote.classList.add('hidden');
-    if(flowPlaceholder)flowPlaceholder.classList.add('hidden');
-    if(flowTitle)flowTitle.textContent=currentMasterModule?MODULE_CONFIG[currentMasterModule].flowTitle+' · '+actionMeta.label:'Reports & Master Data workspace';
-    if(flowBody)flowBody.innerHTML=currentMasterModule
-      ? '<strong>Selected module:</strong> '+MODULE_CONFIG[currentMasterModule].label+'<br><strong>Selected action:</strong> '+actionMeta.label+'<br><strong>Rule:</strong> '+actionMeta.rule+'<br>The 3-column workspace and guide panel stay aligned to this action/master pair.'
-      : '<strong>Selected action:</strong> '+actionMeta.label+'<br><strong>Next step:</strong> choose one master module from the master column to open the matching maintenance surface.';
     renderMasterStage();
     syncFlowActionUi();
     return;
   }
-
-  if(toolbar)toolbar.classList.add('hidden');
-  document.querySelectorAll('.section-pane').forEach(el=>el.classList.add('hidden'));
-  if(flowNote)flowNote.classList.add('hidden');
-  if(flowPlaceholder)flowPlaceholder.classList.remove('hidden');
-  if(flowTitle)flowTitle.textContent=moduleMeta.flowTitle+' · '+actionMeta.label;
-  if(flowBody){
-    flowBody.innerHTML=isSales
-      ? '<strong>Selected module:</strong> '+moduleMeta.label+'<br><strong>Selected action:</strong> '+actionMeta.label+'<br><strong>Rule:</strong> '+actionMeta.rule+'<br>The Sales Order detail shell stays closed here. This state keeps the shared action-entry layer only; the read-only Sales Order tabs reopen only after <strong>Search / Find</strong> selection.'
-      : '<strong>Selected module:</strong> '+moduleMeta.label+'<br><strong>Selected action:</strong> '+actionMeta.label+'<br><strong>Rule:</strong> '+actionMeta.rule+'<br>This mock layer shows the shared entry pattern for every core module before any record/form flow opens.';
-  }
-  renderMasterStage();
+  renderGenericWorkspaceStage(currentModule);
   syncFlowActionUi();
 }
 function applyInitialStateFromQuery(){
@@ -1428,6 +1619,7 @@ function setupModuleNavigation(){
       currentModule=item.dataset.module;
       currentAction='';
       currentMasterModule='';
+      currentWorkspaceArea='';
       syncModuleEntry();
     });
   });
@@ -1472,8 +1664,17 @@ function setupMasterStageInteractions(){
   stage.addEventListener('click',event=>{
     const actionButton=event.target.closest('[data-stage-action]');
     if(actionButton){
-      currentModule='reports-master-data';
       currentAction=actionButton.getAttribute('data-stage-action')||'';
+      syncModuleEntry();
+      return;
+    }
+    const workspaceButton=event.target.closest('[data-stage-workspace-item]');
+    if(workspaceButton){
+      if(!currentAction){
+        syncModuleEntry();
+        return;
+      }
+      setSelectedWorkspaceItemId(currentModule,workspaceButton.getAttribute('data-stage-workspace-item')||'');
       syncModuleEntry();
       return;
     }
@@ -1483,7 +1684,6 @@ function setupMasterStageInteractions(){
         syncModuleEntry();
         return;
       }
-      currentModule='reports-master-data';
       currentMasterModule=masterButton.getAttribute('data-stage-master-module')||'';
       syncModuleEntry();
       return;
@@ -1612,7 +1812,7 @@ function syncFlowActionUi(){
   const saveButton=document.getElementById('save-button');
   if(body){
     body.setAttribute('data-flow-action',currentAction||'');
-    body.setAttribute('data-master-stage',currentModule==='reports-master-data'?'true':'false');
+    body.setAttribute('data-master-stage',currentModule?'true':'false');
   }
   if(titleOrderNo){
     titleOrderNo.textContent=currentAction==='create'?getCreateSalesOrderNo():SALES_ORDER_VIEW_NO;
