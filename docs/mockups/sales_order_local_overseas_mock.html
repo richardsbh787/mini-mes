@@ -672,7 +672,7 @@ let currentMasterModule='';
 let currentOrderState='view';
 const SALES_ORDER_VIEW_NO='SO-20260328-001';
 const SALES_ORDER_CREATE_DEFAULT_DATE='2026-04-21';
-const SALES_ORDER_CREATE_RUNNING_NO='000123';
+const SALES_ORDER_CREATE_RUNNING_NO='123';
 let createFormSnapshot=null;
 let buyerMasterRecords=[
   {id:'buyer-001',name:'Emily Carter',customerCompanyName:'NorthBay Retail Group',contact:'+60 12-345 8891',email:'emily.carter@northbayretail.com',notes:'Preferred release updates by email.',status:'Active'},
@@ -1832,9 +1832,7 @@ window.addEventListener('DOMContentLoaded',()=>{
     <div class="actions">
       <div class="action-row">
         <div class="action-cluster">
-          <button id="back-button" class="btn btn-text">Back</button>
           <button id="edit-button" class="btn emphasis" aria-pressed="false"><span class="btn-icon" aria-hidden="true">✎</span><span id="edit-button-label">Edit</span></button>
-          <button id="save-button" class="btn primary" disabled aria-disabled="true"><span class="btn-icon" aria-hidden="true">💾</span>Save Changes</button>
         </div>
       </div>
     </div>
@@ -1905,8 +1903,8 @@ window.addEventListener('DOMContentLoaded',()=>{
               </div>
             </details>
             <div class="create-form-actions">
-              <button id="create-undo-button" type="button" class="btn emphasis" disabled aria-disabled="true">Undo</button>
-              <button id="create-save-button" type="button" class="btn primary">Save</button>
+              <button id="create-undo-button" type="button" class="btn emphasis" disabled aria-disabled="true"><span class="btn-icon" aria-hidden="true"></span>Undo</button>
+              <button id="create-save-button" type="button" class="btn primary"><span class="btn-icon" aria-hidden="true"></span>Save</button>
             </div>
           </div>
         </div>
@@ -1916,7 +1914,7 @@ window.addEventListener('DOMContentLoaded',()=>{
               <div class="create-row">
                 <label class="create-label" for="create-sales-order-no">Sales Order No</label>
                 <div class="create-field-wrap">
-                  <div id="create-sales-order-no" class="read-only-input"><code>SO-20260421-000123</code></div>
+                  <div id="create-sales-order-no" class="read-only-input"><code>SO-20260421-123</code></div>
                 </div>
               </div>
               <div class="create-row">
