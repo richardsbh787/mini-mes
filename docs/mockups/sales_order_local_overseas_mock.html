@@ -45,10 +45,14 @@ body{margin:0;background:linear-gradient(180deg,#fefefe 0%,var(--bg) 180px,#f8f8
 .side-nav-group{margin-top:4px}
 .side-nav-group + .side-nav-group{margin-top:14px;padding-top:14px;border-top:1px solid var(--soft-border)}
 .side-nav-label{padding:0 8px 8px;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted-soft)}
-.side-nav-item{display:flex;align-items:center;width:100%;margin:0;border:1px solid transparent;border-radius:12px;background:transparent;color:var(--muted);font-size:13px;font-weight:600;text-align:left;padding:10px 12px;cursor:pointer}
+.side-nav-item{display:flex;align-items:center;gap:9px;width:100%;margin:0;border:1px solid transparent;border-radius:12px;background:transparent;color:var(--muted);font-size:13px;font-weight:600;text-align:left;padding:10px 12px;cursor:pointer}
 .side-nav-item + .side-nav-item{margin-top:4px}
 .side-nav-item:hover{background:var(--row-hover);color:var(--text)}
 .side-nav-item.active{background:var(--primary-soft);border-color:#d4e1ec;color:var(--title);box-shadow:inset 0 1px 0 rgba(255,255,255,.74)}
+.side-nav-icon{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;color:#7b8fa2;flex:0 0 18px}
+.side-nav-item.active .side-nav-icon{color:var(--blue)}
+.side-nav-icon svg{display:block;width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.side-nav-item-label{min-width:0;line-height:1.25}
 .workspace{min-width:0;padding:0 12px 18px 0;display:flex;flex-direction:column;min-height:100vh;height:100vh;overflow:hidden}
 .workspace-main{min-width:0;display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden}
 .sticky-shell{position:sticky;top:0;z-index:50;margin:0 0 2px;background:rgba(251,253,254,.965);backdrop-filter:blur(14px);border-top:none;border-right:none;border-bottom:1px solid var(--line-strong);border-left:none;border-radius:0;box-shadow:0 1px 0 rgba(214,225,234,.78),0 10px 22px rgba(79,127,168,.05);overflow:visible}
@@ -366,6 +370,7 @@ body{margin:0;background:linear-gradient(180deg,#fefefe 0%,var(--bg) 180px,#f8f8
 .route-display{display:grid;grid-template-columns:220px 1fr 220px 1fr;column-gap:18px;align-items:start;padding:0 0 14px;border-bottom:1px solid var(--line)}
 .input-line,.select-line,.textarea-line{width:100%;font-size:14px;line-height:1.45;color:var(--text);background:#fefefe;border:1px solid var(--line);padding:9px 12px;outline:none;border-radius:8px;box-shadow:none}
 .select-line{height:38px;padding-right:28px}
+.select-line.order-type-alert{color:#8e6262;background:#f7eaee;border-color:#e4c8cf}
 .textarea-line{min-height:76px;resize:vertical}.horizontal-form .edit-row{display:grid;grid-template-columns:220px 1fr;column-gap:18px;align-items:start}.horizontal-form .edit-label{margin-bottom:0;padding-top:8px}
 .table-wrap{border:1px solid var(--line);border-radius:16px;overflow:visible;background:#fdfefe;box-shadow:inset 0 1px 0 rgba(255,255,255,.82),0 2px 6px rgba(67,89,112,.03)}
 table{width:100%;min-width:var(--content-grid-min-width);border-collapse:collapse;font-size:14px}
@@ -538,12 +543,17 @@ body[data-flow-action="create"] .create-only{display:block}
 body[data-flow-action="create"] .create-hidden{display:none!important}
 body[data-flow-action="create"] .workspace-tab:not([data-value="summary"]){opacity:.42;pointer-events:none}
 body[data-flow-action="create"] .workspace-tab:not([data-value="summary"]):hover{color:var(--muted)}
-.create-order-shell{display:grid;gap:10px;max-width:1040px;margin:0 auto}
-.create-form-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:4px 2px 2px}
+.create-order-shell{display:grid;gap:10px;width:100%;max-width:1160px;margin:0 auto;box-sizing:border-box}
+.create-form-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:4px 0 2px}
 .create-form-title{font-size:18px;font-weight:700;color:var(--title);line-height:1.25}
+.master-stage-content-panel .create-order-shell{padding-left:0}
+.master-stage-content-panel .create-form-head{padding-left:0;padding-right:0}
 .create-form-tools{display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-wrap:wrap}
 .create-form-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .create-form-actions .btn{height:32px;padding:0 12px}
+.create-inline-note{margin-top:6px;font-size:12px;line-height:1.45}
+.create-inline-note.error{color:#8e6262}
+.create-inline-note.warning{color:#6f8698}
 .master-data-menu{position:relative}
 .master-data-toggle{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 11px;border:1px solid var(--soft-border);border-radius:999px;background:rgba(252,253,254,.92);color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;list-style:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.82)}
 .master-data-toggle::-webkit-details-marker{display:none}
@@ -554,16 +564,26 @@ body[data-flow-action="create"] .workspace-tab:not([data-value="summary"]):hover
 .master-data-option:hover{background:var(--row-hover)}
 .create-sheet{border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,#fcfdfe 0%,#f8fafc 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.84),0 2px 5px rgba(67,89,112,.025)}
 .create-sheet-inner{padding:14px 18px 16px}
-.create-top-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px 28px;padding-bottom:14px;border-bottom:1px solid var(--soft-border)}
+.create-top-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 28px;padding-bottom:14px;border-bottom:1px solid var(--soft-border)}
 .create-top-grid .create-row{justify-self:stretch;min-width:0}
-.create-main-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 28px;padding:14px 0}
-.create-bottom-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px 28px;padding-top:14px;border-top:1px solid var(--soft-border)}
-.create-audit-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px 28px;padding-top:14px;margin-top:14px;border-top:1px solid var(--soft-border)}
+.create-main-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 28px;padding:14px 0}
+.create-bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 28px;padding-top:14px;border-top:1px solid var(--soft-border)}
+.hidden{display:none!important}
+.create-audit-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 28px;padding-top:14px;margin-top:14px;border-top:1px solid var(--soft-border)}
 .create-column{display:grid;gap:10px;min-width:0}
 .create-row{display:grid;grid-template-columns:148px minmax(0,1fr);align-items:center;gap:12px;min-width:0}
 .create-row.create-route-row{align-items:start}
 .create-label{font-size:12px;font-weight:700;color:var(--blue);letter-spacing:.08px}
 .create-field-wrap{min-width:0}
+.create-order-shell .create-label{min-width:0;white-space:normal;overflow-wrap:anywhere}
+.create-order-shell .create-top-grid > *,.create-order-shell .create-main-grid > *,.create-order-shell .create-bottom-grid > *,.create-order-shell .create-audit-grid > *,.create-order-shell .create-row > *{min-width:0}
+.create-order-shell .input-line,.create-order-shell .select-line,.create-order-shell .textarea-line,.create-order-shell .read-only-input,.create-order-shell .mock-dropdown,.create-order-shell .mock-dropdown-toggle{width:100%;max-width:100%;min-width:0}
+@media (max-width:1400px){
+  .master-stage-content-panel .create-order-shell .create-top-grid,
+  .master-stage-content-panel .create-order-shell .create-main-grid,
+  .master-stage-content-panel .create-order-shell .create-bottom-grid,
+  .master-stage-content-panel .create-order-shell .create-audit-grid{grid-template-columns:1fr}
+}
 .read-only-input{display:flex;align-items:center;min-height:38px;padding:9px 12px;border:1px solid #d3dde6;border-radius:8px;background:#eef3f6;color:var(--title);font-size:14px;font-weight:700;box-shadow:inset 0 1px 0 rgba(255,255,255,.78)}
 .read-only-input code{font-family:Consolas,"SFMono-Regular",Menlo,monospace;font-size:13px}
 body[data-flow-action="create"] .create-sheet .input-line,
@@ -576,11 +596,168 @@ body[data-flow-action="create"] .create-sheet .input-line:hover,
 body[data-flow-action="create"] .create-sheet .mock-dropdown-toggle:hover{background:#e8eef2;border-color:#c9d6e1}
 .date-line{min-height:38px}
 .date-line::-webkit-calendar-picker-indicator{cursor:pointer;opacity:.72}
+.create-date-field{position:relative}
+.create-date-display{padding-right:48px;cursor:pointer}
+.create-date-native{position:absolute;right:10px;top:50%;width:18px;height:18px;transform:translateY(-50%);opacity:.02;cursor:pointer}
+.create-date-picker{
+  position:absolute;
+  right:8px;
+  top:50%;
+  width:24px;
+  height:24px;
+  transform:translateY(-50%);
+  border:none;
+  border-radius:8px;
+  background:transparent;
+  cursor:pointer;
+}
+.create-date-picker::before{
+  content:"";
+  display:block;
+  width:16px;
+  height:16px;
+  margin:0 auto;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect x='2.25' y='3.5' width='11.5' height='10.25' rx='2' fill='none' stroke='%236b8096' stroke-width='1.5'/%3E%3Cpath d='M5 2.5v2M11 2.5v2M2.5 6.25h11' fill='none' stroke='%236b8096' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:16px 16px;
+}
+.create-date-picker:hover{background:rgba(79,127,168,.08)}
 .auto-fill-line[readonly]{color:var(--title);font-weight:600;cursor:default}
 .route-field-shell{display:grid;justify-content:flex-start}
 .route-field-shell .route-segmented{align-self:flex-start}
 body[data-flow-action="create"] .route-field-shell .route-segmented{padding:2px;background:#eef3f6;border-color:#d3dde6}
 body[data-flow-action="create"] .route-field-shell .route-segment{min-width:68px;height:30px;padding:0 12px;font-size:12px}
+.sales-order-create-placeholder{display:grid;gap:14px}
+.sales-order-create-placeholder .master-stage-placeholder{padding:16px 18px}
+.sales-order-create-placeholder-note{font-size:12px;line-height:1.55;color:var(--muted)}
+.commercial-create-shell,.order-items-create-shell,.shipping-detail-create-shell{display:grid;gap:10px;width:100%;max-width:1160px;margin:0 auto;box-sizing:border-box}
+.create-order-shell *,.commercial-create-shell *,.order-items-create-shell *,.shipping-detail-create-shell *{box-sizing:border-box}
+.create-order-shell .create-sheet,.commercial-create-shell .create-sheet,.order-items-create-shell .create-sheet,.shipping-detail-create-shell .create-sheet{width:100%;max-width:100%;min-width:0}
+.create-order-shell .input-line,.create-order-shell .select-line,.create-order-shell .textarea-line,.commercial-create-shell .input-line,.commercial-create-shell .select-line,.commercial-create-shell .textarea-line,.order-items-create-shell .input-line,.order-items-create-shell .select-line,.order-items-create-shell .textarea-line,.shipping-detail-create-shell .input-line,.shipping-detail-create-shell .select-line,.shipping-detail-create-shell .textarea-line{max-width:100%;overflow-wrap:anywhere}
+.commercial-create-shell{gap:10px}
+.commercial-create-shell .create-form-head{padding:2px 0 1px}
+.commercial-create-shell .create-sheet{border:1px solid #d9e4eb;box-shadow:inset 0 1px 0 rgba(255,255,255,.92),0 8px 22px rgba(79,127,168,.04)}
+.commercial-create-shell .create-sheet-inner{padding:18px 20px 20px}
+.commercial-create-stack,.order-items-create-stack,.order-items-create-items,.shipping-detail-create-stack{display:grid;gap:14px}
+.commercial-create-stack{gap:14px}
+.commercial-summary-grid,.order-items-create-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.commercial-summary-card,.order-items-create-summary-item{padding:12px 14px;border:1px solid var(--soft-border);border-radius:14px;background:linear-gradient(180deg,#fdfefe 0%,#f6f9fb 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.88)}
+.commercial-summary-label,.order-items-create-summary-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue)}
+.commercial-summary-value,.order-items-create-summary-value{margin-top:6px;font-size:16px;font-weight:700;line-height:1.3;color:var(--title)}
+.commercial-context-header{display:grid;gap:7px;padding:2px 0 2px}
+.commercial-context-row{display:grid;gap:9px}
+.commercial-context-row--primary{grid-template-columns:minmax(170px,.78fr) minmax(260px,1.35fr)}
+.commercial-context-row--secondary{grid-template-columns:repeat(3,minmax(126px,164px));justify-content:start}
+.commercial-context-card{padding:8px 11px;border:1px solid var(--soft-border);border-radius:11px;background:linear-gradient(180deg,#fdfefe 0%,#f7fafc 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.88)}
+.commercial-context-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue)}
+.commercial-context-value{margin-top:4px;font-size:13px;font-weight:700;line-height:1.22;color:var(--title)}
+.commercial-section-card,.order-items-card,.shipping-detail-section-card{padding:14px 16px;border:1px solid var(--soft-border);border-radius:16px;background:#fcfdfe;box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.commercial-section-card{padding:15px 16px 16px;border-radius:15px;border-color:#dbe5ec;background:linear-gradient(180deg,#fcfdfe 0%,#f8fbfd 100%)}
+.commercial-section-head,.order-items-card-head,.shipping-detail-section-head{display:grid;gap:4px;margin-bottom:10px}
+.commercial-section-head{gap:5px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #e6edf2}
+.commercial-section-title,.order-items-card-title,.shipping-detail-section-title{font-size:16px;font-weight:700;color:var(--title)}
+.commercial-section-copy,.order-items-card-copy,.shipping-detail-section-copy{font-size:14px;line-height:1.55;color:var(--muted)}
+.commercial-form-grid,.order-items-card-grid,.shipping-detail-form-grid{display:grid;grid-template-columns:repeat(2,minmax(240px,1fr));gap:12px 20px}
+.commercial-form-grid{gap:12px 20px;align-items:start}
+.commercial-form-grid .create-row,.order-items-card-grid .create-row{display:grid;gap:6px}
+.commercial-form-grid .create-row{grid-template-columns:156px minmax(0,1fr);align-items:start;gap:12px;min-width:0}
+.commercial-form-grid .create-label{padding-top:10px;font-size:14px;line-height:1.35;color:var(--text)}
+.commercial-form-grid .create-field-wrap{min-width:0}
+.commercial-form-grid .input-line,.commercial-form-grid .select-line,.commercial-form-grid .textarea-line{font-size:14px;line-height:1.45;background:#fff;border-color:#d2dee7;box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.commercial-form-grid .input-line,.commercial-form-grid .select-line{min-height:38px}
+.commercial-form-grid .textarea-line{min-height:96px}
+.commercial-pill-field{font-weight:700;border-radius:999px;padding-left:14px;padding-right:36px;box-shadow:inset 0 1px 0 rgba(255,255,255,.96)}
+.commercial-form-grid select.commercial-pill-field{background-repeat:no-repeat;background-position:right 12px center;background-size:10px 10px}
+.commercial-pill-field--currency{background:#e3f2e7;border-color:#b7d5bf;color:#365f44}
+.commercial-form-grid select.commercial-pill-field--currency{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5 6 7.5 9 4.5' fill='none' stroke='%23365f44' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.commercial-pill-field--term{background:#e3eefb;border-color:#b8cce8;color:#31597d}
+.commercial-form-grid select.commercial-pill-field--term{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5 6 7.5 9 4.5' fill='none' stroke='%2331597d' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.commercial-pill-field--mode{background:#e1f1f1;border-color:#b6d8d7;color:#2e6667}
+.commercial-form-grid select.commercial-pill-field--mode{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5 6 7.5 9 4.5' fill='none' stroke='%232e6667' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.commercial-pill-field--basis{background:#f7e8d9;border-color:#e3c5a9;color:#845635}
+.commercial-form-grid select.commercial-pill-field--basis{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5 6 7.5 9 4.5' fill='none' stroke='%23845635' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.commercial-form-grid .create-row.commercial-row-span{grid-column:1 / -1}
+.commercial-form-grid .create-row.commercial-row-span .textarea-line{min-height:96px}
+.commercial-section-card--payment .create-row.commercial-row-span .textarea-line{min-height:104px}
+.commercial-route-shell{display:grid;gap:6px}
+.commercial-route-field{display:inline-flex;align-items:center;padding:3px;border:1px solid var(--line);border-radius:999px;background:#fefefe;box-shadow:inset 0 1px 0 rgba(255,255,255,.82)}
+.commercial-route-button{min-width:88px;height:30px;padding:0 14px;border:none;border-radius:999px;background:transparent;color:#7f93a6;font-size:12px;font-weight:650;cursor:pointer}
+.commercial-route-button.active{background:#426f94;color:#fbfdfe;font-weight:700;box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 1px 3px rgba(66,111,148,.18)}
+.commercial-route-note,.order-items-model-lookup-note{font-size:13px;line-height:1.5;color:var(--muted)}
+.master-stage-content-panel .order-items-create-shell .create-sheet,.order-items-create-shell .create-sheet,.order-items-create-shell .order-items-card{width:100%;max-width:100%;min-width:0}
+.order-items-card-grid{grid-template-columns:repeat(2,minmax(260px,1fr));gap:12px 18px}
+.order-items-card-grid--full{grid-template-columns:1fr}
+.order-items-card-grid .create-row.order-items-card-grid--full{grid-column:1 / -1}
+.order-items-control-bar{display:flex;justify-content:flex-start}
+.order-items-add-item{height:32px;padding:0 12px;border-radius:9px;font-size:12px}
+.order-items-item-block{display:grid;gap:12px;padding:12px;border:1px solid #dbe5ec;border-radius:16px;background:linear-gradient(180deg,#fdfefe 0%,#f8fbfd 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.92)}
+.order-items-item-block > .order-items-card{background:linear-gradient(180deg,#f2f7fb 0%,#eaf2f7 100%);border-color:#d4e1ea}
+.order-items-item-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:2px 2px 4px;border-bottom:1px solid #e6edf2}
+.order-items-item-title{font-size:17px;font-weight:700;color:var(--title)}
+.order-items-remove-item{height:30px;padding:0 10px;border-radius:8px;font-size:11px;color:#8e6262;background:#f8eeee;border-color:#e0c9c9}
+.order-items-remove-item:hover{background:#f4e6e6;border-color:#d6bdbd}
+.order-items-customer-snapshot{display:grid;gap:7px;padding:10px 12px;border:1px solid #d3dde6;border-radius:12px;background:linear-gradient(180deg,#f4f7f9 0%,#eef3f6 100%);color:var(--title);box-shadow:inset 0 1px 0 rgba(255,255,255,.86)}
+.order-items-customer-snapshot-row{display:grid;grid-template-columns:128px minmax(0,1fr);gap:10px;min-width:0;font-size:13px;line-height:1.4}
+.order-items-customer-snapshot-label{font-weight:700;color:var(--blue)}
+.order-items-customer-snapshot-value{min-width:0;color:var(--text);overflow-wrap:anywhere}
+.order-items-model-lookup{position:relative}
+.order-items-model-lookup-menu{position:absolute;top:calc(100% + 6px);left:0;right:0;display:none;gap:4px;padding:8px;border:1px solid var(--line);border-radius:12px;background:#fefefe;box-shadow:0 10px 24px rgba(79,127,168,.10),0 1px 2px rgba(47,74,102,.08);z-index:25}
+.order-items-model-lookup.is-open .order-items-model-lookup-menu{display:grid}
+.order-items-model-option{display:grid;gap:2px;width:100%;padding:9px 10px;border:1px solid transparent;border-radius:10px;background:transparent;color:var(--text);text-align:left;cursor:pointer}
+.order-items-model-option:hover{background:var(--row-hover);border-color:#d8e3eb}
+.order-items-model-option-id{font-size:13px;font-weight:700;color:var(--title)}
+.order-items-model-option-copy{font-size:11px;line-height:1.4;color:var(--muted)}
+.order-items-date-field{position:relative}
+.order-items-date-display{padding-right:44px}
+.order-items-date-native{position:absolute;inset:0;opacity:0;cursor:pointer}
+.order-items-schedule-wrap{width:100%;max-width:100%;overflow-x:auto;scrollbar-gutter:stable;scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track)}
+.order-items-schedule-wrap::-webkit-scrollbar{width:10px;height:10px}
+.order-items-schedule-wrap::-webkit-scrollbar-track{background:var(--scroll-track);border-radius:999px}
+.order-items-schedule-wrap::-webkit-scrollbar-thumb{background:var(--scroll-thumb);border-radius:999px;border:2px solid var(--scroll-track)}
+.order-items-schedule-wrap::-webkit-scrollbar-thumb:hover{background:var(--scroll-thumb-hover)}
+.order-items-schedule-table{width:100%;max-width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed;font-size:13px}
+.order-items-schedule-table th{padding:8px 8px;border-bottom:1px solid var(--line);background:#edf4f9;color:var(--title);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-align:left}
+.order-items-schedule-table td{padding:8px;border-bottom:1px solid var(--soft-border);vertical-align:middle;background:#fff}
+.order-items-schedule-table tr:last-child td{border-bottom:none}
+.order-items-schedule-table th:first-child,.order-items-schedule-table td:first-child{width:72px}
+.order-items-schedule-table th:nth-child(2),.order-items-schedule-table td:nth-child(2){width:132px}
+.order-items-schedule-table th:nth-child(3),.order-items-schedule-table td:nth-child(3){width:92px}
+.order-items-schedule-table th:nth-child(4),.order-items-schedule-table td:nth-child(4){width:190px}
+.order-items-schedule-table th:nth-child(5),.order-items-schedule-table td:nth-child(5){width:200px;max-width:200px}
+.order-items-schedule-table th:nth-child(6),.order-items-schedule-table td:nth-child(6){width:74px}
+.order-items-schedule-table .input-line,.order-items-schedule-table .select-line{min-height:34px;font-size:13px;padding:7px 9px}
+.order-items-schedule-table .textarea-line{min-height:38px;font-size:13px;line-height:1.35;padding:7px 9px;resize:vertical;overflow-wrap:anywhere}
+.order-items-batch-label{font-weight:700;color:var(--title)}
+.order-items-schedule-actions{display:flex;justify-content:flex-start;margin-top:10px}
+.order-items-add-batch{height:30px;padding:0 11px;border-radius:9px;font-size:12px}
+.order-items-remove-batch{height:28px;padding:0 9px;border-radius:8px;font-size:11px;color:#8e6262;background:#f8eeee;border-color:#e0c9c9}
+.order-items-remove-batch:hover{background:#f4e6e6;border-color:#d6bdbd}
+.order-items-waiver-card{border-color:#d9e4eb;background:linear-gradient(180deg,#fcfdfe 0%,#f8fbfd 100%)}
+.order-items-waiver-list{display:grid;gap:10px}
+.order-items-waiver-row{display:grid;gap:10px;padding:10px;border:1px solid #dfe8ef;border-radius:12px;background:#fff;min-width:0}
+.order-items-waiver-row-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.order-items-waiver-row-no{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;border-radius:999px;background:#edf4f9;color:var(--blue);font-size:12px;font-weight:700}
+.order-items-waiver-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 14px;min-width:0}
+.order-items-waiver-field{display:grid;gap:5px;min-width:0}
+.order-items-waiver-field--full{grid-column:1 / -1}
+.order-items-waiver-field label{font-size:12px;font-weight:700;color:var(--blue);line-height:1.35;white-space:normal;overflow-wrap:anywhere}
+.order-items-waiver-field .input-line,.order-items-waiver-field .select-line,.order-items-waiver-field .textarea-line{width:100%;max-width:100%;min-width:0}
+.order-items-waiver-field .textarea-line{min-height:64px;resize:vertical;overflow-wrap:anywhere}
+.order-items-waiver-actions{display:flex;justify-content:flex-start;margin-top:10px}
+.order-items-add-waiver{height:30px;padding:0 11px;border-radius:9px;font-size:12px}
+.order-items-remove-waiver{height:28px;padding:0 9px;border-radius:8px;font-size:11px;color:#8e6262;background:#f8eeee;border-color:#e0c9c9}
+.order-items-remove-waiver:hover{background:#f4e6e6;border-color:#d6bdbd}
+.shipping-detail-create-shell{min-width:0}
+.shipping-detail-section-card{border-color:#dbe5ec;background:linear-gradient(180deg,#fcfdfe 0%,#f8fbfd 100%)}
+.shipping-detail-section-head{gap:5px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #e6edf2}
+.shipping-detail-form-grid{gap:12px 20px;align-items:start}
+.shipping-detail-form-grid .create-row{grid-template-columns:156px minmax(0,1fr);align-items:start;gap:12px;min-width:0}
+.shipping-detail-form-grid .create-label{padding-top:10px;font-size:14px;line-height:1.35;color:var(--text)}
+.shipping-detail-form-grid .input-line,.shipping-detail-form-grid .select-line,.shipping-detail-form-grid .textarea-line{font-size:14px;line-height:1.45;background:#fff;border-color:#d2dee7;box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.shipping-detail-form-grid .input-line,.shipping-detail-form-grid .select-line{min-height:38px}
+.shipping-detail-form-grid .textarea-line{min-height:92px}
+.shipping-detail-form-grid .create-row.shipping-detail-row-span{grid-column:1 / -1}
 body[data-flow-action="create"] #save-button{background:#eef4f7;border-color:#d9e4eb;color:#6f8598;box-shadow:inset 0 1px 0 rgba(255,255,255,.82)}
 body[data-flow-action="create"] #save-button:hover{background:#e8f0f5;border-color:#cfdee8;color:#5f7689}
 body[data-flow-action="create"] #back-button{color:#7b8ea0}
@@ -606,6 +783,26 @@ body[data-master-stage="true"] .sticky-shell{display:none}
 .master-stage-shell{display:grid;gap:16px;align-items:start}
 .master-stage-shell.sales-order-workspace,.master-stage-shell.workspace-standard{grid-template-columns:164px 188px minmax(0,1fr)}
 .master-stage-column{display:grid;gap:12px;min-width:0}
+.sales-order-rail-shell{display:grid;grid-template-columns:224px minmax(0,1fr);gap:14px;align-items:start;min-width:0}
+.sales-order-secondary-nav{display:grid;gap:10px;padding:10px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,#fcfdfe 0%,#f5f8fa 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.88),0 2px 6px rgba(67,89,112,.04)}
+.sales-order-secondary-header{display:grid;gap:2px;padding:2px 2px 8px;border-bottom:1px solid var(--soft-border)}
+.sales-order-secondary-kicker{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-soft)}
+.sales-order-secondary-copy{font-size:12px;line-height:1.5;color:var(--muted)}
+.sales-order-secondary-section{display:grid;gap:8px}
+.sales-order-secondary-label{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-soft);padding:0 4px}
+.sales-order-secondary-list{display:grid;gap:6px}
+.sales-order-secondary-item{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;padding:9px 10px;border:1px solid #dbe6ee;border-radius:12px;background:#f8fbfd;color:#728698;font-size:13px;font-weight:700;line-height:1.3;text-align:left;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.88);transition:background .16s ease,border-color .16s ease,color .16s ease,box-shadow .16s ease,transform .16s ease}
+.sales-order-secondary-item:hover{background:#eef5f9;border-color:#cddbe6;color:var(--text)}
+.sales-order-secondary-item.active{background:linear-gradient(180deg,#7ea7c6 0%,#527fa3 42%,#3f6c90 100%);border-color:#2f5877;color:#ffffff;box-shadow:inset 0 1px 0 rgba(255,255,255,.34),inset 0 -1px 0 rgba(37,63,84,.16),0 8px 16px rgba(63,108,144,.18);text-shadow:0 1px 0 rgba(28,49,67,.34);transform:translateY(-1px)}
+.sales-order-secondary-item.is-disabled{opacity:.6}
+.sales-order-secondary-item.restricted.active{background:linear-gradient(180deg,#fdf9f9 0%,#f6ecec 42%,#efdfdf 100%);border-color:#ddcaca;color:#8e6262;box-shadow:inset 0 1px 0 rgba(255,255,255,.94),0 8px 16px rgba(142,98,98,.10);text-shadow:none}
+.sales-order-secondary-item-sub{font-size:11px;line-height:1.4;opacity:.78;font-weight:600}
+.sales-order-secondary-item.active .sales-order-secondary-item-sub{opacity:.84}
+.sales-order-secondary-item-title{min-width:0}
+.sales-order-secondary-item-body{display:grid;gap:2px;min-width:0}
+.sales-order-secondary-item-body span{display:block}
+.sales-order-rail-content{min-width:0}
+/* mobile/narrow-screen behavior not in scope for this pass */
 .master-stage-panel{border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,#fcfdfe 0%,#f5f8fa 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.88),0 2px 6px rgba(67,89,112,.04)}
 .master-stage-panel-header{padding:12px 12px 8px;border-bottom:1px solid var(--soft-border)}
 .master-stage-panel-kicker{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-soft)}
@@ -637,13 +834,36 @@ body[data-master-stage="true"] .sticky-shell{display:none}
 .master-work-copy{font-size:11px;line-height:1.45;color:inherit;opacity:.78}
 .master-work-item-title{font-size:13px;font-weight:700;line-height:1.35;color:inherit}
 .master-work-item-sub{font-size:11px;line-height:1.45;color:inherit;opacity:.8}
-.master-stage-content-panel{min-height:640px;min-width:0;overflow:hidden}
-.master-stage-content-panel .master-stage-panel-body{min-width:0;min-height:0;overflow:auto;max-height:calc(100vh - 162px);scrollbar-gutter:stable both-edges;scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track)}
+.master-stage-panel{min-width:0;max-width:100%}
+.master-stage-content-panel{min-height:640px;min-width:0;max-width:100%;overflow:hidden}
+.master-stage-content-panel .master-stage-panel-body{display:block;width:100%;max-width:100%;min-width:0;min-height:0;overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 162px);scrollbar-gutter:stable both-edges;scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track)}
 .master-stage-content-panel .master-stage-panel-body::-webkit-scrollbar{width:10px;height:10px}
 .master-stage-content-panel .master-stage-panel-body::-webkit-scrollbar-track{background:var(--scroll-track);border-radius:999px}
 .master-stage-content-panel .master-stage-panel-body::-webkit-scrollbar-thumb{background:var(--scroll-thumb);border-radius:999px;border:2px solid var(--scroll-track)}
 .master-stage-content-panel .master-stage-panel-body::-webkit-scrollbar-thumb:hover{background:var(--scroll-thumb-hover)}
+.master-stage-work-scroll{display:block;width:100%;max-width:100%;min-width:0;overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 184px);padding:0 0 8px;scrollbar-gutter:stable both-edges;scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track)}
+.master-stage-work-scroll::-webkit-scrollbar{width:10px;height:10px}
+.master-stage-work-scroll::-webkit-scrollbar-track{background:var(--scroll-track);border-radius:999px}
+.master-stage-work-scroll::-webkit-scrollbar-thumb{background:var(--scroll-thumb);border-radius:999px;border:2px solid var(--scroll-track)}
+.master-stage-work-scroll::-webkit-scrollbar-thumb:hover{background:var(--scroll-thumb-hover)}
 .master-stage-content-panel .section-pane,.master-stage-content-panel .section,.master-stage-content-panel .section-scroll{min-width:max-content}
+.master-stage-content-panel .create-sheet,.master-stage-content-panel .master-stage-edit-grid,.master-stage-content-panel .master-stage-grid{min-width:920px}
+.master-stage.sales-order-stage .master-stage-content-panel .create-sheet{min-width:0}
+.master-stage.sales-order-stage .master-stage-work-scroll > .section:has(.create-order-shell),
+.master-stage.sales-order-stage .master-stage-work-scroll > .section-scroll:has(.create-order-shell),
+.master-stage.sales-order-stage .master-stage-work-scroll .create-order-shell .create-sheet,
+.master-stage.sales-order-stage .master-stage-work-scroll .create-order-shell .create-sheet-inner{
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  box-sizing:border-box;
+}
+.master-stage.sales-order-stage .master-stage-work-scroll .create-order-shell{
+  width:100%;
+  max-width:1160px;
+  min-width:0;
+  box-sizing:border-box;
+}
 .master-stage-content-panel .table-wrap,.master-stage-content-panel .summary-sheet,.master-stage-content-panel .items-sheet{max-width:none}
 .master-stage-content-panel .table-wrap{overflow:auto}
 .master-stage-content-wrap{display:grid;gap:14px}
@@ -688,6 +908,7 @@ body[data-master-stage="true"] .sticky-shell{display:none}
   .tabs-shell{flex-basis:100%}
   .toolbar-route{width:100%}
   .create-form-head{flex-direction:column;align-items:flex-start}
+  .commercial-summary-grid,.order-items-create-summary,.commercial-form-grid,.order-items-card-grid{grid-template-columns:1fr}
   .master-stage-shell,.master-stage-shell.sales-order-workspace,.master-stage-shell.workspace-standard{grid-template-columns:1fr}
   .master-stage-guide{position:static}
   .master-stage-content-panel{min-height:auto}
@@ -735,10 +956,10 @@ const MODULE_WORKSPACE_CONFIG={
     items:[
       {id:'summary',label:'Order Summary',description:'Main sales-order summary and create/add surface.'},
       {id:'commercial',label:'Commercial Terms',description:'Payment, term, and commercial-condition surface.'},
-      {id:'items',label:'Order Items',description:'Item-level quantity, batch, and readiness surface.'},
-      {id:'risk',label:'Risk Status',description:'Current order risk review and exception surface.'},
-      {id:'procurement',label:'Short Material List',description:'Material-gap and supplier-promise surface.'},
       {id:'delivery',label:'Shipping Detail',description:'Route, delivery, and logistics coordination surface.'},
+      {id:'items',label:'Order Items',description:'Item-level quantity, batch, and readiness surface.'},
+      {id:'procurement',label:'Short Material List',description:'Material-gap and supplier-promise surface.'},
+      {id:'risk',label:'Risk Status',description:'Current order risk review and exception surface.'},
       {id:'log',label:'Change Log',description:'Order change history and trace surface.'}
     ]
   },
@@ -841,9 +1062,10 @@ const SALES_ORDER_CREATE_DEFAULT_DATE='2026-04-21';
 const SALES_ORDER_CREATE_RUNNING_NO='123';
 let createFormSnapshot=null;
 let buyerMasterRecords=[
-  {id:'buyer-001',name:'Emily Carter',customerCompanyName:'NorthBay Retail Group',contact:'+60 12-345 8891',email:'emily.carter@northbayretail.com',notes:'Preferred release updates by email.',status:'Active'},
-  {id:'buyer-002',name:'Jason Lim',customerCompanyName:'NorthBay Retail Group',contact:'+60 16-880 2145',email:'jason.lim@northbayretail.com',notes:'Handles repeat replenishment releases.',status:'Active'},
-  {id:'buyer-003',name:'Sophia Wong',customerCompanyName:'Atlas Distribution Sdn. Bhd.',contact:'+60 19-442 7308',email:'sophia.wong@atlasdistribution.com',notes:'Escalation contact for tender-linked orders.',status:'Inactive'}
+  {id:'buyer-001',name:'Emily Carter',customerCompanyName:'NorthBay Retail Group',customerCode:'BUY-MY-001',contact:'+60 12-345 8891',email:'emily.carter@northbayretail.com',notes:'Preferred release updates by email.',status:'Active'},
+  {id:'buyer-002',name:'Jason Lim',customerCompanyName:'NorthBay Retail Group',customerCode:'BUY-MY-001',contact:'+60 16-880 2145',email:'jason.lim@northbayretail.com',notes:'Handles repeat replenishment releases.',status:'Active'},
+  {id:'buyer-003',name:'Sophia Wong',customerCompanyName:'Atlas Distribution Sdn. Bhd.',customerCode:'BUY-MY-014',contact:'+60 19-442 7308',email:'sophia.wong@atlasdistribution.com',notes:'Escalation contact for tender-linked orders.',status:'Inactive'},
+  {id:'buyer-004',name:'Aaron Lee',customerCompanyName:'Atlas Distribution Sdn. Bhd.',customerCode:'BUY-MY-014',contact:'+60 17-661 2842',email:'aaron.lee@atlasdistribution.com',notes:'Supports repeat site replenishment coordination.',status:'Active'}
 ];
 let salesPersonMasterRecords=[
   {id:'sales-001',name:'Alex Chen',contact:'+60 12-345 6789',email:'alexchen.nb@northbay.com',notes:'Local account handover on booking confirmation.',status:'Active'},
@@ -1000,10 +1222,10 @@ function getMasterColumnLabel(moduleId,key){
   return field?field.label:key;
 }
 function getBuyerMasterRecord(name){
-  return buyerMasterRecords.find(record=>record.name===name)||buyerMasterRecords[0];
+  return buyerMasterRecords.find(record=>record.name===name)||null;
 }
 function getSalesPersonMasterRecord(name){
-  return salesPersonMasterRecords.find(record=>record.name===name)||salesPersonMasterRecords[0];
+  return salesPersonMasterRecords.find(record=>record.name===name)||null;
 }
 function generateMasterRecordId(moduleId){
   const prefix=(moduleId||'master').replace(/-master$/,'').replace(/[^a-z0-9]+/g,'-');
@@ -1028,15 +1250,38 @@ function renderDropdownOptions(dropdownId,selectId,records,selectedValue){
   }
   return nextValue;
 }
+function getBuyerMasterRecordsForCompany(customerCompanyName){
+  return buyerMasterRecords.filter(record=>record.customerCompanyName===customerCompanyName);
+}
+function renderBuyerDropdownOptions(selectedValue){
+  const root=getActiveCreateSummaryRoot();
+  const customerSelect=getCreateSummaryField('create-customer-input',root);
+  const customerCompanyName=customerSelect?customerSelect.value:'';
+  const buyerRecords=getBuyerMasterRecordsForCompany(customerCompanyName);
+  const hiddenSelect=getCreateSummaryField('create-buyer-select',root);
+  if(!hiddenSelect)return '';
+  const labels=buyerRecords.map(record=>record.name);
+  const nextValue=labels.includes(selectedValue)?selectedValue:'';
+  hiddenSelect.innerHTML='<option value=""'+(nextValue===''?' selected':'')+'>Select buyer from chosen company</option>'+
+    buyerRecords.map(record=>'<option'+(record.name===nextValue?' selected':'')+'>'+escapeHtml(record.name)+'</option>').join('');
+  hiddenSelect.value=nextValue;
+  return nextValue;
+}
 function renderCreateMasterDropdowns(){
-  const buyerSelected=renderDropdownOptions('create-buyer-dropdown','create-buyer-select',buyerMasterRecords,document.getElementById('create-buyer-select')?.value||'');
-  const salesSelected=renderDropdownOptions('create-salesperson-dropdown','create-salesperson-select',salesPersonMasterRecords,document.getElementById('create-salesperson-select')?.value||'');
-  if(buyerSelected){
-    syncBuyerMasterFields();
-  }
-  if(salesSelected){
-    syncSalesPersonMasterFields();
-  }
+  renderBuyerDropdownOptions(getCreateSummaryField('create-buyer-select')?.value||'');
+  renderSalesPersonDropdownOptions(getCreateSummaryField('create-salesperson-select')?.value||'');
+  syncBuyerMasterFields();
+  syncSalesPersonMasterFields();
+}
+function renderSalesPersonDropdownOptions(selectedValue){
+  const hiddenSelect=getCreateSummaryField('create-salesperson-select');
+  if(!hiddenSelect)return '';
+  const labels=salesPersonMasterRecords.map(record=>record.name);
+  const nextValue=labels.includes(selectedValue)?selectedValue:'';
+  hiddenSelect.innerHTML='<option value=""'+(nextValue===''?' selected':'')+'>Select sales person from Sales Person Master</option>'+
+    salesPersonMasterRecords.map(record=>'<option'+(record.name===nextValue?' selected':'')+'>'+escapeHtml(record.name)+'</option>').join('');
+  hiddenSelect.value=nextValue;
+  return nextValue;
 }
 function renderMasterFieldRows(moduleId,prefix,record){
   return (MASTER_MODULE_FIELDS[moduleId]||[]).map(field=>{
@@ -1158,9 +1403,570 @@ function getSelectedWorkspaceItem(moduleId){
   const selectedId=getSelectedWorkspaceItemId(moduleId);
   return getWorkspaceItems(moduleId).find(item=>item.id===selectedId)||null;
 }
+const MASTER_MODEL_LIST=[
+  {route:'Local',modelNo:'NBR-SL100W-A01',description:'100W Solar LED Street Light, local release pack'},
+  {route:'Local',modelNo:'NBR-SL150W-B03',description:'150W Solar LED Street Light, repeat assortment'},
+  {route:'Local',modelNo:'NBR-ACC-KIT04',description:'Mounting accessory kit for mixed wattage order items'},
+  {route:'Overseas',modelNo:'NBR-US200W-C10',description:'200W Solar LED Street Light, export carton build'},
+  {route:'Overseas',modelNo:'NBR-US120W-D06',description:'120W Solar LED Street Light, mixed export replenishment'},
+  {route:'Overseas',modelNo:'NBR-US-POLE09',description:'Pole mounting bundle for overseas mixed shipment'}
+];
+function getSelectedOrderRoute(){
+  const typeSelect=document.getElementById('type-select');
+  return typeSelect&&typeSelect.value==='Overseas' ? 'Overseas' : 'Local';
+}
 function getSalesOrderSectionHtml(sectionId){
   const section=document.getElementById(sectionId);
   return section?section.innerHTML:'';
+}
+function renderSelectOptions(options,selectedValue){
+  return options.map(option=>{
+    const normalized=typeof option==='string'
+      ? {value:option,label:option}
+      : {value:option.value,label:option.label||option.value};
+    return '<option value="'+escapeHtml(normalized.value)+'"'+(normalized.value===selectedValue?' selected':'')+'>'+escapeHtml(normalized.label)+'</option>';
+  }).join('');
+}
+function getBuyerMasterCustomerOptions(route){
+  const source=buyerMasterRecords;
+  const seen=new Set();
+  return source.reduce((options,record)=>{
+    const company=record.customerCompanyName||'';
+    const code=record.customerCode||'';
+    const key=company+'|'+code;
+    if(!company||!code||seen.has(key))return options;
+    seen.add(key);
+    options.push({customerCompanyName:company,customerCode:code});
+    return options;
+  },[]);
+}
+function getBuyerMasterCustomerRecord(route,customerCompanyName){
+  const options=getBuyerMasterCustomerOptions(route);
+  return options.find(option=>option.customerCompanyName===customerCompanyName)||options[0]||{customerCompanyName:'',customerCode:''};
+}
+function getActiveCreateSummaryRoot(){
+  if(currentModule==='sales-orders'&&currentAction==='create'){
+    const activePanel=document.querySelector('#master-stage-content .master-stage-content-panel');
+    if(activePanel&&activePanel.querySelector('#create-customer-input')){
+      return activePanel;
+    }
+  }
+  return document;
+}
+function getCreateSummaryField(id,root){
+  const scope=root||getActiveCreateSummaryRoot();
+  return scope.querySelector('#'+id)||document.getElementById(id);
+}
+function resetCommercialCreateForm(){
+  const form=document.getElementById('commercial-create-form');
+  if(form)form.reset();
+}
+function runCommercialCreateMockAction(action){
+  if(action==='undo'){
+    resetCommercialCreateForm();
+    alert('Mock Undo: Commercial Terms demo fields reset to default review values only.');
+    return;
+  }
+  if(action==='save'){
+    alert('Mock Save: Commercial Terms only. No backend connected.');
+    return;
+  }
+  if(action==='master-data'){
+    alert('Mock Master Data only. No real master-data flow is opened from Commercial Terms in this round.');
+  }
+}
+function renderSalesOrderCreatePlaceholder(selectedItem){
+  return '<div class="sales-order-create-placeholder">'+
+    '<div class="master-stage-placeholder"><strong>Create / Add is not built yet for '+selectedItem.label+'.</strong> This mock keeps the action-to-renderer ownership explicit, so this sub-module now stays on a create-mode placeholder instead of falling into table or view content.</div>'+
+    '<div class="sales-order-create-placeholder-note">Current mock stage: keep the approved Sales &amp; Orders family layout while the dedicated '+escapeHtml(selectedItem.label)+' create surface is still pending.</div>'+
+  '</div>';
+}
+function renderSalesOrderSearchPlaceholder(selectedItem){
+  return '<div class="master-stage-placeholder"><strong>Search / Find is not opened yet for '+escapeHtml(selectedItem.label)+'.</strong> This placeholder stays isolated on purpose, so Search / Find does not reuse any Create / Add or normal table renderer in the current mock stage.</div>';
+}
+function renderCommercialCreateSurfaceLegacy(){
+  const route=getSelectedOrderRoute();
+  const defaults=getCommercialCreateDefaults(route);
+  const customerOptions=getBuyerMasterCustomerOptions(route);
+  const customerRecord=getBuyerMasterCustomerRecord(route,defaults.customer);
+  return '<div class="commercial-create-shell">'+
+    '<div class="create-form-head">'+
+      '<div class="create-form-title">Create / Add Commercial Terms</div>'+
+      '<div class="create-form-tools">'+
+        '<details class="master-data-menu"><summary class="master-data-toggle">MASTER DATA</summary><div class="master-data-panel"><button type="button" class="master-data-option">Buyer Master</button><button type="button" class="master-data-option">Incoterm Master</button></div></details>'+
+        '<div class="create-form-actions"><button type="button" class="btn emphasis"><span class="btn-icon" aria-hidden="true"></span>Undo</button><button type="button" class="btn primary"><span class="btn-icon" aria-hidden="true"></span>Save</button></div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="create-sheet"><div class="create-sheet-inner"><div class="commercial-create-stack">'+
+      '<div class="commercial-summary-grid">'+
+        '<div class="commercial-summary-card"><div class="commercial-summary-label">Order Route</div><div class="commercial-summary-value">'+route+'</div></div>'+
+        '<div class="commercial-summary-card"><div class="commercial-summary-label">Customer</div><div class="commercial-summary-value">'+escapeHtml(customerRecord.customerCompanyName)+'</div></div>'+
+        '<div class="commercial-summary-card"><div class="commercial-summary-label">Currency</div><div class="commercial-summary-value">'+escapeHtml(defaults.currency)+'</div></div>'+
+      '</div>'+
+      '<div class="commercial-section-card"><div class="commercial-section-head"><div class="commercial-section-title">Commercial Basics</div><div class="commercial-section-copy">Set the governing commercial header using the same create/add family as Order Summary.</div></div><div class="commercial-form-grid">'+
+        '<div class="create-row"><label class="create-label">Order Route</label><div class="create-field-wrap"><div class="commercial-route-shell"><div class="commercial-route-field"><button type="button" class="commercial-route-button'+(route==='Local'?' active':'')+'" data-commercial-route-field="true" data-route-value="Local">Local</button><button type="button" class="commercial-route-button'+(route==='Overseas'?' active':'')+'" data-commercial-route-field="true" data-route-value="Overseas">Overseas</button></div><div class="commercial-route-note">Commercial Terms remains the controlling source for Order Route in this mock.</div></div></div></div>'+
+        '<div class="create-row"><label class="create-label" for="commercial-create-customer">Customer</label><div class="create-field-wrap"><select id="commercial-create-customer" class="select-line">'+renderSelectOptions(customerOptions.map(option=>({value:option.customerCompanyName,label:option.customerCompanyName})),customerRecord.customerCompanyName)+'</select><div class="commercial-route-note">Source: Reports &amp; Master Data · Buyer Master.</div></div></div>'+
+        '<div class="create-row"><label class="create-label" for="commercial-create-customer-code">Customer Code</label><div class="create-field-wrap"><input id="commercial-create-customer-code" class="input-line auto-fill-line" type="text" value="'+escapeHtml(customerRecord.customerCode)+'" readonly /></div></div>'+
+        '<div class="create-row"><label class="create-label" for="commercial-create-currency">Currency</label><div class="create-field-wrap"><select id="commercial-create-currency" class="select-line">'+renderSelectOptions(['MYR','USD'],defaults.currency)+'</select></div></div>'+
+      '</div></div>'+
+      '<div class="commercial-section-card"><div class="commercial-section-head"><div class="commercial-section-title">Payment Terms</div><div class="commercial-section-copy">Keep repeat commercial picks master-data-oriented instead of free typing.</div></div><div class="commercial-form-grid">'+
+        '<div class="create-row"><label class="create-label" for="commercial-create-payment-term">Payment Term</label><div class="create-field-wrap"><select id="commercial-create-payment-term" class="select-line">'+renderSelectOptions(['Advance Payment','30 Days','TT 30 Days','LC at Sight'],defaults.paymentTerm)+'</select></div></div>'+
+        '<div class="create-row"><label class="create-label" for="commercial-create-billing-term">Billing Trigger</label><div class="create-field-wrap"><select id="commercial-create-billing-term" class="select-line">'+renderSelectOptions(['On Delivery Confirmation','On Shipment Advice','Partial Billing by Batch'],'On Delivery Confirmation')+'</select></div></div>'+
+      '</div></div>'+
+      '<div class="commercial-section-card"><div class="commercial-section-head"><div class="commercial-section-title">Delivery &amp; Trade Terms</div><div class="commercial-section-copy">Keep route-sensitive trade content aligned to the currently selected Commercial Terms route.</div></div><div class="commercial-form-grid">'+
+        '<div class="create-row"><label class="create-label" for="commercial-create-incoterm">Incoterm</label><div class="create-field-wrap"><select id="commercial-create-incoterm" class="select-line">'+renderSelectOptions(['DAP','EXW','FOB','CIF'],defaults.incoterm)+'</select></div></div>'+
+        '<div class="create-row"><label class="create-label" for="commercial-create-incoterm-location">Incoterm Location</label><div class="create-field-wrap"><select id="commercial-create-incoterm-location" class="select-line">'+renderSelectOptions(route==='Overseas'?['Port Klang','Pasir Gudang','Austin Import Hub']:['Klang DC','Shah Alam','Penang Crossdock'],defaults.incotermLocation)+'</select></div></div>'+
+        '<div class="create-row"><label class="create-label" for="commercial-create-delivery-window">Delivery Window</label><div class="create-field-wrap"><select id="commercial-create-delivery-window" class="select-line">'+renderSelectOptions(route==='Overseas'?['Customer shipping advice before ETD confirmation.','Booking must be locked before packing release.']:['Site only accepts unloading after 2:00 PM.','Customer warehouse opens after slot confirmation.'],defaults.deliveryWindow)+'</select></div></div>'+
+      '</div></div>'+
+      '<div class="commercial-section-card"><div class="commercial-section-head"><div class="commercial-section-title">Remarks / Notes</div><div class="commercial-section-copy">Helper text stays in the same muted family as the approved Order Summary reference.</div></div><div class="commercial-form-grid">'+
+        '<div class="create-row"><label class="create-label" for="commercial-create-remark">Internal Remark</label><div class="create-field-wrap"><textarea id="commercial-create-remark" class="textarea-line">'+escapeHtml(defaults.remark)+'</textarea></div></div>'+
+        '<div class="create-row"><label class="create-label" for="commercial-create-customer-note">Customer-facing Note</label><div class="create-field-wrap"><textarea id="commercial-create-customer-note" class="textarea-line">'+escapeHtml(route==='Overseas'?'Shipping advice to follow after vessel booking confirmation.':'Delivery slot confirmation follows local transport readiness.')+'</textarea></div></div>'+
+      '</div></div>'+
+    '</div></div></div>'+
+  '</div>';
+}
+function renderCommercialCreateSurface(){
+  return '<div class="commercial-create-shell">'+
+    '<div class="create-form-head">'+
+      '<div class="create-form-title">Create / Add Commercial Terms</div>'+
+      '<div class="create-form-tools">'+
+        '<details class="master-data-menu"><summary class="master-data-toggle">MASTER DATA</summary><div class="master-data-panel"><button type="button" class="master-data-option" data-commercial-create-action="master-data">Commercial Terms mock placeholder</button></div></details>'+
+        '<div class="create-form-actions"><button type="button" class="btn emphasis" data-commercial-create-action="undo"><span class="btn-icon" aria-hidden="true"></span>Undo</button><button type="button" class="btn primary" data-commercial-create-action="save"><span class="btn-icon" aria-hidden="true"></span>Save</button></div>'+
+      '</div>'+
+    '</div>'+
+    '<form id="commercial-create-form" class="create-sheet"><div class="create-sheet-inner"><div class="commercial-create-stack">'+
+      '<div class="commercial-section-card commercial-section-card--basics"><div class="commercial-section-head"><div class="commercial-section-title">Commercial Basics</div><div class="commercial-section-copy">Mock-stage carry-over context only. The values shown here are hardcoded demo references for reading continuity and do not imply linked Order Summary flow or frozen field meaning.</div></div><div class="commercial-form-grid">'+
+        '<div class="create-row"><label class="create-label" for="commercial-create-sales-order-no">Sales Order No</label><div class="create-field-wrap"><input id="commercial-create-sales-order-no" class="input-line auto-fill-line" type="text" value="SO-20260421-123" readonly /></div></div>'+
+        '<div class="create-row"><label class="create-label" for="commercial-create-customer">Customer Company Name</label><div class="create-field-wrap"><input id="commercial-create-customer" class="input-line auto-fill-line" type="text" value="NorthBay Retail Group" readonly /><div class="commercial-route-note">Hardcoded demo context only for mock-stage review.</div></div></div>'+
+        '<div class="create-row"><label class="create-label" for="commercial-create-company-code">Company Code</label><div class="create-field-wrap"><input id="commercial-create-company-code" class="input-line auto-fill-line" type="text" value="BUY-MY-001" readonly /></div></div>'+
+        '<div class="create-row"><label class="create-label" for="commercial-create-order-type">Order Type</label><div class="create-field-wrap"><input id="commercial-create-order-type" class="input-line auto-fill-line" type="text" value="Repeat Order" readonly /></div></div>'+
+        '<div class="create-row"><label class="create-label" for="commercial-create-order-route">Order Route</label><div class="create-field-wrap"><input id="commercial-create-order-route" class="input-line auto-fill-line" type="text" value="Local" readonly /></div></div>'+
+        '<div class="create-row commercial-row-span"><label class="create-label" for="commercial-create-owner-note">Commercial Owner Note</label><div class="create-field-wrap"><textarea id="commercial-create-owner-note" class="textarea-line">Mock-stage note only. This section is for layout review and reading order discussion.</textarea></div></div>'+
+      '</div></div>'+
+      '<div class="commercial-section-card commercial-section-card--payment"><div class="commercial-section-head"><div class="commercial-section-title">Payment &amp; Currency</div><div class="commercial-section-copy">Independent demo fields only. No validation, no dependency, no calculation, and no final commercial rule is implied in this round.</div></div><div class="commercial-form-grid">'+
+        '<div class="create-row"><label class="create-label" for="commercial-create-currency">Settlement Currency</label><div class="create-field-wrap"><select id="commercial-create-currency" class="select-line commercial-pill-field commercial-pill-field--currency">'+renderSelectOptions(['MYR','USD','EUR'],'MYR')+'</select></div></div>'+
+        '<div class="create-row"><label class="create-label" for="commercial-create-payment-term">Payment Term</label><div class="create-field-wrap"><select id="commercial-create-payment-term" class="select-line commercial-pill-field commercial-pill-field--term">'+renderSelectOptions(['Advance Payment','30 Days','TT 30 Days','LC at Sight'],'30 Days')+'</select></div></div>'+
+        '<div class="create-row"><label class="create-label" for="commercial-create-payment-mode">Payment Mode</label><div class="create-field-wrap"><select id="commercial-create-payment-mode" class="select-line commercial-pill-field commercial-pill-field--mode">'+renderSelectOptions(['Bank Transfer','Telegraphic Transfer','Letter of Credit'],'Bank Transfer')+'</select></div></div>'+
+        '<div class="create-row"><label class="create-label" for="commercial-create-price-basis">Price Basis</label><div class="create-field-wrap"><input id="commercial-create-price-basis" class="input-line commercial-pill-field commercial-pill-field--basis" type="text" value="Demo review text only" /></div></div>'+
+        '<div class="create-row commercial-row-span"><label class="create-label" for="commercial-create-billing-note">Billing Note</label><div class="create-field-wrap"><textarea id="commercial-create-billing-note" class="textarea-line">Mock-stage payment note only. No tax, billing, or trade-rule logic is being decided in this round.</textarea></div></div>'+
+        '<div class="create-row commercial-row-span"><label class="create-label" for="commercial-create-currency-note">Currency Remark</label><div class="create-field-wrap"><textarea id="commercial-create-currency-note" class="textarea-line">Review whether this block sits in the right place on-screen before any final field rules are discussed.</textarea></div></div>'+
+      '</div></div>'+
+    '</div></div></form>'+
+  '</div>';
+}
+function getMasterModelOptions(route){
+  return MASTER_MODEL_LIST.filter(record=>record.route===route);
+}
+function getMasterModelRecord(route,modelNo){
+  return getMasterModelOptions(route).find(record=>record.modelNo===modelNo)||null;
+}
+function formatSlashDate(value){
+  const date=parseYmdDate(value);
+  if(!date)return value;
+  const day=String(date.getUTCDate()).padStart(2,'0');
+  const month=String(date.getUTCMonth()+1).padStart(2,'0');
+  const year=String(date.getUTCFullYear());
+  return day+'/'+month+'/'+year;
+}
+const ORDER_ITEMS_SHIP_TO_OPTIONS=[
+  'Main receiving dock',
+  'Secondary warehouse',
+  'Project site',
+  'Customer reserve location',
+  'Other (manual)'
+];
+const ORDER_ITEMS_DEFAULT_ITEM={
+  type:'Repeat Build',
+  quantity:'900',
+  model:'NBR-SL100W-A01',
+  description:'100W Solar LED Street Light, local release pack',
+  customerPart:'CUS-MY-100W-03'
+};
+function formatOrderItemLabel(index){
+  return 'Item '+String(index+1).padStart(3,'0');
+}
+function getOrderItemsDefaultScheduleRows(){
+  return [
+    {batch:'Batch 1',date:'2026-05-22',qty:'300',destination:'Main receiving dock',remark:'First dispatch mock note'},
+    {batch:'Batch 2',date:'2026-05-29',qty:'250',destination:'Secondary warehouse',remark:'Hold for slot confirmation'},
+    {batch:'Batch 3',date:'2026-06-05',qty:'200',destination:'Project site',remark:'Coordinate unloading bay'},
+    {batch:'Batch 4',date:'2026-06-12',qty:'150',destination:'Customer reserve location',remark:'Final split shipment'}
+  ];
+}
+function syncOrderItemsDateDisplays(){
+  document.querySelectorAll('[data-order-items-date-native]').forEach(input=>{
+    const targetId=input.getAttribute('data-display-target');
+    const display=targetId?document.getElementById(targetId):null;
+    if(display)display.value=formatSlashDate(input.value||'');
+  });
+}
+function renderOrderItemsScheduleDateField(fieldId,value,label){
+  return '<div class="order-items-date-field"><input id="'+fieldId+'-display" class="input-line order-items-date-display" type="text" value="'+escapeHtml(formatSlashDate(value))+'" readonly data-create-date-open="'+fieldId+'" aria-label="'+escapeHtml(label)+' display" /><input id="'+fieldId+'" class="input-line date-line order-items-date-native" type="date" value="'+escapeHtml(value)+'" data-order-items-date-native="true" data-display-target="'+fieldId+'-display" aria-label="'+escapeHtml(label)+' calendar" /><button type="button" class="create-date-picker" aria-label="Open '+escapeHtml(label)+' calendar" data-create-date-open="'+fieldId+'"></button></div>';
+}
+function renderOrderItemsScheduleRow(index,row,itemKey){
+  const batchNo=index+1;
+  const rowValue=row||{};
+  const fieldPrefix=(itemKey||'order-items')+'-batch-'+batchNo;
+  const batchLabel='Batch '+batchNo;
+  return '<tr data-order-items-shipping-row="true">'+
+    '<td><span class="order-items-batch-label" data-order-items-batch-label="true">'+batchLabel+'</span></td>'+
+    '<td>'+renderOrderItemsScheduleDateField(fieldPrefix+'-ship-date',rowValue.date||'2026-06-19',batchLabel+' Shipping Date')+'</td>'+
+    '<td><input id="'+fieldPrefix+'-qty" class="input-line" type="number" value="'+escapeHtml(rowValue.qty||'')+'" /></td>'+
+    '<td><select id="'+fieldPrefix+'-destination" class="select-line">'+renderSelectOptions(ORDER_ITEMS_SHIP_TO_OPTIONS,rowValue.destination||'Main receiving dock')+'</select></td>'+
+    '<td><textarea id="'+fieldPrefix+'-remark" class="textarea-line" rows="2">'+escapeHtml(rowValue.remark||'')+'</textarea></td>'+
+    '<td><button type="button" class="btn order-items-remove-batch" data-order-items-remove-batch="true">Remove</button></td>'+
+  '</tr>';
+}
+function renumberOrderItemsShippingRows(root){
+  const scope=root||document;
+  const itemBlock=scope.closest?scope.closest('[data-order-items-item-block]'):null;
+  const itemKey=itemBlock?itemBlock.getAttribute('data-order-items-item-key')||'order-items':'order-items';
+  const rows=scope.querySelectorAll('[data-order-items-shipping-row]');
+  rows.forEach((row,index)=>{
+    const batchNo=index+1;
+    const dateId=itemKey+'-batch-'+batchNo+'-ship-date';
+    const label=row.querySelector('[data-order-items-batch-label]');
+    const dateDisplay=row.querySelector('.order-items-date-display');
+    const dateInput=row.querySelector('[data-order-items-date-native]');
+    const picker=row.querySelector('.create-date-picker');
+    const qtyInput=row.querySelector('input[type="number"]');
+    const destinationSelect=row.querySelector('select');
+    const remarkField=row.querySelector('textarea');
+    if(label)label.textContent='Batch '+batchNo;
+    if(dateDisplay){
+      dateDisplay.id=dateId+'-display';
+      dateDisplay.setAttribute('data-create-date-open',dateId);
+      dateDisplay.setAttribute('aria-label','Batch '+batchNo+' Shipping Date display');
+    }
+    if(dateInput){
+      dateInput.id=dateId;
+      dateInput.setAttribute('data-display-target',dateId+'-display');
+      dateInput.setAttribute('aria-label','Batch '+batchNo+' Shipping Date calendar');
+    }
+    if(picker){
+      picker.setAttribute('data-create-date-open',dateId);
+      picker.setAttribute('aria-label','Open Batch '+batchNo+' Shipping Date calendar');
+    }
+    if(qtyInput)qtyInput.id=itemKey+'-batch-'+batchNo+'-qty';
+    if(destinationSelect)destinationSelect.id=itemKey+'-batch-'+batchNo+'-destination';
+    if(remarkField)remarkField.id=itemKey+'-batch-'+batchNo+'-remark';
+  });
+  syncOrderItemsDateDisplays();
+}
+function addOrderItemsShippingBatch(tbody){
+  if(!tbody)return;
+  const itemBlock=tbody.closest('[data-order-items-item-block]');
+  const itemKey=itemBlock?itemBlock.getAttribute('data-order-items-item-key')||'order-items':'order-items';
+  const rowCount=tbody.querySelectorAll('[data-order-items-shipping-row]').length;
+  tbody.insertAdjacentHTML('beforeend',renderOrderItemsScheduleRow(rowCount,{
+    date:'2026-06-19',
+    qty:'',
+    destination:'Main receiving dock',
+    remark:''
+  },itemKey));
+  renumberOrderItemsShippingRows(tbody);
+}
+function renderOrderItemsWaiverRow(index,row,itemKey){
+  const rowNo=index+1;
+  const rowValue=row||{};
+  const key=(itemKey||'order-items')+'-waiver-'+rowNo;
+  return '<div class="order-items-waiver-row" data-order-items-waiver-row="true">'+
+    '<div class="order-items-waiver-row-head"><span class="order-items-waiver-row-no" data-order-items-waiver-no="true">'+rowNo+'</span><button type="button" class="btn order-items-remove-waiver" data-order-items-remove-waiver="true">Remove</button></div>'+
+    '<div class="order-items-waiver-grid">'+
+      '<div class="order-items-waiver-field"><label for="'+key+'-required">Waiver Required</label><select id="'+key+'-required" class="select-line">'+renderSelectOptions(['No','Yes'],rowValue.required||'No')+'</select></div>'+
+      '<div class="order-items-waiver-field"><label for="'+key+'-ref">Waiver Ref No.</label><input id="'+key+'-ref" class="input-line" type="text" value="'+escapeHtml(rowValue.ref||'Mock waiver ref')+'" /></div>'+
+      '<div class="order-items-waiver-field order-items-waiver-field--full"><label for="'+key+'-special-spec">Special Spec / Requirement Note</label><textarea id="'+key+'-special-spec" class="textarea-line" rows="3">'+escapeHtml(rowValue.specialSpec||'Mock special spec note for visual review.')+'</textarea></div>'+
+      '<div class="order-items-waiver-field"><label for="'+key+'-customer-approval">Customer Approval Ref</label><input id="'+key+'-customer-approval" class="input-line" type="text" value="'+escapeHtml(rowValue.customerApproval||'Customer approval mock ref')+'" /></div>'+
+      '<div class="order-items-waiver-field order-items-waiver-field--full"><label for="'+key+'-internal-remark">Internal Remark</label><textarea id="'+key+'-internal-remark" class="textarea-line" rows="3">'+escapeHtml(rowValue.internalRemark||'Mock internal review remark.')+'</textarea></div>'+
+    '</div>'+
+  '</div>';
+}
+function renumberOrderItemsWaiverRows(root){
+  const scope=root||document;
+  const itemBlock=scope.closest?scope.closest('[data-order-items-item-block]'):null;
+  const itemKey=itemBlock?itemBlock.getAttribute('data-order-items-item-key')||'order-items':'order-items';
+  scope.querySelectorAll('[data-order-items-waiver-row]').forEach((row,index)=>{
+    const rowNo=index+1;
+    const key=itemKey+'-waiver-'+rowNo;
+    const rowNoNode=row.querySelector('[data-order-items-waiver-no]');
+    const labels=row.querySelectorAll('label');
+    const inputs=row.querySelectorAll('input[type="text"]');
+    const required=row.querySelector('select');
+    const textareas=row.querySelectorAll('textarea');
+    if(rowNoNode)rowNoNode.textContent=String(rowNo);
+    if(required)required.id=key+'-required';
+    if(inputs[0])inputs[0].id=key+'-ref';
+    if(inputs[1])inputs[1].id=key+'-customer-approval';
+    if(textareas[0])textareas[0].id=key+'-special-spec';
+    if(textareas[1])textareas[1].id=key+'-internal-remark';
+    if(labels[0])labels[0].setAttribute('for',key+'-required');
+    if(labels[1])labels[1].setAttribute('for',key+'-ref');
+    if(labels[2])labels[2].setAttribute('for',key+'-special-spec');
+    if(labels[3])labels[3].setAttribute('for',key+'-customer-approval');
+    if(labels[4])labels[4].setAttribute('for',key+'-internal-remark');
+  });
+}
+function addOrderItemsWaiverRow(list){
+  if(!list)return;
+  const itemBlock=list.closest('[data-order-items-item-block]');
+  const itemKey=itemBlock?itemBlock.getAttribute('data-order-items-item-key')||'order-items':'order-items';
+  const index=list.querySelectorAll('[data-order-items-waiver-row]').length;
+  list.insertAdjacentHTML('beforeend',renderOrderItemsWaiverRow(index,{},itemKey));
+  renumberOrderItemsWaiverRows(list);
+}
+function renderOrderItemsItemBlock(index,itemDefaults,scheduleRows,itemKey){
+  const defaults=itemDefaults||ORDER_ITEMS_DEFAULT_ITEM;
+  const key=itemKey||('order-items-item-'+(index+1));
+  const itemLabel=formatOrderItemLabel(index);
+  return '<div class="order-items-item-block" data-order-items-item-block="true" data-order-items-item-key="'+escapeHtml(key)+'">'+
+    '<div class="order-items-item-head"><div class="order-items-item-title" data-order-items-item-title="true">'+itemLabel+'</div><button type="button" class="btn order-items-remove-item" data-order-items-remove-item="true">Remove Item</button></div>'+
+    '<div class="order-items-card"><div class="order-items-card-head"><div class="order-items-card-title">Order Item Basics</div><div class="order-items-card-copy">Mock-stage item header only. Editing here is visual and does not persist or calculate anything.</div></div><div class="order-items-card-grid">'+
+      '<div class="create-row"><label class="create-label" for="'+key+'-item-no">Order Item No.</label><div class="create-field-wrap"><input id="'+key+'-item-no" class="input-line" type="text" value="'+itemLabel+'" data-order-items-item-no="true" /></div></div>'+
+      '<div class="create-row"><label class="create-label" for="'+key+'-type">Order Item Type</label><div class="create-field-wrap"><select id="'+key+'-type" class="select-line">'+renderSelectOptions(['New Build','Repeat Build','Accessory Bundle','Sample','Insert Order','Top Urgent'],defaults.type)+'</select></div></div>'+
+      '<div class="create-row"><label class="create-label" for="'+key+'-qty">Order Qty</label><div class="create-field-wrap"><input id="'+key+'-qty" class="input-line" type="number" value="'+escapeHtml(defaults.quantity)+'" /></div></div>'+
+      '<div class="create-row"><label class="create-label" for="'+key+'-uom">UOM</label><div class="create-field-wrap"><select id="'+key+'-uom" class="select-line">'+renderSelectOptions(['pcs','set','carton','pallet'],'pcs')+'</select></div></div>'+
+      '<div class="create-row"><label class="create-label" for="'+key+'-route">Order Route / Flow Type</label><div class="create-field-wrap"><input id="'+key+'-route" class="input-line" type="text" value="Local mock route" /></div></div>'+
+      '<div class="create-row order-items-card-grid--full"><label class="create-label">Customer Snapshot</label><div class="create-field-wrap"><div class="order-items-customer-snapshot" aria-label="Customer Snapshot read-only display"><div class="order-items-customer-snapshot-row"><span class="order-items-customer-snapshot-label">Customer Name</span><span class="order-items-customer-snapshot-value">Demo Customer Sdn Bhd</span></div><div class="order-items-customer-snapshot-row"><span class="order-items-customer-snapshot-label">Ship-To</span><span class="order-items-customer-snapshot-value">Main receiving dock</span></div><div class="order-items-customer-snapshot-row"><span class="order-items-customer-snapshot-label">Buyer / Contact</span><span class="order-items-customer-snapshot-value">Demo Buyer</span></div><div class="order-items-customer-snapshot-row"><span class="order-items-customer-snapshot-label">Snapshot Source</span><span class="order-items-customer-snapshot-value">Captured at order creation</span></div></div></div></div>'+
+    '</div></div>'+
+    '<div class="order-items-card"><div class="order-items-card-head"><div class="order-items-card-title">Product / Model Info</div><div class="order-items-card-copy">Static mock product fields for layout review only; no product lookup or master-data linkage is added in this round.</div></div><div class="order-items-card-grid">'+
+      '<div class="create-row"><label class="create-label" for="'+key+'-model">Model No</label><div class="create-field-wrap"><input id="'+key+'-model" class="input-line" type="text" value="'+escapeHtml(defaults.model)+'" /></div></div>'+
+      '<div class="create-row"><label class="create-label" for="'+key+'-customer-part">Customer Part No.</label><div class="create-field-wrap"><input id="'+key+'-customer-part" class="input-line" type="text" value="'+escapeHtml(defaults.customerPart)+'" /></div></div>'+
+      '<div class="create-row order-items-card-grid--full"><label class="create-label" for="'+key+'-description">Product Description</label><div class="create-field-wrap"><textarea id="'+key+'-description" class="textarea-line" rows="3">'+escapeHtml(defaults.description)+'</textarea></div></div>'+
+      '<div class="create-row"><label class="create-label" for="'+key+'-finish">Finish / Color</label><div class="create-field-wrap"><input id="'+key+'-finish" class="input-line" type="text" value="Standard finish mock" /></div></div>'+
+      '<div class="create-row"><label class="create-label" for="'+key+'-pack">Pack Type</label><div class="create-field-wrap"><select id="'+key+'-pack" class="select-line">'+renderSelectOptions(['Standard carton','Export carton','Pallet pack','Customer pack note'],'Standard carton')+'</select></div></div>'+
+    '</div></div>'+
+    '<div class="order-items-card"><div class="order-items-card-head"><div class="order-items-card-title">Multi-Shipping Schedule</div><div class="order-items-card-copy">Controlled editable mock rows only. Add/remove is visual, with no sum validation, persistence, or Shipping Detail linkage.</div></div><div class="order-items-schedule-wrap"><table class="order-items-schedule-table"><thead><tr><th>Batch No.</th><th>Shipping Date</th><th>Qty for This Shipment</th><th>Ship-To / Destination Snapshot</th><th>Shipping Remark</th><th>Action</th></tr></thead><tbody data-order-items-schedule-body="true">'+
+      (scheduleRows||getOrderItemsDefaultScheduleRows()).map((row,rowIndex)=>renderOrderItemsScheduleRow(rowIndex,row,key)).join('')+
+    '</tbody></table></div><div class="order-items-schedule-actions"><button type="button" class="btn emphasis order-items-add-batch" data-order-items-add-batch="true">+ Add Shipping Batch</button></div></div>'+
+    '<div class="order-items-card order-items-waiver-card"><div class="order-items-card-head"><div class="order-items-card-title">Waiver / Special Requirement</div><div class="order-items-card-copy">All fields stay visible for mock review. Waiver Required does not hide, show, or drive any other field.</div></div><div class="order-items-waiver-list" data-order-items-waiver-list="true">'+
+      renderOrderItemsWaiverRow(0,{},key)+
+    '</div><div class="order-items-waiver-actions"><button type="button" class="btn emphasis order-items-add-waiver" data-order-items-add-waiver="true">+ Add Waiver Requirement</button></div></div>'+
+  '</div>';
+}
+function renumberOrderItemsBlocks(root){
+  const scope=root||document;
+  scope.querySelectorAll('[data-order-items-item-block]').forEach((block,index)=>{
+    const itemLabel=formatOrderItemLabel(index);
+    const title=block.querySelector('[data-order-items-item-title]');
+    const itemNo=block.querySelector('[data-order-items-item-no]');
+    if(title)title.textContent=itemLabel;
+    if(itemNo)itemNo.value=itemLabel;
+  });
+}
+function getNextOrderItemsItemKey(list){
+  const keys=[...list.querySelectorAll('[data-order-items-item-block]')].map(block=>Number((block.getAttribute('data-order-items-item-key')||'').replace('order-items-item-',''))||0);
+  return 'order-items-item-'+((keys.length?Math.max(...keys):0)+1);
+}
+function addOrderItemsItem(list){
+  if(!list)return;
+  const index=list.querySelectorAll('[data-order-items-item-block]').length;
+  list.insertAdjacentHTML('beforeend',renderOrderItemsItemBlock(index,ORDER_ITEMS_DEFAULT_ITEM,getOrderItemsDefaultScheduleRows(),getNextOrderItemsItemKey(list)));
+  renumberOrderItemsBlocks(list);
+  syncOrderItemsDateDisplays();
+}
+function closeOrderItemModelLookups(){
+  document.querySelectorAll('[data-order-items-model-lookup]').forEach(shell=>shell.classList.remove('is-open'));
+}
+function syncOrderItemModelLookup(input,shouldForceMenu){
+  const shell=input.closest('[data-order-items-model-lookup]');
+  if(!shell)return;
+  const menu=shell.querySelector('[data-order-items-model-menu]');
+  const productField=document.getElementById(input.getAttribute('data-product-target')||'');
+  const route=getSelectedOrderRoute();
+  const value=(input.value||'').trim();
+  const exactMatch=getMasterModelRecord(route,value);
+  if(productField){
+    productField.value=exactMatch?exactMatch.description:'';
+  }
+  const canSearch=value.length>=3;
+  const matches=canSearch?getMasterModelOptions(route).filter(record=>record.modelNo.toLowerCase().includes(value.toLowerCase())).slice(0,6):[];
+  if(menu){
+    menu.innerHTML=matches.length
+      ? matches.map(record=>'<button type="button" class="order-items-model-option" data-model-option="'+escapeHtml(record.modelNo)+'" data-model-description="'+escapeHtml(record.description)+'"><span class="order-items-model-option-id">'+escapeHtml(record.modelNo)+'</span><span class="order-items-model-option-copy">Reports &amp; Master Data · Master Model List</span></button>').join('')
+      : '<div class="order-items-model-lookup-note">Matching Model No options start after the first 3 typed characters.</div>';
+  }
+  shell.classList.toggle('is-open',Boolean(shouldForceMenu&&canSearch));
+}
+function renderOrderItemsCreateSurfaceLegacy(){
+  const route=getSelectedOrderRoute();
+  const summaryCustomer=getBuyerMasterCustomerRecord(route,route==='Overseas'?'NorthBay Retail Group':'Atlas Distribution Sdn. Bhd.');
+  const itemCards=route==='Overseas'
+    ? [
+        {key:'item-01',title:'Order Item 001',type:'Insert Order',quantity:'420',model:'NBR-US200W-C10',description:'200W Solar LED Street Light, export carton build',promise:'2026-05-28',request:'2026-05-31',customerPart:'CUS-US-200W-11'},
+        {key:'item-02',title:'Order Item 002',type:'Top Urgent',quantity:'160',model:'NBR-US120W-D06',description:'120W Solar LED Street Light, mixed export replenishment',promise:'2026-06-02',request:'2026-06-04',customerPart:'CUS-US-120W-19'}
+      ]
+    : [
+        {key:'item-01',title:'Order Item 001',type:'Repeat Build',quantity:'900',model:'NBR-SL100W-A01',description:'100W Solar LED Street Light, local release pack',promise:'2026-05-11',request:'2026-05-15',customerPart:'CUS-MY-100W-03'},
+        {key:'item-02',title:'Order Item 002',type:'Sample',quantity:'120',model:'NBR-ACC-KIT04',description:'Mounting accessory kit for mixed wattage order items',promise:'2026-05-18',request:'2026-05-21',customerPart:'CUS-MY-KIT-22'}
+      ];
+  const renderDateField=(fieldId,value)=>'<div class="order-items-date-field"><input id="'+fieldId+'-display" class="input-line order-items-date-display" type="text" value="'+escapeHtml(formatSlashDate(value))+'" readonly /><input id="'+fieldId+'" class="input-line date-line order-items-date-native" type="date" value="'+escapeHtml(value)+'" data-order-items-date-native="true" data-display-target="'+fieldId+'-display" /></div>';
+  return '<div class="order-items-create-shell">'+
+    '<div class="create-form-head">'+
+      '<div class="create-form-title">Create / Add Order Items</div>'+
+      '<div class="create-form-tools">'+
+        '<details class="master-data-menu"><summary class="master-data-toggle">MASTER DATA</summary><div class="master-data-panel"><button type="button" class="master-data-option">Master Model List</button><button type="button" class="master-data-option">Buyer Master</button></div></details>'+
+        '<div class="create-form-actions"><button type="button" class="btn emphasis"><span class="btn-icon" aria-hidden="true"></span>Undo</button><button type="button" class="btn primary"><span class="btn-icon" aria-hidden="true"></span>Save</button></div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="create-sheet"><div class="create-sheet-inner"><div class="order-items-create-stack">'+
+      '<div class="order-items-create-summary">'+
+        '<div class="order-items-create-summary-item"><div class="order-items-create-summary-label">Order Route</div><div class="order-items-create-summary-value">'+route+'</div></div>'+
+        '<div class="order-items-create-summary-item"><div class="order-items-create-summary-label">Customer</div><div class="order-items-create-summary-value">'+escapeHtml(summaryCustomer.customerCompanyName)+'</div></div>'+
+        '<div class="order-items-create-summary-item"><div class="order-items-create-summary-label">Customer Code</div><div class="order-items-create-summary-value">'+escapeHtml(summaryCustomer.customerCode)+'</div></div>'+
+      '</div>'+
+      '<div class="order-items-create-items">'+itemCards.map(item=>{
+        return '<div class="order-items-card"><div class="order-items-card-head"><div class="order-items-card-title">'+item.title+'</div><div class="order-items-card-copy">Use Order Item terminology consistently and keep the page in the same calm create/add family.</div></div><div class="order-items-card-grid">'+
+          '<div class="create-row"><label class="create-label" for="'+item.key+'-type">Order Item Type</label><div class="create-field-wrap"><select id="'+item.key+'-type" class="select-line">'+renderSelectOptions(['New Build','Repeat Build','Accessory Bundle','Sample','Insert Order','Top Urgent'],item.type)+'</select></div></div>'+
+          '<div class="create-row"><label class="create-label" for="'+item.key+'-qty">Order Qty</label><div class="create-field-wrap"><input id="'+item.key+'-qty" class="input-line" type="text" value="'+escapeHtml(item.quantity)+'" /></div></div>'+
+          '<div class="create-row"><label class="create-label" for="'+item.key+'-model">Model No</label><div class="create-field-wrap"><div class="order-items-model-lookup" data-order-items-model-lookup><input id="'+item.key+'-model" class="input-line" type="text" value="'+escapeHtml(item.model)+'" data-order-items-model-input="true" data-product-target="'+item.key+'-description" autocomplete="off" /><div class="order-items-model-lookup-menu" data-order-items-model-menu="true"></div></div><div class="order-items-model-lookup-note">Source: Reports &amp; Master Data · Master Model List. Matching Model No options start after the first 3 typed characters.</div></div></div>'+
+          '<div class="create-row"><label class="create-label" for="'+item.key+'-customer-part">Customer Part No.</label><div class="create-field-wrap"><input id="'+item.key+'-customer-part" class="input-line" type="text" value="'+escapeHtml(item.customerPart)+'" /></div></div>'+
+          '<div class="create-row"><label class="create-label" for="'+item.key+'-description">Product Description</label><div class="create-field-wrap"><input id="'+item.key+'-description" class="input-line auto-fill-line" type="text" value="'+escapeHtml(item.description)+'" readonly /></div></div>'+
+          '<div class="create-row"><label class="create-label" for="'+item.key+'-request">Customer Request Date</label><div class="create-field-wrap">'+renderDateField(item.key+'-request',item.request)+'</div></div>'+
+          '<div class="create-row"><label class="create-label" for="'+item.key+'-promise">Planned Ship Date</label><div class="create-field-wrap">'+renderDateField(item.key+'-promise',item.promise)+'</div></div>'+
+          '<div class="create-row"><label class="create-label" for="'+item.key+'-batch">Batch Plan</label><div class="create-field-wrap"><select id="'+item.key+'-batch" class="select-line">'+renderSelectOptions(route==='Overseas'?['Export split release','Full container release','Air-first recovery batch']:['Full delivery','Delivery Batch 1 of 2','Delivery Batch 1 of 3'],'Full delivery')+'</select></div></div>'+
+        '</div></div>';
+      }).join('')+
+      '</div>'+
+      '<div class="order-items-card"><div class="order-items-card-head"><div class="order-items-card-title">Remarks / Notes</div><div class="order-items-card-copy">Mock-only note surface. No persistence or validation workflow is added here.</div></div><div class="order-items-card-grid order-items-card-grid--full"><div class="create-row"><label class="create-label" for="order-items-notes">Planner Note</label><div class="create-field-wrap"><textarea id="order-items-notes" class="textarea-line">'+escapeHtml(route==='Overseas'?'Export packing sequence must stay aligned with booking advice and document release.':'Local dispatch should hold until customer receiving slot is reconfirmed.')+'</textarea></div></div></div></div>'+
+    '</div></div></div>'+
+  '</div>';
+}
+function renderOrderItemsCreateSurface(){
+  return '<div class="order-items-create-shell">'+
+    '<div class="create-form-head">'+
+      '<div class="create-form-title">Create / Add Order Items</div>'+
+      '<div class="create-form-tools">'+
+        '<details class="master-data-menu"><summary class="master-data-toggle">MASTER DATA</summary><div class="master-data-panel"><button type="button" class="master-data-option">Master Model List</button><button type="button" class="master-data-option">Buyer Master</button></div></details>'+
+        '<div class="create-form-actions"><button type="button" class="btn emphasis"><span class="btn-icon" aria-hidden="true"></span>Undo</button><button type="button" class="btn primary"><span class="btn-icon" aria-hidden="true"></span>Save</button></div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="create-sheet"><div class="create-sheet-inner"><div class="order-items-create-stack">'+
+      '<div class="order-items-control-bar"><button type="button" class="btn emphasis order-items-add-item" data-order-items-add-item="true">+ Add Order Item</button></div>'+
+      '<div class="order-items-create-items" data-order-items-list="true">'+
+        renderOrderItemsItemBlock(0,ORDER_ITEMS_DEFAULT_ITEM,getOrderItemsDefaultScheduleRows(),'order-items-item-1')+
+      '</div>'+
+    '</div></div></div>'+
+  '</div>';
+}
+function renderShippingDetailCreateSurface(){
+  const renderShippingDateField=(fieldId,value,label)=>'<div class="order-items-date-field"><input id="'+fieldId+'-display" class="input-line order-items-date-display" type="text" value="'+escapeHtml(formatSlashDate(value))+'" readonly data-create-date-open="'+fieldId+'" aria-label="'+escapeHtml(label)+' display" /><input id="'+fieldId+'" class="input-line date-line order-items-date-native" type="date" value="'+escapeHtml(value)+'" data-order-items-date-native="true" data-display-target="'+fieldId+'-display" aria-label="'+escapeHtml(label)+' calendar" /><button type="button" class="create-date-picker" aria-label="Open '+escapeHtml(label)+' calendar" data-create-date-open="'+fieldId+'"></button></div>';
+  return '<div class="shipping-detail-create-shell">'+
+    '<div class="create-form-head">'+
+      '<div class="create-form-title">Create / Add Shipping Detail</div>'+
+      '<div class="create-form-tools">'+
+        '<details class="master-data-menu"><summary class="master-data-toggle">Master Data</summary><div class="master-data-panel"><button type="button" class="master-data-option">Shipping Detail mock placeholder</button></div></details>'+
+        '<div class="create-form-actions"><button type="button" class="btn emphasis"><span class="btn-icon" aria-hidden="true"></span>Undo</button><button type="button" class="btn primary"><span class="btn-icon" aria-hidden="true"></span>Save</button></div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="create-sheet"><div class="create-sheet-inner"><div class="shipping-detail-create-stack">'+
+      '<div class="shipping-detail-section-card"><div class="shipping-detail-section-head"><div class="shipping-detail-section-title">Delivery Basics</div><div class="shipping-detail-section-copy">Mock-stage delivery header only, prepared for later field review without route logic or validation.</div></div><div class="shipping-detail-form-grid">'+
+        '<div class="create-row"><label class="create-label" for="shipping-detail-method">Delivery Method</label><div class="create-field-wrap"><select id="shipping-detail-method" class="select-line">'+renderSelectOptions(['Customer delivery arrangement','Factory delivery arrangement','Customer self-collection','To be confirmed'],'Customer delivery arrangement')+'</select></div></div>'+
+        '<div class="create-row"><label class="create-label" for="shipping-detail-date">Target Ship Date</label><div class="create-field-wrap">'+renderShippingDateField('shipping-detail-date','2026-05-22','Target Ship Date')+'</div></div>'+
+        '<div class="create-row shipping-detail-row-span"><label class="create-label" for="shipping-detail-address">Delivery Address</label><div class="create-field-wrap"><textarea id="shipping-detail-address" class="textarea-line" rows="3">Placeholder delivery address for mock-stage layout review.</textarea></div></div>'+
+        '<div class="create-row"><label class="create-label" for="shipping-detail-window-from">Delivery Time Window From</label><div class="create-field-wrap">'+renderShippingDateField('shipping-detail-window-from','2026-05-22','Delivery Time Window From')+'</div></div>'+
+        '<div class="create-row"><label class="create-label" for="shipping-detail-window-to">Delivery Time Window To</label><div class="create-field-wrap">'+renderShippingDateField('shipping-detail-window-to','2026-05-24','Delivery Time Window To')+'</div></div>'+
+        '<div class="create-row"><label class="create-label" for="shipping-detail-priority">Delivery Priority</label><div class="create-field-wrap"><select id="shipping-detail-priority" class="select-line">'+renderSelectOptions(['Normal','Urgent','Hold until confirmed','Customer priority review'],'Normal')+'</select></div></div>'+
+      '</div></div>'+
+      '<div class="shipping-detail-section-card"><div class="shipping-detail-section-head"><div class="shipping-detail-section-title">Ship-To / Consignee Info</div><div class="shipping-detail-section-copy">Simple consignee placeholders only; no buyer-master dependency or identity rule is added here.</div></div><div class="shipping-detail-form-grid">'+
+        '<div class="create-row"><label class="create-label" for="shipping-detail-consignee">Consignee Name</label><div class="create-field-wrap"><input id="shipping-detail-consignee" class="input-line" type="text" value="Demo consignee name" /></div></div>'+
+        '<div class="create-row"><label class="create-label" for="shipping-detail-contact">Contact Person</label><div class="create-field-wrap"><input id="shipping-detail-contact" class="input-line" type="text" value="Demo receiving contact" /></div></div>'+
+        '<div class="create-row"><label class="create-label" for="shipping-detail-phone">Contact No.</label><div class="create-field-wrap"><input id="shipping-detail-phone" class="input-line" type="text" value="Mock phone placeholder" /></div></div>'+
+        '<div class="create-row"><label class="create-label" for="shipping-detail-email">Email</label><div class="create-field-wrap"><input id="shipping-detail-email" class="input-line" type="text" value="shipping.demo@example.com" /></div></div>'+
+        '<div class="create-row"><label class="create-label" for="shipping-detail-country">Country</label><div class="create-field-wrap"><select id="shipping-detail-country" class="select-line">'+renderSelectOptions(['Malaysia','Singapore','Thailand','Vietnam','Australia'],'Malaysia')+'</select></div></div>'+
+        '<div class="create-row"><label class="create-label" for="shipping-detail-state">State / Province</label><div class="create-field-wrap"><select id="shipping-detail-state" class="select-line">'+renderSelectOptions(['Selangor','Penang','Johor','Bangkok','New South Wales'],'Selangor')+'</select></div></div>'+
+        '<div class="create-row"><label class="create-label" for="shipping-detail-city">City</label><div class="create-field-wrap"><select id="shipping-detail-city" class="select-line">'+renderSelectOptions(['Klang','Shah Alam','Butterworth','Singapore','Sydney'],'Klang')+'</select></div></div>'+
+        '<div class="create-row"><label class="create-label" for="shipping-detail-postal">Postal Code</label><div class="create-field-wrap"><input id="shipping-detail-postal" class="input-line" type="text" value="42000" /></div></div>'+
+      '</div></div>'+
+      '<div class="shipping-detail-section-card"><div class="shipping-detail-section-head"><div class="shipping-detail-section-title">Logistics Arrangement</div><div class="shipping-detail-section-copy">Skeleton logistics fields for screen review only; no booking, carrier, or cost behavior is implemented.</div></div><div class="shipping-detail-form-grid">'+
+        '<div class="create-row"><label class="create-label" for="shipping-detail-carrier">Carrier / Transporter</label><div class="create-field-wrap"><select id="shipping-detail-carrier" class="select-line">'+renderSelectOptions(['Demo logistics partner','Mock customer pickup','Sample forwarder option'],'Demo logistics partner')+'</select></div></div>'+
+        '<div class="create-row"><label class="create-label" for="shipping-detail-mode">Delivery Mode</label><div class="create-field-wrap"><select id="shipping-detail-mode" class="select-line">'+renderSelectOptions(['Road delivery','Sea freight placeholder','Air freight placeholder'],'Road delivery')+'</select></div></div>'+
+        '<div class="create-row"><label class="create-label" for="shipping-detail-vehicle">Vehicle Type</label><div class="create-field-wrap"><select id="shipping-detail-vehicle" class="select-line">'+renderSelectOptions(['Box truck','Lorry','Container truck','Customer vehicle'],'Box truck')+'</select></div></div>'+
+        '<div class="create-row"><label class="create-label" for="shipping-detail-freight">Freight Arrangement</label><div class="create-field-wrap"><select id="shipping-detail-freight" class="select-line">'+renderSelectOptions(['Buyer Paid','Seller Paid','Third Party','To Be Confirmed'],'To Be Confirmed')+'</select></div></div>'+
+        '<div class="create-row"><label class="create-label" for="shipping-detail-handling">Packing / Handling Requirement</label><div class="create-field-wrap"><select id="shipping-detail-handling" class="select-line">'+renderSelectOptions(['Standard handling','Fragile label required','Export carton handling','Palletized loading'],'Standard handling')+'</select></div></div>'+
+        '<!-- concept overlap with Delivery Time Window — to be resolved in field definition card -->'+
+        '<div class="create-row"><label class="create-label" for="shipping-detail-pickup">Pickup / Delivery Window</label><div class="create-field-wrap"><select id="shipping-detail-pickup" class="select-line">'+renderSelectOptions(['Morning window','Afternoon window','After slot confirmation','To be advised'],'After slot confirmation')+'</select></div></div>'+
+      '</div></div>'+
+      '<div class="shipping-detail-section-card"><div class="shipping-detail-section-head"><div class="shipping-detail-section-title">Shipping Remarks</div><div class="shipping-detail-section-copy">Free-form mock note area only, kept separate from operational approval or shipment truth.</div></div><div class="shipping-detail-form-grid">'+
+        '<div class="create-row shipping-detail-row-span"><label class="create-label" for="shipping-detail-internal-remark">Internal Shipping Remark</label><div class="create-field-wrap"><textarea id="shipping-detail-internal-remark" class="textarea-line" rows="3">Mock-stage internal shipping remark for later review.</textarea></div></div>'+
+        '<div class="create-row shipping-detail-row-span"><label class="create-label" for="shipping-detail-customer-note">Customer-Facing Shipping Note</label><div class="create-field-wrap"><textarea id="shipping-detail-customer-note" class="textarea-line" rows="3">Mock-stage customer-facing shipping note.</textarea></div></div>'+
+        '<div class="create-row shipping-detail-row-span"><label class="create-label" for="shipping-detail-special-note">Special Handling Note</label><div class="create-field-wrap"><textarea id="shipping-detail-special-note" class="textarea-line" rows="3">Mock-stage special handling note.</textarea></div></div>'+
+      '</div></div>'+
+    '</div></div></div>'+
+  '</div>';
+}
+function renderOrderSummaryStandardSurface(){
+  const summarySection=document.getElementById('summary');
+  if(!summarySection){
+    return renderMasterStagePlaceholder('Order Summary','Order Summary content is not available in the current mock DOM.');
+  }
+  const summarySheet=summarySection.querySelector('.summary-sheet');
+  const warning=summarySection.querySelector('#summary-overdue-warning');
+  return '<div class="section section-scroll">'+
+    (summarySheet?summarySheet.outerHTML:'')+
+    (warning?warning.outerHTML:'')+
+  '</div>';
+}
+function getSalesOrderRendererMap(){
+  const standardRenderer=sectionId=>()=>getSalesOrderSectionHtml(sectionId);
+  return {
+    create:{
+      summary:standardRenderer('summary'),
+      commercial:renderCommercialCreateSurface,
+      items:renderOrderItemsCreateSurface,
+      risk:null,
+      procurement:null,
+      delivery:renderShippingDetailCreateSurface,
+      log:null
+    },
+    search:{
+      summary:null,
+      commercial:null,
+      items:null,
+      risk:null,
+      procurement:null,
+      delivery:null,
+      log:null
+    },
+    edit:{
+      summary:renderOrderSummaryStandardSurface,
+      commercial:standardRenderer('commercial'),
+      items:standardRenderer('items'),
+      risk:standardRenderer('risk'),
+      procurement:standardRenderer('procurement'),
+      delivery:standardRenderer('delivery'),
+      log:standardRenderer('log')
+    },
+    delete:{
+      summary:renderOrderSummaryStandardSurface,
+      commercial:standardRenderer('commercial'),
+      items:standardRenderer('items'),
+      risk:standardRenderer('risk'),
+      procurement:standardRenderer('procurement'),
+      delivery:standardRenderer('delivery'),
+      log:standardRenderer('log')
+    }
+  };
+}
+function renderSalesOrderContentPanelBody(selectedItem,actionMeta,moduleMeta){
+  if(!selectedItem||!actionMeta){
+    return renderMasterStagePlaceholder('Choose an action first','Select both the action and the Sales &amp; Orders sub-module before the center panel resolves.');
+  }
+  const rendererMap=getSalesOrderRendererMap();
+  const actionRendererGroup=rendererMap[currentAction]||null;
+  const renderer=actionRendererGroup?actionRendererGroup[selectedItem.id]||null:null;
+  if(currentAction==='search'){
+    return renderSalesOrderSearchPlaceholder(selectedItem);
+  }
+  if(currentAction==='create'){
+    return renderer?renderer():renderSalesOrderCreatePlaceholder(selectedItem);
+  }
+  if(renderer){
+    return renderer();
+  }
+  return renderMasterStagePlaceholder(
+    moduleMeta.label+' · '+selectedItem.label,
+    actionMeta.label+' is selected, but this Sales &amp; Orders sub-module does not yet have a dedicated renderer on this path.'
+  );
 }
 function getGenericWorkspaceGuide(moduleId){
   const moduleMeta=MODULE_CONFIG[moduleId];
@@ -1262,8 +2068,8 @@ function renderGenericWorkspaceStage(moduleId){
   if(actionMeta&&selectedItem){
     if(moduleId==='sales-orders'){
       mainContent='<div class="master-stage-panel master-stage-content-panel">'+
-        '<div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Center Panel</div><div class="master-stage-panel-title">'+moduleMeta.label+' · '+selectedItem.label+'</div><div class="master-stage-panel-copy">'+actionMeta.label+' is now paired with the real Sales Order sub-module '+selectedItem.label+'.</div></div>'+
-        '<div class="master-stage-panel-body">'+getSalesOrderSectionHtml(selectedItem.id)+'</div>'+
+        '<div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Center Panel</div><div class="master-stage-panel-title">'+selectedItem.label+'</div><div class="master-stage-panel-copy">'+actionMeta.label+' is now paired with the real Sales Order sub-module '+selectedItem.label+'.</div></div>'+
+        '<div class="master-stage-panel-body"><div class="master-stage-work-scroll">'+renderSalesOrderContentPanelBody(selectedItem,actionMeta,moduleMeta)+'</div></div>'+
       '</div>';
     } else {
       mainContent='<div class="master-stage-panel master-stage-content-panel">'+
@@ -1289,6 +2095,18 @@ function renderGenericWorkspaceStage(moduleId){
       '<div class="master-stage-column"><div class="master-stage-panel"><div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Column 2</div><div class="master-stage-panel-title">'+workspaceConfig.selectorTitle+'</div><div class="master-stage-panel-copy">'+workspaceConfig.selectorCopy+'</div></div><div class="master-stage-panel-body"><div class="master-stage-master-list">'+selectorButtons+'</div></div></div></div>'+
       '<div class="master-stage-column">'+mainContent+'</div>'+
     '</div>';
+    if(currentAction==='create'&&selectedItem&&selectedItem.id==='summary'){
+      renderSalesPersonDropdownOptions('');
+      syncBuyerSelectionForCompany({resetSelection:true});
+      syncCreateCompanyFields();
+      syncCreateRouteLocationFields();
+      syncSalesPersonMasterFields();
+      syncCreateDateDisplays(getActiveCreateSummaryRoot());
+      syncCreateSalesOrderNo();
+      syncOrderType();
+      syncSummaryWarning();
+      syncRouteField();
+    }
     stage.classList.remove('hidden');
     return;
   }
@@ -1458,27 +2276,49 @@ function syncMockDropdownValue(dropdownId,selectId,value){
   }
 }
 function syncBuyerMasterFields(){
-  const buyerSelect=document.getElementById('create-buyer-select');
-  const buyerContact=document.getElementById('create-buyer-contact');
-  const buyerEmail=document.getElementById('create-buyer-email');
+  const root=getActiveCreateSummaryRoot();
+  const buyerSelect=getCreateSummaryField('create-buyer-select',root);
+  const buyerContact=getCreateSummaryField('create-buyer-contact',root);
+  const buyerEmail=getCreateSummaryField('create-buyer-email',root);
   if(!buyerSelect||!buyerContact||!buyerEmail)return;
   const record=getBuyerMasterRecord(buyerSelect.value);
   buyerContact.value=record?record.contact:'';
   buyerEmail.value=record?record.email:'';
 }
+function syncBuyerSelectionForCompany(options){
+  const config=options||{};
+  const shouldReset=Boolean(config.resetSelection);
+  const root=getActiveCreateSummaryRoot();
+  const buyerSelect=getCreateSummaryField('create-buyer-select',root);
+  const selectedValue=shouldReset?'':(buyerSelect?buyerSelect.value:'');
+  renderBuyerDropdownOptions(selectedValue);
+  syncBuyerMasterFields();
+}
+function syncCreateCompanyFields(){
+  const root=getActiveCreateSummaryRoot();
+  const customerSelect=getCreateSummaryField('create-customer-input',root);
+  const companyCode=getCreateSummaryField('create-company-code',root);
+  if(!customerSelect||!companyCode)return;
+  const record=getBuyerMasterCustomerRecord(getSelectedOrderRoute(),customerSelect.value);
+  companyCode.value=record?record.customerCode:'';
+}
 function syncSalesPersonMasterFields(){
-  const salespersonSelect=document.getElementById('create-salesperson-select');
-  const salesContact=document.getElementById('create-sales-contact');
-  const salesEmail=document.getElementById('create-sales-email');
+  const root=getActiveCreateSummaryRoot();
+  const salespersonSelect=getCreateSummaryField('create-salesperson-select',root);
+  const salesContact=getCreateSummaryField('create-sales-contact',root);
+  const salesEmail=getCreateSummaryField('create-sales-email',root);
   if(!salespersonSelect||!salesContact||!salesEmail)return;
   const record=getSalesPersonMasterRecord(salespersonSelect.value);
   salesContact.value=record?record.contact:'';
   salesEmail.value=record?record.email:'';
 }
 function getCreateSalesOrderNo(){
-  const entryDateInput=document.getElementById('create-order-entry-date');
+  const entryDateInput=getCreateSummaryField('create-order-entry-date');
   const rawValue=(entryDateInput&&entryDateInput.value?entryDateInput.value:SALES_ORDER_CREATE_DEFAULT_DATE).trim();
-  const normalized=/^\d{4}-\d{2}-\d{2}$/.test(rawValue)?rawValue.replace(/-/g,''):SALES_ORDER_CREATE_DEFAULT_DATE.replace(/-/g,'');
+  const parsedDate=parseCreateUiDate(rawValue);
+  const normalized=parsedDate
+    ? String(parsedDate.getUTCFullYear())+String(parsedDate.getUTCMonth()+1).padStart(2,'0')+String(parsedDate.getUTCDate()).padStart(2,'0')
+    : SALES_ORDER_CREATE_DEFAULT_DATE.replace(/-/g,'');
   return 'SO-'+normalized+'-'+SALES_ORDER_CREATE_RUNNING_NO;
 }
 function syncCreateSalesOrderNo(){
@@ -1492,7 +2332,37 @@ function syncCreateSalesOrderNo(){
     if(titleOrderNo)titleOrderNo.textContent=nextOrderNo;
   }
 }
+function syncCreateRouteLocationFields(){
+  const root=getActiveCreateSummaryRoot();
+  const route=(document.getElementById('type-select')?.value||'Local').trim();
+  const stateField=getCreateSummaryField('create-location-state',root);
+  const districtField=getCreateSummaryField('create-location-district',root);
+  const cityField=getCreateSummaryField('create-location-city',root);
+  const countryField=getCreateSummaryField('create-country-ship',root);
+  const stateRow=getCreateSummaryField('create-location-state-row',root);
+  const districtRow=getCreateSummaryField('create-location-district-row',root);
+  const cityRow=getCreateSummaryField('create-location-city-row',root);
+  const countryRow=getCreateSummaryField('create-country-ship-row',root);
+  const isOverseas=route==='Overseas';
+
+  [stateRow,districtRow,cityRow].forEach(row=>{
+    if(row)row.classList.toggle('hidden',isOverseas);
+  });
+  if(countryRow)countryRow.classList.toggle('hidden',!isOverseas);
+
+  if(isOverseas){
+    if(stateField)stateField.value='';
+    if(districtField)districtField.value='';
+    if(cityField)cityField.value='';
+    if(countryField&&!countryField.value){
+      countryField.value='Singapore';
+    }
+  } else if(countryField){
+    countryField.value='';
+  }
+}
 function getCreateFormState(){
+  const root=getActiveCreateSummaryRoot();
   const fields=[
     'create-customer-input',
     'create-buyer-select',
@@ -1502,35 +2372,49 @@ function getCreateFormState(){
     'create-customer-po-input',
     'create-order-entry-date',
     'create-customer-required-date',
-    'create-overall-commit-date'
+    'create-overall-commit-date',
+    'create-country-ship',
+    'create-location-state',
+    'create-location-district',
+    'create-location-city'
   ];
   const state={orderType:'',route:''};
   fields.forEach(id=>{
-    const node=document.getElementById(id);
+    const node=getCreateSummaryField(id,root);
     state[id]=node?node.value:'';
   });
-  const orderTypeSelect=document.getElementById('order-type-select');
+  const orderTypeSelect=getCreateSummaryField('order-type-select',root);
   const routeSelect=document.getElementById('type-select');
   state.orderType=orderTypeSelect?orderTypeSelect.value:'';
   state.route=routeSelect?routeSelect.value:'';
   return state;
 }
 function applyCreateFormState(state){
+  const root=getActiveCreateSummaryRoot();
   if(!state)return;
   Object.entries(state).forEach(([key,value])=>{
     if(key==='orderType'||key==='route')return;
-    const node=document.getElementById(key);
+    if(key==='create-buyer-select')return;
+    const node=getCreateSummaryField(key,root);
     if(node)node.value=value;
   });
+  syncBuyerSelectionForCompany({resetSelection:false});
   if(Object.prototype.hasOwnProperty.call(state,'create-buyer-select')){
-    syncMockDropdownValue('create-buyer-dropdown','create-buyer-select',state['create-buyer-select']);
+    const buyerSelect=getCreateSummaryField('create-buyer-select',root);
+    if(buyerSelect){
+      buyerSelect.value=state['create-buyer-select'];
+    }
   }
   syncBuyerMasterFields();
+  syncCreateCompanyFields();
   if(Object.prototype.hasOwnProperty.call(state,'create-salesperson-select')){
-    syncMockDropdownValue('create-salesperson-dropdown','create-salesperson-select',state['create-salesperson-select']);
+    const salespersonSelect=getCreateSummaryField('create-salesperson-select',root);
+    if(salespersonSelect){
+      salespersonSelect.value=state['create-salesperson-select'];
+    }
   }
   syncSalesPersonMasterFields();
-  const orderTypeSelect=document.getElementById('order-type-select');
+  const orderTypeSelect=getCreateSummaryField('order-type-select',root);
   if(orderTypeSelect&&state.orderType){
     orderTypeSelect.value=state.orderType;
   }
@@ -1540,6 +2424,13 @@ function applyCreateFormState(state){
     routeSelect.value=state.route;
   }
   syncType();
+  if(Object.prototype.hasOwnProperty.call(state,'create-country-ship')){
+    const countryField=getCreateSummaryField('create-country-ship',root);
+    if(countryField){
+      countryField.value=state['create-country-ship'];
+    }
+  }
+  syncCreateRouteLocationFields();
   syncCreateSalesOrderNo();
   syncSummaryWarning();
   syncCreateFormActions();
@@ -1553,13 +2444,15 @@ function syncCreateFormActions(){
   const createSaveButton=document.getElementById('create-save-button');
   const isCreate=currentAction==='create';
   const isDirty=isCreate&&isCreateFormDirty();
+  const dateValidation=syncCreateDateValidation();
   if(createUndoButton){
     createUndoButton.disabled=!isDirty;
     createUndoButton.setAttribute('aria-disabled',isDirty?'false':'true');
   }
   if(createSaveButton){
-    createSaveButton.disabled=!isCreate;
-    createSaveButton.setAttribute('aria-disabled',isCreate?'false':'true');
+    const canSave=isCreate&&!dateValidation.hasHardError;
+    createSaveButton.disabled=!canSave;
+    createSaveButton.setAttribute('aria-disabled',canSave?'false':'true');
   }
 }
 function showSection(){
@@ -1616,6 +2509,10 @@ function syncModuleEntry(){
   if(flowTitle)flowTitle.textContent=moduleMeta.label+' workspace';
   if(flowBody)flowBody.innerHTML='<strong>Selected module:</strong> '+moduleMeta.label+'<br><strong>Pattern:</strong> action first, then target surface, then continue in the center panel using the approved Sales &amp; Orders workspace shell.';
   document.querySelectorAll('.section-pane').forEach(el=>el.classList.add('hidden'));
+  if(currentModule==='sales-orders'&&!currentWorkspaceArea){
+    const sectionSelect=document.getElementById('section-select');
+    currentWorkspaceArea=sectionSelect&&sectionSelect.value?sectionSelect.value:'summary';
+  }
 
   if(currentModule==='reports-master-data'){
     renderMasterStage();
@@ -1649,6 +2546,9 @@ function applyInitialStateFromQuery(){
   }
   if(sectionSelect&&sectionParam&&[...sectionSelect.options].some(option=>option.value===sectionParam)){
     sectionSelect.value=sectionParam;
+    if(currentModule==='sales-orders'){
+      currentWorkspaceArea=sectionParam;
+    }
   }
   if(typeSelect&&(routeParam==='Local'||routeParam==='Overseas')){
     typeSelect.value=routeParam;
@@ -1685,6 +2585,7 @@ function setupActionSelector(){
 function syncMasterSourceConsumers(){
   renderCreateMasterDropdowns();
   syncBuyerMasterFields();
+  syncCreateCompanyFields();
   syncSalesPersonMasterFields();
   if(currentModule==='sales-orders'&&currentAction==='create'){
     createFormSnapshot=getCreateFormState();
@@ -1700,9 +2601,115 @@ function setupMasterStageInteractions(){
       if(!state)return;
       state.query=event.target.value;
       renderMasterStage();
+      return;
+    }
+    if(event.target.matches('[data-create-date-native]')){
+      syncCreateDateDisplays(getActiveCreateSummaryRoot());
+    }
+    if(event.target.matches('#create-order-entry-date')){
+      syncCreateSalesOrderNo();
+      syncCreateFormActions();
+      return;
+    }
+    if(event.target.matches('#create-customer-required-date,#create-overall-commit-date')){
+      syncSummaryWarning();
+      syncCreateFormActions();
+      return;
+    }
+    if(event.target.matches('[data-order-items-model-input]')){
+      syncOrderItemModelLookup(event.target,true);
+    }
+  });
+  stage.addEventListener('change',event=>{
+    if(event.target.matches('[data-create-date-native]')){
+      syncCreateDateDisplays(getActiveCreateSummaryRoot());
+    }
+    if(event.target.matches('#create-customer-input')){
+      syncCreateCompanyFields();
+      syncBuyerSelectionForCompany({resetSelection:true});
+      syncCreateFormActions();
+      return;
+    }
+    if(event.target.matches('#create-buyer-select')){
+      syncBuyerMasterFields();
+      syncCreateFormActions();
+      return;
+    }
+    if(event.target.matches('#create-salesperson-select')){
+      syncSalesPersonMasterFields();
+      syncCreateFormActions();
+      return;
+    }
+    if(event.target.matches('#order-type-select')){
+      syncOrderType();
+      syncCreateFormActions();
+      return;
+    }
+    if(event.target.matches('#commercial-create-customer')){
+      const customerRecord=getBuyerMasterCustomerRecord(getSelectedOrderRoute(),event.target.value);
+      const codeField=document.getElementById('commercial-create-customer-code');
+      if(codeField)codeField.value=customerRecord.customerCode||'';
+      return;
+    }
+    if(event.target.matches('[data-order-items-date-native]')){
+      syncOrderItemsDateDisplays();
+      return;
+    }
+    if(event.target.matches('[data-order-items-model-input]')){
+      syncOrderItemModelLookup(event.target,false);
     }
   });
   stage.addEventListener('click',event=>{
+    const createDateTrigger=event.target.closest('[data-create-date-open]');
+    if(createDateTrigger){
+      openCreateDatePicker(createDateTrigger.getAttribute('data-create-date-open')||'');
+      return;
+    }
+    const addOrderItemButton=event.target.closest('[data-order-items-add-item]');
+    if(addOrderItemButton){
+      const shell=addOrderItemButton.closest('.order-items-create-shell');
+      const list=shell?shell.querySelector('[data-order-items-list]'):null;
+      addOrderItemsItem(list);
+      return;
+    }
+    const removeOrderItemButton=event.target.closest('[data-order-items-remove-item]');
+    if(removeOrderItemButton){
+      const block=removeOrderItemButton.closest('[data-order-items-item-block]');
+      const list=block?block.closest('[data-order-items-list]'):null;
+      if(block)block.remove();
+      if(list)renumberOrderItemsBlocks(list);
+      return;
+    }
+    const addWaiverButton=event.target.closest('[data-order-items-add-waiver]');
+    if(addWaiverButton){
+      const card=addWaiverButton.closest('.order-items-waiver-card');
+      const list=card?card.querySelector('[data-order-items-waiver-list]'):null;
+      addOrderItemsWaiverRow(list);
+      return;
+    }
+    const removeWaiverButton=event.target.closest('[data-order-items-remove-waiver]');
+    if(removeWaiverButton){
+      const row=removeWaiverButton.closest('[data-order-items-waiver-row]');
+      const list=row?row.closest('[data-order-items-waiver-list]'):null;
+      if(row)row.remove();
+      if(list)renumberOrderItemsWaiverRows(list);
+      return;
+    }
+    const addShippingBatchButton=event.target.closest('[data-order-items-add-batch]');
+    if(addShippingBatchButton){
+      const card=addShippingBatchButton.closest('.order-items-card');
+      const tbody=card?card.querySelector('[data-order-items-schedule-body]'):null;
+      addOrderItemsShippingBatch(tbody);
+      return;
+    }
+    const removeShippingBatchButton=event.target.closest('[data-order-items-remove-batch]');
+    if(removeShippingBatchButton){
+      const row=removeShippingBatchButton.closest('[data-order-items-shipping-row]');
+      const tbody=row?row.closest('[data-order-items-schedule-body]'):null;
+      if(row)row.remove();
+      if(tbody)renumberOrderItemsShippingRows(tbody);
+      return;
+    }
     const actionButton=event.target.closest('[data-stage-action]');
     if(actionButton){
       currentAction=actionButton.getAttribute('data-stage-action')||'';
@@ -1715,7 +2722,12 @@ function setupMasterStageInteractions(){
         syncModuleEntry();
         return;
       }
-      setSelectedWorkspaceItemId(currentModule,workspaceButton.getAttribute('data-stage-workspace-item')||'');
+      const nextWorkspaceItemId=workspaceButton.getAttribute('data-stage-workspace-item')||'';
+      setSelectedWorkspaceItemId(currentModule,nextWorkspaceItemId);
+      const sectionSelect=document.getElementById('section-select');
+      if(sectionSelect&&[...sectionSelect.options].some(option=>option.value===nextWorkspaceItemId)){
+        sectionSelect.value=nextWorkspaceItemId;
+      }
       syncModuleEntry();
       return;
     }
@@ -1727,6 +2739,50 @@ function setupMasterStageInteractions(){
       }
       currentMasterModule=masterButton.getAttribute('data-stage-master-module')||'';
       syncModuleEntry();
+      return;
+    }
+    const commercialActionButton=event.target.closest('[data-commercial-create-action]');
+    if(commercialActionButton){
+      runCommercialCreateMockAction(commercialActionButton.getAttribute('data-commercial-create-action')||'');
+      return;
+    }
+    const routeButton=event.target.closest('[data-commercial-route-field]');
+    if(routeButton){
+      const hiddenSelect=document.getElementById('type-select');
+      if(hiddenSelect){
+        hiddenSelect.value=routeButton.getAttribute('data-route-value')||'Local';
+        syncType();
+        renderGenericWorkspaceStage('sales-orders');
+      }
+      return;
+    }
+    const createRouteButton=event.target.closest('.route-segment[data-route-field]');
+    if(createRouteButton){
+      const hiddenSelect=document.getElementById('type-select');
+      if(hiddenSelect){
+        hiddenSelect.value=createRouteButton.getAttribute('data-value')||'Local';
+        syncType();
+      }
+      syncCreateFormActions();
+      return;
+    }
+    const modelOption=event.target.closest('[data-model-option]');
+    if(modelOption){
+      const shell=modelOption.closest('[data-order-items-model-lookup]');
+      const input=shell?shell.querySelector('[data-order-items-model-input]'):null;
+      const productField=input?document.getElementById(input.getAttribute('data-product-target')||''):null;
+      if(input){
+        input.value=modelOption.getAttribute('data-model-option')||'';
+      }
+      if(productField){
+        productField.value=modelOption.getAttribute('data-model-description')||'';
+      }
+      closeOrderItemModelLookups();
+      return;
+    }
+    const modelInput=event.target.closest('[data-order-items-model-input]');
+    if(modelInput){
+      syncOrderItemModelLookup(modelInput,true);
       return;
     }
     const selectButton=event.target.closest('[data-master-select-id]');
@@ -1772,7 +2828,9 @@ function setupMasterStageInteractions(){
       state.selectedId=nextRecords[0]?.id||'';
       syncMasterSourceConsumers();
       renderMasterStage();
+      return;
     }
+    closeOrderItemModelLookups();
   });
 }
 function setupMockDropdown(dropdownId,selectId,labelId,onChange){
@@ -1922,14 +2980,17 @@ function syncSummaryWarning(){
   if(!requestDateCell||!commitDateCell||!warning||!text||!title)return;
 
   const isCreate=currentAction==='create';
+  if(isCreate){
+    syncCreateDateValidation();
+  }
   const requestDateText=isCreate&&createRequiredDate?createRequiredDate.value:(requestDateCell.dataset.date||requestDateCell.textContent.trim());
   const commitDateText=isCreate&&createCommitDate?createCommitDate.value:(commitDateCell.dataset.date||commitDateCell.textContent.trim());
-  const requestDate=isCreate?parseYmdDate(requestDateText):new Date(requestDateText+'T00:00:00');
-  const commitDate=isCreate?parseYmdDate(commitDateText):new Date(commitDateText+'T00:00:00');
+  const requestDate=isCreate?parseCreateUiDate(requestDateText):new Date(requestDateText+'T00:00:00');
+  const commitDate=isCreate?parseCreateUiDate(commitDateText):new Date(commitDateText+'T00:00:00');
   const isValidDates=!!requestDate&&!!commitDate&&!Number.isNaN(requestDate.getTime())&&!Number.isNaN(commitDate.getTime());
   const isLate=isValidDates&&commitDate>requestDate;
 
-  warning.classList.toggle('hidden',!isLate);
+  warning.classList.toggle('hidden',isCreate||!isLate);
   if(isLate){
     const msPerDay=24*60*60*1000;
     const lateDays=Math.round((commitDate-requestDate)/msPerDay);
@@ -1938,11 +2999,11 @@ function syncSummaryWarning(){
   }
 }
 function parseCreateDisplayDate(value){
-  const match=/^(\d{2})-(\d{2})-(\d{2})$/.exec((value||'').trim());
+  const match=/^(\d{2})\s*\/\s*(\d{2})\s*\/\s*(\d{4})$/.exec((value||'').trim());
   if(!match)return null;
   const day=Number(match[1]);
   const monthIndex=Number(match[2])-1;
-  const year=2000+Number(match[3]);
+  const year=Number(match[3]);
   const date=new Date(Date.UTC(year,monthIndex,day));
   return Number.isNaN(date.getTime()) ? null : date;
 }
@@ -1951,8 +3012,61 @@ function formatCreateDisplayDate(value){
   if(!date)return value;
   const day=String(date.getUTCDate()).padStart(2,'0');
   const month=String(date.getUTCMonth()+1).padStart(2,'0');
-  const year=String(date.getUTCFullYear()).slice(-2);
-  return day+'-'+month+'-'+year;
+  const year=String(date.getUTCFullYear());
+  return day+' / '+month+' / '+year;
+}
+function parseCreateUiDate(value){
+  return parseYmdDate(value)||parseCreateDisplayDate(value);
+}
+function syncCreateDateDisplays(root){
+  const scope=root||getActiveCreateSummaryRoot();
+  scope.querySelectorAll('[data-create-date-native]').forEach(input=>{
+    const targetId=input.getAttribute('data-display-target')||'';
+    const display=scope.querySelector('#'+targetId)||document.getElementById(targetId);
+    if(!display)return;
+    display.value=formatCreateDisplayDate(input.value);
+  });
+}
+function openCreateDatePicker(targetId){
+  const root=getActiveCreateSummaryRoot();
+  const input=getCreateSummaryField(targetId,root);
+  if(!input)return;
+  if(typeof input.showPicker==='function'){
+    input.showPicker();
+    return;
+  }
+  input.focus();
+  input.click();
+}
+function getCreateDateValidationState(){
+  const root=getActiveCreateSummaryRoot();
+  const entryDateInput=getCreateSummaryField('create-order-entry-date',root);
+  const requiredDateInput=getCreateSummaryField('create-customer-required-date',root);
+  const commitDateInput=getCreateSummaryField('create-overall-commit-date',root);
+  // Date-only comparison, time component ignored.
+  const entryDate=parseCreateUiDate(entryDateInput?.value||'');
+  const requiredDate=parseCreateUiDate(requiredDateInput?.value||'');
+  const commitDate=parseCreateUiDate(commitDateInput?.value||'');
+  const hasHardError=!!(entryDate&&requiredDate&&requiredDate<entryDate);
+  const hasSoftWarning=!!(requiredDate&&commitDate&&commitDate>requiredDate);
+  return {hasHardError,hasSoftWarning};
+}
+function syncCreateDateValidation(){
+  const root=getActiveCreateSummaryRoot();
+  const requiredError=getCreateSummaryField('create-required-date-error',root);
+  const commitWarning=getCreateSummaryField('create-commit-date-warning',root);
+  const bottomWarning=document.getElementById('summary-overdue-warning');
+  const state=getCreateDateValidationState();
+  if(requiredError){
+    requiredError.classList.toggle('hidden',!state.hasHardError);
+  }
+  if(commitWarning){
+    commitWarning.classList.toggle('hidden',!state.hasSoftWarning);
+  }
+  if(currentAction==='create'&&bottomWarning){
+    bottomWarning.classList.add('hidden');
+  }
+  return state;
 }
 function parseYmdDate(value){
   const match=/^(\d{4})-(\d{2})-(\d{2})$/.exec((value||'').trim());
@@ -2027,6 +3141,8 @@ function syncType(){
     button.classList.toggle('active',button.dataset.value===type);
   });
   syncRouteField();
+  syncCreateCompanyFields();
+  syncCreateRouteLocationFields();
 
   if(type==='Local'){
     typeBadge.textContent='Order Route · Local';
@@ -2050,6 +3166,9 @@ function syncType(){
     deliveryLocalRow.classList.add('hidden');
     commercialOverseas.classList.add('route-active-row');
     deliveryOverseasRow.classList.add('route-active-row');
+  }
+  if(currentModule==='sales-orders'&&currentAction&&document.body.getAttribute('data-master-stage')==='true'){
+    renderGenericWorkspaceStage('sales-orders');
   }
 }
 function setupRouteSegmented(){
@@ -2085,11 +3204,16 @@ function updateZoomNotice(){
   notice.setAttribute('aria-hidden',isRecommended?'true':'false');
 }
 function syncOrderType(){
-  const orderTypeSelect=document.getElementById('order-type-select');
+  const root=getActiveCreateSummaryRoot();
+  const orderTypeSelect=getCreateSummaryField('order-type-select',root);
   const orderTypeDisplay=document.getElementById('order-type-display');
+  const isAlertType=orderTypeSelect&&(orderTypeSelect.value==='Insert Order'||orderTypeSelect.value==='Top Urgent');
 
   if(orderTypeSelect&&orderTypeDisplay){
     orderTypeDisplay.textContent=orderTypeSelect.value;
+  }
+  if(orderTypeSelect){
+    orderTypeSelect.classList.toggle('order-type-alert',!!isAlertType);
   }
 }
 function syncRouteField(){
@@ -2111,6 +3235,17 @@ function setupCreateForm(){
   const routeSelect=document.getElementById('type-select');
   const createUndoButton=document.getElementById('create-undo-button');
   const createSaveButton=document.getElementById('create-save-button');
+  if(customerInput){
+    customerInput.addEventListener('change',()=>{
+      syncCreateCompanyFields();
+      syncBuyerSelectionForCompany({resetSelection:true});
+      syncCreateFormActions();
+    });
+  }
+  if(buyerSelect){
+    buyerSelect.addEventListener('input',syncBuyerMasterFields);
+    buyerSelect.addEventListener('change',syncBuyerMasterFields);
+  }
   [requiredDateInput,commitDateInput].forEach(input=>{
     if(!input)return;
     input.addEventListener('input',syncSummaryWarning);
@@ -2126,6 +3261,10 @@ function setupCreateForm(){
       syncCreateFormActions();
     });
   }
+  if(orderTypeSelect){
+    orderTypeSelect.addEventListener('input',syncOrderType);
+    orderTypeSelect.addEventListener('change',syncOrderType);
+  }
   const trackedCreateFields=[
     customerInput,
     buyerSelect,
@@ -2133,6 +3272,10 @@ function setupCreateForm(){
     salespersonSelect,
     document.getElementById('create-sales-others'),
     document.getElementById('create-customer-po-input'),
+    document.getElementById('create-location-state'),
+    document.getElementById('create-location-district'),
+    document.getElementById('create-location-city'),
+    document.getElementById('create-country-ship'),
     entryDateInput,
     requiredDateInput,
     commitDateInput,
@@ -2150,6 +3293,11 @@ function setupCreateForm(){
   }
   if(createSaveButton){
     createSaveButton.addEventListener('click',()=>{
+      if(getCreateDateValidationState().hasHardError){
+        syncCreateDateValidation();
+        syncCreateFormActions();
+        return;
+      }
       createFormSnapshot=getCreateFormState();
       syncCreateFormActions();
     });
@@ -2160,7 +3308,9 @@ function setupCreateForm(){
     });
   }
   renderCreateMasterDropdowns();
-  syncBuyerMasterFields();
+  syncBuyerSelectionForCompany({resetSelection:true});
+  syncCreateCompanyFields();
+  syncCreateRouteLocationFields();
   syncSalesPersonMasterFields();
   syncCreateSalesOrderNo();
   createFormSnapshot=getCreateFormState();
@@ -2171,14 +3321,23 @@ function setupSectionTabs(){
   if(!sectionSelect)return;
   document.querySelectorAll('.workspace-tab').forEach(tab=>{
     tab.addEventListener('click',()=>{
-      if(currentAction==='create'&&tab.dataset.value!=='summary')return;
       sectionSelect.value=tab.dataset.value;
+      currentWorkspaceArea=tab.dataset.value;
+      if(currentModule==='sales-orders'&&currentAction){
+        syncModuleEntry();
+        return;
+      }
       showSection();
     });
   });
   document.querySelectorAll('.side-nav-item[data-target]').forEach(item=>{
     item.addEventListener('click',()=>{
       sectionSelect.value=item.dataset.target;
+      currentWorkspaceArea=item.dataset.target;
+      if(currentModule==='sales-orders'&&currentAction){
+        syncModuleEntry();
+        return;
+      }
       showSection();
     });
   });
@@ -2186,14 +3345,6 @@ function setupSectionTabs(){
 window.addEventListener('DOMContentLoaded',()=>{
   window.__salesWorkspaceBaseDpr=window.devicePixelRatio||1;
   setupMockDropdown('order-type-dropdown','order-type-select','order-type-dropdown-label',syncOrderType);
-  setupMockDropdown('create-buyer-dropdown','create-buyer-select','create-buyer-dropdown-label',()=>{
-    syncBuyerMasterFields();
-    syncCreateFormActions();
-  });
-  setupMockDropdown('create-salesperson-dropdown','create-salesperson-select','create-salesperson-dropdown-label',()=>{
-    syncSalesPersonMasterFields();
-    syncCreateFormActions();
-  });
   setupModuleNavigation();
   setupMasterModuleNavigation();
   setupActionSelector();
@@ -2229,16 +3380,16 @@ window.addEventListener('DOMContentLoaded',()=>{
       <div class="side-nav-body">
         <div class="side-nav-group">
           <div class="side-nav-label">Core Modules</div>
-          <button type="button" class="side-nav-item" data-module="sales-orders">Sales &amp; Orders</button>
-          <button type="button" class="side-nav-item" data-module="product-engineering">Product &amp; Engineering</button>
-          <button type="button" class="side-nav-item" data-module="planning">Planning</button>
-          <button type="button" class="side-nav-item" data-module="procurement">Procurement</button>
-          <button type="button" class="side-nav-item" data-module="inventory-warehouse">Inventory &amp; Warehouse</button>
-          <button type="button" class="side-nav-item" data-module="production">Production</button>
-          <button type="button" class="side-nav-item" data-module="quality">Quality</button>
-          <button type="button" class="side-nav-item" data-module="shipping-logistics">Shipping &amp; Logistics</button>
-          <button type="button" class="side-nav-item" data-module="finance-costing">Finance &amp; Costing</button>
-          <button type="button" class="side-nav-item" data-module="reports-master-data">Reports &amp; Master Data</button>
+          <button type="button" class="side-nav-item" data-module="inventory-warehouse"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M2.5 6.5h11v6h-11z"></path><path d="M4.5 3.5h7v3h-7z"></path><path d="M5.5 9.5h1"></path><path d="M9 9.5h1"></path></svg></span><span class="side-nav-item-label">Inventory &amp; Warehouse</span></button>
+          <button type="button" class="side-nav-item" data-module="sales-orders"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M4 2.5h6l2 2v9H4z"></path><path d="M10 2.5v2h2"></path><path d="M6 7h4"></path><path d="M6 10h4"></path></svg></span><span class="side-nav-item-label">Sales Order Management</span></button>
+          <button type="button" class="side-nav-item" data-module="procurement"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 4.5h10l-1 5H5z"></path><path d="M3 4.5 2.5 3H1.5"></path><circle cx="6.5" cy="12.5" r="1"></circle><circle cx="11" cy="12.5" r="1"></circle></svg></span><span class="side-nav-item-label">Procurement &amp; Purchasing</span></button>
+          <button type="button" class="side-nav-item" data-module="product-engineering"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 11.5 8.5 6"></path><path d="M9.5 2.5 13.5 6.5"></path><path d="M8.5 3.5 12.5 7.5"></path><path d="M2.5 13.5 6 12.5 3.5 10z"></path></svg></span><span class="side-nav-item-label">Product Data &amp; Engineering</span></button>
+          <button type="button" class="side-nav-item" data-module="planning"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 4.5h10v8H3z"></path><path d="M5 2.5v3"></path><path d="M11 2.5v3"></path><path d="M3 7h10"></path><path d="M5.5 9.5h2"></path><path d="M5.5 11.5h5"></path></svg></span><span class="side-nav-item-label">Planning &amp; Scheduling</span></button>
+          <button type="button" class="side-nav-item" data-module="quality"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M8 2.5 12.5 4v3.5c0 2.5-1.5 4.5-4.5 6-3-1.5-4.5-3.5-4.5-6V4z"></path><path d="m6.2 8.1 1.2 1.2 2.6-2.8"></path></svg></span><span class="side-nav-item-label">Quality Management</span></button>
+          <button type="button" class="side-nav-item" data-module="production"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M2.5 13.5v-5l3-2v7z"></path><path d="M5.5 13.5v-7l3-2v9z"></path><path d="M8.5 13.5v-4l2-1.5v5.5z"></path><path d="M10.5 13.5v-6l3-2v8z"></path></svg></span><span class="side-nav-item-label">Production Control</span></button>
+          <button type="button" class="side-nav-item" data-module="shipping-logistics"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M2.5 5.5h7v5h-7z"></path><path d="M9.5 7h2l1.5 1.5v2H9.5z"></path><circle cx="5" cy="12" r="1"></circle><circle cx="11.5" cy="12" r="1"></circle></svg></span><span class="side-nav-item-label">Logistics &amp; Dispatch</span></button>
+          <button type="button" class="side-nav-item" data-module="reports-master-data"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 3.5h10v9H3z"></path><path d="M6 3.5v9"></path><path d="M10 3.5v9"></path><path d="M3 7h10"></path><path d="M3 10h10"></path></svg></span><span class="side-nav-item-label">Reports &amp; Master Data</span></button>
+          <button type="button" class="side-nav-item" data-module="finance-costing"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M4 2.5h8v11H4z"></path><path d="M6 5.5h4"></path><path d="M6 8.5h1"></path><path d="M9 8.5h1"></path><path d="M6 11.5h4"></path></svg></span><span class="side-nav-item-label">Finance &amp; Cost Control</span></button>
           <div id="master-module-shell" class="side-nav-action-shell master-module-shell hidden">
             <button type="button" class="side-nav-action-item master-module-item" data-master-module="buyer-master">Buyer Master</button>
             <button type="button" class="side-nav-action-item master-module-item" data-master-module="sales-person-master">Sales Person Master</button>
@@ -2383,38 +3534,42 @@ window.addEventListener('DOMContentLoaded',()=>{
               <div class="create-row">
                 <label class="create-label" for="order-type-select">Order Type</label>
                 <div class="create-field-wrap">
-                  <div id="order-type-dropdown" class="mock-dropdown mock-dropdown--field">
-                    <button type="button" class="mock-dropdown-toggle" aria-haspopup="listbox" aria-expanded="false">
-                      <span id="order-type-dropdown-label">Repeated</span>
-                    </button>
-                    <ul class="mock-dropdown-menu" role="listbox" aria-label="Order Type options">
-                      <li><button type="button" class="mock-dropdown-item" data-value="Sample">Sample</button></li>
-                      <li><button type="button" class="mock-dropdown-item" data-value="1st Order">1st Order</button></li>
-                      <li><button type="button" class="mock-dropdown-item active" data-value="Repeated">Repeated</button></li>
-                      <li><button type="button" class="mock-dropdown-item" data-value="Replacement">Replacement</button></li>
-                      <li><button type="button" class="mock-dropdown-item" data-value="Insert Order">Insert Order</button></li>
-                      <li><button type="button" class="mock-dropdown-item" data-value="Top Urgent">Top Urgent</button></li>
-                    </ul>
-                    <select id="order-type-select" class="mock-dropdown-native" tabindex="-1" aria-hidden="true">
-                      <option>Sample</option>
-                      <option>1st Order</option>
-                      <option selected>Repeated</option>
-                      <option>Replacement</option>
-                      <option>Insert Order</option>
-                      <option>Top Urgent</option>
-                    </select>
-                  </div>
+                  <select id="order-type-select" class="select-line">
+                    <option selected>Repeat Order</option>
+                    <option>New Build</option>
+                    <option>Sample</option>
+                    <option>Insert Order</option>
+                    <option>Top Urgent</option>
+                    <option>Accessory Bundle</option>
+                  </select>
                 </div>
               </div>
               <div class="create-row">
                 <label class="create-label" for="create-customer-input">Customer Company Name</label>
                 <div class="create-field-wrap">
-                  <input id="create-customer-input" class="input-line" list="customer-master-list" type="text" value="NorthBay Retail Group" />
-                  <datalist id="customer-master-list">
-                    <option value="NorthBay Retail Group"></option>
-                    <option value="Atlas Distribution Sdn. Bhd."></option>
-                    <option value="Harborline Projects Pte. Ltd."></option>
-                  </datalist>
+                  <select id="create-customer-input" class="select-line">
+                    <option selected>NorthBay Retail Group</option>
+                    <option>Atlas Distribution Sdn. Bhd.</option>
+                  </select>
+                  <div class="support-text">Source: Reports &amp; Master Data · Buyer Master.</div>
+                </div>
+              </div>
+              <div class="create-row create-route-row">
+                <label class="create-label">Order Route</label>
+                <div class="create-field-wrap">
+                  <div class="route-field-shell">
+                    <div class="route-segmented" role="group" aria-label="Create Sales Order Route">
+                      <button type="button" class="route-segment active" data-route-field="true" data-value="Local">Local</button>
+                      <button type="button" class="route-segment" data-route-field="true" data-value="Overseas">Overseas</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="create-row">
+                <label class="create-label" for="create-company-code">Company Code</label>
+                <div class="create-field-wrap">
+                  <input id="create-company-code" class="input-line auto-fill-line" type="text" value="BUY-MY-001" readonly />
+                  <div class="support-text">Mock-stage system-derived value from the selected Buyer Master company.</div>
                 </div>
               </div>
             </div>
@@ -2423,33 +3578,24 @@ window.addEventListener('DOMContentLoaded',()=>{
                 <div class="create-row">
                   <label class="create-label" for="create-buyer-select">Buyer Name</label>
                   <div class="create-field-wrap">
-                    <div id="create-buyer-dropdown" class="mock-dropdown mock-dropdown--field">
-                      <button type="button" class="mock-dropdown-toggle" aria-haspopup="listbox" aria-expanded="false">
-                        <span id="create-buyer-dropdown-label">Emily Carter</span>
-                      </button>
-                      <ul class="mock-dropdown-menu" role="listbox" aria-label="Buyer master list options">
-                        <li><button type="button" class="mock-dropdown-item active" data-value="Emily Carter">Emily Carter</button></li>
-                        <li><button type="button" class="mock-dropdown-item" data-value="Jason Lim">Jason Lim</button></li>
-                        <li><button type="button" class="mock-dropdown-item" data-value="Sophia Wong">Sophia Wong</button></li>
-                      </ul>
-                      <select id="create-buyer-select" class="mock-dropdown-native" tabindex="-1" aria-hidden="true">
-                        <option selected>Emily Carter</option>
-                        <option>Jason Lim</option>
-                        <option>Sophia Wong</option>
-                      </select>
-                    </div>
+                    <select id="create-buyer-select" class="select-line">
+                      <option value="" selected>Select buyer from chosen company</option>
+                      <option>Emily Carter</option>
+                      <option>Jason Lim</option>
+                    </select>
+                    <div class="support-text">Choose Buyer Name from the selected company&apos;s buyer list in Buyer Master.</div>
                   </div>
                 </div>
                 <div class="create-row">
                   <label class="create-label" for="create-buyer-contact">Buyer Contact No</label>
                   <div class="create-field-wrap">
-                    <input id="create-buyer-contact" class="input-line auto-fill-line" type="text" value="+60 12-345 8891" readonly />
+                    <input id="create-buyer-contact" class="input-line auto-fill-line" type="text" value="" readonly />
                   </div>
                 </div>
                 <div class="create-row">
                   <label class="create-label" for="create-buyer-email">Buyer Email</label>
                   <div class="create-field-wrap">
-                    <input id="create-buyer-email" class="input-line auto-fill-line" type="text" value="emily.carter@northbayretail.com" readonly />
+                    <input id="create-buyer-email" class="input-line auto-fill-line" type="text" value="" readonly />
                   </div>
                 </div>
                 <div class="create-row">
@@ -2463,33 +3609,25 @@ window.addEventListener('DOMContentLoaded',()=>{
                 <div class="create-row">
                   <label class="create-label" for="create-salesperson-select">Sales Person Name</label>
                   <div class="create-field-wrap">
-                    <div id="create-salesperson-dropdown" class="mock-dropdown mock-dropdown--field">
-                      <button type="button" class="mock-dropdown-toggle" aria-haspopup="listbox" aria-expanded="false">
-                        <span id="create-salesperson-dropdown-label">Alex Chen</span>
-                      </button>
-                      <ul class="mock-dropdown-menu" role="listbox" aria-label="Sales person master list options">
-                        <li><button type="button" class="mock-dropdown-item active" data-value="Alex Chen">Alex Chen</button></li>
-                        <li><button type="button" class="mock-dropdown-item" data-value="Phoebe Ng">Phoebe Ng</button></li>
-                        <li><button type="button" class="mock-dropdown-item" data-value="Daniel Tan">Daniel Tan</button></li>
-                      </ul>
-                      <select id="create-salesperson-select" class="mock-dropdown-native" tabindex="-1" aria-hidden="true">
-                        <option selected>Alex Chen</option>
-                        <option>Phoebe Ng</option>
-                        <option>Daniel Tan</option>
-                      </select>
-                    </div>
+                    <select id="create-salesperson-select" class="select-line">
+                      <option value="" selected>Select sales person from Sales Person Master</option>
+                      <option>Alex Chen</option>
+                      <option>Phoebe Ng</option>
+                      <option>Daniel Tan</option>
+                    </select>
+                    <div class="support-text">Choose Sales Person Name from Sales Person Master.</div>
                   </div>
                 </div>
                 <div class="create-row">
                   <label class="create-label" for="create-sales-contact">Sales Person Contact No</label>
                   <div class="create-field-wrap">
-                    <input id="create-sales-contact" class="input-line auto-fill-line" type="text" value="+60 12-345 6789" readonly />
+                    <input id="create-sales-contact" class="input-line auto-fill-line" type="text" value="" readonly />
                   </div>
                 </div>
                 <div class="create-row">
                   <label class="create-label" for="create-sales-email">Sales Person Email</label>
                   <div class="create-field-wrap">
-                    <input id="create-sales-email" class="input-line auto-fill-line" type="text" value="alexchen.nb@northbay.com" readonly />
+                    <input id="create-sales-email" class="input-line auto-fill-line" type="text" value="" readonly />
                   </div>
                 </div>
                 <div class="create-row">
@@ -2510,30 +3648,79 @@ window.addEventListener('DOMContentLoaded',()=>{
               <div class="create-row">
                 <label class="create-label" for="create-order-entry-date">Order Entry Date</label>
                 <div class="create-field-wrap">
-                  <input id="create-order-entry-date" class="input-line date-line" type="date" value="2026-04-21" />
+                  <div class="create-date-field" data-create-date-open="create-order-entry-date">
+                    <input id="create-order-entry-date-display" class="input-line date-line create-date-display" type="text" value="21 / 04 / 2026" readonly data-create-date-open="create-order-entry-date" />
+                    <input id="create-order-entry-date" class="input-line date-line create-date-native" type="date" value="2026-04-21" data-create-date-native="true" data-display-target="create-order-entry-date-display" />
+                    <button type="button" class="create-date-picker" aria-label="Open Order Entry Date calendar" data-create-date-open="create-order-entry-date"></button>
+                  </div>
                 </div>
               </div>
               <div class="create-row">
                 <label class="create-label" for="create-customer-required-date">Customer Required Date</label>
                 <div class="create-field-wrap">
-                  <input id="create-customer-required-date" class="input-line date-line" type="date" value="2026-05-15" />
+                  <div class="create-date-field" data-create-date-open="create-customer-required-date">
+                    <input id="create-customer-required-date-display" class="input-line date-line create-date-display" type="text" value="15 / 05 / 2026" readonly data-create-date-open="create-customer-required-date" />
+                    <input id="create-customer-required-date" class="input-line date-line create-date-native" type="date" value="2026-05-15" data-create-date-native="true" data-display-target="create-customer-required-date-display" />
+                    <button type="button" class="create-date-picker" aria-label="Open Customer Required Date calendar" data-create-date-open="create-customer-required-date"></button>
+                  </div>
+                  <div id="create-required-date-error" class="create-inline-note error hidden">Customer Required Date cannot be earlier than Order Entry Date.</div>
                 </div>
               </div>
               <div class="create-row">
                 <label class="create-label" for="create-overall-commit-date">Overall Commit Date</label>
                 <div class="create-field-wrap">
-                  <input id="create-overall-commit-date" class="input-line date-line" type="date" value="2026-05-22" />
+                  <div class="create-date-field" data-create-date-open="create-overall-commit-date">
+                    <input id="create-overall-commit-date-display" class="input-line date-line create-date-display" type="text" value="22 / 05 / 2026" readonly data-create-date-open="create-overall-commit-date" />
+                    <input id="create-overall-commit-date" class="input-line date-line create-date-native" type="date" value="2026-05-22" data-create-date-native="true" data-display-target="create-overall-commit-date-display" />
+                    <button type="button" class="create-date-picker" aria-label="Open Overall Commit Date calendar" data-create-date-open="create-overall-commit-date"></button>
+                  </div>
+                  <div id="create-commit-date-warning" class="create-inline-note warning hidden">Overall Commit Date is later than Customer Required Date. Please review delivery commitment risk.</div>
                 </div>
               </div>
-              <div class="create-row create-route-row">
-                <label class="create-label">Order Route</label>
+              <div id="create-location-state-row" class="create-row">
+                <label class="create-label" for="create-location-state">State</label>
                 <div class="create-field-wrap">
-                  <div class="route-field-shell">
-                    <div class="route-segmented" role="group" aria-label="Create Sales Order Route">
-                      <button type="button" class="route-segment active" data-route-field="true" data-value="Local">Local</button>
-                      <button type="button" class="route-segment" data-route-field="true" data-value="Overseas">Overseas</button>
-                    </div>
-                  </div>
+                  <select id="create-location-state" class="select-line">
+                    <option value=""></option>
+                    <option selected>Selangor</option>
+                    <option>Penang</option>
+                    <option>Johor</option>
+                  </select>
+                </div>
+              </div>
+              <div id="create-location-district-row" class="create-row">
+                <label class="create-label" for="create-location-district">District</label>
+                <div class="create-field-wrap">
+                  <select id="create-location-district" class="select-line">
+                    <option value=""></option>
+                    <option selected>Klang</option>
+                    <option>Petaling</option>
+                    <option>Seberang Perai Tengah</option>
+                  </select>
+                </div>
+              </div>
+              <div id="create-location-city-row" class="create-row">
+                <label class="create-label" for="create-location-city">City</label>
+                <div class="create-field-wrap">
+                  <select id="create-location-city" class="select-line">
+                    <option value=""></option>
+                    <option selected>Klang</option>
+                    <option>Shah Alam</option>
+                    <option>Butterworth</option>
+                  </select>
+                </div>
+              </div>
+              <div id="create-country-ship-row" class="create-row hidden">
+                <label class="create-label" for="create-country-ship">Country of Ship</label>
+                <div class="create-field-wrap">
+                  <select id="create-country-ship" class="select-line">
+                    <option value=""></option>
+                    <option selected>Singapore</option>
+                    <option>Indonesia</option>
+                    <option>Thailand</option>
+                    <option>Vietnam</option>
+                    <option>Australia</option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -2547,7 +3734,7 @@ window.addEventListener('DOMContentLoaded',()=>{
               <div class="create-row">
                 <label class="create-label" for="create-entered-at">Entered At</label>
                 <div class="create-field-wrap">
-                  <div id="create-entered-at" class="read-only-input">21-04-26 09:42</div>
+                  <div id="create-entered-at" class="read-only-input">21 / 04 / 2026 09:42</div>
                 </div>
               </div>
             </div>
