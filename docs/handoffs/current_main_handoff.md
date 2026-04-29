@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.56
+Mini-MES Handoff v2.57
 
-Updated after 2026-04-29 handoff-only insertion for Material Risk Classification v1.1
+Updated after 2026-04-29 handoff-only insertion for Material Risk UI Baseline v1.0
 Date: 2026-04-29
 
 1. Frozen mainline snapshot
@@ -122,6 +122,8 @@ Frozen Record - W2 Factory Simulation Governance v1.2
 Frozen Record - Trial Charter v1.2
 
 Frozen Record - Material Risk Classification v1.1
+
+Frozen Record - Material Risk UI Baseline v1.0
 
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
@@ -13218,6 +13220,8 @@ Trial Charter v1.2 is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; T
 
 Material Risk Classification v1.1 is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Material Risk Classification v1.1 is the sole active Risk Severity Governance baseline, prior drafts are retained as historical only, the risk layer is now explicitly positioned as SML -> Material Risk -> Waiver -> Work Order Release, PLAN / Trial decision stack now includes Risk Severity layer for operational threat grading, and the core rule is Risk = Severity Input / Risk != Final Release Decision.
 
+Material Risk UI Baseline v1.0 is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Material Risk UI Baseline v1.0 is the sole active Risk UI Governance baseline, prior drafts are retained as historical only, the UI layer is now positioned as Material Risk Classification -> Material Risk UI -> Waiver / Work Order Release, PLAN / Trial readability stack now includes Risk UI signal layer (Severity + Reason + Suggested Action), and the core rule is Risk UI = Operational Readability Signal / Risk UI != Final Release Decision.
+
 Frozen Record - Shared UI Baseline / Sales Order Mock-Stage Branch Split (Local vs Overseas)
 
 Status: PASS / FROZEN WITH FINAL REVIEW NOTES
@@ -13885,3 +13889,155 @@ Final-review warning notes, non-blocking only
 1. R2 OR-condition logic still requires downstream tightening / minimum trigger clarification
 2. ETA credibility minimum evaluation standard still requires downstream implementation definition
 3. Common Reference Cases update / maintenance governance still requires downstream definition
+
+Frozen Record - Material Risk UI Baseline v1.0
+
+Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+Authority layer: Handoff-only frozen Risk UI Governance baseline
+
+Boundary
+
+This card is Risk UI Governance Only.
+
+This card does not:
+
+* determine final release
+* replace Waiver
+* replace Risk Classification
+* auto-authorize production
+* auto-stop production
+* collapse Suggested Action into final operational execution
+
+Core Rule
+
+Risk UI = Operational Readability Signal.
+Risk UI != Final Release Decision.
+
+Version Governance
+
+* Material Risk UI Baseline v1.0 is the sole active Risk UI Governance baseline.
+* Prior drafts are retained as historical only.
+* Prior Material Risk UI drafts must not be treated as the active Risk UI baseline after v1.0.
+
+UI Layer Positioning
+
+The UI layer is explicitly positioned as:
+
+Material Risk Classification -> Material Risk UI -> Waiver / Work Order Release
+
+Meaning:
+
+* Material Risk Classification determines governed R1 / R2 / R3 severity input.
+* Material Risk UI translates that severity into an operator-readable signal.
+* Waiver / Work Order Release remain separate downstream governance and execution layers.
+
+PLAN / Trial readability stack now includes Risk UI signal layer (Severity + Reason + Suggested Action).
+
+UI Minimum Display Rule
+
+Any PLAN / Trial-facing Material Risk UI surface must display, at minimum:
+
+* severity signal
+* primary reason
+* suggested action
+
+The UI must make the risk meaning readable without requiring the operator to reconstruct hidden classification logic.
+The UI must preserve separation between readability signal and final release authority.
+
+R1 UI Baseline
+
+R1 UI must communicate low / monitor meaning.
+Minimum R1 display should show:
+
+* Severity: R1 / Low / Monitor
+* Reason: short primary reason based on the classification evidence
+* Suggested Action: monitor, keep visible, or continue normal follow-up where appropriate
+
+R1 UI must not imply automatic release approval.
+
+R2 UI Baseline
+
+R2 UI must communicate medium / action-required meaning.
+Minimum R2 display should show:
+
+* Severity: R2 / Medium / Action Required
+* Reason: short primary reason based on the material threat or uncertainty
+* Suggested Action: active follow-up, planner / purchasing / warehouse coordination, or review before release reliance
+
+R2 UI must not imply Waiver approval, release approval, or final operational execution.
+
+R3 UI Baseline
+
+R3 UI must communicate high / blocking-threat meaning.
+Minimum R3 display should show:
+
+* Severity: R3 / High / Blocking Threat
+* Reason: short primary reason for why the condition threatens release, shipment, quality, or controlled execution
+* Suggested Action: block release reliance until resolved, downgraded with evidence, or handled through an approved governed path
+
+R3 UI must not auto-stop production by itself.
+R3 UI must remain a readability signal feeding governed release / exception handling.
+
+Primary Reason Rule
+
+The UI must show one primary reason clearly enough for a frontline user or reviewer to understand the risk signal quickly.
+Primary Reason must be based on classification evidence.
+Primary Reason must not be vague mood wording such as "risky" without evidence context.
+Primary Reason structured option/menu guidance still requires downstream implementation definition.
+
+Suggested Action Rule
+
+Suggested Action is operational guidance only.
+Suggested Action must tell the user the likely next controlled action direction without becoming final Work Order Release execution.
+Suggested Action must remain explicitly separated from Work Order Release execution.
+Suggested Action must not authorize production, shipment, Waiver approval, downgrade, or release by itself.
+
+PLAN Page 1 Mapping
+
+PLAN Page 1 should be able to show the Risk UI signal layer where material readiness / shortage threat affects operational planning.
+Minimum mapping:
+
+* show severity as the first visible risk signal
+* show primary reason adjacent to or directly below severity
+* show suggested action in the same read context where the user decides follow-up priority
+
+PLAN Page 1 mapping must preserve Material Risk Classification -> Material Risk UI -> Waiver / Work Order Release separation.
+
+Trial Rule
+
+During Trial, Material Risk UI Baseline v1.0 may be used only as the operational readability signal layer for PLAN / Trial decisions.
+Trial use must not silently convert UI signal into Waiver approval, Work Order Release approval, shipment release, production authorization, Blueprint promotion, or runtime activation.
+W2 simulation should include Risk UI comprehension testing, especially for new users.
+
+Readability Rule (3-second principle)
+
+A frontline user should be able to understand the basic risk signal within approximately 3 seconds:
+
+* how severe it is
+* why it is flagged
+* what kind of controlled follow-up is suggested
+
+The 3-second principle is a readability requirement only.
+It does not weaken evidence, classification, Waiver, or release governance.
+
+Fixed Prohibitions
+
+This card forbids:
+
+* treating Risk UI as final Release Decision
+* treating Risk UI as Waiver
+* treating Risk UI as Risk Classification itself
+* treating Suggested Action as Work Order Release execution
+* treating a displayed R1 as automatic release approval
+* treating a displayed R2 as automatic Waiver requirement or release approval
+* treating a displayed R3 as automatic production stop without governed review
+* hiding Primary Reason from the operator-facing risk signal
+* hiding Suggested Action where follow-up is expected
+* using UI readability to bypass evidence, Waiver, Release Decision, or existing frozen governance
+* using Trial UI observations as production authorization
+
+Final-review warning notes, non-blocking only
+
+1. W2 simulation should include Risk UI comprehension testing (especially new users)
+2. Primary Reason structured option/menu guidance still requires downstream implementation definition
+3. Suggested Action must remain operational guidance only and stay explicitly separated from Work Order Release execution
