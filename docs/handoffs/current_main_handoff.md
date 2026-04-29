@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.53
+Mini-MES Handoff v2.54
 
-Updated after 2026-04-29 handoff-only insertion for Blueprint-Aligned Ultra-Light Trial Governance Baseline v1.0
+Updated after 2026-04-29 handoff-only insertion for W2 Factory Simulation Governance v1.2
 Date: 2026-04-29
 
 1. Frozen mainline snapshot
@@ -116,6 +116,8 @@ Frozen Record - Step47 / Early October Mini-MES Trial-Run Main Spine (ORDER-to-S
 Frozen Record - Shared UI Baseline / Sales Order Mock-Stage Branch Split (Local vs Overseas)
 
 Frozen Record - Blueprint-Aligned Ultra-Light Trial Governance Baseline v1.0
+
+Frozen Record - W2 Factory Simulation Governance v1.2
 
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
@@ -13206,6 +13208,8 @@ Shared UI Baseline / Sales Order Mock-Stage Branch Split (Local vs Overseas) is 
 
 Blueprint-Aligned Ultra-Light Trial Governance Baseline v1.0 is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; trial governance is now explicitly split into Trial Charter v1.1 = execution governance and Blueprint-Aligned Ultra-Light Trial Governance v1.0 = blueprint boundary governance, W1 blueprint anchor is mandatory, W2 plug / remove / replug discipline is mandatory, W3 trial output boundary is mandatory, W4 TRIAL_TEMP marking is mandatory, W5 exit rule is mandatory, missing anchor blocks Trial, missing log is a violation, Trial cannot silently become Blueprint, and this record does not authorize trial launch, UI implementation, production deployment, Blueprint promotion, or runtime activation.
 
+W2 Factory Simulation Governance v1.2 is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; trial stack now includes Trial Charter v1.1 (execution), Blueprint-Aligned Ultra-Light Trial Governance v1.0 (boundary), and W2 Factory Simulation Governance v1.2 (pre-live hard gate); W2 v1.2 absorbs and supersedes W2 v1.0, W2 v1.0 is retained for historical reference only, W2 v1.1 is inactive / superseded, W2 v1.2 is the sole active W2 Pre-Live Factory Simulation Gate, and the core rule is No W2 PASS = No Real Trial.
+
 Frozen Record - Shared UI Baseline / Sales Order Mock-Stage Branch Split (Local vs Overseas)
 
 Status: PASS / FROZEN WITH FINAL REVIEW NOTES
@@ -13386,3 +13390,138 @@ Final-review-note warnings, non-blocking only
 * W1 blueprint_anchor minimum form still requires downstream implementation definition
 * TRIAL_TEMP scan / enforcement path still requires downstream implementation definition
 * Trial-to-Blueprint Promote minimum governance card still requires downstream definition
+
+Frozen Record - W2 Factory Simulation Governance v1.2
+
+Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+Authority layer: Handoff-only frozen governance / pre-live hard-gate record
+
+Boundary
+
+This card is Pre-Live Trial Governance Only.
+It is an integrated pre-live factory simulation hard gate.
+
+This card does not authorize:
+
+* Trial success
+* Blueprint promotion
+* production deployment
+* runtime activation
+* UI correctness by itself
+
+Core Rule
+
+No W2 PASS = No Real Trial.
+
+Version Relationship
+
+* W2 v1.2 absorbs and supersedes W2 v1.0.
+* W2 v1.0 is retained for historical reference only.
+* W2 v1.1 is inactive / superseded.
+* W2 v1.2 is the sole active W2 Pre-Live Factory Simulation Gate.
+
+Trial stack now includes:
+
+* Trial Charter v1.1 (execution)
+* Blueprint-Aligned Ultra-Light Trial Governance v1.0 (boundary)
+* W2 Factory Simulation Governance v1.2 (pre-live hard gate)
+
+W2-1 Minimum Simulation Scope
+
+The W2 pre-live factory simulation must execute all five minimum scenarios at least once before W2 may pass:
+
+1. Normal order-to-ship path from sign-in through sign-out.
+2. Material shortage / material-not-ready blocking path.
+3. Quality fail / rework or reject path.
+4. ECN or Waiver controlled-deviation path.
+5. Shipment release / dispatch blocking or hold path.
+
+Complete Simulation means all five W2-1 scenarios executed at least once.
+
+W2-2 Blind Test Rule
+
+At least one simulation round must be a blind test.
+The frontline actor must operate from the actual available screen, form, instruction, or process cue without being walked step-by-step by the designer.
+The blind test may explain the business scenario, but must not coach the exact clicks, fields, sequence, or expected answer during execution.
+
+W2-3 Independent Supervision Rule
+
+W2 simulation must be observed by an independent supervisor or reviewer who is not the designer of the simulated flow.
+The independent supervisor must be able to record confusion, bypass attempt, waiting dead-stop, missing instruction, wrong interpretation, or evidence gap.
+Designer explanation after the fact cannot replace independent observation during the test.
+
+W2-4 Mandatory Questions
+
+Each W2 simulation must answer, at minimum:
+
+* Can the frontline actor find where to start?
+* Can the frontline actor complete the flow without designer coaching?
+* Can the frontline actor understand what to do when blocked?
+* Does any step create bypass pressure?
+* Does the flow preserve truth / evidence / approval boundaries?
+* Does the flow expose technical failure separately from operator-facing action guidance?
+* Does the flow remain understandable under factory pressure?
+* Does the flow leave a written trace that later review can understand?
+
+W2-5 Blocking Rule
+
+W2 is a hard gate.
+If any mandatory W2-1 scenario is not executed, W2 cannot pass.
+If blind test execution fails due to unclear flow, missing operator guidance, hidden dependency, missing evidence, bypass pressure, or dead-stop without governed recovery, W2 cannot pass until corrected and re-tested.
+If written evidence is missing, W2 cannot pass.
+
+No W2 PASS = No Real Trial.
+
+W2-6 Written Evidence
+
+W2 simulation must leave written evidence.
+Minimum written evidence must include:
+
+* date / time
+* scenario name
+* participating frontline role
+* independent supervisor / reviewer
+* start point and end point
+* whether the actor completed the path without designer coaching
+* confusion / bypass / waiting / blocked points observed
+* evidence or trace produced
+* pass / fail / conditional result
+* required correction if failed or conditional
+
+Missing written evidence means W2 cannot pass.
+
+W2-7 Failure Escalation
+
+Any W2 failure must be escalated to the trial governance owner / responsible reviewer before Real Trial may start.
+The failed item must remain blocked until the failure is classified, corrected or explicitly bounded, and re-tested where required.
+Failure root-cause + correction plan is recommended within 3 working days.
+
+W2-8 Time Budget
+
+W2 must record actual elapsed time for the full cycle.
+Time budget = sign-in to sign-out full cycle.
+The time record must include whether the elapsed time is acceptable for a realistic pre-live trial condition.
+If the time burden is unrealistic, W2 cannot pass until the burden is reduced, justified, or explicitly bounded by governance decision.
+
+Fixed Prohibitions
+
+This card forbids:
+
+* treating W2 v1.0 as active governance after v1.2
+* treating W2 v1.1 as active governance after v1.2
+* starting Real Trial without W2 PASS
+* passing W2 without all five W2-1 scenarios executed at least once
+* passing W2 without blind-test evidence
+* passing W2 without independent supervision
+* passing W2 without written evidence
+* treating designer explanation as a substitute for operator execution
+* treating UI existence as UI correctness
+* treating simulation success as Trial success
+* treating W2 PASS as Blueprint promotion
+* treating W2 PASS as production deployment or runtime activation
+
+Final-review warning notes, non-blocking only
+
+1. "Complete Simulation" = all five W2-1 scenarios executed at least once
+2. Time budget = sign-in to sign-out full cycle
+3. Failure root-cause + correction plan recommended within 3 working days
