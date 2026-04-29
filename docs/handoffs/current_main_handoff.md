@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.58
+Mini-MES Handoff v2.59
 
-Updated after 2026-04-29 handoff-only insertion for SML UI / Workflow Baseline v1.1
+Updated after 2026-04-29 handoff-only insertion for Work Order Release Decision UI Baseline v1.1
 Date: 2026-04-29
 
 1. Frozen mainline snapshot
@@ -126,6 +126,8 @@ Frozen Record - Material Risk Classification v1.1
 Frozen Record - Material Risk UI Baseline v1.0
 
 Frozen Record - SML UI / Workflow Baseline v1.1
+
+Frozen Record - Work Order Release Decision UI Baseline v1.1
 
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
@@ -13226,6 +13228,8 @@ Material Risk UI Baseline v1.0 is now PASS WITH WARNINGS / FROZEN WITH FINAL REV
 
 SML UI / Workflow Baseline v1.1 is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; SML UI / Workflow Baseline v1.1 is the sole active SML Workflow + UI Governance baseline, prior drafts are retained as historical only, the SML layer is now positioned as Order / Material -> SML -> Material Risk -> Waiver -> Work Order Release, PLAN / Trial material control stack now includes SML tracking layer (Shortage Fact + ETA + Owner + Overdue + Escalation), and the core rule is SML = Shortage Fact + Tracking Layer / SML != Final Risk / Waiver / Release Decision.
 
+Work Order Release Decision UI Baseline v1.1 is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Work Order Release Decision UI Baseline v1.1 is the sole active Release Decision UI Governance baseline, prior drafts are retained as historical only, the decision stack is now positioned as Order / Material -> SML -> Material Risk -> Waiver -> Work Order Release Decision, PLAN / Trial final operational control stack now includes Release Decision signal layer (Can Run / Need Decision / Hold), and the core rule is Release Decision = Final Operational Signal / Release Decision != SML / Risk / Waiver.
+
 Frozen Record - Shared UI Baseline / Sales Order Mock-Stage Branch Split (Local vs Overseas)
 
 Status: PASS / FROZEN WITH FINAL REVIEW NOTES
@@ -14233,3 +14237,179 @@ Final-review warning notes, non-blocking only
 1. S4 "high overdue ratio" should align numerically with S9 (>30%) downstream
 2. Formal auto-trigger framework for Overdue still requires downstream implementation definition
 3. Release-layer minimum visibility form for SML + Risk + Waiver still requires downstream UI definition
+
+Frozen Record - Work Order Release Decision UI Baseline v1.1
+
+Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+Authority layer: Handoff-only frozen Release Decision UI Governance baseline
+
+Boundary
+
+This card is Release Decision UI Governance Only.
+
+This card does not:
+
+* define core business release logic
+* replace SML
+* replace Material Risk
+* replace Waiver
+* auto-authorize production outside governance
+* auto-stop production without governance basis
+
+Core Rule
+
+Release Decision = Final Operational Signal.
+Release Decision != SML / Risk / Waiver.
+
+Version Governance
+
+* Work Order Release Decision UI Baseline v1.1 is the sole active Release Decision UI Governance baseline.
+* Prior drafts are retained as historical only.
+* Prior Work Order Release Decision UI drafts must not be treated as the active Release Decision UI baseline after v1.1.
+
+Decision Stack Positioning
+
+The decision stack is explicitly positioned as:
+
+Order / Material -> SML -> Material Risk -> Waiver -> Work Order Release Decision
+
+Meaning:
+
+* Order / Material provides demand and material context.
+* SML tracks shortage fact and follow-up state.
+* Material Risk provides governed severity input.
+* Waiver governs controlled exception / deviation where needed.
+* Work Order Release Decision provides the final operational signal.
+
+PLAN / Trial final operational control stack now includes Release Decision signal layer (Can Run / Need Decision / Hold).
+
+Minimum Decision States
+
+The Release Decision UI must display, at minimum, one of three final operational signal states:
+
+* Can Run
+* Need Decision
+* Hold
+
+Can Run means the UI signal indicates no current release-blocking decision state is visible from the governed release-decision view.
+Need Decision means the UI signal indicates a human / governed decision is required before reliable release reliance.
+Hold means the UI signal indicates release should not proceed until the hold basis is resolved or governed.
+
+These states are UI governance baselines only.
+They do not define the full core business release logic by themselves.
+
+Need Decision Timeout Rule
+
+Need Decision must not remain unresolved indefinitely during Trial.
+If Need Decision remains open for more than 1 workday during Trial, it should trigger monitoring / escalation review.
+Trial-stage minimum monitoring method for >1 workday Need Decision auto-escalation still requires downstream implementation definition.
+
+Need Decision Ratio Governance
+
+Need Decision ratio should remain visible during Trial so the team can detect whether the workflow is creating too many unresolved final-decision states.
+High Need Decision ratio may indicate unclear upstream SML / Risk / Waiver evidence, missing authority, missing owner, unclear UI guidance, or impractical release workflow.
+Need Decision ratio governance does not itself authorize release, hold, or production stop.
+
+Hold Review Cycle
+
+Hold must remain reviewable.
+Hold state must not become a silent dead-end.
+Each Hold should have a review cycle or review owner sufficient for Trial governance to know whether the hold is still valid, resolved, escalated, or awaiting evidence.
+Hold review record landing location still requires downstream implementation definition.
+
+Decision Reason Rule
+
+The Release Decision UI must show or preserve a decision reason sufficient for review.
+Minimum reason should explain why the current signal is Can Run, Need Decision, or Hold in operational language.
+Decision reason may reference SML, Material Risk, Waiver, missing evidence, authority gap, overdue decision, or other governed release-decision basis.
+Decision reason must not be vague status-only wording when the state requires follow-up.
+
+Decision Authority Visibility
+
+The UI must make release-decision authority visible enough that operators do not guess who can clear, confirm, or review the decision state.
+Authority visibility may identify role, owner, reviewer, or governed decision authority depending on downstream implementation.
+Authority visibility does not grant authority by display alone.
+
+Decision Owner Responsibility
+
+Every Need Decision or Hold state must have an accountable owner or an explicit owner-missing / unassigned state.
+Owner-missing must remain visible and must not be treated as normal completion.
+Decision owner responsibility is a governance visibility rule only; it does not replace the actual release authority rule.
+
+UI Boundary Rule
+
+The Release Decision UI may display final operational signal states.
+The UI must not silently perform release approval, Waiver approval, Risk downgrade, SML closure, production authorization, or production stop unless a separately governed action path authorizes that behavior.
+The UI must preserve the separation:
+
+* SML = shortage fact + tracking layer
+* Material Risk = severity input
+* Waiver = controlled exception / deviation governance
+* Release Decision = final operational signal
+
+Trial Audit Rule
+
+During Trial, Release Decision UI records must remain audit-readable.
+Minimum audit should be able to show:
+
+* decision signal state
+* decision reason
+* decision owner or owner-missing state
+* decision authority / reviewer visibility where applicable
+* source references available from SML / Risk / Waiver
+* Need Decision aging / timeout state
+* Hold review state
+* whether the decision was resolved, escalated, or still open
+
+Trial audit must preserve Release Decision separation from SML / Risk / Waiver.
+
+Readability Rule
+
+The Release Decision UI must be readable quickly enough for operational control.
+At minimum, a user should be able to see:
+
+* whether the work can run
+* whether a decision is still needed
+* whether release is on hold
+* why the signal is shown
+* who owns or reviews unresolved states
+
+Readability must not weaken SML, Risk, Waiver, Trial, W2, Blueprint, release authority, or evidence governance.
+
+Source Traceability Suggestion
+
+The Release Decision UI should preserve source traceability back to the relevant upstream signals where practical:
+
+* SML status / shortage fact
+* Material Risk severity and reason
+* Waiver state where applicable
+* other governed release evidence where applicable
+
+Trial-stage source traceability minimum may require future elevation from suggestion to mandatory depending D8 execution practicality.
+
+Fixed Prohibitions
+
+This card forbids:
+
+* collapsing Release Decision into SML
+* collapsing Release Decision into Material Risk
+* collapsing Release Decision into Waiver
+* treating SML as final Release Decision
+* treating Risk as final Release Decision
+* treating Waiver as final Release Decision
+* treating Release Decision UI as core business release logic
+* treating Can Run as production authorization outside governance
+* treating Need Decision as ignorable waiting
+* allowing Need Decision to remain unresolved indefinitely during Trial
+* treating Hold as an unreviewable dead-end
+* auto-authorizing production outside governance
+* auto-stopping production without governance basis
+* altering Trial / W2 / Blueprint governance through Release Decision UI
+* using Trial Release Decision UI observations as production authorization
+* bypassing existing frozen governance through Release Decision UI readability
+
+Final-review warning notes, non-blocking only
+
+1. Trial-stage minimum monitoring method for >1 workday Need Decision auto-escalation still requires downstream implementation definition
+2. Trial-stage source traceability minimum may require future elevation from suggestion to mandatory depending D8 execution practicality
+3. Hold review record landing location still requires downstream implementation definition
