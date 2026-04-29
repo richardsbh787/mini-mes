@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.59
+Mini-MES Handoff v2.60
 
-Updated after 2026-04-29 handoff-only insertion for Work Order Release Decision UI Baseline v1.1
+Updated after 2026-04-29 handoff-only insertion for Line Schedule / Schedule Grid UI Baseline v1.1
 Date: 2026-04-29
 
 1. Frozen mainline snapshot
@@ -128,6 +128,8 @@ Frozen Record - Material Risk UI Baseline v1.0
 Frozen Record - SML UI / Workflow Baseline v1.1
 
 Frozen Record - Work Order Release Decision UI Baseline v1.1
+
+Frozen Record - Line Schedule / Schedule Grid UI Baseline v1.1
 
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
@@ -13230,6 +13232,8 @@ SML UI / Workflow Baseline v1.1 is now PASS WITH WARNINGS / FROZEN WITH FINAL RE
 
 Work Order Release Decision UI Baseline v1.1 is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Work Order Release Decision UI Baseline v1.1 is the sole active Release Decision UI Governance baseline, prior drafts are retained as historical only, the decision stack is now positioned as Order / Material -> SML -> Material Risk -> Waiver -> Work Order Release Decision, PLAN / Trial final operational control stack now includes Release Decision signal layer (Can Run / Need Decision / Hold), and the core rule is Release Decision = Final Operational Signal / Release Decision != SML / Risk / Waiver.
 
+Line Schedule / Schedule Grid UI Baseline v1.1 is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Line Schedule / Schedule Grid UI Baseline v1.1 is the sole active Schedule Grid UI Governance baseline, prior drafts are retained as historical only, the PLAN visual stack is now positioned as Order / Material -> SML -> Material Risk -> Waiver -> Work Order Release -> Line Schedule Grid, PLAN / Trial scheduling command stack now includes Schedule Grid operational map layer (Line x Day x Order x Status x Blocking x Conflict), and the core rule is Schedule Grid = Operational Schedule + Status + Blocking Visibility Surface / Schedule Grid != Capacity Logic / Release Logic.
+
 Frozen Record - Shared UI Baseline / Sales Order Mock-Stage Branch Split (Local vs Overseas)
 
 Status: PASS / FROZEN WITH FINAL REVIEW NOTES
@@ -14413,3 +14417,188 @@ Final-review warning notes, non-blocking only
 1. Trial-stage minimum monitoring method for >1 workday Need Decision auto-escalation still requires downstream implementation definition
 2. Trial-stage source traceability minimum may require future elevation from suggestion to mandatory depending D8 execution practicality
 3. Hold review record landing location still requires downstream implementation definition
+
+Frozen Record - Line Schedule / Schedule Grid UI Baseline v1.1
+
+Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+Authority layer: Handoff-only frozen Schedule Grid UI Governance baseline
+
+Boundary
+
+This card is Schedule Grid UI Governance Only.
+
+This card does not:
+
+* define capacity logic
+* define release logic
+* replace SML / Risk / Waiver / Release
+* auto-capacity validate
+* auto-resolve conflicts
+* authorize production
+
+Core Rule
+
+Schedule Grid = Operational Schedule + Status + Blocking Visibility Surface.
+Schedule Grid != Capacity Logic / Release Logic.
+
+Version Governance
+
+* Line Schedule / Schedule Grid UI Baseline v1.1 is the sole active Schedule Grid UI Governance baseline.
+* Prior drafts are retained as historical only.
+* Prior Line Schedule / Schedule Grid UI drafts must not be treated as the active Schedule Grid UI baseline after v1.1.
+
+PLAN Visual Stack Positioning
+
+The PLAN visual stack is explicitly positioned as:
+
+Order / Material -> SML -> Material Risk -> Waiver -> Work Order Release -> Line Schedule Grid
+
+Meaning:
+
+* Order / Material provides demand and material context.
+* SML tracks shortage fact and follow-up state.
+* Material Risk provides governed severity input.
+* Waiver governs controlled exception / deviation where needed.
+* Work Order Release provides release decision signal.
+* Line Schedule Grid provides operational schedule map and status / blocking / conflict visibility.
+
+PLAN / Trial scheduling command stack now includes Schedule Grid operational map layer (Line x Day x Order x Status x Blocking x Conflict).
+
+Minimum Grid Axes
+
+The Schedule Grid must preserve, at minimum:
+
+* Line axis
+* Day axis
+* Order / work order / job reference within cells
+
+Line x Day is the minimum operational map shape.
+The grid may later support shift, station, process, or finer time buckets only through separate downstream design / implementation governance.
+
+Minimum Cell Display
+
+Each populated schedule cell must display, at minimum:
+
+* order / work order / job identifier or readable short reference
+* status signal
+* blocking signal where applicable
+* conflict signal where applicable
+
+Minimum blocking-summary field definition still requires downstream implementation spec.
+
+Multi-Order Cell Fold Rule
+
+If one grid cell contains more orders than can be read cleanly, the cell must fold or summarize without hiding the existence of additional scheduled orders.
+The folded cell must still show that more work exists in the cell and must provide a governed way to inspect details downstream.
+Folding must not hide blocking or conflict indicators.
+
+Status Layer
+
+The grid status layer must make schedule condition readable without requiring the user to open every order.
+Minimum status may include:
+
+* planned / scheduled
+* running / in-progress where applicable
+* completed where applicable
+* blocked / hold / not ready where applicable
+* conflict where applicable
+
+Exact wording and visual tokens may be defined downstream.
+Status display must not become release logic or capacity validation by itself.
+
+Status Priority Rule
+
+When multiple signals apply to the same cell, higher-risk operational visibility must win.
+Minimum priority direction:
+
+* blocking / hold should not be hidden by normal planned status
+* conflict should remain visible even if a normal schedule status exists
+* unresolved release or material readiness signals should remain visible where relevant
+
+The priority rule governs UI visibility only.
+It does not decide release, capacity, Waiver, or Risk by itself.
+
+Blocking Visibility
+
+Blocking state must be visible on the grid when a scheduled item is not ready or cannot proceed due to material, release, Waiver, quality, authority, or other governed blocking basis.
+Blocking visibility must preserve source separation and must not collapse SML / Risk / Waiver / Release into a single hidden reason.
+Minimum blocking-summary field definition still requires downstream implementation spec.
+
+Conflict Visibility
+
+Conflict visibility must show schedule conflict where the grid indicates overlapping, competing, or incompatible schedule placement.
+Conflict visibility is a UI warning / operational planning signal only.
+It does not auto-resolve the conflict and does not define capacity logic by itself.
+Trial-stage manual conflict marking minimum audit/record rule still requires downstream implementation spec.
+
+Trial Rule
+
+During Trial, Line Schedule / Schedule Grid UI Baseline v1.1 may be used only as an operational schedule map and visibility layer.
+Trial use must not silently convert grid visibility into capacity approval, release approval, production authorization, conflict resolution, Blueprint promotion, or runtime activation.
+The Trial window scope must be explicitly bounded.
+
+Readability Rule
+
+The grid must remain readable under operational pressure.
+At minimum, a user should be able to see:
+
+* which line is scheduled
+* which day is scheduled
+* which order / job is present
+* whether status is normal or blocked
+* whether conflict exists
+
+Readability must not weaken SML, Risk, Waiver, Release, Trial, W2, Blueprint, capacity, or evidence governance.
+
+Navigation Rule
+
+The grid should support movement from the operational schedule map to the relevant underlying order / SML / Risk / Waiver / Release context where practical.
+Navigation is for context access only.
+Navigation must not authorize hidden release, capacity validation, conflict resolution, or production action.
+
+Risk Filter Suggestion
+
+The Schedule Grid may later support risk / block / conflict filters to help planners focus on affected cells.
+Risk filter behavior is a suggestion only at this baseline.
+Any downstream filter must preserve source separation and must not hide unresolved blocks or conflicts by default.
+
+Layout Principle
+
+The Schedule Grid should behave as an operational command surface, not a decorative report.
+The layout should prioritize scanability, line/day orientation, visible status, visible blocking, visible conflicts, and fast navigation to underlying context.
+The layout must not turn into a broad capacity engine or release engine by visual implication.
+
+Trial Window Scope
+
+During Trial, the Schedule Grid scope must remain bounded to the explicitly approved trial window.
+The trial window may be defined by date range, line set, product family, work order set, or other governed scope.
+Trial window visibility does not authorize full production scheduling rollout.
+
+Future Direction Boundary
+
+Future capacity logic, auto-scheduling, constraint solving, conflict auto-resolution, release automation, or production authorization must be governed separately.
+This baseline freezes only Schedule Grid UI governance for operational schedule + status + blocking visibility.
+
+Fixed Prohibitions
+
+This card forbids:
+
+* collapsing Schedule Grid into capacity logic
+* collapsing Schedule Grid into release logic
+* replacing SML / Risk / Waiver / Release with Schedule Grid display
+* treating Schedule Grid visibility as production authorization
+* treating Schedule Grid visibility as release approval
+* treating Schedule Grid visibility as capacity validation
+* auto-resolving conflicts from grid display alone
+* hiding blocking state behind normal schedule status
+* hiding conflict state behind normal schedule status
+* hiding additional orders in folded cells without a visible more-work indicator
+* using Trial Schedule Grid observations as production authorization
+* altering Trial / W2 / Blueprint governance through Schedule Grid UI
+* using Schedule Grid readability to bypass existing frozen governance
+
+Final-review warning notes, non-blocking only
+
+1. Minimum blocking-summary field definition still requires downstream implementation spec
+2. Trial-stage manual conflict marking minimum audit/record rule still requires downstream implementation spec
+3. Device scope (desktop-first vs mobile interaction boundary) still requires downstream implementation clarification
