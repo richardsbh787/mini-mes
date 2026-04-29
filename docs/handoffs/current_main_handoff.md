@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.57
+Mini-MES Handoff v2.58
 
-Updated after 2026-04-29 handoff-only insertion for Material Risk UI Baseline v1.0
+Updated after 2026-04-29 handoff-only insertion for SML UI / Workflow Baseline v1.1
 Date: 2026-04-29
 
 1. Frozen mainline snapshot
@@ -124,6 +124,8 @@ Frozen Record - Trial Charter v1.2
 Frozen Record - Material Risk Classification v1.1
 
 Frozen Record - Material Risk UI Baseline v1.0
+
+Frozen Record - SML UI / Workflow Baseline v1.1
 
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
@@ -13222,6 +13224,8 @@ Material Risk Classification v1.1 is now PASS WITH WARNINGS / FROZEN WITH FINAL 
 
 Material Risk UI Baseline v1.0 is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Material Risk UI Baseline v1.0 is the sole active Risk UI Governance baseline, prior drafts are retained as historical only, the UI layer is now positioned as Material Risk Classification -> Material Risk UI -> Waiver / Work Order Release, PLAN / Trial readability stack now includes Risk UI signal layer (Severity + Reason + Suggested Action), and the core rule is Risk UI = Operational Readability Signal / Risk UI != Final Release Decision.
 
+SML UI / Workflow Baseline v1.1 is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; SML UI / Workflow Baseline v1.1 is the sole active SML Workflow + UI Governance baseline, prior drafts are retained as historical only, the SML layer is now positioned as Order / Material -> SML -> Material Risk -> Waiver -> Work Order Release, PLAN / Trial material control stack now includes SML tracking layer (Shortage Fact + ETA + Owner + Overdue + Escalation), and the core rule is SML = Shortage Fact + Tracking Layer / SML != Final Risk / Waiver / Release Decision.
+
 Frozen Record - Shared UI Baseline / Sales Order Mock-Stage Branch Split (Local vs Overseas)
 
 Status: PASS / FROZEN WITH FINAL REVIEW NOTES
@@ -14041,3 +14045,191 @@ Final-review warning notes, non-blocking only
 1. W2 simulation should include Risk UI comprehension testing (especially new users)
 2. Primary Reason structured option/menu guidance still requires downstream implementation definition
 3. Suggested Action must remain operational guidance only and stay explicitly separated from Work Order Release execution
+
+Frozen Record - SML UI / Workflow Baseline v1.1
+
+Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+Authority layer: Handoff-only frozen SML Workflow + UI Governance baseline
+
+Boundary
+
+This card is SML Tracking Governance Only.
+
+This card does not:
+
+* replace Material Risk
+* replace Waiver
+* replace Release Decision
+* auto-stop production by SML alone
+* auto-authorize production
+* collapse downstream governance
+
+Core Rule
+
+SML = Shortage Fact + Tracking Layer.
+SML != Final Risk / Waiver / Release Decision.
+
+Version Governance
+
+* SML UI / Workflow Baseline v1.1 is the sole active SML Workflow + UI Governance baseline.
+* Prior drafts are retained as historical only.
+* Prior SML UI / Workflow drafts must not be treated as the active SML Workflow + UI baseline after v1.1.
+
+SML Layer Positioning
+
+The SML layer is explicitly positioned as:
+
+Order / Material -> SML -> Material Risk -> Waiver -> Work Order Release
+
+Meaning:
+
+* Order / Material provides demand and material context.
+* SML records shortage fact and tracking state.
+* Material Risk classifies operational severity using SML and other evidence where applicable.
+* Waiver governs controlled exception / deviation where needed.
+* Work Order Release remains the downstream release decision layer.
+
+PLAN / Trial material control stack now includes SML tracking layer (Shortage Fact + ETA + Owner + Overdue + Escalation).
+
+Trial Minimum Core Fields
+
+During Trial, the SML UI / workflow surface must preserve, at minimum:
+
+* shortage fact
+* shortage item / material reference
+* affected order / work order / demand reference where applicable
+* shortage quantity or shortage indicator
+* ETA or ETA status
+* accountable owner
+* follow-up status
+* overdue / aging signal
+* escalation state where overdue or unresolved
+
+The minimum fields are tracking governance only.
+They do not authorize production, Waiver, release, or Risk decision by themselves.
+
+Status Baseline
+
+SML status must remain simple and readable.
+Minimum status baseline may include:
+
+* Open / New
+* Follow-up
+* ETA Confirmed
+* Overdue
+* Escalated
+* Resolved / Closed
+
+Status wording may be refined downstream, but the workflow must preserve the meaning that SML tracks shortage fact and follow-up state, not final Risk / Waiver / Release decision.
+
+ETA Empty / Unknown Rule
+
+Empty ETA must not be treated as safe.
+Unknown ETA must be visible as unknown / not confirmed.
+If ETA is missing, unclear, or not credible, the SML record must remain reviewable and must not silently look resolved.
+ETA empty / unknown may support downstream Material Risk trigger review, but does not itself decide final Risk / Waiver / Release outcome.
+
+Overdue / Aging Governance
+
+SML must make overdue / aging visible.
+Overdue / aging should be calculated from the relevant required date, follow-up due date, promised ETA, or trial-defined tracking clock where applicable.
+Overdue records must not disappear from the operator or reviewer surface merely because no action was taken.
+Formal auto-trigger framework for Overdue still requires downstream implementation definition.
+S4 "high overdue ratio" should align numerically with S9 (>30%) downstream.
+
+SML -> Material Risk Trigger
+
+SML may trigger Material Risk review when shortage fact and tracking evidence show operational threat indicators, including but not limited to:
+
+* no ETA
+* ETA after need date
+* repeated overdue
+* high overdue ratio
+* shortage affects current or next planned production window
+* owner missing or follow-up stalled
+* escalation required but not completed
+
+The trigger is a review trigger only.
+It does not classify final Material Risk by itself.
+
+SML -> Material Risk Boundary
+
+SML provides shortage fact and tracking evidence to Material Risk.
+Material Risk remains the governed severity-classification layer.
+SML must not collapse into R1 / R2 / R3 decision logic.
+SML may feed Risk, but SML does not replace Risk Classification or Risk UI.
+
+SML -> Waiver
+
+SML may indicate that shortage or material readiness requires Waiver review where controlled deviation, substitute use, temporary exception, or customer / quality / process exception is involved.
+SML does not approve Waiver.
+SML does not replace Waiver evidence, authority, review, or approval.
+SML must not make a shortage workaround look approved by tracking it.
+
+SML -> Release
+
+SML may provide release-relevant visibility to Work Order Release.
+SML does not decide release.
+Release must still apply its own governed release criteria and must see SML status, Material Risk signal, and Waiver state where relevant.
+Release-layer minimum visibility form for SML + Risk + Waiver still requires downstream UI definition.
+
+Trial Audit Rule
+
+During Trial, SML records must remain audit-readable.
+Minimum audit should be able to show:
+
+* what shortage was recorded
+* when it was recorded
+* who owns follow-up
+* ETA / unknown ETA state
+* aging / overdue state
+* escalation state
+* whether Material Risk, Waiver, or Release review was triggered
+* whether the shortage was resolved, still open, or escalated
+
+Trial audit must preserve SML / Risk / Waiver / Release separation.
+
+Accountability Rule
+
+Every open SML shortage must have an accountable owner or an explicit owner-missing / unassigned state.
+Owner-missing must be visible and cannot be treated as normal completion.
+Escalation must remain visible where owner follow-up is overdue, missing, or ineffective.
+Accountability is tracking accountability only; it does not authorize release or Waiver.
+
+Readability Rule
+
+SML UI / workflow must make the shortage control state readable quickly enough for operational follow-up.
+At minimum, a user should be able to see:
+
+* what is short
+* whether ETA is known
+* who owns follow-up
+* whether it is overdue
+* whether escalation is needed or already active
+
+Readability must not weaken evidence, Risk, Waiver, Release, Trial, W2, or Blueprint governance.
+
+Fixed Prohibitions
+
+This card forbids:
+
+* collapsing SML into Material Risk
+* collapsing SML into Waiver
+* collapsing SML into Work Order Release
+* treating SML as final Risk decision
+* treating SML as Waiver approval
+* treating SML as Release approval
+* treating empty ETA as safe or resolved
+* hiding overdue / aging state
+* hiding owner-missing or stalled follow-up state
+* auto-stopping production by SML alone
+* auto-authorizing production by SML alone
+* using SML Trial observations as production authorization
+* altering Trial / W2 / Blueprint governance through SML workflow
+* using SML tracking to bypass existing frozen governance
+
+Final-review warning notes, non-blocking only
+
+1. S4 "high overdue ratio" should align numerically with S9 (>30%) downstream
+2. Formal auto-trigger framework for Overdue still requires downstream implementation definition
+3. Release-layer minimum visibility form for SML + Risk + Waiver still requires downstream UI definition
