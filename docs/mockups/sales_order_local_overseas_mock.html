@@ -8,7 +8,7 @@
 :root{
   --bg:#fcfcfb;--panel:#fcfdfe;--header:#fbfdfe;--line:#d6e1ea;--line-strong:#d6e1ea;--text:#2f4a66;--muted:#6b8096;--title:#2f4a66;--blue:#4f7fa8;
   --surface-soft:#fafbfc;--surface-muted:#f4f7f9;--surface-header:#dce8f1;--surface-card:#fdfefe;
-  --sidebar-width:236px;--topbar-height:96px;--tabbar-height:44px;--content-grid-min-width:980px;
+  --sidebar-width:112px;--topbar-height:96px;--tabbar-height:44px;--content-grid-min-width:980px;
   --panel-radius:14px;--panel-gap:16px;--panel-body-padding:14px 16px;--tab-content-top-gap:0px;
   --table-header-height:42px;--table-header-font-size:11px;--table-header-font-weight:700;--table-header-letter-spacing:.22px;--table-header-line-height:1.2;--table-header-text-transform:uppercase;
   --tab-font-size:13px;--tab-font-weight:650;--note-font-size:12px;--note-line-height:1.55;
@@ -34,25 +34,25 @@ body{margin:0;background:linear-gradient(180deg,#fefefe 0%,var(--bg) 180px,#f8f8
 .page{width:100%;max-width:none;margin:0;background:transparent;min-height:100vh;padding:0}
 .layout-shell{display:grid;grid-template-columns:var(--sidebar-width) minmax(0,1fr);gap:0;align-items:start;min-height:100vh;height:100vh;overflow:hidden}
 .side-nav{position:sticky;top:0;height:100vh;min-height:100vh;display:flex;flex-direction:column;border-right:1px solid var(--line);border-top:none;border-left:none;border-bottom:none;border-radius:0;background:rgba(251,253,254,.94);box-shadow:none;overflow:hidden}
-.side-nav-head{padding:18px 18px 14px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fcfdfe 0%,#f7f9fb 100%)}
-.side-nav-kicker{font-size:14px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--title)}
-.side-nav-title{margin-top:6px;font-size:12px;font-weight:600;line-height:1.45;color:var(--muted)}
-.side-nav-body{flex:1;min-height:0;padding:14px 12px 16px;overflow-y:auto;scrollbar-gutter:stable;scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track)}
+.side-nav-head{display:none;padding:14px 10px 10px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fcfdfe 0%,#f7f9fb 100%);text-align:center}
+.side-nav-kicker{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--title);line-height:1.15}
+.side-nav-title{margin-top:4px;font-size:10px;font-weight:600;line-height:1.3;color:var(--muted)}
+.side-nav-body{flex:1;min-height:0;padding:8px 8px 12px;overflow-y:auto;scrollbar-gutter:stable;scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track)}
 .side-nav-body::-webkit-scrollbar{width:10px}
 .side-nav-body::-webkit-scrollbar-track{background:var(--scroll-track);border-radius:999px}
 .side-nav-body::-webkit-scrollbar-thumb{background:var(--scroll-thumb);border-radius:999px;border:2px solid var(--scroll-track)}
 .side-nav-body::-webkit-scrollbar-thumb:hover{background:var(--scroll-thumb-hover)}
 .side-nav-group{margin-top:4px}
-.side-nav-group + .side-nav-group{margin-top:14px;padding-top:14px;border-top:1px solid var(--soft-border)}
-.side-nav-label{padding:0 8px 8px;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted-soft)}
-.side-nav-item{display:flex;align-items:center;gap:9px;width:100%;margin:0;border:1px solid transparent;border-radius:12px;background:transparent;color:var(--muted);font-size:13px;font-weight:600;text-align:left;padding:10px 12px;cursor:pointer}
+.side-nav-group + .side-nav-group{margin-top:12px;padding-top:12px;border-top:1px solid var(--soft-border)}
+.side-nav-label{padding:0 4px 6px;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-soft);text-align:center}
+.side-nav-item{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:6px;width:100%;margin:0;border:1px solid transparent;border-radius:10px;background:transparent;color:var(--muted);font-size:13px;font-weight:600;text-align:center;padding:8px 6px;cursor:pointer;min-height:62px}
 .side-nav-item + .side-nav-item{margin-top:4px}
 .side-nav-item:hover{background:var(--row-hover);color:var(--text)}
-.side-nav-item.active{background:var(--primary-soft);border-color:#d4e1ec;color:var(--title);box-shadow:inset 0 1px 0 rgba(255,255,255,.74)}
-.side-nav-icon{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;color:#7b8fa2;flex:0 0 18px}
+.side-nav-item.active{background:var(--primary-soft);border-color:#d4e1ec;color:var(--title);box-shadow:inset 0 1px 0 rgba(255,255,255,.74),0 4px 10px rgba(79,127,168,.12)}
+.side-nav-icon{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;color:#7b8fa2;flex:0 0 20px}
 .side-nav-item.active .side-nav-icon{color:var(--blue)}
 .side-nav-icon svg{display:block;width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-.side-nav-item-label{min-width:0;line-height:1.25}
+.side-nav-item-label{display:block;flex:0 0 auto;min-width:0;width:100%;height:auto;line-height:1.3;white-space:normal;overflow-wrap:break-word;word-break:break-word;text-overflow:clip;font-size:10px}
 .workspace{min-width:0;padding:0 12px 18px 0;display:flex;flex-direction:column;min-height:100vh;height:100vh;overflow:hidden}
 .workspace-main{min-width:0;display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden}
 .sticky-shell{position:sticky;top:0;z-index:50;margin:0 0 2px;background:rgba(251,253,254,.965);backdrop-filter:blur(14px);border-top:none;border-right:none;border-bottom:1px solid var(--line-strong);border-left:none;border-radius:0;box-shadow:0 1px 0 rgba(214,225,234,.78),0 10px 22px rgba(79,127,168,.05);overflow:visible}
@@ -104,7 +104,7 @@ body{margin:0;background:linear-gradient(180deg,#fefefe 0%,var(--bg) 180px,#f8f8
 .summary-warning-title{font-size:12px;font-weight:700;color:var(--title)}
 .summary-warning-text{font-size:12px;line-height:1.5;color:var(--muted)}
 .procurement-section{padding:var(--tab-content-top-gap) 0 12px}
-.table-wrap.procurement-wrap{position:relative;display:block;width:100%;max-width:1342px;height:auto;min-height:420px;flex:1;margin:0 auto;padding-bottom:8px;border:1px solid var(--line);border-radius:var(--panel-radius);background:#fdfefe;overflow:auto;scroll-padding-bottom:8px;box-shadow:inset 0 1px 0 rgba(255,255,255,.7)}
+.table-wrap.procurement-wrap{position:relative;display:block;width:100%;max-width:1342px;height:auto;min-height:420px;flex:1;margin:0 auto;padding-bottom:8px;border:1px solid #ccdce7;border-radius:var(--panel-radius);background:linear-gradient(180deg,#eef5fa 0%,#e4eef5 100%);overflow:auto;scroll-padding-bottom:8px;box-shadow:inset 0 1px 0 rgba(255,255,255,.7)}
 .procurement-table{width:1328px;min-width:1328px;border-collapse:separate;border-spacing:0;table-layout:fixed}
 .procurement-table thead th{position:sticky;top:0;z-index:16;height:auto;min-height:var(--table-header-height);padding:10px 8px;background:var(--surface-header);border-bottom:1px solid var(--line-strong);font-size:11px;font-weight:var(--table-header-font-weight);letter-spacing:.16px;line-height:1.2;text-transform:var(--table-header-text-transform);vertical-align:middle;color:var(--text);white-space:normal;overflow-wrap:anywhere;word-break:normal;box-shadow:0 1px 0 var(--line-strong)}
 .procurement-table tbody td{padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.35;background:#fdfefe}
@@ -156,7 +156,7 @@ body{margin:0;background:linear-gradient(180deg,#fefefe 0%,var(--bg) 180px,#f8f8
 .actions{display:flex;align-items:flex-start;min-width:0;padding-top:2px;padding-right:0}
 .action-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 .action-cluster{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;padding:0;border:none;border-radius:0;background:transparent;box-shadow:none}
-.btn{height:34px;padding:0 14px;border:1px solid var(--line);border-radius:9px;background:var(--surface-card);color:var(--muted);font-size:12px;font-weight:600;box-shadow:inset 0 1px 0 rgba(255,255,255,.78)}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:34px;height:auto;padding:7px 14px;border:1px solid var(--line);border-radius:9px;background:var(--surface-card);color:var(--muted);font-size:12px;font-weight:600;line-height:1.2;box-sizing:border-box;overflow:visible;box-shadow:inset 0 1px 0 rgba(255,255,255,.78)}
 .btn.emphasis{background:var(--primary-soft);border-color:#c7d8e6;color:var(--blue);font-weight:650}
 .btn.primary{background:#426f94;border-color:#426f94;color:#fbfdfe;font-weight:700;box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 2px 6px rgba(66,109,146,.18)}
 .btn.secondary{background:var(--secondary-soft);border-color:#d4e6dc;color:var(--secondary)}
@@ -180,7 +180,7 @@ body{margin:0;background:linear-gradient(180deg,#fefefe 0%,var(--bg) 180px,#f8f8
 .btn.emphasis.is-editing:hover{background:#f2f7fa;border-color:#d7e4ec;color:var(--title)}
 .btn-text{background:transparent;border-color:transparent;box-shadow:none;padding:0 8px;color:var(--muted)}
 .btn-text:hover{background:transparent;color:var(--text)}
-.btn-icon{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;margin-right:6px;font-size:0;line-height:1}
+.btn-icon{display:inline-flex;align-items:center;justify-content:center;flex:0 0 14px;width:14px;height:14px;margin-right:6px;font-size:0;line-height:1;overflow:visible}
 .btn.emphasis .btn-icon::before{content:"\270E";font-size:12px;line-height:1}
 .btn.primary .btn-icon::before{content:"\1F4BE";font-size:12px;line-height:1}
 .toolbar-shell{min-height:var(--tabbar-height);padding:0 20px;background:var(--surface-soft);border-bottom:1px solid var(--line)}
@@ -193,7 +193,7 @@ body{margin:0;background:linear-gradient(180deg,#fefefe 0%,var(--bg) 180px,#f8f8
 .zoom-notice{display:none;align-items:center;gap:8px;margin:8px 20px 0;padding:7px 11px;border:1px solid var(--line);border-radius:10px;background:rgba(250,251,252,.96);color:var(--muted);font-size:12px;line-height:1.35}
 .zoom-notice.show{display:inline-flex}
 .zoom-notice strong{color:var(--text);font-weight:700}
-.side-nav-action-shell{display:grid;gap:2px;margin:6px 0 6px 12px;padding:6px 0 2px 14px;border-left:1px solid var(--soft-border)}
+.side-nav-action-shell{display:grid;gap:3px;margin:6px 0 6px 12px;padding:8px 0 4px 14px;border-left:1px solid var(--soft-border);overflow:visible}
 .master-module-shell{
   display:grid;
   gap:6px;
@@ -213,7 +213,7 @@ body{margin:0;background:linear-gradient(180deg,#fefefe 0%,var(--bg) 180px,#f8f8
 .master-module-shell::-webkit-scrollbar-track{background:var(--scroll-track);border-radius:999px}
 .master-module-shell::-webkit-scrollbar-thumb{background:var(--scroll-thumb);border-radius:999px;border:2px solid var(--scroll-track)}
 .master-module-shell::-webkit-scrollbar-thumb:hover{background:var(--scroll-thumb-hover)}
-.side-nav-action-item{display:block;width:100%;padding:7px 10px;border:1px solid transparent;border-radius:999px;background:transparent;color:var(--muted);font-size:12px;font-weight:600;line-height:1.35;text-align:left;cursor:pointer;box-shadow:none;transition:background .16s ease,border-color .16s ease,color .16s ease,box-shadow .16s ease}
+.side-nav-action-item{display:flex;align-items:center;width:100%;min-height:32px;height:auto;padding:7px 10px;border:1px solid transparent;border-radius:999px;background:transparent;color:var(--muted);font-size:12px;font-weight:600;line-height:1.25;text-align:left;cursor:pointer;box-sizing:border-box;overflow:visible;box-shadow:none;transition:background .16s ease,border-color .16s ease,color .16s ease,box-shadow .16s ease}
 .side-nav-action-item:hover{color:var(--text);background:rgba(241,247,251,.9);border-color:#e0e9f0}
 .side-nav-action-item.active{background:linear-gradient(180deg,#fdfefe 0%,#eaf2f8 100%);border-color:#c9d9e6;color:var(--blue);box-shadow:inset 0 1px 0 rgba(255,255,255,.92),0 2px 6px rgba(79,127,168,.12)}
 .master-module-item{background:#f6fafc;border-color:#dbe6ee;color:#74889b;box-shadow:inset 0 1px 0 rgba(255,255,255,.86)}
@@ -363,7 +363,7 @@ body{margin:0;background:linear-gradient(180deg,#fefefe 0%,var(--bg) 180px,#f8f8
 .section-pane.data-pane#items .table-wrap,
 .section-pane.data-pane#delivery .table-wrap,
 .section-pane.data-pane#log .table-wrap{flex:1;min-height:0;overflow:visible}
-.field-row,.edit-row{padding:14px 0;border-top:1px solid var(--line)}.summary-sheet{max-width:1320px;margin:0 auto;border:1px solid var(--line);border-radius:var(--panel-radius);overflow:visible;background:var(--surface-soft);box-shadow:inset 0 1px 0 rgba(255,255,255,.82),0 2px 6px rgba(67,89,112,.035)}.summary-sheet table{width:100%;min-width:0;table-layout:fixed;border-collapse:collapse;font-size:14px}.summary-sheet td{padding:12px 14px;border-bottom:1px solid var(--soft-border);vertical-align:top}.summary-sheet .label{width:11.11%;height:var(--table-header-height);padding:11px 12px;font-size:var(--table-header-font-size);font-weight:var(--table-header-font-weight);line-height:var(--table-header-line-height);color:var(--text);background:var(--surface-header);letter-spacing:var(--table-header-letter-spacing);text-transform:var(--table-header-text-transform);vertical-align:middle}.summary-sheet .value{min-width:0;background:var(--surface-card);font-size:14px;line-height:1.4}.summary-note{padding-top:0}
+.field-row,.edit-row{padding:14px 0;border-top:1px solid var(--line)}.summary-sheet{width:100%;max-width:none;margin:0;border:1px solid var(--line);border-radius:var(--panel-radius);overflow:visible;background:var(--surface-soft);box-shadow:inset 0 1px 0 rgba(255,255,255,.82),0 2px 6px rgba(67,89,112,.035)}.summary-sheet table{width:100%;min-width:0;table-layout:fixed;border-collapse:collapse;font-size:14px}.summary-sheet td{padding:12px 14px;border-bottom:1px solid var(--soft-border);vertical-align:top}.summary-sheet .label{width:11.11%;height:var(--table-header-height);padding:11px 12px;font-size:var(--table-header-font-size);font-weight:var(--table-header-font-weight);line-height:var(--table-header-line-height);color:var(--text);background:var(--surface-header);letter-spacing:var(--table-header-letter-spacing);text-transform:var(--table-header-text-transform);vertical-align:middle}.summary-sheet .value{min-width:0;background:var(--surface-card);font-size:14px;line-height:1.4}.summary-note{padding-top:0}
 .field-label,.edit-label,.block-label{font-size:12px;font-weight:700;color:var(--blue);margin-bottom:8px;letter-spacing:.08px}
 .field-value,.block-value{font-size:15px;line-height:1.45;color:#314a65}
 .block{border:1px solid var(--soft-border);border-radius:14px;background:var(--surface-card);padding:14px 16px;box-shadow:inset 0 1px 0 rgba(255,255,255,.82),0 1px 3px rgba(67,89,112,.02)}
@@ -537,20 +537,154 @@ td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line
   border-color:#d8e4db;
   color:#5f7f6d;
 }
+.risk-decision-shell{display:grid;gap:10px;width:100%;max-width:100%;min-width:0;margin:0 auto;box-sizing:border-box;overflow-x:visible}
+.risk-decision-shell *{box-sizing:border-box}
+.risk-decision-title{font-size:18px;font-weight:700;line-height:1.25;color:var(--title)}
+.risk-decision-note{font-size:12px;line-height:1.5;color:var(--muted)}
+.risk-decision-card{display:grid;gap:9px;width:100%;max-width:100%;min-width:0;padding:11px 14px;border:1px solid #ccdce7;border-radius:14px;background:linear-gradient(180deg,#eef5fa 0%,#e4eef5 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.risk-decision-head{display:grid;gap:3px;padding-bottom:8px;border-bottom:1px solid #d6e3ec}
+.risk-decision-section-title{font-size:16px;font-weight:700;color:var(--title)}
+.risk-decision-section-copy{font-size:12px;line-height:1.4;color:var(--muted)}
+.risk-header-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;min-width:0;max-width:100%}
+.risk-header-item,.risk-status-example,.risk-breakdown-block{display:grid;gap:5px;min-width:0;padding:8px 10px;border:1px solid #d7e4ed;border-radius:11px;background:rgba(255,255,255,.72);box-shadow:inset 0 1px 0 rgba(255,255,255,.82)}
+.risk-header-label,.risk-breakdown-title{font-size:12px;font-weight:700;line-height:1.35;color:var(--blue)}
+.risk-header-value{font-size:14px;font-weight:700;line-height:1.35;color:var(--title);overflow-wrap:anywhere}
+.risk-status-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.risk-status-value{font-size:18px;font-weight:700;line-height:1.25;color:var(--title)}
+.risk-status-subtitle{font-size:13px;line-height:1.45;color:var(--muted)}
+.risk-breakdown-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.risk-breakdown-list,.risk-drill-list{display:grid;gap:6px;margin:0;padding:0;list-style:none}
+.risk-breakdown-list li,.risk-drill-list li{font-size:13px;line-height:1.45;color:var(--text);overflow-wrap:anywhere}
+.risk-severity-stack{display:grid;gap:8px}
+.risk-severity-group{display:grid;gap:7px;width:100%;max-width:100%;min-width:0;padding:9px 10px;border:1px solid #d7e4ed;border-radius:12px;background:rgba(255,255,255,.62);box-shadow:inset 0 1px 0 rgba(255,255,255,.82)}
+.risk-severity-group--critical{border-color:#d9bfc2;background:linear-gradient(180deg,#f7ebec 0%,#f0dfe2 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.86),0 8px 18px rgba(139,93,100,.08)}
+.risk-severity-title{font-size:14px;font-weight:800;line-height:1.35;color:var(--title)}
+.risk-severity-group--critical .risk-severity-title{color:#8b5d64}
+.risk-severity-items{display:grid;gap:6px}
+.risk-severity-group:not(.risk-severity-group--critical) .risk-severity-items{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.risk-severity-item{display:grid;gap:3px;min-width:0;padding:8px 10px;border:1px solid #d7e4ed;border-radius:11px;background:rgba(255,255,255,.78)}
+.risk-severity-item-title{font-size:13px;font-weight:800;line-height:1.35;color:var(--title)}
+.risk-severity-item-copy,.risk-severity-action{font-size:13px;line-height:1.45;color:var(--text);overflow-wrap:anywhere}
+.risk-severity-action{font-weight:700;color:#5f7589}
+.risk-severity-group--critical .risk-severity-item{border-color:#d9bfc2}
+.risk-severity-group--critical .risk-severity-action{color:#8b5d64}
+.risk-followup-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px;min-width:0}
+.risk-followup-item{display:grid;gap:4px;min-width:0;padding:8px 10px;border:1px solid #d7e4ed;border-radius:11px;background:rgba(255,255,255,.78)}
+.risk-followup-title{font-size:13px;font-weight:800;line-height:1.35;color:var(--title)}
+.risk-followup-line{font-size:13px;line-height:1.45;color:var(--text);overflow-wrap:anywhere}
+.risk-followup-line strong{color:var(--blue)}
+.risk-drill-text{font-size:13px;line-height:1.5;color:var(--text)}
+.boss-read-shell{display:grid;gap:10px;width:100%;max-width:100%;min-width:0;margin:0 auto;box-sizing:border-box;overflow-x:visible}
+.boss-read-shell *{box-sizing:border-box}
+.boss-read-title{font-size:18px;font-weight:700;line-height:1.25;color:var(--title)}
+.boss-read-note{font-size:12px;line-height:1.5;color:var(--muted)}
+.boss-read-card{display:grid;gap:9px;width:100%;max-width:100%;min-width:0;padding:11px 14px;border:1px solid #ccdce7;border-radius:14px;background:linear-gradient(180deg,#eef5fa 0%,#e4eef5 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.boss-read-head{display:grid;gap:3px;padding-bottom:8px;border-bottom:1px solid #d6e3ec}
+.boss-read-section-title{font-size:16px;font-weight:700;color:var(--title)}
+.boss-read-section-copy{font-size:12px;line-height:1.4;color:var(--muted)}
+.boss-read-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;min-width:0;max-width:100%}
+.boss-read-item{display:grid;gap:5px;min-width:0;padding:8px 10px;border:1px solid #d7e4ed;border-radius:11px;background:rgba(255,255,255,.72);box-shadow:inset 0 1px 0 rgba(255,255,255,.82)}
+.boss-read-label{font-size:12px;font-weight:700;line-height:1.35;color:var(--blue)}
+.boss-read-value{font-size:14px;font-weight:700;line-height:1.35;color:var(--title);overflow-wrap:anywhere}
+.boss-read-lines{display:grid;gap:7px;min-width:0}
+.boss-read-line{min-width:0;padding:8px 10px;border:1px solid #d7e4ed;border-radius:11px;background:rgba(255,255,255,.72);font-size:13px;line-height:1.45;color:var(--text);overflow-wrap:anywhere}
+.waiver-records-shell{display:grid;gap:10px;width:100%;max-width:100%;min-width:0;margin:0 auto;box-sizing:border-box;overflow-x:visible}
+.waiver-records-shell *{box-sizing:border-box}
+.waiver-records-card{display:grid;gap:10px;width:100%;max-width:100%;min-width:0;padding:12px 14px;border:1px solid #ccdce7;border-radius:14px;background:linear-gradient(180deg,#eef5fa 0%,#e4eef5 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.waiver-records-head{display:grid;gap:3px;padding-bottom:8px;border-bottom:1px solid #d6e3ec}
+.waiver-records-title{font-size:16px;font-weight:700;color:var(--title)}
+.waiver-records-copy,.waiver-records-preview-note{font-size:12px;line-height:1.45;color:var(--muted)}
+.waiver-records-preview-note{font-weight:700;color:#8b5d64}
+.waiver-records-table-wrap{width:100%;max-width:100%;min-width:0;overflow:auto;border:1px solid #ccdce7;border-radius:12px;background:#fdfefe;box-shadow:inset 0 1px 0 rgba(255,255,255,.86)}
+.waiver-records-table{width:100%;min-width:1180px;border-collapse:separate;border-spacing:0;table-layout:fixed}
+.waiver-records-table th,.waiver-records-table td{padding:7px 8px;border-bottom:1px solid #e0e9f0;border-right:1px solid #edf2f5;font-size:12px;line-height:1.3;text-align:left;vertical-align:middle;color:var(--text);white-space:normal;overflow-wrap:anywhere;word-break:break-word;background:#fdfefe}
+.waiver-records-table th{background:#e8f1f7;color:var(--title);font-weight:700}
+.waiver-records-table th:last-child,.waiver-records-table td:last-child{border-right:none}
+.waiver-records-table tbody tr:last-child td{border-bottom:none}
+.waiver-records-status{display:inline-flex;align-items:center;justify-content:center;min-height:22px;padding:3px 9px;border-radius:999px;border:1px solid #d7e4ed;background:#eef5f9;color:#5f7589;font-size:10px;font-weight:700;letter-spacing:.03em;text-transform:uppercase}
+.waiver-records-status.approved{border-color:#d4e6dc;background:#edf6f1;color:#6fa38a}
+.waiver-records-status.pending{border-color:#d7e2e8;background:#eef5f8;color:#698094}
+.waiver-records-status.review{border-color:#d6e1ea;background:#eef4f8;color:#6b8096}
+.waiver-records-summary-row td{height:44px}
+.waiver-records-change-summary{font-weight:700;color:var(--title);line-height:1.35}
+.waiver-records-trace-anchor{display:grid;gap:1px;font-size:11px;line-height:1.2;color:var(--text)}
+.waiver-records-trace-anchor strong{font-size:12px;color:var(--title)}
+.waiver-records-expand-btn{height:28px;padding:0 10px;border-radius:8px;font-size:11px;white-space:nowrap}
+.waiver-records-detail-row[hidden]{display:none}
+.waiver-records-detail-cell{padding:10px 12px !important;background:#f5f9fc !important;vertical-align:top !important}
+.waiver-records-detail-panel{display:grid;gap:10px;padding:10px;border:1px solid #d6e3ec;border-radius:12px;background:#fff}
+.waiver-records-detail-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;min-width:0}
+.waiver-records-trace-spine{display:grid;gap:9px;min-width:0;padding:10px;border:1px solid #d6e3ec;border-radius:10px;background:#f8fbfd}
+.waiver-records-trace-title{font-size:12px;font-weight:700;color:var(--title);line-height:1.3}
+.waiver-records-linked-list{display:grid;gap:5px;margin-top:2px;padding-left:12px;border-left:2px solid #d6e3ec}
+.waiver-records-linked-row{font-size:12px;line-height:1.4;color:var(--text);overflow-wrap:anywhere}
+.waiver-records-detail-divider{height:1px;background:#dbe7ee}
+.waiver-records-detail-item{display:grid;gap:4px;min-width:0;padding:8px 10px;border:1px solid #dce7ee;border-radius:10px;background:#f8fbfd}
+.waiver-records-detail-item.wide{grid-column:span 2}
+.waiver-records-detail-item.full{grid-column:1 / -1}
+.waiver-records-detail-label{font-size:11px;font-weight:700;color:var(--blue);line-height:1.3}
+.waiver-records-detail-value{font-size:12px;line-height:1.4;color:var(--text);overflow-wrap:anywhere}
+.waiver-records-preview-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 24px;min-width:0}
+.waiver-records-preview-grid .create-row{min-width:0}
+.waiver-records-preview-grid .input-line,.waiver-records-preview-grid .select-line,.waiver-records-preview-grid .textarea-line{width:100%;max-width:100%;min-width:0;background:#eef3f6;color:#7c8d9d;border-color:#d3dde6;box-shadow:inset 0 1px 0 rgba(255,255,255,.78)}
+.waiver-records-preview-grid .textarea-line{min-height:74px;resize:none}
+.waiver-records-static-field{display:flex;align-items:center;min-height:38px;padding:9px 12px;border:1px solid #d3dde6;border-radius:8px;background:#eef3f6;color:#7c8d9d;font-size:13px;line-height:1.35}
+@media (max-width:1200px){
+  .waiver-records-preview-grid{grid-template-columns:1fr}
+  .waiver-records-detail-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+.sales-search-shell{display:grid;gap:12px;width:100%;max-width:100%;min-width:0;margin:0 auto;box-sizing:border-box;overflow-x:visible}
+.sales-search-shell *{box-sizing:border-box}
+.sales-search-card{display:grid;gap:10px;width:100%;max-width:100%;min-width:0;padding:12px 14px;border:1px solid #ccdce7;border-radius:14px;background:linear-gradient(180deg,#eef5fa 0%,#e4eef5 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.sales-search-note{font-size:12px;font-weight:700;line-height:1.4;color:var(--blue)}
+.sales-search-filter-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;min-width:0}
+.sales-search-filter{display:grid;gap:5px;min-width:0}
+.sales-search-filter label{font-size:12px;font-weight:700;line-height:1.35;color:var(--title);overflow-wrap:anywhere}
+.sales-search-filter input{width:100%;max-width:100%;min-width:0;height:34px;padding:7px 9px;border:1px solid #cfdde7;border-radius:9px;background:#f8fbfd;color:#76889a;font-size:13px}
+.sales-search-filter input::placeholder{color:#a9b7c3;font-weight:400;opacity:1}
+.sales-search-filter input.selected-search-value{font-weight:700;color:#244866}
+.sales-search-filter input:disabled{opacity:1;cursor:default}
+.sales-search-table-wrap{width:100%;max-width:100%;min-width:0;overflow-x:visible;border:1px solid #ccdce7;border-radius:14px;background:#fdfefe;box-shadow:inset 0 1px 0 rgba(255,255,255,.86)}
+.sales-search-table{width:100%;max-width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed}
+.sales-search-table th,.sales-search-table td{padding:7px 7px;border-bottom:1px solid #e0e9f0;border-right:1px solid #edf2f5;font-size:12px;line-height:1.3;text-align:left;vertical-align:top;white-space:normal;overflow-wrap:anywhere;word-break:normal;color:var(--text)}
+.sales-search-table th{background:#e8f1f7;color:var(--title);font-weight:700;cursor:default;user-select:text}
+.sales-search-table th:last-child,.sales-search-table td:last-child{border-right:none}
+.sales-search-table tbody tr:last-child td{border-bottom:none}
+.sales-search-table tbody tr:nth-child(even) td{background:#f8fbfd}
+.sales-search-table tbody tr.sales-search-selected td{background:#eef5fa;border-top:1px solid #c6d7e3;border-bottom:1px solid #c6d7e3}
+.sales-search-selected-mark{display:block;margin-top:3px;font-size:11px;font-weight:700;color:var(--blue);line-height:1.25}
+.sales-search-col-so{width:13%}.sales-search-col-customer{width:18%}.sales-search-col-status{width:10%}.sales-search-col-type{width:11%}.sales-search-col-date{width:12%}.sales-search-col-items{width:18%}.sales-search-col-ship{width:12%}.sales-search-col-waiver{width:6%;text-align:center}
+.sales-search-empty{display:none;padding:10px 12px;border:1px dashed #ccdce7;border-radius:12px;background:#f8fbfd;color:var(--muted);font-size:13px;line-height:1.4}
+.sales-search-empty.is-visible{display:block}
+.sales-search-next-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:52px;padding:7px 10px;border:1px solid #ccdce7;border-radius:10px;background:#f8fbfd;box-shadow:inset 0 1px 0 rgba(255,255,255,.88)}
+.sales-search-selected-context{flex:1 1 230px;min-width:180px;font-size:12px;font-weight:700;line-height:1.35;color:var(--title);overflow-wrap:anywhere}
+.sales-search-selected-context span{font-weight:600;color:var(--muted)}
+.sales-search-restricted-note{font-size:11px;line-height:1.3;color:#7d8994}
+.sales-search-action-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.sales-search-action-row .btn{min-height:28px;height:auto;padding:5px 9px;font-size:12px}
+.sales-search-action-row .sales-search-restricted-action{opacity:.6;cursor:not-allowed;color:#7d8994;background:#eef2f5;border-color:#d3dde6}
+.sales-search-restricted-note{font-weight:700;color:#7d8994}
+@media (max-width:1100px){
+  .sales-search-filter-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:1100px){
+  .risk-header-grid,.risk-status-grid,.risk-breakdown-grid{grid-template-columns:1fr}
+  .risk-severity-group:not(.risk-severity-group--critical) .risk-severity-items{grid-template-columns:1fr}
+}
 .note{font-size:var(--note-font-size);color:var(--muted);margin-top:10px;line-height:var(--note-line-height)}.contact-toggle{display:inline-block;margin-top:6px;font-size:12px;color:var(--blue);background:none;border:none;padding:0;cursor:pointer;text-decoration:underline}.contact-details{display:none;margin-top:6px;font-size:var(--note-font-size);color:var(--muted);line-height:1.5}.contact-details.show{display:block}.support-text{margin-top:6px;font-size:var(--note-font-size);color:var(--muted);line-height:var(--note-line-height)}.view-only{display:block}.draft-only{display:none}body[data-order-state="edit"] .view-only{display:none}body[data-order-state="edit"] .draft-only{display:block}
 .create-only{display:none}
 body[data-flow-action="create"] .create-only{display:block}
 body[data-flow-action="create"] .create-hidden{display:none!important}
 body[data-flow-action="create"] .workspace-tab:not([data-value="summary"]){opacity:.42;pointer-events:none}
 body[data-flow-action="create"] .workspace-tab:not([data-value="summary"]):hover{color:var(--muted)}
-.create-order-shell{display:grid;gap:10px;width:100%;max-width:1160px;margin:0 auto;box-sizing:border-box}
+.create-order-shell{display:grid;gap:10px;width:100%;max-width:none;margin:0;box-sizing:border-box}
 .create-form-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:4px 0 2px}
 .create-form-title{font-size:18px;font-weight:700;color:var(--title);line-height:1.25}
 .master-stage-content-panel .create-order-shell{padding-left:0}
 .master-stage-content-panel .create-form-head{padding-left:0;padding-right:0}
 .create-form-tools{display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-wrap:wrap}
 .create-form-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.create-form-actions .btn{height:32px;padding:0 12px}
+.create-form-actions .btn{min-height:32px;height:auto;padding:6px 12px}
 .create-inline-note{margin-top:6px;font-size:12px;line-height:1.45}
 .create-inline-note.error{color:#8e6262}
 .create-inline-note.warning{color:#6f8698}
@@ -563,6 +697,7 @@ body[data-flow-action="create"] .workspace-tab:not([data-value="summary"]):hover
 .master-data-option{height:30px;padding:0 10px;border:1px solid transparent;border-radius:8px;background:transparent;color:var(--text);font-size:12px;font-weight:600;text-align:left}
 .master-data-option:hover{background:var(--row-hover)}
 .create-sheet{border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,#fcfdfe 0%,#f8fafc 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.84),0 2px 5px rgba(67,89,112,.025)}
+.create-order-shell .create-sheet{border-color:#ccdce7;background:linear-gradient(180deg,#eef5fa 0%,#e4eef5 100%)}
 .create-sheet-inner{padding:14px 18px 16px}
 .create-top-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 28px;padding-bottom:14px;border-bottom:1px solid var(--soft-border)}
 .create-top-grid .create-row{justify-self:stretch;min-width:0}
@@ -570,6 +705,16 @@ body[data-flow-action="create"] .workspace-tab:not([data-value="summary"]):hover
 .create-bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 28px;padding-top:14px;border-top:1px solid var(--soft-border)}
 .hidden{display:none!important}
 .create-audit-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 28px;padding-top:14px;margin-top:14px;border-top:1px solid var(--soft-border)}
+.pre-save-check-card{display:grid;gap:12px;margin-top:14px;padding:14px 16px;border:1px solid #ccdce7;border-radius:16px;background:linear-gradient(180deg,#eef5fa 0%,#e4eef5 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.pre-save-check-head{display:grid;gap:4px;padding-bottom:10px;border-bottom:1px solid #d6e3ec}
+.pre-save-check-title{font-size:16px;font-weight:700;color:var(--title)}
+.pre-save-check-note{font-size:12px;line-height:1.45;color:var(--muted)}
+.pre-save-check-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.pre-save-check-group{display:grid;gap:7px;min-width:0;padding:10px 12px;border:1px solid #d7e4ed;border-radius:12px;background:rgba(255,255,255,.72);box-shadow:inset 0 1px 0 rgba(255,255,255,.82)}
+.pre-save-check-group-title{font-size:12px;font-weight:700;color:var(--blue);line-height:1.35}
+.pre-save-check-list{display:grid;gap:5px;margin:0;padding:0;list-style:none}
+.pre-save-check-list li{position:relative;padding-left:14px;font-size:12px;line-height:1.4;color:var(--text);overflow-wrap:anywhere}
+.pre-save-check-list li::before{content:"";position:absolute;left:0;top:.58em;width:5px;height:5px;border-radius:999px;background:#7ea7c6}
 .create-column{display:grid;gap:10px;min-width:0}
 .create-row{display:grid;grid-template-columns:148px minmax(0,1fr);align-items:center;gap:12px;min-width:0}
 .create-row.create-route-row{align-items:start}
@@ -582,10 +727,12 @@ body[data-flow-action="create"] .workspace-tab:not([data-value="summary"]):hover
   .master-stage-content-panel .create-order-shell .create-top-grid,
   .master-stage-content-panel .create-order-shell .create-main-grid,
   .master-stage-content-panel .create-order-shell .create-bottom-grid,
-  .master-stage-content-panel .create-order-shell .create-audit-grid{grid-template-columns:1fr}
+  .master-stage-content-panel .create-order-shell .create-audit-grid,
+  .master-stage-content-panel .create-order-shell .pre-save-check-grid{grid-template-columns:1fr}
 }
 .read-only-input{display:flex;align-items:center;min-height:38px;padding:9px 12px;border:1px solid #d3dde6;border-radius:8px;background:#eef3f6;color:var(--title);font-size:14px;font-weight:700;box-shadow:inset 0 1px 0 rgba(255,255,255,.78)}
 .read-only-input code{font-family:Consolas,"SFMono-Regular",Menlo,monospace;font-size:13px}
+#create-sales-order-no.read-only-input{background:#fff}
 body[data-flow-action="create"] .create-sheet .input-line,
 body[data-flow-action="create"] .create-sheet .mock-dropdown-toggle{
   background:#edf2f5;
@@ -631,7 +778,7 @@ body[data-flow-action="create"] .route-field-shell .route-segment{min-width:68px
 .sales-order-create-placeholder{display:grid;gap:14px}
 .sales-order-create-placeholder .master-stage-placeholder{padding:16px 18px}
 .sales-order-create-placeholder-note{font-size:12px;line-height:1.55;color:var(--muted)}
-.commercial-create-shell,.order-items-create-shell,.shipping-detail-create-shell{display:grid;gap:10px;width:100%;max-width:1160px;margin:0 auto;box-sizing:border-box}
+.commercial-create-shell,.order-items-create-shell,.shipping-detail-create-shell{display:grid;gap:10px;width:100%;max-width:none;margin:0;box-sizing:border-box}
 .create-order-shell *,.commercial-create-shell *,.order-items-create-shell *,.shipping-detail-create-shell *{box-sizing:border-box}
 .create-order-shell .create-sheet,.commercial-create-shell .create-sheet,.order-items-create-shell .create-sheet,.shipping-detail-create-shell .create-sheet{width:100%;max-width:100%;min-width:0}
 .create-order-shell .input-line,.create-order-shell .select-line,.create-order-shell .textarea-line,.commercial-create-shell .input-line,.commercial-create-shell .select-line,.commercial-create-shell .textarea-line,.order-items-create-shell .input-line,.order-items-create-shell .select-line,.order-items-create-shell .textarea-line,.shipping-detail-create-shell .input-line,.shipping-detail-create-shell .select-line,.shipping-detail-create-shell .textarea-line{max-width:100%;overflow-wrap:anywhere}
@@ -652,8 +799,8 @@ body[data-flow-action="create"] .route-field-shell .route-segment{min-width:68px
 .commercial-context-card{padding:8px 11px;border:1px solid var(--soft-border);border-radius:11px;background:linear-gradient(180deg,#fdfefe 0%,#f7fafc 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.88)}
 .commercial-context-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue)}
 .commercial-context-value{margin-top:4px;font-size:13px;font-weight:700;line-height:1.22;color:var(--title)}
-.commercial-section-card,.order-items-card,.shipping-detail-section-card{padding:14px 16px;border:1px solid var(--soft-border);border-radius:16px;background:#fcfdfe;box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
-.commercial-section-card{padding:15px 16px 16px;border-radius:15px;border-color:#dbe5ec;background:linear-gradient(180deg,#fcfdfe 0%,#f8fbfd 100%)}
+.commercial-section-card,.order-items-card,.shipping-detail-section-card{padding:14px 16px;border:1px solid #ccdce7;border-radius:16px;background:linear-gradient(180deg,#eef5fa 0%,#e4eef5 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.commercial-section-card{padding:15px 16px 16px;border-radius:15px;border-color:#ccdce7;background:linear-gradient(180deg,#eef5fa 0%,#e4eef5 100%)}
 .commercial-section-head,.order-items-card-head,.shipping-detail-section-head{display:grid;gap:4px;margin-bottom:10px}
 .commercial-section-head{gap:5px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #e6edf2}
 .commercial-section-title,.order-items-card-title,.shipping-detail-section-title{font-size:16px;font-weight:700;color:var(--title)}
@@ -692,7 +839,7 @@ body[data-flow-action="create"] .route-field-shell .route-segment{min-width:68px
 .order-items-control-bar{display:flex;justify-content:flex-start}
 .order-items-add-item{height:32px;padding:0 12px;border-radius:9px;font-size:12px}
 .order-items-item-block{display:grid;gap:12px;padding:12px;border:1px solid #dbe5ec;border-radius:16px;background:linear-gradient(180deg,#fdfefe 0%,#f8fbfd 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.92)}
-.order-items-item-block > .order-items-card{background:linear-gradient(180deg,#f2f7fb 0%,#eaf2f7 100%);border-color:#d4e1ea}
+.order-items-item-block > .order-items-card{background:linear-gradient(180deg,#eef5fa 0%,#e4eef5 100%);border-color:#ccdce7}
 .order-items-item-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:2px 2px 4px;border-bottom:1px solid #e6edf2}
 .order-items-item-title{font-size:17px;font-weight:700;color:var(--title)}
 .order-items-remove-item{height:30px;padding:0 10px;border-radius:8px;font-size:11px;color:#8e6262;background:#f8eeee;border-color:#e0c9c9}
@@ -733,23 +880,71 @@ body[data-flow-action="create"] .route-field-shell .route-segment{min-width:68px
 .order-items-add-batch{height:30px;padding:0 11px;border-radius:9px;font-size:12px}
 .order-items-remove-batch{height:28px;padding:0 9px;border-radius:8px;font-size:11px;color:#8e6262;background:#f8eeee;border-color:#e0c9c9}
 .order-items-remove-batch:hover{background:#f4e6e6;border-color:#d6bdbd}
-.order-items-waiver-card{border-color:#d9e4eb;background:linear-gradient(180deg,#fcfdfe 0%,#f8fbfd 100%)}
+.order-items-waiver-card{border-color:#ccdce7;background:linear-gradient(180deg,#eef5fa 0%,#e4eef5 100%)}
 .order-items-waiver-list{display:grid;gap:10px}
+.order-items-waiver-list [hidden],.order-items-waiver-detail-shell[hidden]{display:none !important}
 .order-items-waiver-row{display:grid;gap:10px;padding:10px;border:1px solid #dfe8ef;border-radius:12px;background:#fff;min-width:0}
 .order-items-waiver-row-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .order-items-waiver-row-no{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;border-radius:999px;background:#edf4f9;color:var(--blue);font-size:12px;font-weight:700}
 .order-items-waiver-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 14px;min-width:0}
+.order-items-waiver-detail-shell{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 14px;min-width:0;grid-column:1 / -1}
+.order-items-waiver-empty{padding:10px 12px;border:1px dashed #c9d7e2;border-radius:10px;background:#f7fafc;color:#7c8d9d;font-size:12px;line-height:1.45}
+.order-items-material-table-shell{display:grid;gap:8px;grid-column:1 / -1}
+.order-items-material-table-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.order-items-material-table-title{font-size:12px;font-weight:700;line-height:1.35;color:var(--blue)}
+.order-items-material-table-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.order-items-add-material,.order-items-clear-material{height:28px;padding:0 10px;border-radius:8px;font-size:11px}
+.order-items-clear-material{color:#8e6262;background:#f8eeee;border-color:#e0c9c9}
+.order-items-clear-material:hover{background:#f4e6e6;border-color:#d6bdbd}
+.order-items-material-table-wrap{border:1px solid #d3dde6;border-radius:8px;background:#eef3f6;overflow:hidden}
+.order-items-material-table{width:100%;border-collapse:collapse;table-layout:fixed}
+.order-items-material-table th,.order-items-material-table td{padding:8px 10px;border-bottom:1px solid #d9e3ea;text-align:left;vertical-align:top;font-size:12px;line-height:1.35;color:#355066;overflow-wrap:anywhere;word-break:break-word}
+.order-items-material-table th{font-weight:700;color:var(--blue);background:#e7f0f6}
+.order-items-material-table tr:last-child td{border-bottom:none}
+.order-items-material-table th:nth-child(1),.order-items-material-table td:nth-child(1){width:34px}
+.order-items-material-table th:nth-child(2),.order-items-material-table td:nth-child(2){width:18%}
+.order-items-material-table th:nth-child(3),.order-items-material-table td:nth-child(3){width:16%}
+.order-items-material-table th:nth-child(4),.order-items-material-table td:nth-child(4){width:34px;text-align:center}
+.order-items-material-table th:nth-child(5),.order-items-material-table td:nth-child(5){width:18%}
+.order-items-material-table th:nth-child(6),.order-items-material-table td:nth-child(6){width:16%}
+.order-items-material-table th:nth-child(7),.order-items-material-table td:nth-child(7){width:16%}
+.order-items-material-table th:nth-child(8),.order-items-material-table td:nth-child(8){width:74px}
+.order-items-material-table .input-line,.order-items-material-table .select-line{width:100%;max-width:100%;min-width:0;min-height:34px;font-size:12px;padding:7px 9px}
+.order-items-material-arrow{font-weight:700;color:var(--blue)}
+.order-items-remove-material{height:28px;padding:0 9px;border-radius:8px;font-size:11px;color:#8e6262;background:#f8eeee;border-color:#e0c9c9}
+.order-items-remove-material:hover{background:#f4e6e6;border-color:#d6bdbd}
+.order-items-material-empty td{padding:10px 12px;color:#7c8d9d;background:#f7fafc}
 .order-items-waiver-field{display:grid;gap:5px;min-width:0}
 .order-items-waiver-field--full{grid-column:1 / -1}
 .order-items-waiver-field label{font-size:12px;font-weight:700;color:var(--blue);line-height:1.35;white-space:normal;overflow-wrap:anywhere}
 .order-items-waiver-field .input-line,.order-items-waiver-field .select-line,.order-items-waiver-field .textarea-line{width:100%;max-width:100%;min-width:0}
 .order-items-waiver-field .textarea-line{min-height:64px;resize:vertical;overflow-wrap:anywhere}
+.approval-evidence-list{display:grid;gap:8px}
+.approval-evidence-list-title{font-size:12px;font-weight:700;line-height:1.35;color:var(--blue)}
+.approval-evidence-table-wrap{border:1px solid #d3dde6;border-radius:8px;background:#eef3f6;overflow:hidden}
+.approval-evidence-table{width:100%;border-collapse:collapse;table-layout:fixed}
+.approval-evidence-table th,.approval-evidence-table td{padding:8px 10px;border-bottom:1px solid #d9e3ea;text-align:left;vertical-align:top;font-size:12px;line-height:1.35;color:#355066;overflow-wrap:anywhere;word-break:break-word}
+.approval-evidence-table th{font-weight:700;color:var(--blue);background:#e7f0f6}
+.approval-evidence-table tr:last-child td{border-bottom:none}
+.approval-evidence-hint{font-size:12px;line-height:1.45;color:var(--muted)}
+.order-items-approval-entry{display:grid;gap:8px}
+.order-items-approval-entry-title{font-size:12px;font-weight:700;line-height:1.35;color:var(--blue)}
+.order-items-approval-entry-table-wrap{border:1px solid #d3dde6;border-radius:8px;background:#eef3f6;overflow:hidden}
+.order-items-approval-entry-table{width:100%;border-collapse:collapse;table-layout:fixed}
+.order-items-approval-entry-table th,.order-items-approval-entry-table td{padding:8px 10px;border-bottom:1px solid #d9e3ea;text-align:left;vertical-align:top;font-size:12px;line-height:1.35;color:#355066;overflow-wrap:anywhere;word-break:break-word}
+.order-items-approval-entry-table th{font-weight:700;color:var(--blue);background:#e7f0f6}
+.order-items-approval-entry-table tr:last-child td{border-bottom:none}
+.order-items-approval-entry-table .input-line,.order-items-approval-entry-table .select-line{width:100%;max-width:100%;min-width:0;min-height:34px;font-size:12px;padding:7px 9px}
+.order-items-approval-entry-actions{display:flex;justify-content:flex-start;margin-top:8px}
+.order-items-add-approval-evidence{height:28px;padding:0 10px;border-radius:8px;font-size:11px}
+.order-items-remove-approval-evidence{height:28px;padding:0 9px;border-radius:8px;font-size:11px;color:#8e6262;background:#f8eeee;border-color:#e0c9c9}
+.order-items-remove-approval-evidence:hover{background:#f4e6e6;border-color:#d6bdbd}
 .order-items-waiver-actions{display:flex;justify-content:flex-start;margin-top:10px}
 .order-items-add-waiver{height:30px;padding:0 11px;border-radius:9px;font-size:12px}
 .order-items-remove-waiver{height:28px;padding:0 9px;border-radius:8px;font-size:11px;color:#8e6262;background:#f8eeee;border-color:#e0c9c9}
 .order-items-remove-waiver:hover{background:#f4e6e6;border-color:#d6bdbd}
 .shipping-detail-create-shell{min-width:0}
-.shipping-detail-section-card{border-color:#dbe5ec;background:linear-gradient(180deg,#fcfdfe 0%,#f8fbfd 100%)}
+.shipping-detail-section-card{border-color:#ccdce7;background:linear-gradient(180deg,#eef5fa 0%,#e4eef5 100%)}
 .shipping-detail-section-head{gap:5px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #e6edf2}
 .shipping-detail-form-grid{gap:12px 20px;align-items:start}
 .shipping-detail-form-grid .create-row{grid-template-columns:156px minmax(0,1fr);align-items:start;gap:12px;min-width:0}
@@ -764,6 +959,8 @@ body[data-flow-action="create"] #back-button{color:#7b8ea0}
 body[data-master-stage="true"] .sticky-shell{display:none}
 .master-stage{max-width:none;margin:0;padding:12px 0 22px 10px}
 .master-stage.sales-order-stage{max-width:none;margin:0;padding:8px 0 14px 10px}
+.master-stage.sales-order-stage .master-stage-header{display:none}
+.master-stage.sales-order-stage .create-form-head{display:none}
 .master-stage-header{display:grid;gap:2px;margin-bottom:10px}
 .master-stage.sales-order-stage .master-stage-header{gap:2px;margin-bottom:8px}
 .master-stage-kicker{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-soft)}
@@ -782,6 +979,7 @@ body[data-master-stage="true"] .sticky-shell{display:none}
 .master-stage .section{padding-top:0}
 .master-stage-shell{display:grid;gap:16px;align-items:start}
 .master-stage-shell.sales-order-workspace,.master-stage-shell.workspace-standard{grid-template-columns:164px 188px minmax(0,1fr)}
+.master-stage-shell.sales-order-workspace{grid-template-columns:minmax(0,1fr);gap:10px}
 .master-stage-column{display:grid;gap:12px;min-width:0}
 .sales-order-rail-shell{display:grid;grid-template-columns:224px minmax(0,1fr);gap:14px;align-items:start;min-width:0}
 .sales-order-secondary-nav{display:grid;gap:10px;padding:10px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,#fcfdfe 0%,#f5f8fa 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.88),0 2px 6px rgba(67,89,112,.04)}
@@ -828,20 +1026,45 @@ body[data-master-stage="true"] .sticky-shell{display:none}
 .master-work-action[data-action="create"] .master-work-icon{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M8 3.25v9.5M3.25 8h9.5' fill='none' stroke='%234F7FA8' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E")}
 .master-work-action[data-action="search"] .master-work-icon{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Ccircle cx='7' cy='7' r='3.75' fill='none' stroke='%234F7FA8' stroke-width='1.4'/%3E%3Cpath d='M10.2 10.2 13 13' fill='none' stroke='%234F7FA8' stroke-width='1.4' stroke-linecap='round'/%3E%3C/svg%3E")}
 .master-work-action[data-action="edit"] .master-work-icon{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M3 11.9 3.5 13l1.1-.5 6-6-1.6-1.6-6 6Z' fill='none' stroke='%234F7FA8' stroke-width='1.2' stroke-linejoin='round'/%3E%3Cpath d='M8.8 4.8 10.4 6.4' fill='none' stroke='%234F7FA8' stroke-width='1.2' stroke-linecap='round'/%3E%3Cpath d='M3 13h10' fill='none' stroke='%234F7FA8' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E")}
+.master-work-action[data-action="view"] .master-work-icon{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M2.5 8s1.9-3.5 5.5-3.5S13.5 8 13.5 8 11.6 11.5 8 11.5 2.5 8 2.5 8Z' fill='none' stroke='%234F7FA8' stroke-width='1.25' stroke-linejoin='round'/%3E%3Ccircle cx='8' cy='8' r='1.55' fill='none' stroke='%234F7FA8' stroke-width='1.25'/%3E%3C/svg%3E")}
 .master-work-action[data-action="delete"] .master-work-icon{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M4.25 5.25h7.5M6.25 2.75h3.5M5.2 5.25l.45 6h4.7l.45-6' fill='none' stroke='%238E6262' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M6.8 6.7v3.1M9.2 6.7v3.1' fill='none' stroke='%238E6262' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E")}
 .master-work-label{display:grid;gap:2px;min-width:0}
 .master-work-title{font-size:13px;font-weight:700;color:inherit}
 .master-work-copy{font-size:11px;line-height:1.45;color:inherit;opacity:.78}
+.sales-order-action-tabs{display:flex;flex-wrap:nowrap;align-items:center;gap:4px;min-height:44px;padding:10px 0 10px;border-bottom:1px solid var(--soft-border);margin-bottom:8px;overflow-x:auto;overflow-y:visible;scrollbar-width:none}
+.sales-order-action-tabs::-webkit-scrollbar{display:none}
+.sales-order-action-tab{display:inline-flex;align-items:center;justify-content:center;gap:5px;flex:0 0 auto;width:auto;min-width:auto;max-width:none;min-height:32px;height:auto;padding:7px 10px;border:1px solid transparent;border-radius:999px;background:transparent;color:#9eacb9;font-size:11px;font-weight:700;line-height:1.2;text-align:left;cursor:pointer;box-sizing:border-box;overflow:visible;box-shadow:none;opacity:.42;transform:none;transition:background .16s ease,border-color .16s ease,color .16s ease,box-shadow .16s ease,opacity .16s ease,filter .16s ease}
+.sales-order-action-tab:hover{background:#eef5f9;border-color:#cddbe6;color:#6c8396;box-shadow:inset 0 1px 0 rgba(255,255,255,.88);opacity:.78}
+.sales-order-action-tab.active{background:#eaf2f8;border-color:#bdd0de;color:var(--title);box-shadow:inset 0 1px 0 rgba(255,255,255,.94),0 2px 6px rgba(79,127,168,.12);opacity:1;filter:none;transform:none}
+.sales-order-action-tab.restricted.active{background:#f6ecec;border-color:#ead7d7;color:#8e6262;box-shadow:inset 0 1px 0 rgba(255,255,255,.94),0 2px 6px rgba(142,98,98,.08);opacity:1}
+.sales-order-action-tab .master-work-icon{flex:0 0 14px;width:14px;height:14px;background-size:13px 13px;opacity:.5}
+.sales-order-action-tab.active .master-work-icon{opacity:1}
+.sales-order-action-tab .master-work-label{display:block;min-width:0}
+.sales-order-action-tab .master-work-title{display:block;font-size:11px;line-height:1.2;white-space:nowrap}
+.sales-order-submodule-tabs{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:2px 0 10px;border-bottom:1px solid var(--soft-border);margin-bottom:10px;overflow:visible}
+.sales-order-submodule-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:2px 0 10px;border-bottom:1px solid var(--soft-border);margin-bottom:10px;overflow:visible}
+.sales-order-submodule-row .sales-order-submodule-tabs{padding:0;border-bottom:none;margin-bottom:0;flex:1 1 auto;min-width:0}
+.sales-order-create-controls{display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-wrap:wrap;flex:0 0 auto}
+.sales-order-create-controls .create-form-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.sales-order-create-controls .create-form-actions .btn{min-height:32px;height:auto;padding:6px 12px}
+.sales-order-submodule-tab{display:inline-flex;align-items:center;justify-content:center;min-height:32px;height:auto;padding:7px 10px;border:1px solid #e1e9ef;border-radius:999px;background:#fbfdfe;color:#94a3b1;font-size:12px;font-weight:700;line-height:1.25;text-align:left;white-space:normal;overflow-wrap:break-word;word-break:break-word;cursor:pointer;box-sizing:border-box;overflow:visible;box-shadow:inset 0 1px 0 rgba(255,255,255,.88);opacity:.5;transition:background .16s ease,border-color .16s ease,color .16s ease,box-shadow .16s ease,opacity .16s ease}
+.sales-order-submodule-tab:hover{background:#eef5f9;border-color:#cddbe6;color:#6c8396;opacity:.82}
+.sales-order-submodule-tab.active{background:#eaf2f8;border-color:#bdd0de;color:var(--title);box-shadow:inset 0 1px 0 rgba(255,255,255,.94),0 2px 6px rgba(79,127,168,.12);opacity:1}
+.sales-order-submodule-empty{padding:12px 0 0}
 .master-work-item-title{font-size:13px;font-weight:700;line-height:1.35;color:inherit}
 .master-work-item-sub{font-size:11px;line-height:1.45;color:inherit;opacity:.8}
 .master-stage-panel{min-width:0;max-width:100%}
 .master-stage-content-panel{min-height:640px;min-width:0;max-width:100%;overflow:hidden}
+.master-stage.sales-order-stage .master-stage-content-panel{display:flex;flex-direction:column;min-height:calc(100vh - 34px);height:calc(100vh - 34px)}
 .master-stage-content-panel .master-stage-panel-body{display:block;width:100%;max-width:100%;min-width:0;min-height:0;overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 162px);scrollbar-gutter:stable both-edges;scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track)}
 .master-stage-content-panel .master-stage-panel-body::-webkit-scrollbar{width:10px;height:10px}
 .master-stage-content-panel .master-stage-panel-body::-webkit-scrollbar-track{background:var(--scroll-track);border-radius:999px}
 .master-stage-content-panel .master-stage-panel-body::-webkit-scrollbar-thumb{background:var(--scroll-thumb);border-radius:999px;border:2px solid var(--scroll-track)}
 .master-stage-content-panel .master-stage-panel-body::-webkit-scrollbar-thumb:hover{background:var(--scroll-thumb-hover)}
-.master-stage-work-scroll{display:block;width:100%;max-width:100%;min-width:0;overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 184px);padding:0 0 8px;scrollbar-gutter:stable both-edges;scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track)}
+.master-stage.sales-order-stage .master-stage-content-panel .master-stage-panel-body{display:flex;flex-direction:column;flex:1 1 auto;min-height:0;overflow:visible;scrollbar-gutter:auto;scrollbar-width:none}
+.master-stage.sales-order-stage .master-stage-content-panel .master-stage-panel-body::-webkit-scrollbar{display:none}
+.master-stage-work-scroll{display:block;width:100%;max-width:100%;min-width:0;overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 184px);padding:0 0 40px;scrollbar-gutter:stable both-edges;scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track)}
+.master-stage.sales-order-stage .master-stage-work-scroll{display:flex;flex-direction:column;flex:1 1 auto;min-height:0;max-height:none;padding:0 0 14px;box-sizing:border-box}
 .master-stage-work-scroll::-webkit-scrollbar{width:10px;height:10px}
 .master-stage-work-scroll::-webkit-scrollbar-track{background:var(--scroll-track);border-radius:999px}
 .master-stage-work-scroll::-webkit-scrollbar-thumb{background:var(--scroll-thumb);border-radius:999px;border:2px solid var(--scroll-track)}
@@ -849,6 +1072,26 @@ body[data-master-stage="true"] .sticky-shell{display:none}
 .master-stage-content-panel .section-pane,.master-stage-content-panel .section,.master-stage-content-panel .section-scroll{min-width:max-content}
 .master-stage-content-panel .create-sheet,.master-stage-content-panel .master-stage-edit-grid,.master-stage-content-panel .master-stage-grid{min-width:920px}
 .master-stage.sales-order-stage .master-stage-content-panel .create-sheet{min-width:0}
+.master-stage.sales-order-stage .master-stage-work-scroll > .section:has(.risk-decision-shell),
+.master-stage.sales-order-stage .master-stage-work-scroll > .section-scroll:has(.risk-decision-shell),
+.master-stage.sales-order-stage .master-stage-work-scroll .section:has(.risk-decision-shell),
+.master-stage.sales-order-stage .master-stage-work-scroll .section-scroll:has(.risk-decision-shell){
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  overflow-x:visible;
+  box-sizing:border-box;
+}
+.master-stage.sales-order-stage .master-stage-work-scroll > .section:has(.sales-search-shell),
+.master-stage.sales-order-stage .master-stage-work-scroll > .section-scroll:has(.sales-search-shell),
+.master-stage.sales-order-stage .master-stage-work-scroll .section:has(.sales-search-shell),
+.master-stage.sales-order-stage .master-stage-work-scroll .section-scroll:has(.sales-search-shell){
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  overflow-x:visible;
+  box-sizing:border-box;
+}
 .master-stage.sales-order-stage .master-stage-work-scroll > .section:has(.create-order-shell),
 .master-stage.sales-order-stage .master-stage-work-scroll > .section-scroll:has(.create-order-shell),
 .master-stage.sales-order-stage .master-stage-work-scroll .create-order-shell .create-sheet,
@@ -858,12 +1101,60 @@ body[data-master-stage="true"] .sticky-shell{display:none}
   min-width:0;
   box-sizing:border-box;
 }
-.master-stage.sales-order-stage .master-stage-work-scroll .create-order-shell{
+.master-stage.sales-order-stage .master-stage-work-scroll > .section:has(.commercial-create-shell),
+.master-stage.sales-order-stage .master-stage-work-scroll > .section-scroll:has(.commercial-create-shell),
+.master-stage.sales-order-stage .master-stage-work-scroll .commercial-create-shell .create-sheet,
+.master-stage.sales-order-stage .master-stage-work-scroll .commercial-create-shell .create-sheet-inner{
   width:100%;
-  max-width:1160px;
+  max-width:100%;
   min-width:0;
   box-sizing:border-box;
 }
+.master-stage.sales-order-stage .master-stage-work-scroll > .section,
+.master-stage.sales-order-stage .master-stage-work-scroll > .section-scroll,
+.master-stage.sales-order-stage .master-stage-work-scroll .section,
+.master-stage.sales-order-stage .master-stage-work-scroll .section-scroll{
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  min-height:100%;
+  box-sizing:border-box;
+}
+.master-stage.sales-order-stage .master-stage-work-scroll .create-order-shell,
+.master-stage.sales-order-stage .master-stage-work-scroll .commercial-create-shell,
+.master-stage.sales-order-stage .master-stage-work-scroll .order-items-create-shell,
+.master-stage.sales-order-stage .master-stage-work-scroll .shipping-detail-create-shell{
+  width:100%;
+  max-width:none;
+  min-width:0;
+  margin:0;
+  padding-bottom:0;
+  box-sizing:border-box;
+}
+.master-stage.sales-order-stage .master-stage-work-scroll .create-order-shell .create-sheet,
+.master-stage.sales-order-stage .master-stage-work-scroll .commercial-create-shell .create-sheet,
+.master-stage.sales-order-stage .master-stage-work-scroll .order-items-create-shell .create-sheet,
+.master-stage.sales-order-stage .master-stage-work-scroll .shipping-detail-create-shell .create-sheet,
+.master-stage.sales-order-stage .master-stage-work-scroll .order-items-create-shell .order-items-card,
+.master-stage.sales-order-stage .master-stage-work-scroll .shipping-detail-create-shell .shipping-detail-section-card{
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  box-sizing:border-box;
+}
+.master-stage.sales-order-stage .master-stage-work-scroll .commercial-create-shell::after{
+  content:"";
+  display:block;
+  width:100%;
+  height:14px;
+}
+.master-stage.sales-order-stage .master-stage-work-scroll .create-order-shell::after{
+  content:"";
+  display:block;
+  width:100%;
+  height:14px;
+}
+.master-stage.sales-order-stage .master-stage-work-scroll{scrollbar-gutter:stable}
 .master-stage-content-panel .table-wrap,.master-stage-content-panel .summary-sheet,.master-stage-content-panel .items-sheet{max-width:none}
 .master-stage-content-panel .table-wrap{overflow:auto}
 .master-stage-content-wrap{display:grid;gap:14px}
@@ -941,9 +1232,10 @@ const MODULE_CONFIG={
   'reports-master-data':{label:'Reports & Master Data', flowTitle:'Report / master-data flow'}
 };
 const ACTION_CONFIG={
-  create:{label:'Create / Add', tag:'Draft Ready', rule:'No key is required first. Open a new draft or new-record flow directly.'},
-  search:{label:'Search / Find', tag:'Lookup First', rule:'Search and select an existing record to open the read-only order view.'},
-  edit:{label:'Edit / Update', tag:'Lookup First', rule:'Search and select an existing record before editing it.'},
+  create:{label:'Create / Add', tag:'Draft Ready', rule:'Create a new sales order or add new order details.'},
+  search:{label:'Search / Find', tag:'Lookup First', rule:'Find and select an existing order.'},
+  edit:{label:'Edit / Update', tag:'Lookup First', rule:'Find an existing order first, then update order details.'},
+  view:{label:'View / Review', tag:'Read Only', rule:'View selected order details or review order risk.'},
   close:{label:'Close / Cancel', tag:'Lookup First', rule:'Search and select an existing record before closing or cancelling it.'},
   delete:{label:'Delete', tag:'Restricted', rule:'Search and select an existing record first. This action stays visually restricted and secondary.'}
 };
@@ -955,10 +1247,12 @@ const MODULE_WORKSPACE_CONFIG={
     selectorCopy:'Then choose which real Sales Order area to work on.',
     items:[
       {id:'summary',label:'Order Summary',description:'Main sales-order summary and create/add surface.'},
+      {id:'read-view',label:'Read View',description:'Manager read-only order snapshot surface.'},
       {id:'commercial',label:'Commercial Terms',description:'Payment, term, and commercial-condition surface.'},
       {id:'delivery',label:'Shipping Detail',description:'Route, delivery, and logistics coordination surface.'},
       {id:'items',label:'Order Items',description:'Item-level quantity, batch, and readiness surface.'},
       {id:'procurement',label:'Short Material List',description:'Material-gap and supplier-promise surface.'},
+      {id:'waiver-records',label:'Waiver / Material Change Records',description:'Append-only style review log for waiver and material replacement records.'},
       {id:'risk',label:'Risk Status',description:'Current order risk review and exception surface.'},
       {id:'log',label:'Change Log',description:'Order change history and trace surface.'}
     ]
@@ -1387,6 +1681,20 @@ function getWorkspaceItems(moduleId){
         description:'Maintain this master under the selected action.'
       }));
   }
+  if(moduleId==='sales-orders'){
+    const allSalesItems=getWorkspaceConfig(moduleId).items||[];
+    const salesItemById=id=>allSalesItems.find(item=>item.id===id);
+    const compactItems=ids=>ids.map(salesItemById).filter(Boolean);
+    if(currentAction==='create'){
+      return compactItems(['summary','commercial','delivery','items']);
+    }
+    if(currentAction==='view'){
+      return compactItems(['read-view','risk','procurement','waiver-records','log']);
+    }
+    if(currentAction==='search'){
+      return [{id:'search-order',label:'Search Order',description:'Find and select an existing order.'}];
+    }
+  }
   return getWorkspaceConfig(moduleId).items||[];
 }
 function getSelectedWorkspaceItemId(moduleId){
@@ -1483,6 +1791,102 @@ function renderSalesOrderCreatePlaceholder(selectedItem){
 }
 function renderSalesOrderSearchPlaceholder(selectedItem){
   return '<div class="master-stage-placeholder"><strong>Search / Find is not opened yet for '+escapeHtml(selectedItem.label)+'.</strong> This placeholder stays isolated on purpose, so Search / Find does not reuse any Create / Add or normal table renderer in the current mock stage.</div>';
+}
+function renderSalesOrderSearchListSurface(){
+  return '<div class="section section-scroll">'+
+    '<div class="sales-search-shell">'+
+      '<div class="sales-search-card">'+
+        '<div class="sales-search-note">Mock filters &mdash; filtering applies only to visible mock data</div>'+
+        '<div class="sales-search-filter-grid">'+
+          '<div class="sales-search-filter"><label for="sales-search-so">SO No</label><input id="sales-search-so" class="selected-search-value" type="text" value="SO-20260425-018" placeholder="Search SO No" data-sales-search-filter="so"></div>'+
+          '<div class="sales-search-filter"><label for="sales-search-company">Company Code</label><input id="sales-search-company" type="text" placeholder="Search Company Code" data-sales-search-filter="company"></div>'+
+          '<div class="sales-search-filter"><label for="sales-search-year">Year</label><input id="sales-search-year" type="text" placeholder="Year" data-sales-search-filter="year"></div>'+
+          '<div class="sales-search-filter"><label for="sales-search-month">Month</label><input id="sales-search-month" type="text" placeholder="Month" data-sales-search-filter="month"></div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="sales-search-next-actions">'+
+        '<div class="sales-search-selected-context">Selected: SO-20260425-018 <span>· Demo Customer Sdn Bhd</span></div>'+
+        '<div class="sales-search-action-row">'+
+          '<button type="button" class="btn secondary">View Record</button>'+
+          '<button type="button" class="btn secondary">Edit Record</button>'+
+          '<button type="button" class="btn secondary">Review / Approve</button>'+
+          '<button type="button" class="btn secondary">Request Change</button>'+
+          '<button type="button" class="btn secondary sales-search-restricted-action" disabled>Delete / Void / Cancel</button>'+
+        '</div>'+
+      '</div>'+
+      '<div class="sales-search-table-wrap" aria-label="Static Sales Order Search Results">'+
+        '<table class="sales-search-table">'+
+          '<colgroup>'+
+            '<col class="sales-search-col-so"><col class="sales-search-col-customer"><col class="sales-search-col-status"><col class="sales-search-col-type">'+
+            '<col class="sales-search-col-date"><col class="sales-search-col-items"><col class="sales-search-col-ship"><col class="sales-search-col-waiver">'+
+          '</colgroup>'+
+          '<thead><tr><th>SO No</th><th>Customer</th><th>Status</th><th>Order Type</th><th>Commit / Ship Date</th><th>Item Summary</th><th>Ship-To</th><th>Waiver</th></tr></thead>'+
+          '<tbody>'+
+            '<tr class="sales-search-selected" data-company-code="DEMO-MY"><td>SO-20260425-018<span class="sales-search-selected-mark">Selected record for demo</span></td><td>Demo Customer Sdn Bhd</td><td>Manager Review</td><td>Repeat</td><td>25/04/2026</td><td>3 items / 12,500 pcs / Model A</td><td>Main Dock</td><td class="sales-search-col-waiver">&#9888;</td></tr>'+
+            '<tr data-company-code="NLC-MY"><td>SO-20260424-017</td><td>Northline Components</td><td>Draft</td><td>New Spec</td><td>24/04/2026</td><td>2 items / 8,400 pcs / Model B</td><td>Warehouse B</td><td class="sales-search-col-waiver">&#9888;</td></tr>'+
+            '<tr data-company-code="BFT-MY"><td>SO-20260423-016</td><td>Bright Field Trading</td><td>Open</td><td>Standard</td><td>23/04/2026</td><td>4 items / 15,000 pcs / Model C</td><td>Main Dock</td><td class="sales-search-col-waiver">-</td></tr>'+
+            '<tr data-company-code="PBS-MY"><td>SO-20260422-015</td><td>Pacific Build Supply</td><td>Open</td><td>Repeat</td><td>22/04/2026</td><td>1 item / 3,200 pcs / Model A</td><td>Project Site</td><td class="sales-search-col-waiver">-</td></tr>'+
+            '<tr data-company-code="MPB-MY"><td>SO-20260421-014</td><td>Metro Project Buyer</td><td>At Risk</td><td>New Spec</td><td>21/04/2026</td><td>5 items / 18,750 pcs / Model D</td><td>Reserve Location</td><td class="sales-search-col-waiver">&#9888;</td></tr>'+
+            '<tr data-company-code="EGF-MY"><td>SO-20260420-013</td><td>Evergreen Facilities</td><td>Confirmed</td><td>Standard</td><td>20/04/2026</td><td>2 items / 6,600 pcs / Model A</td><td>Main Dock</td><td class="sales-search-col-waiver">-</td></tr>'+
+            '<tr data-company-code="SIW-MY"><td>SO-20260419-012</td><td>Summit Infra Works</td><td>Review</td><td>Repeat</td><td>19/04/2026</td><td>3 items / 9,900 pcs / Model E</td><td>Warehouse B</td><td class="sales-search-col-waiver">-</td></tr>'+
+            '<tr data-company-code="HCS-MY"><td>SO-20260418-011</td><td>Harbor City Supply</td><td>Open</td><td>Export</td><td>18/04/2026</td><td>4 items / 11,200 pcs / Model F</td><td>Export Bay</td><td class="sales-search-col-waiver">&#9888;</td></tr>'+
+            '<tr data-company-code="CLC-MY"><td>SO-20260417-010</td><td>Central Lighting Co</td><td>Closed</td><td>Standard</td><td>17/04/2026</td><td>2 items / 4,800 pcs / Model B</td><td>Main Dock</td><td class="sales-search-col-waiver">-</td></tr>'+
+          '</tbody>'+
+        '</table>'+
+      '</div>'+
+      '<div class="sales-search-empty" data-sales-search-empty>No matching orders (mock)</div>'+
+    '</div>'+
+  '</div>';
+}
+function normalizeSalesSearchFilterValue(value){
+  return String(value||'').trim().toLowerCase();
+}
+function normalizeSalesSearchMonth(value){
+  const raw=normalizeSalesSearchFilterValue(value);
+  if(!raw)return '';
+  const compact=raw.replace(/[^a-z0-9]/g,'');
+  if(compact==='jan'||compact==='january')return '01';
+  if(compact==='feb'||compact==='february')return '02';
+  if(compact==='mar'||compact==='march')return '03';
+  if(compact==='apr'||compact==='april')return '04';
+  if(compact==='may')return '05';
+  if(compact==='jun'||compact==='june')return '06';
+  if(compact==='jul'||compact==='july')return '07';
+  if(compact==='aug'||compact==='august')return '08';
+  if(compact==='sep'||compact==='sept'||compact==='september')return '09';
+  if(compact==='oct'||compact==='october')return '10';
+  if(compact==='nov'||compact==='november')return '11';
+  if(compact==='dec'||compact==='december')return '12';
+  if(/^\d$/.test(compact))return '0'+compact;
+  return compact;
+}
+function applySalesSearchMockFilters(root){
+  const shell=(root||document).querySelector('.sales-search-shell');
+  if(!shell)return;
+  const soFilter=normalizeSalesSearchFilterValue((shell.querySelector('[data-sales-search-filter="so"]')||{}).value);
+  const companyFilter=normalizeSalesSearchFilterValue((shell.querySelector('[data-sales-search-filter="company"]')||{}).value);
+  const yearFilter=normalizeSalesSearchFilterValue((shell.querySelector('[data-sales-search-filter="year"]')||{}).value);
+  const monthFilter=normalizeSalesSearchMonth((shell.querySelector('[data-sales-search-filter="month"]')||{}).value);
+  const tbody=shell.querySelector('.sales-search-table tbody');
+  const empty=shell.querySelector('[data-sales-search-empty]');
+  let visibleCount=0;
+  if(!tbody)return;
+  tbody.querySelectorAll('tr').forEach(row=>{
+    const soText=normalizeSalesSearchFilterValue(row.cells[0]?row.cells[0].textContent:'');
+    const dateText=normalizeSalesSearchFilterValue(row.cells[4]?row.cells[4].textContent:'');
+    const companyText=normalizeSalesSearchFilterValue(row.getAttribute('data-company-code')||'');
+    const firstSlash=dateText.indexOf('/');
+    const secondSlash=firstSlash>=0?dateText.indexOf('/',firstSlash+1):-1;
+    const dateMonth=firstSlash>=0&&secondSlash>firstSlash?dateText.slice(firstSlash+1,secondSlash):'';
+    const matchesSo=!soFilter||soText.includes(soFilter);
+    const matchesCompany=!companyFilter||companyText.includes(companyFilter);
+    const matchesYear=!yearFilter||soText.includes(yearFilter)||dateText.includes(yearFilter);
+    const matchesMonth=!monthFilter||dateText.includes(monthFilter)||dateMonth===monthFilter;
+    const isVisible=matchesSo&&matchesCompany&&matchesYear&&matchesMonth;
+    row.style.display=isVisible?'':'none';
+    if(isVisible)visibleCount+=1;
+  });
+  if(empty)empty.classList.toggle('is-visible',visibleCount===0);
 }
 function renderCommercialCreateSurfaceLegacy(){
   const route=getSelectedOrderRoute();
@@ -1666,18 +2070,91 @@ function addOrderItemsShippingBatch(tbody){
   },itemKey));
   renumberOrderItemsShippingRows(tbody);
 }
+function renderApprovalEvidenceList(){
+  const rows=[
+    ['ALI','ENGINEERING MANAGER','25/4/26','WHATSAPP','25/4/26 18:00'],
+    ['JAMES','QA MANAGER','25/4/26','WHATSAPP','25/4/26 16:00'],
+    ['KHAILI','R&D MANAGER','25/4/26','WHATSAPP','25/4/26 17:35'],
+    ['KS TAN','OPERATION MANAGER','25/4/26','WHATSAPP','25/4/26 22:00'],
+    ['KY LIM','PURCHASING MANAGER','25/4/26','WHATSAPP','25/4/26 14:00']
+  ];
+  return '<div class="approval-evidence-list">'+
+    '<div class="approval-evidence-list-title">Internal Approval Evidence List</div>'+
+    '<div class="approval-evidence-table-wrap"><table class="approval-evidence-table"><thead><tr><th>Approved By</th><th>Job Title</th><th>Approval Date</th><th>Evidence Source</th><th>Evidence Time</th></tr></thead><tbody>'+
+      rows.map(row=>'<tr><td>'+escapeHtml(row[0])+'</td><td>'+escapeHtml(row[1])+'</td><td>'+escapeHtml(row[2])+'</td><td>'+escapeHtml(row[3])+'</td><td>'+escapeHtml(row[4])+'</td></tr>').join('')+
+    '</tbody></table></div>'+
+  '</div>';
+}
+function renderOrderItemsApprovalEvidenceEntry(key,rowValue){
+  const rows=rowValue.approvalEvidenceRows||[{}];
+  return '<div class="order-items-approval-entry">'+
+    '<div class="order-items-approval-entry-title">Internal Approval Evidence</div>'+
+    '<div class="order-items-approval-entry-table-wrap"><table class="order-items-approval-entry-table"><thead><tr><th>Approved By</th><th>Job Title</th><th>Approval Date</th><th>Evidence Source</th><th>Evidence Time</th><th>Action</th></tr></thead><tbody data-order-items-approval-body="true">'+
+      rows.map((entry,index)=>renderOrderItemsApprovalEvidenceRow(key,index,entry)).join('')+
+    '</tbody></table></div>'+
+    '<div class="order-items-approval-entry-actions"><button type="button" class="btn emphasis order-items-add-approval-evidence" data-order-items-add-approval-evidence="true">+ Add Approval Evidence</button></div>'+
+    '<div class="approval-evidence-hint">Approval evidence is entered for mock traceability only. This does not create an approval workflow or messaging integration.</div>'+
+  '</div>';
+}
+function renderOrderItemsApprovalEvidenceRow(key,index,rowValue){
+  const rowNo=index+1;
+  const fieldKey=key+'-approval-evidence-'+rowNo;
+  const value=rowValue||{};
+  return '<tr data-order-items-approval-row="true">'+
+    '<td><select id="'+fieldKey+'-approved-by" data-order-items-approval-field="approved-by" class="select-line" aria-label="Approved By">'+renderSelectOptions(['ALI','JAMES','KHAILI','KS TAN','KY LIM'],value.approvedBy||'KS TAN')+'</select></td>'+
+    '<td><select id="'+fieldKey+'-job-title" data-order-items-approval-field="job-title" class="select-line" aria-label="Job Title">'+renderSelectOptions(['ENGINEERING MANAGER','QA MANAGER','R&D MANAGER','OPERATION MANAGER','PURCHASING MANAGER'],value.jobTitle||'OPERATION MANAGER')+'</select></td>'+
+    '<td><input id="'+fieldKey+'-approval-date" data-order-items-approval-field="approval-date" class="input-line date-line" type="date" value="'+escapeHtml(value.approvalDate||'2026-04-25')+'" aria-label="Approval Date" /></td>'+
+    '<td><select id="'+fieldKey+'-evidence-source" data-order-items-approval-field="evidence-source" class="select-line" aria-label="Evidence Source">'+renderSelectOptions(['APPROVAL THROUGH WHATSAPP WITH ATTACHED WAIVER REF NO','APPROVAL THROUGH WECHAT WITH ATTACHED WAIVER REF NO','APPROVAL THROUGH EMAIL WITH ATTACHED WAIVER REF NO','SIGNED FORM WITH WAIVER REF NO'],value.evidenceSource||'APPROVAL THROUGH WHATSAPP WITH ATTACHED WAIVER REF NO')+'</select></td>'+
+    '<td><input id="'+fieldKey+'-evidence-time" data-order-items-approval-field="evidence-time" class="input-line" type="datetime-local" value="'+escapeHtml(value.evidenceTime||'2026-04-25T22:00')+'" aria-label="Evidence Time" /></td>'+
+    '<td><button type="button" class="btn order-items-remove-approval-evidence" data-order-items-remove-approval-evidence="true">Remove</button></td>'+
+  '</tr>';
+}
+function renderOrderItemsMaterialReplacementRow(key,index,rowValue){
+  const rowNo=index+1;
+  const fieldKey=key+'-material-'+rowNo;
+  const value=rowValue||{};
+  return '<tr data-order-items-material-row="true">'+
+    '<td><span class="order-items-batch-label" data-order-items-material-no="true">'+rowNo+'</span></td>'+
+    '<td><input id="'+fieldKey+'-original-material" data-order-items-material-field="original-material" class="input-line" type="text" value="'+escapeHtml(value.originalMaterial||'')+'" aria-label="Original Material" /></td>'+
+    '<td><input id="'+fieldKey+'-original-supplier" data-order-items-material-field="original-supplier" class="input-line" type="text" value="'+escapeHtml(value.originalSupplier||'')+'" aria-label="Original Supplier" /></td>'+
+    '<td><span class="order-items-material-arrow">&rarr;</span></td>'+
+    '<td><input id="'+fieldKey+'-replacement-material" data-order-items-material-field="replacement-material" class="input-line" type="text" value="'+escapeHtml(value.replacementMaterial||'')+'" aria-label="Replacement Material" /></td>'+
+    '<td><input id="'+fieldKey+'-replacement-supplier" data-order-items-material-field="replacement-supplier" class="input-line" type="text" value="'+escapeHtml(value.replacementSupplier||'')+'" aria-label="Replacement Supplier" /></td>'+
+    '<td><input id="'+fieldKey+'-waiver-ref" data-order-items-material-field="waiver-ref" class="input-line" type="text" value="'+escapeHtml(value.waiverRef||'')+'" aria-label="Waiver Ref No." /></td>'+
+    '<td><button type="button" class="btn order-items-remove-material" data-order-items-remove-material="true">Remove</button></td>'+
+  '</tr>';
+}
+function renderOrderItemsMaterialReplacementTable(key,rowValue){
+  const rows=rowValue.materialRows||[{}];
+  return '<div class="order-items-material-table-shell">'+
+    '<div class="order-items-material-table-head"><div class="order-items-material-table-title">Material Replacement Table</div><div class="order-items-material-table-actions"><button type="button" class="btn emphasis order-items-add-material" data-order-items-add-material="true">+ Add Material</button><button type="button" class="btn order-items-clear-material" data-order-items-clear-material="true">Remove All</button></div></div>'+
+    '<div class="order-items-material-table-wrap"><table class="order-items-material-table"><thead><tr><th>#</th><th>Original Material</th><th>Original Supplier</th><th></th><th>Replacement Material</th><th>Replacement Supplier</th><th>Waiver Ref No</th><th>Remove Row</th></tr></thead><tbody data-order-items-material-body="true">'+
+      rows.map((entry,index)=>renderOrderItemsMaterialReplacementRow(key,index,entry)).join('')+
+    '</tbody></table></div>'+
+  '</div>';
+}
 function renderOrderItemsWaiverRow(index,row,itemKey){
   const rowNo=index+1;
   const rowValue=row||{};
   const key=(itemKey||'order-items')+'-waiver-'+rowNo;
-  return '<div class="order-items-waiver-row" data-order-items-waiver-row="true">'+
+  const showDetails=(rowValue.required||'No')==='Yes';
+  return '<div class="order-items-waiver-row" data-order-items-waiver-row="true" data-order-items-waiver-key="'+key+'">'+
     '<div class="order-items-waiver-row-head"><span class="order-items-waiver-row-no" data-order-items-waiver-no="true">'+rowNo+'</span><button type="button" class="btn order-items-remove-waiver" data-order-items-remove-waiver="true">Remove</button></div>'+
     '<div class="order-items-waiver-grid">'+
-      '<div class="order-items-waiver-field"><label for="'+key+'-required">Waiver Required</label><select id="'+key+'-required" class="select-line">'+renderSelectOptions(['No','Yes'],rowValue.required||'No')+'</select></div>'+
-      '<div class="order-items-waiver-field"><label for="'+key+'-ref">Waiver Ref No.</label><input id="'+key+'-ref" class="input-line" type="text" value="'+escapeHtml(rowValue.ref||'Mock waiver ref')+'" /></div>'+
-      '<div class="order-items-waiver-field order-items-waiver-field--full"><label for="'+key+'-special-spec">Special Spec / Requirement Note</label><textarea id="'+key+'-special-spec" class="textarea-line" rows="3">'+escapeHtml(rowValue.specialSpec||'Mock special spec note for visual review.')+'</textarea></div>'+
-      '<div class="order-items-waiver-field"><label for="'+key+'-customer-approval">Customer Approval Ref</label><input id="'+key+'-customer-approval" class="input-line" type="text" value="'+escapeHtml(rowValue.customerApproval||'Customer approval mock ref')+'" /></div>'+
-      '<div class="order-items-waiver-field order-items-waiver-field--full"><label for="'+key+'-internal-remark">Internal Remark</label><textarea id="'+key+'-internal-remark" class="textarea-line" rows="3">'+escapeHtml(rowValue.internalRemark||'Mock internal review remark.')+'</textarea></div>'+
+      '<div class="order-items-waiver-field"><label data-order-items-waiver-label="required" for="'+key+'-required">Waiver Required</label><select id="'+key+'-required" data-order-items-waiver-field="required" class="select-line">'+renderSelectOptions(['No','Yes'],rowValue.required||'No')+'</select></div>'+
+      '<div class="order-items-waiver-detail-shell" data-order-items-waiver-detail-shell="true"'+(showDetails?'':' hidden')+'>'+
+        '<div class="order-items-waiver-field order-items-waiver-field--full">'+renderOrderItemsMaterialReplacementTable(key,rowValue)+'</div>'+
+        '<div class="order-items-waiver-field order-items-waiver-field--full"><label data-order-items-waiver-label="change-reason" for="'+key+'-change-reason">Change Reason</label><textarea id="'+key+'-change-reason" data-order-items-waiver-field="change-reason" class="textarea-line" rows="3">'+escapeHtml(rowValue.changeReason||'Mock change reason for order-entry visibility only.')+'</textarea></div>'+
+        '<div class="order-items-waiver-field"><label data-order-items-waiver-label="customer-approval-status" for="'+key+'-customer-approval-status">Customer Approval Status</label><select id="'+key+'-customer-approval-status" data-order-items-waiver-field="customer-approval-status" class="select-line">'+renderSelectOptions(['Pending','Approved','Not Required','To Be Confirmed'],rowValue.customerApprovalStatus||'Pending')+'</select></div>'+
+        '<div class="order-items-waiver-field"><label data-order-items-waiver-label="internal-approval-status" for="'+key+'-internal-approval-status">Internal Approval Status</label><select id="'+key+'-internal-approval-status" data-order-items-waiver-field="internal-approval-status" class="select-line">'+renderSelectOptions(['Pending','Approved','Under Review','Rejected'],rowValue.internalApprovalStatus||'Under Review')+'</select></div>'+
+        '<div class="order-items-waiver-field order-items-waiver-field--full">'+renderOrderItemsApprovalEvidenceEntry(key,rowValue)+'</div>'+
+        '<div class="order-items-waiver-field"><label data-order-items-waiver-label="effective-batch-qty" for="'+key+'-effective-batch-qty">Effective Batch / Qty</label><input id="'+key+'-effective-batch-qty" data-order-items-waiver-field="effective-batch-qty" class="input-line" type="text" value="'+escapeHtml(rowValue.effectiveBatchQty||'Batch 1 / 1,000 pcs')+'" /></div>'+
+        '<div class="order-items-waiver-field"><label data-order-items-waiver-label="owner" for="'+key+'-owner">Owner</label><input id="'+key+'-owner" data-order-items-waiver-field="owner" class="input-line" type="text" value="'+escapeHtml(rowValue.owner||'Order Admin')+'" /></div>'+
+        '<div class="order-items-waiver-field"><label data-order-items-waiver-label="changed-at" for="'+key+'-changed-at">Changed At</label><input id="'+key+'-changed-at" data-order-items-waiver-field="changed-at" class="input-line" type="text" value="'+escapeHtml(rowValue.changedAt||'25/04/2026 15:40')+'" /></div>'+
+        '<div class="order-items-waiver-field order-items-waiver-field--full"><label data-order-items-waiver-label="special-spec" for="'+key+'-special-spec">Special Spec / Requirement Note</label><textarea id="'+key+'-special-spec" data-order-items-waiver-field="special-spec" class="textarea-line" rows="3">'+escapeHtml(rowValue.specialSpec||'Mock special spec note for visual review.')+'</textarea></div>'+
+        '<div class="order-items-waiver-field"><label data-order-items-waiver-label="customer-approval-ref" for="'+key+'-customer-approval-ref">Customer Approval Ref</label><input id="'+key+'-customer-approval-ref" data-order-items-waiver-field="customer-approval-ref" class="input-line" type="text" value="'+escapeHtml(rowValue.customerApproval||'Customer approval mock ref')+'" /></div>'+
+        '<div class="order-items-waiver-field order-items-waiver-field--full"><label data-order-items-waiver-label="internal-remark" for="'+key+'-internal-remark">Internal Remark</label><textarea id="'+key+'-internal-remark" data-order-items-waiver-field="internal-remark" class="textarea-line" rows="3">'+escapeHtml(rowValue.internalRemark||'Mock internal review remark.')+'</textarea></div>'+
+      '</div>'+
     '</div>'+
   '</div>';
 }
@@ -1688,31 +2165,108 @@ function renumberOrderItemsWaiverRows(root){
   scope.querySelectorAll('[data-order-items-waiver-row]').forEach((row,index)=>{
     const rowNo=index+1;
     const key=itemKey+'-waiver-'+rowNo;
+    row.setAttribute('data-order-items-waiver-key',key);
     const rowNoNode=row.querySelector('[data-order-items-waiver-no]');
-    const labels=row.querySelectorAll('label');
-    const inputs=row.querySelectorAll('input[type="text"]');
-    const required=row.querySelector('select');
-    const textareas=row.querySelectorAll('textarea');
     if(rowNoNode)rowNoNode.textContent=String(rowNo);
-    if(required)required.id=key+'-required';
-    if(inputs[0])inputs[0].id=key+'-ref';
-    if(inputs[1])inputs[1].id=key+'-customer-approval';
-    if(textareas[0])textareas[0].id=key+'-special-spec';
-    if(textareas[1])textareas[1].id=key+'-internal-remark';
-    if(labels[0])labels[0].setAttribute('for',key+'-required');
-    if(labels[1])labels[1].setAttribute('for',key+'-ref');
-    if(labels[2])labels[2].setAttribute('for',key+'-special-spec');
-    if(labels[3])labels[3].setAttribute('for',key+'-customer-approval');
-    if(labels[4])labels[4].setAttribute('for',key+'-internal-remark');
+    row.querySelectorAll('[data-order-items-waiver-field]').forEach(field=>{
+      const fieldName=field.getAttribute('data-order-items-waiver-field')||'';
+      if(fieldName)field.id=key+'-'+fieldName;
+    });
+    row.querySelectorAll('[data-order-items-waiver-label]').forEach(label=>{
+      const fieldName=label.getAttribute('data-order-items-waiver-label')||'';
+      if(fieldName)label.setAttribute('for',key+'-'+fieldName);
+    });
+    renumberOrderItemsMaterialRows(row,key);
+    renumberOrderItemsApprovalEvidenceRows(row,key);
+    syncOrderItemsWaiverRowVisibility(row);
   });
+}
+function syncOrderItemsWaiverRowVisibility(row){
+  if(!row)return;
+  const requiredField=row.querySelector('[data-order-items-waiver-field="required"]');
+  const shouldShow=requiredField&&requiredField.value==='Yes';
+  const detailShell=row.querySelector('[data-order-items-waiver-detail-shell]');
+  if(detailShell)detailShell.hidden=!shouldShow;
+}
+function renumberOrderItemsApprovalEvidenceRows(root,key){
+  if(!root)return;
+  const waiverKey=key||root.getAttribute('data-order-items-waiver-key')||'order-items-waiver-1';
+  root.querySelectorAll('[data-order-items-approval-row]').forEach((row,index)=>{
+    const rowKey=waiverKey+'-approval-evidence-'+(index+1);
+    row.querySelectorAll('[data-order-items-approval-field]').forEach(field=>{
+      const fieldName=field.getAttribute('data-order-items-approval-field')||'';
+      if(fieldName)field.id=rowKey+'-'+fieldName;
+    });
+  });
+}
+function renumberOrderItemsMaterialRows(root,key){
+  if(!root)return;
+  const waiverKey=key||root.getAttribute('data-order-items-waiver-key')||'order-items-waiver-1';
+  root.querySelectorAll('[data-order-items-material-row]').forEach((row,index)=>{
+    const rowKey=waiverKey+'-material-'+(index+1);
+    const rowNo=row.querySelector('[data-order-items-material-no]');
+    if(rowNo)rowNo.textContent=String(index+1);
+    row.querySelectorAll('[data-order-items-material-field]').forEach(field=>{
+      const fieldName=field.getAttribute('data-order-items-material-field')||'';
+      if(fieldName)field.id=rowKey+'-'+fieldName;
+    });
+  });
+  syncOrderItemsMaterialEmptyState(root);
+}
+function syncOrderItemsMaterialEmptyState(root){
+  if(!root)return;
+  const tbody=root.matches&&root.matches('[data-order-items-material-body]')?root:root.querySelector('[data-order-items-material-body]');
+  if(!tbody)return;
+  const rowCount=tbody.querySelectorAll('[data-order-items-material-row]').length;
+  let emptyRow=tbody.querySelector('[data-order-items-material-empty]');
+  if(rowCount===0){
+    if(!emptyRow){
+      tbody.insertAdjacentHTML('beforeend','<tr class="order-items-material-empty" data-order-items-material-empty="true"><td colspan="8">No material replacement added.</td></tr>');
+    }
+    return;
+  }
+  if(emptyRow)emptyRow.remove();
+}
+function addOrderItemsMaterialRow(tbody){
+  if(!tbody)return;
+  const waiverRow=tbody.closest('[data-order-items-waiver-row]');
+  const waiverKey=waiverRow?waiverRow.getAttribute('data-order-items-waiver-key')||'order-items-waiver-1':'order-items-waiver-1';
+  const emptyRow=tbody.querySelector('[data-order-items-material-empty]');
+  if(emptyRow)emptyRow.remove();
+  const index=tbody.querySelectorAll('[data-order-items-material-row]').length;
+  tbody.insertAdjacentHTML('beforeend',renderOrderItemsMaterialReplacementRow(waiverKey,index,{}));
+  renumberOrderItemsMaterialRows(waiverRow||tbody,waiverKey);
+}
+function addOrderItemsApprovalEvidenceRow(tbody){
+  if(!tbody)return;
+  const waiverRow=tbody.closest('[data-order-items-waiver-row]');
+  const waiverKey=waiverRow?waiverRow.getAttribute('data-order-items-waiver-key')||'order-items-waiver-1':'order-items-waiver-1';
+  const index=tbody.querySelectorAll('[data-order-items-approval-row]').length;
+  tbody.insertAdjacentHTML('beforeend',renderOrderItemsApprovalEvidenceRow(waiverKey,index,{}));
+  renumberOrderItemsApprovalEvidenceRows(waiverRow||tbody,waiverKey);
 }
 function addOrderItemsWaiverRow(list){
   if(!list)return;
+  const emptyState=list.querySelector('[data-order-items-waiver-empty]');
+  if(emptyState)emptyState.remove();
   const itemBlock=list.closest('[data-order-items-item-block]');
   const itemKey=itemBlock?itemBlock.getAttribute('data-order-items-item-key')||'order-items':'order-items';
   const index=list.querySelectorAll('[data-order-items-waiver-row]').length;
   list.insertAdjacentHTML('beforeend',renderOrderItemsWaiverRow(index,{},itemKey));
   renumberOrderItemsWaiverRows(list);
+  syncOrderItemsWaiverEmptyState(list);
+}
+function syncOrderItemsWaiverEmptyState(list){
+  if(!list)return;
+  const rowCount=list.querySelectorAll('[data-order-items-waiver-row]').length;
+  let emptyState=list.querySelector('[data-order-items-waiver-empty]');
+  if(rowCount===0){
+    if(!emptyState){
+      list.insertAdjacentHTML('beforeend','<div class="order-items-waiver-empty" data-order-items-waiver-empty="true">No waiver requirement added.</div>');
+    }
+    return;
+  }
+  if(emptyState)emptyState.remove();
 }
 function renderOrderItemsItemBlock(index,itemDefaults,scheduleRows,itemKey){
   const defaults=itemDefaults||ORDER_ITEMS_DEFAULT_ITEM;
@@ -1738,7 +2292,7 @@ function renderOrderItemsItemBlock(index,itemDefaults,scheduleRows,itemKey){
     '<div class="order-items-card"><div class="order-items-card-head"><div class="order-items-card-title">Multi-Shipping Schedule</div><div class="order-items-card-copy">Controlled editable mock rows only. Add/remove is visual, with no sum validation, persistence, or Shipping Detail linkage.</div></div><div class="order-items-schedule-wrap"><table class="order-items-schedule-table"><thead><tr><th>Batch No.</th><th>Shipping Date</th><th>Qty for This Shipment</th><th>Ship-To / Destination Snapshot</th><th>Shipping Remark</th><th>Action</th></tr></thead><tbody data-order-items-schedule-body="true">'+
       (scheduleRows||getOrderItemsDefaultScheduleRows()).map((row,rowIndex)=>renderOrderItemsScheduleRow(rowIndex,row,key)).join('')+
     '</tbody></table></div><div class="order-items-schedule-actions"><button type="button" class="btn emphasis order-items-add-batch" data-order-items-add-batch="true">+ Add Shipping Batch</button></div></div>'+
-    '<div class="order-items-card order-items-waiver-card"><div class="order-items-card-head"><div class="order-items-card-title">Waiver / Special Requirement</div><div class="order-items-card-copy">All fields stay visible for mock review. Waiver Required does not hide, show, or drive any other field.</div></div><div class="order-items-waiver-list" data-order-items-waiver-list="true">'+
+    '<div class="order-items-card order-items-waiver-card"><div class="order-items-card-head"><div class="order-items-card-title">Waiver / Special Requirement</div><div class="order-items-card-copy">Order-item waiver details are captured here for order-entry visibility only. Later production changes must be recorded in Waiver / Material Change Records. Approval evidence is entered for mock traceability only. This does not create an approval workflow or messaging integration.</div></div><div class="order-items-waiver-list" data-order-items-waiver-list="true">'+
       renderOrderItemsWaiverRow(0,{},key)+
     '</div><div class="order-items-waiver-actions"><button type="button" class="btn emphasis order-items-add-waiver" data-order-items-add-waiver="true">+ Add Waiver Requirement</button></div></div>'+
   '</div>';
@@ -1906,11 +2460,160 @@ function renderOrderSummaryStandardSurface(){
     (warning?warning.outerHTML:'')+
   '</div>';
 }
+function renderBossOrderReadViewSurface(){
+  return '<div class="section section-scroll">'+
+    '<div class="boss-read-shell">'+
+      '<div>'+
+        '<div class="boss-read-title">Read View &mdash; Boss Order View</div>'+
+        '<div class="boss-read-note">UI prototype only &mdash; static read view, no real data.</div>'+
+      '</div>'+
+      '<div class="boss-read-card">'+
+        '<div class="boss-read-head"><div class="boss-read-section-title">Header</div><div class="boss-read-section-copy">Read-only order identity summary.</div></div>'+
+        '<div class="boss-read-grid">'+
+          '<div class="boss-read-item"><div class="boss-read-label">SO No</div><div class="boss-read-value">SO-20260421-123</div></div>'+
+          '<div class="boss-read-item"><div class="boss-read-label">Customer</div><div class="boss-read-value">Demo Customer Sdn Bhd</div></div>'+
+          '<div class="boss-read-item"><div class="boss-read-label">Order Type</div><div class="boss-read-value">Repeat Order</div></div>'+
+          '<div class="boss-read-item"><div class="boss-read-label">Status</div><div class="boss-read-value">Manager Review</div></div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="boss-read-card">'+
+        '<div class="boss-read-head"><div class="boss-read-section-title">Key Snapshot</div><div class="boss-read-section-copy">Compact static totals for fast reading.</div></div>'+
+        '<div class="boss-read-grid">'+
+          '<div class="boss-read-item"><div class="boss-read-label">Total Items</div><div class="boss-read-value">3</div></div>'+
+          '<div class="boss-read-item"><div class="boss-read-label">Total Qty</div><div class="boss-read-value">12,500</div></div>'+
+          '<div class="boss-read-item"><div class="boss-read-label">Shipping Batches</div><div class="boss-read-value">3</div></div>'+
+          '<div class="boss-read-item"><div class="boss-read-label">Waiver</div><div class="boss-read-value">Yes</div></div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="boss-read-card">'+
+        '<div class="boss-read-head"><div class="boss-read-section-title">Delivery Plan</div><div class="boss-read-section-copy">Compact readable lines only.</div></div>'+
+        '<div class="boss-read-lines">'+
+          '<div class="boss-read-line">Batch 1 &rarr; 5,000 pcs &rarr; 12 Mar &rarr; Main Dock</div>'+
+          '<div class="boss-read-line">Batch 2 &rarr; 4,000 pcs &rarr; 20 Mar &rarr; Warehouse B</div>'+
+          '<div class="boss-read-line">Batch 3 &rarr; 3,500 pcs &rarr; 28 Mar &rarr; Export</div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="boss-read-card">'+
+        '<div class="boss-read-head"><div class="boss-read-section-title">Items Snapshot</div><div class="boss-read-section-copy">Compact item lines only.</div></div>'+
+        '<div class="boss-read-lines">'+
+          '<div class="boss-read-line">Item 001 &rarr; Model A &rarr; 5,000 pcs &rarr; 1st Order</div>'+
+          '<div class="boss-read-line">Item 002 &rarr; Model B &rarr; 4,000 pcs &rarr; New Spec</div>'+
+          '<div class="boss-read-line">Item 003 &rarr; Model C &rarr; 3,500 pcs &rarr; Standard</div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="boss-read-card">'+
+        '<div class="boss-read-head"><div class="boss-read-section-title">Special Notes</div><div class="boss-read-section-copy">Read-only note highlights.</div></div>'+
+        '<div class="boss-read-lines">'+
+          '<div class="boss-read-line">Waiver required for Item 002</div>'+
+          '<div class="boss-read-line">Customer approval pending</div>'+
+        '</div>'+
+      '</div>'+
+    '</div>'+
+  '</div>';
+}
+function renderWaiverRecordsStatusPill(status,kind){
+  const normalized=(status||'').toLowerCase();
+  let className='review';
+  if(normalized.indexOf('approved')!==-1 || normalized.indexOf('active')!==-1 || normalized.indexOf('closed')!==-1 || normalized.indexOf('not required')!==-1)className='approved';
+  if(normalized.indexOf('pending')!==-1 || normalized.indexOf('open')!==-1)className='pending';
+  if(normalized.indexOf('rejected')!==-1)className='review';
+  if(kind==='current' && normalized.indexOf('under review')!==-1)className='review';
+  return '<span class="waiver-records-status '+className+'">'+escapeHtml(status)+'</span>';
+}
+function renderWaiverRecordsCustomerEvidence(record){
+  return '<div class="waiver-records-detail-item full">'+
+    '<div class="waiver-records-detail-label">Customer Approval Evidence</div>'+
+    '<div class="waiver-records-detail-value">'+escapeHtml(record.customerEvidence)+'</div>'+
+  '</div>';
+}
+function renderWaiverRecordsDetailItem(label,value,extraClass){
+  return '<div class="waiver-records-detail-item '+(extraClass||'')+'">'+
+    '<div class="waiver-records-detail-label">'+escapeHtml(label)+'</div>'+
+    '<div class="waiver-records-detail-value">'+escapeHtml(value)+'</div>'+
+  '</div>';
+}
+function renderWaiverRecordsSummaryRow(record,index){
+  const detailId='waiver-record-detail-'+index;
+  return '<tr class="waiver-records-summary-row" data-waiver-record-summary="'+detailId+'">'+
+    '<td>'+escapeHtml(record.id)+'</td>'+
+    '<td>'+escapeHtml(record.itemNo)+'</td>'+
+    '<td>'+escapeHtml(record.model)+'</td>'+
+    '<td>'+escapeHtml(record.changeType)+'</td>'+
+    '<td><div class="waiver-records-change-summary">'+escapeHtml(record.originalMaterial+' → '+record.replacementMaterial)+'</div></td>'+
+    '<td><div class="waiver-records-trace-anchor"><strong>'+escapeHtml(record.salesOrderNo)+'</strong><span>'+escapeHtml(record.itemNo)+'</span><span>'+escapeHtml(record.traceAnchorWo)+'</span></div></td>'+
+    '<td>'+renderWaiverRecordsStatusPill(record.internalApproval)+'</td>'+
+    '<td>'+renderWaiverRecordsStatusPill(record.customerApproval)+'</td>'+
+    '<td>'+renderWaiverRecordsStatusPill(record.currentStatus,'current')+'</td>'+
+    '<td>'+escapeHtml(record.changedAt)+'</td>'+
+    '<td><button type="button" class="btn waiver-records-expand-btn" data-waiver-record-toggle="'+detailId+'" aria-expanded="false">Expand</button></td>'+
+  '</tr>';
+}
+function renderWaiverRecordsDetailRow(record,index){
+  const detailId='waiver-record-detail-'+index;
+  return '<tr id="'+detailId+'" class="waiver-records-detail-row" hidden>'+
+    '<td colspan="11" class="waiver-records-detail-cell">'+
+      '<div class="waiver-records-detail-panel">'+
+        '<div class="waiver-records-trace-spine">'+
+          '<div class="waiver-records-trace-title">Trace Back Spine</div>'+
+          '<div class="waiver-records-detail-grid">'+
+            renderWaiverRecordsDetailItem('Sales Order No.',record.salesOrderNo,'wide')+
+            renderWaiverRecordsDetailItem('Order Item No.',record.itemNo,'wide')+
+            renderWaiverRecordsDetailItem('Work Order No.',record.workOrderNo,'wide')+
+            renderWaiverRecordsDetailItem('WO Batch / Run Ref',record.woBatchRunRef,'wide')+
+            renderWaiverRecordsDetailItem('Production Line',record.productionLine,'wide')+
+            renderWaiverRecordsDetailItem('Planned Run Date',record.plannedRunDate,'wide')+
+            renderWaiverRecordsDetailItem('Trace Status',record.traceStatusLabel,'wide')+
+            renderWaiverRecordsDetailItem('Trace Note',record.traceNote,'wide')+
+          '</div>'+
+          (record.linkedWorkOrders&&record.linkedWorkOrders.length?'<div class="waiver-records-detail-item full"><div class="waiver-records-detail-label">Linked Work Orders:</div><div class="waiver-records-linked-list">'+record.linkedWorkOrders.map((wo,woIndex)=>'<div class="waiver-records-linked-row">'+(woIndex+1)+'. '+escapeHtml(wo.woNo)+' | '+escapeHtml(wo.woBatchRunRef)+' | '+escapeHtml(wo.productionLine)+' | '+escapeHtml(wo.plannedRunDate)+'</div>').join('')+'</div></div>':'')+
+        '</div>'+
+        '<div class="waiver-records-detail-divider"></div>'+
+        '<div class="waiver-records-detail-grid">'+
+          renderWaiverRecordsDetailItem('Full Original Material',record.originalMaterial,'wide')+
+          renderWaiverRecordsDetailItem('Full Replacement Material',record.replacementMaterial,'wide')+
+          renderWaiverRecordsDetailItem('Original Supplier',record.originalSupplier,'wide')+
+          renderWaiverRecordsDetailItem('Replacement Supplier',record.replacementSupplier,'wide')+
+          '<div class="waiver-records-detail-item full"><div class="waiver-records-detail-label">Internal Approval Evidence List</div><div class="waiver-records-detail-value">'+renderApprovalEvidenceList()+'</div></div>'+
+          renderWaiverRecordsCustomerEvidence(record)+
+          renderWaiverRecordsDetailItem('Notes / Remark',record.remark,'full')+
+          renderWaiverRecordsDetailItem('Changed By / Changed At',record.changedBy+' / '+record.changedAt,'full')+
+        '</div>'+
+      '</div>'+
+    '</td>'+
+  '</tr>';
+}
+function renderWaiverMaterialChangeRecordsSurface(){
+  const records=[
+    {id:'WMR-20260425-003',itemNo:'Item 003',model:'Model C',changeType:'Supplier Change',originalMaterial:'LED Driver 120W',replacementMaterial:'LED Driver 120W Rev B',originalSupplier:'Prime Source Tech',replacementSupplier:'Nova Components',salesOrderNo:'SO-20260425',traceStatus:'WO_PENDING',traceStatusLabel:'WO Pending',traceAnchorWo:'WO Pending',workOrderNo:'WO Pending',woBatchRunRef:'WO Pending',productionLine:'Not planned yet',plannedRunDate:'Not planned yet',traceNote:'SO Item linked, WO not created yet',linkedWorkOrders:[],internalApproval:'5/5 Approved',customerApproval:'Pending',currentStatus:'Under Review',changedAt:'25 Apr 2026 15:40',changedBy:'Order Admin',customerEvidence:'Customer approval pending. No customer release reference recorded in this mock row.',remark:'Supplier change requested for lead-time control. Internal approval evidence remains traceable in expanded detail only.'},
+    {id:'WMR-20260424-002',itemNo:'Item 002',model:'Model B',changeType:'Material Replacement',originalMaterial:'Lens Cover LC-88',replacementMaterial:'Lens Cover LC-88A',originalSupplier:'Bright Polymer',replacementSupplier:'Bright Polymer',salesOrderNo:'SO-20260424',traceStatus:'MULTI_WO_LINKED',traceStatusLabel:'Multi-WO Linked',traceAnchorWo:'Multi-WO (2)',workOrderNo:'Multiple WOs linked',woBatchRunRef:'See linked Work Orders',productionLine:'Multiple lines',plannedRunDate:'Multiple dates',traceNote:'Multiple WOs linked, see list',linkedWorkOrders:[{woNo:'WO-20260424-001',woBatchRunRef:'Batch A',productionLine:'Line 1',plannedRunDate:'2026-05-03'},{woNo:'WO-20260424-002',woBatchRunRef:'Batch B',productionLine:'Line 2',plannedRunDate:'2026-05-04'}],internalApproval:'5/5 Approved',customerApproval:'Approved',currentStatus:'Active',changedAt:'24 Apr 2026 11:05',changedBy:'Sales Coordinator',customerEvidence:'Customer approved by email ref CUST-APR-20260424-002.',remark:'Approved replacement for optical assembly. Static mock record only; no approval engine or storage is created.'},
+    {id:'WMR-20260422-001',itemNo:'Item 001',model:'Model A',changeType:'Waiver',originalMaterial:'PCB Brand A1',replacementMaterial:'Approved Waiver Use',originalSupplier:'Delta Circuits',replacementSupplier:'Delta Circuits',salesOrderNo:'SO-20260422',traceStatus:'SINGLE_WO_LINKED',traceStatusLabel:'Single WO Linked',traceAnchorWo:'WO-20260422-001',workOrderNo:'WO-20260422-001',woBatchRunRef:'Batch 1',productionLine:'Line 3',plannedRunDate:'2026-05-02',traceNote:'WO assigned, trace spine valid',linkedWorkOrders:[],internalApproval:'3/5 Pending',customerApproval:'Not Required',currentStatus:'Open',changedAt:'22 Apr 2026 09:20',changedBy:'Planner',customerEvidence:'Customer approval not required for this internal waiver mock scenario.',remark:'Waiver use is still open for supervisor review. Evidence is preserved below the row and not shown in the decision board.'},
+    {id:'WMR-20260420-000',itemNo:'Item 004',model:'Model D',changeType:'Material Replacement',originalMaterial:'Cable Harness CH-40',replacementMaterial:'Cable Harness CH-40 Alt',originalSupplier:'Matrix Cable',replacementSupplier:'Eastline Wire',salesOrderNo:'SO-20260420',traceStatus:'SINGLE_WO_LINKED',traceStatusLabel:'Single WO Linked',traceAnchorWo:'WO-20260420-004',workOrderNo:'WO-20260420-004',woBatchRunRef:'Batch R',productionLine:'Line 4',plannedRunDate:'2026-04-29',traceNote:'WO assigned, trace spine valid',linkedWorkOrders:[],internalApproval:'Rejected',customerApproval:'Rejected',currentStatus:'Closed',changedAt:'20 Apr 2026 10:10',changedBy:'QA Reviewer',customerEvidence:'Customer rejection recorded by email ref CUST-REJ-20260420-004.',remark:'Rejected mock record kept closed for supervisor traceability. No production usability is implied.'}
+  ];
+  return '<div class="section section-scroll">'+
+    '<div class="waiver-records-shell">'+
+      '<div class="waiver-records-card">'+
+        '<div class="waiver-records-head">'+
+          '<div class="waiver-records-title">Change Decision Board</div>'+
+          '<div class="waiver-records-copy">Static hardcoded rows only, shown newest to oldest. This board is fully read-only in the current stage. Approval evidence is kept in expanded details for traceability only. This mock does not implement approval workflow or messaging integration.</div>'+
+        '</div>'+
+        '<div class="waiver-records-table-wrap">'+
+          '<table class="waiver-records-table">'+
+            '<thead><tr><th>Record ID</th><th>Item No</th><th>Model</th><th>Change Type</th><th>Change Summary</th><th>Trace Anchor</th><th>Internal Approval</th><th>Customer Approval</th><th>Current Status</th><th>Changed At</th><th>Action / Expand</th></tr></thead>'+
+            '<tbody>'+
+              records.map((record,index)=>renderWaiverRecordsSummaryRow(record,index)+renderWaiverRecordsDetailRow(record,index)).join('')+
+            '</tbody>'+
+          '</table>'+
+        '</div>'+
+      '</div>'+
+    '</div>'+
+  '</div>';
+}
 function getSalesOrderRendererMap(){
   const standardRenderer=sectionId=>()=>getSalesOrderSectionHtml(sectionId);
   return {
     create:{
       summary:standardRenderer('summary'),
+      'read-view':null,
       commercial:renderCommercialCreateSurface,
       items:renderOrderItemsCreateSurface,
       risk:null,
@@ -1919,7 +2622,9 @@ function getSalesOrderRendererMap(){
       log:null
     },
     search:{
+      'search-order':renderSalesOrderSearchListSurface,
       summary:null,
+      'read-view':null,
       commercial:null,
       items:null,
       risk:null,
@@ -1927,8 +2632,20 @@ function getSalesOrderRendererMap(){
       delivery:null,
       log:null
     },
+    view:{
+      summary:null,
+      'read-view':renderBossOrderReadViewSurface,
+      'waiver-records':renderWaiverMaterialChangeRecordsSurface,
+      commercial:null,
+      items:null,
+      risk:standardRenderer('risk'),
+      procurement:standardRenderer('procurement'),
+      delivery:null,
+      log:standardRenderer('log')
+    },
     edit:{
       summary:renderOrderSummaryStandardSurface,
+      'read-view':renderBossOrderReadViewSurface,
       commercial:standardRenderer('commercial'),
       items:standardRenderer('items'),
       risk:standardRenderer('risk'),
@@ -1938,6 +2655,7 @@ function getSalesOrderRendererMap(){
     },
     delete:{
       summary:renderOrderSummaryStandardSurface,
+      'read-view':renderBossOrderReadViewSurface,
       commercial:standardRenderer('commercial'),
       items:standardRenderer('items'),
       risk:standardRenderer('risk'),
@@ -1955,7 +2673,7 @@ function renderSalesOrderContentPanelBody(selectedItem,actionMeta,moduleMeta){
   const actionRendererGroup=rendererMap[currentAction]||null;
   const renderer=actionRendererGroup?actionRendererGroup[selectedItem.id]||null:null;
   if(currentAction==='search'){
-    return renderSalesOrderSearchPlaceholder(selectedItem);
+    return renderer?renderer():renderSalesOrderSearchPlaceholder(selectedItem);
   }
   if(currentAction==='create'){
     return renderer?renderer():renderSalesOrderCreatePlaceholder(selectedItem);
@@ -1967,6 +2685,17 @@ function renderSalesOrderContentPanelBody(selectedItem,actionMeta,moduleMeta){
     moduleMeta.label+' · '+selectedItem.label,
     actionMeta.label+' is selected, but this Sales &amp; Orders sub-module does not yet have a dedicated renderer on this path.'
   );
+}
+function renderSalesOrderCreateControls(selectedItemId){
+  if(currentAction!=='create'||!selectedItemId)return '';
+  const controlsByItem={
+    summary:'<details class="master-data-menu"><summary class="master-data-toggle">Master Data</summary><div class="master-data-panel"><button type="button" class="master-data-option">Import Excel</button><button type="button" class="master-data-option">Link Google Sheet</button></div></details><div class="create-form-actions"><button type="button" class="btn emphasis"><span class="btn-icon" aria-hidden="true"></span>Undo</button><button type="button" class="btn primary"><span class="btn-icon" aria-hidden="true"></span>Save</button></div>',
+    commercial:'<details class="master-data-menu"><summary class="master-data-toggle">MASTER DATA</summary><div class="master-data-panel"><button type="button" class="master-data-option" data-commercial-create-action="master-data">Commercial Terms mock placeholder</button></div></details><div class="create-form-actions"><button type="button" class="btn emphasis" data-commercial-create-action="undo"><span class="btn-icon" aria-hidden="true"></span>Undo</button><button type="button" class="btn primary" data-commercial-create-action="save"><span class="btn-icon" aria-hidden="true"></span>Save</button></div>',
+    delivery:'<details class="master-data-menu"><summary class="master-data-toggle">Master Data</summary><div class="master-data-panel"><button type="button" class="master-data-option">Shipping Detail mock placeholder</button></div></details><div class="create-form-actions"><button type="button" class="btn emphasis"><span class="btn-icon" aria-hidden="true"></span>Undo</button><button type="button" class="btn primary"><span class="btn-icon" aria-hidden="true"></span>Save</button></div>',
+    items:'<details class="master-data-menu"><summary class="master-data-toggle">MASTER DATA</summary><div class="master-data-panel"><button type="button" class="master-data-option">Master Model List</button><button type="button" class="master-data-option">Buyer Master</button></div></details><div class="create-form-actions"><button type="button" class="btn emphasis"><span class="btn-icon" aria-hidden="true"></span>Undo</button><button type="button" class="btn primary"><span class="btn-icon" aria-hidden="true"></span>Save</button></div>'
+  };
+  const controlsHtml=controlsByItem[selectedItemId]||'';
+  return controlsHtml?'<div class="sales-order-create-controls">'+controlsHtml+'</div>':'';
 }
 function getGenericWorkspaceGuide(moduleId){
   const moduleMeta=MODULE_CONFIG[moduleId];
@@ -2045,8 +2774,10 @@ function renderGenericWorkspaceStage(moduleId){
   const actionMeta=ACTION_CONFIG[currentAction]||null;
   const selectedItem=getSelectedWorkspaceItem(moduleId);
   const actionButtons=Object.entries(ACTION_CONFIG)
-    .filter(([actionId])=>['create','search','edit','delete'].includes(actionId))
-    .map(([actionId,meta])=>'<button type="button" class="master-work-action'+(actionId===currentAction?' active':'')+(actionId==='delete'?' restricted':'')+'" data-stage-action="'+actionId+'" data-action="'+actionId+'"><span class="master-work-icon" aria-hidden="true"></span><span class="master-work-label"><span class="master-work-title">'+meta.label+'</span><span class="master-work-copy">'+meta.rule+'</span></span></button>')
+    .filter(([actionId])=>moduleId==='sales-orders'
+      ? ['create','search'].includes(actionId)
+      : ['create','search','edit','delete'].includes(actionId))
+    .map(([actionId,meta])=>'<button type="button" class="master-work-action'+(actionId===currentAction?' active':'')+(actionId==='delete'?' restricted':'')+'" data-stage-action="'+actionId+'" data-action="'+actionId+'"><span class="master-work-icon" aria-hidden="true"></span><span class="master-work-label"><span class="master-work-title">'+meta.label+'</span></span></button>')
     .join('');
   const selectorButtons=getWorkspaceItems(moduleId)
     .map(item=>'<button type="button" class="master-work-item'+(!actionMeta?' is-disabled':'')+(item.id===getSelectedWorkspaceItemId(moduleId)?' active':'')+'" data-stage-workspace-item="'+item.id+'"><span class="master-work-label"><span class="master-work-item-title">'+item.label+'</span><span class="master-work-item-sub">'+item.description+'</span></span></button>')
@@ -2089,10 +2820,35 @@ function renderGenericWorkspaceStage(moduleId){
   headerTitle.textContent=moduleMeta.label;
   headerCopy.textContent='Choose an action first, then choose the relevant module surface. The center panel stays as the primary working area in the same approved Sales & Orders workspace pattern.';
   if(moduleId==='sales-orders'){
-    headerCopy.textContent='Choose an action first, then choose the real Sales Order sub-module. The center panel is the primary working area and keeps the actual selected Sales Order content visible with internal scrolling.';
+    headerTitle.textContent='';
+    headerCopy.textContent='';
+    const salesOrderActionLabelMap={create:'Create / Add',search:'Search / Find'};
+    const salesOrderActionTabs='<div class="sales-order-action-tabs">'+Object.entries(ACTION_CONFIG)
+      .filter(([actionId])=>['create','search'].includes(actionId))
+      .map(([actionId,meta])=>'<button type="button" class="sales-order-action-tab master-work-action'+(actionId===currentAction?' active':'')+(actionId==='delete'?' restricted':'')+'" data-stage-action="'+actionId+'" data-action="'+actionId+'"><span class="master-work-icon" aria-hidden="true"></span><span class="master-work-label"><span class="master-work-title">'+(salesOrderActionLabelMap[actionId]||meta.label)+'</span></span></button>')
+      .join('')+'</div>';
+    const salesOrderTabs=(actionMeta
+      ? '<div class="sales-order-submodule-row"><div class="sales-order-submodule-tabs">'+getWorkspaceItems(moduleId)
+          .map(item=>'<button type="button" class="sales-order-submodule-tab'+(item.id===getSelectedWorkspaceItemId(moduleId)?' active':'')+'" data-stage-workspace-item="'+item.id+'">'+item.label+'</button>')
+          .join('')+'</div>'+renderSalesOrderCreateControls(selectedItem?selectedItem.id:getSelectedWorkspaceItemId(moduleId))+'</div>'
+      : '');
+    mainContent='<div class="master-stage-panel master-stage-content-panel">'+
+      '<div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Center Panel</div><div class="master-stage-panel-title">Sales &amp; Orders</div></div>'+
+      '<div class="master-stage-panel-body">'+salesOrderActionTabs+'<div class="sales-order-submodule-empty"><div class="master-stage-placeholder"><strong>Choose an action first.</strong> Then choose one Sales Order sub-module tab to open the matching workspace in this center panel.</div></div></div>'+
+    '</div>';
+    if(actionMeta&&!selectedItem){
+      mainContent='<div class="master-stage-panel master-stage-content-panel">'+
+        '<div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Center Panel</div><div class="master-stage-panel-title">Sales &amp; Orders -- '+actionMeta.label+' -- '+workspaceConfig.selectorTitle+'</div></div>'+
+        '<div class="master-stage-panel-body">'+salesOrderActionTabs+salesOrderTabs+'<div class="sales-order-submodule-empty"><div class="master-stage-placeholder"><strong>'+actionMeta.label+' is selected.</strong> Choose one tab above to open the correct Sales Order surface in this center panel.</div></div></div>'+
+      '</div>';
+    }
+    if(actionMeta&&selectedItem){
+      mainContent='<div class="master-stage-panel master-stage-content-panel">'+
+        '<div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Center Panel</div><div class="master-stage-panel-title">Sales &amp; Orders -- '+actionMeta.label+' -- '+selectedItem.label+'</div></div>'+
+        '<div class="master-stage-panel-body">'+salesOrderActionTabs+salesOrderTabs+'<div class="master-stage-work-scroll">'+renderSalesOrderContentPanelBody(selectedItem,actionMeta,moduleMeta)+'</div></div>'+
+      '</div>';
+    }
     content.innerHTML='<div class="master-stage-shell sales-order-workspace">'+
-      '<div class="master-stage-column"><div class="master-stage-panel"><div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Column 1</div><div class="master-stage-panel-title">Choose Action</div><div class="master-stage-panel-copy">First choose what to do in '+moduleMeta.label+'.</div></div><div class="master-stage-panel-body"><div class="master-stage-action-list">'+actionButtons+'</div></div></div></div>'+
-      '<div class="master-stage-column"><div class="master-stage-panel"><div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Column 2</div><div class="master-stage-panel-title">'+workspaceConfig.selectorTitle+'</div><div class="master-stage-panel-copy">'+workspaceConfig.selectorCopy+'</div></div><div class="master-stage-panel-body"><div class="master-stage-master-list">'+selectorButtons+'</div></div></div></div>'+
       '<div class="master-stage-column">'+mainContent+'</div>'+
     '</div>';
     if(currentAction==='create'&&selectedItem&&selectedItem.id==='summary'){
@@ -2221,7 +2977,7 @@ function renderMasterStage(){
   headerCopy.textContent='First choose what to do, then choose which master to do it on. The center panel opens the matching maintenance surface, and the guide panel explains where you are, what to click next, and what the action affects.';
   const actionButtons=Object.entries(ACTION_CONFIG)
     .filter(([actionId])=>['create','search','edit','delete'].includes(actionId))
-    .map(([actionId,meta])=>'<button type="button" class="master-work-action'+(actionId===currentAction?' active':'')+(actionId==='delete'?' restricted':'')+'" data-stage-action="'+actionId+'" data-action="'+actionId+'"><span class="master-work-icon" aria-hidden="true"></span><span class="master-work-label"><span class="master-work-title">'+meta.label+'</span><span class="master-work-copy">'+meta.rule+'</span></span></button>')
+    .map(([actionId,meta])=>'<button type="button" class="master-work-action'+(actionId===currentAction?' active':'')+(actionId==='delete'?' restricted':'')+'" data-stage-action="'+actionId+'" data-action="'+actionId+'"><span class="master-work-icon" aria-hidden="true"></span><span class="master-work-label"><span class="master-work-title">'+meta.label+'</span></span></button>')
     .join('');
   const masterButtons=Object.entries(MODULE_CONFIG)
     .filter(([moduleId])=>isMasterModule(moduleId))
@@ -2513,6 +3269,14 @@ function syncModuleEntry(){
     const sectionSelect=document.getElementById('section-select');
     currentWorkspaceArea=sectionSelect&&sectionSelect.value?sectionSelect.value:'summary';
   }
+  if(currentModule==='sales-orders'){
+    if(!['create','search'].includes(currentAction)){
+      currentAction='search';
+    }
+    if(currentAction==='search'){
+      currentWorkspaceArea='search-order';
+    }
+  }
 
   if(currentModule==='reports-master-data'){
     renderMasterStage();
@@ -2596,6 +3360,10 @@ function setupMasterStageInteractions(){
   const stage=document.getElementById('master-stage');
   if(!stage)return;
   stage.addEventListener('input',event=>{
+    if(event.target.matches('[data-sales-search-filter]')){
+      applySalesSearchMockFilters(stage);
+      return;
+    }
     if(event.target.matches('[data-master-search]')){
       const state=getMasterState(currentMasterModule);
       if(!state)return;
@@ -2621,6 +3389,10 @@ function setupMasterStageInteractions(){
     }
   });
   stage.addEventListener('change',event=>{
+    if(event.target.matches('[data-sales-search-filter]')){
+      applySalesSearchMockFilters(stage);
+      return;
+    }
     if(event.target.matches('[data-create-date-native]')){
       syncCreateDateDisplays(getActiveCreateSummaryRoot());
     }
@@ -2653,6 +3425,11 @@ function setupMasterStageInteractions(){
     }
     if(event.target.matches('[data-order-items-date-native]')){
       syncOrderItemsDateDisplays();
+      return;
+    }
+    if(event.target.matches('[data-order-items-waiver-field="required"]')){
+      const row=event.target.closest('[data-order-items-waiver-row]');
+      syncOrderItemsWaiverRowVisibility(row);
       return;
     }
     if(event.target.matches('[data-order-items-model-input]')){
@@ -2692,7 +3469,53 @@ function setupMasterStageInteractions(){
       const row=removeWaiverButton.closest('[data-order-items-waiver-row]');
       const list=row?row.closest('[data-order-items-waiver-list]'):null;
       if(row)row.remove();
-      if(list)renumberOrderItemsWaiverRows(list);
+      if(list){
+        renumberOrderItemsWaiverRows(list);
+        syncOrderItemsWaiverEmptyState(list);
+      }
+      return;
+    }
+    const addMaterialButton=event.target.closest('[data-order-items-add-material]');
+    if(addMaterialButton){
+      const shell=addMaterialButton.closest('.order-items-material-table-shell');
+      const tbody=shell?shell.querySelector('[data-order-items-material-body]'):null;
+      addOrderItemsMaterialRow(tbody);
+      return;
+    }
+    const clearMaterialButton=event.target.closest('[data-order-items-clear-material]');
+    if(clearMaterialButton){
+      const shell=clearMaterialButton.closest('.order-items-material-table-shell');
+      const tbody=shell?shell.querySelector('[data-order-items-material-body]'):null;
+      const waiverRow=tbody?tbody.closest('[data-order-items-waiver-row]'):null;
+      if(tbody){
+        tbody.querySelectorAll('[data-order-items-material-row]').forEach(row=>row.remove());
+        syncOrderItemsMaterialEmptyState(waiverRow||tbody);
+      }
+      return;
+    }
+    const removeMaterialButton=event.target.closest('[data-order-items-remove-material]');
+    if(removeMaterialButton){
+      const row=removeMaterialButton.closest('[data-order-items-material-row]');
+      const waiverRow=row?row.closest('[data-order-items-waiver-row]'):null;
+      const waiverKey=waiverRow?waiverRow.getAttribute('data-order-items-waiver-key')||'order-items-waiver-1':'order-items-waiver-1';
+      if(row)row.remove();
+      if(waiverRow)renumberOrderItemsMaterialRows(waiverRow,waiverKey);
+      return;
+    }
+    const addApprovalEvidenceButton=event.target.closest('[data-order-items-add-approval-evidence]');
+    if(addApprovalEvidenceButton){
+      const entry=addApprovalEvidenceButton.closest('.order-items-approval-entry');
+      const tbody=entry?entry.querySelector('[data-order-items-approval-body]'):null;
+      addOrderItemsApprovalEvidenceRow(tbody);
+      return;
+    }
+    const removeApprovalEvidenceButton=event.target.closest('[data-order-items-remove-approval-evidence]');
+    if(removeApprovalEvidenceButton){
+      const row=removeApprovalEvidenceButton.closest('[data-order-items-approval-row]');
+      const waiverRow=row?row.closest('[data-order-items-waiver-row]'):null;
+      const waiverKey=waiverRow?waiverRow.getAttribute('data-order-items-waiver-key')||'order-items-waiver-1':'order-items-waiver-1';
+      if(row)row.remove();
+      if(waiverRow)renumberOrderItemsApprovalEvidenceRows(waiverRow,waiverKey);
       return;
     }
     const addShippingBatchButton=event.target.closest('[data-order-items-add-batch]');
@@ -2708,6 +3531,24 @@ function setupMasterStageInteractions(){
       const tbody=row?row.closest('[data-order-items-schedule-body]'):null;
       if(row)row.remove();
       if(tbody)renumberOrderItemsShippingRows(tbody);
+      return;
+    }
+    const waiverRecordToggle=event.target.closest('[data-waiver-record-toggle]');
+    if(waiverRecordToggle){
+      const detailId=waiverRecordToggle.getAttribute('data-waiver-record-toggle')||'';
+      const detailRow=detailId?document.getElementById(detailId):null;
+      if(detailRow){
+        const isHidden=detailRow.hasAttribute('hidden');
+        if(isHidden){
+          detailRow.removeAttribute('hidden');
+          waiverRecordToggle.setAttribute('aria-expanded','true');
+          waiverRecordToggle.textContent='Collapse';
+        }else{
+          detailRow.setAttribute('hidden','');
+          waiverRecordToggle.setAttribute('aria-expanded','false');
+          waiverRecordToggle.textContent='Expand';
+        }
+      }
       return;
     }
     const actionButton=event.target.closest('[data-stage-action]');
@@ -3403,8 +4244,6 @@ window.addEventListener('DOMContentLoaded',()=>{
           <div id="sidebar-action-shell" class="side-nav-action-shell hidden">
             <button type="button" class="side-nav-action-item" data-action="create">Create / Add</button>
             <button type="button" class="side-nav-action-item" data-action="search">Search / Find</button>
-            <button type="button" class="side-nav-action-item" data-action="edit">Edit / Update</button>
-            <button type="button" class="side-nav-action-item restricted" data-action="delete">Delete</button>
             <div id="sidebar-action-status" class="side-nav-action-status">Choose the next action in the sidebar to open the correct record / form path.</div>
           </div>
         </div>
@@ -3446,7 +4285,6 @@ window.addEventListener('DOMContentLoaded',()=>{
     <div class="actions">
       <div class="action-row">
         <div class="action-cluster">
-          <button id="edit-button" class="btn emphasis" aria-pressed="false"><span class="btn-icon" aria-hidden="true">✎</span><span id="edit-button-label">Edit</span></button>
         </div>
       </div>
     </div>
@@ -3489,7 +4327,7 @@ window.addEventListener('DOMContentLoaded',()=>{
     <div class="module-flow-card">
       <div class="module-entry-label">Step 3 · Enter Record / Form Flow</div>
       <div id="module-flow-title" class="module-flow-title">Step 3 opens after the next action is chosen</div>
-      <div id="module-flow-body" class="module-flow-body"><strong>Core Module → Action → Record / Form.</strong> Choose one sidebar action first. <strong>Create / Add</strong> opens a new draft without asking for a key first, while <strong>Search / Find</strong>, <strong>Edit / Update</strong>, <strong>Close / Cancel</strong>, and <strong>Delete</strong> all require lookup and record selection first.</div>
+      <div id="module-flow-body" class="module-flow-body"><strong>Core Module → Action → Record / Form.</strong> Choose one sidebar action first. <strong>Create / Add</strong> opens a new draft without asking for a key first, while <strong>Search / Find</strong> finds an existing record before any record-level action is available.</div>
     </div>
   </div>
   <div id="master-stage" class="master-stage hidden">
@@ -3507,7 +4345,7 @@ window.addEventListener('DOMContentLoaded',()=>{
     <div class="section section-scroll">
       <div class="create-order-shell create-only">
         <div class="create-form-head">
-          <div class="create-form-title">Create / Add Sales Order</div>
+          <div class="create-form-title">Sales &amp; Orders -- Action choose -- Sub Module</div>
           <div class="create-form-tools">
             <details id="master-data-menu" class="master-data-menu">
               <summary class="master-data-toggle">Master Data</summary>
@@ -3738,6 +4576,42 @@ window.addEventListener('DOMContentLoaded',()=>{
                 </div>
               </div>
             </div>
+            <div class="pre-save-check-card" aria-label="Before Save Quick Check">
+              <div class="pre-save-check-head">
+                <div class="pre-save-check-title">Before Save &mdash; Quick Check</div>
+                <div class="pre-save-check-note">Missing-field self-check reminder only. Does not block Save.</div>
+              </div>
+              <div class="pre-save-check-grid">
+                <div class="pre-save-check-group">
+                  <div class="pre-save-check-group-title">Order Basics</div>
+                  <ul class="pre-save-check-list">
+                    <li>Customer is selected</li>
+                    <li>Order type is selected</li>
+                  </ul>
+                </div>
+                <div class="pre-save-check-group">
+                  <div class="pre-save-check-group-title">Order Items</div>
+                  <ul class="pre-save-check-list">
+                    <li>At least one item is added</li>
+                    <li>Quantity is filled</li>
+                  </ul>
+                </div>
+                <div class="pre-save-check-group">
+                  <div class="pre-save-check-group-title">Shipping</div>
+                  <ul class="pre-save-check-list">
+                    <li>Shipping date is provided</li>
+                    <li>Ship-To is provided</li>
+                  </ul>
+                </div>
+                <div class="pre-save-check-group">
+                  <div class="pre-save-check-group-title">Special Requirements</div>
+                  <ul class="pre-save-check-list">
+                    <li>Waiver / new spec is reviewed</li>
+                    <li>Internal remarks are reviewed</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -3934,17 +4808,93 @@ window.addEventListener('DOMContentLoaded',()=>{
 
   <div id="risk" class="section-pane compact-pane hidden">
     <div class="section section-scroll">
-      <div class="table-wrap risk-status-table">
-        <table>
-          <thead><tr><th>Risk Area</th><th>Current Status</th><th>Remark</th></tr></thead>
-          <tbody>
-            <tr><td>Material Risk</td><td><span class="badge watching">Medium</span></td><td><div>1. Label-set ETA is close to pre-stage need date.</div><div>2. Staging may slip with only a 2-day buffer left.</div><div>3. Purchaser is expediting split release with supplier.</div></td></tr>
-            <tr><td>Supplier Risk</td><td><span class="badge watching">Medium</span></td><td><div>1. 150W driver inbound still depends on overseas forward timing.</div><div>2. Final assembly recovery window may tighten next.</div><div>3. Supplier is advancing 300 units by air first.</div></td></tr>
-            <tr><td>Capacity Risk</td><td><span class="badge watching">Medium</span></td><td><div>1. Line loading is near the weekly limit for mixed output.</div><div>2. Second-batch start may slide if supply slips.</div><div>3. Planner is reviewing resequencing now.</div></td></tr>
-            <tr><td>Change Risk</td><td><span class="badge controlled">Controlled</span></td><td><div>1. No new customer spec or quantity change is open now.</div><div>2. Any late change would hit label and packing sequence first.</div><div>3. Sales admin is holding the change confirmation gate.</div></td></tr>
-            <tr><td>Route / Site Risk</td><td><span class="badge controlled">Controlled</span></td><td><div>1. Local site unloading starts only after 2:00 PM.</div><div>2. Same-day truck turnaround may slip if dispatch moves late.</div><div>3. Logistics is aligning an earlier loading slot.</div></td></tr>
-          </tbody>
-        </table>
+      <div class="risk-decision-shell">
+        <div>
+          <div class="risk-decision-title">Risk Status &mdash; Decision View</div>
+          <div class="risk-decision-note">UI prototype only &mdash; no real data, no system logic.</div>
+        </div>
+        <div class="risk-decision-card">
+          <div class="risk-decision-head">
+            <div class="risk-decision-section-title">Top Summary Bar</div>
+            <div class="risk-decision-section-copy">Static one-screen manager summary for immediate decision review.</div>
+          </div>
+          <div class="risk-header-grid">
+            <div class="risk-header-item"><div class="risk-header-label">SO No</div><div class="risk-header-value">SO-20260421-123</div></div>
+            <div class="risk-header-item"><div class="risk-header-label">Customer</div><div class="risk-header-value">Demo Customer Sdn Bhd</div></div>
+            <div class="risk-header-item"><div class="risk-header-label">Overall Status</div><div class="risk-header-value">AT RISK</div></div>
+            <div class="risk-header-item"><div class="risk-header-label">Critical Highlight</div><div class="risk-header-value">Space Risk</div></div>
+          </div>
+        </div>
+        <div class="risk-severity-stack">
+          <div class="risk-decision-card">
+            <div class="risk-severity-group risk-severity-group--critical">
+              <div class="risk-severity-title">Critical &mdash; Action Required</div>
+              <div class="risk-severity-items">
+                <div class="risk-severity-item">
+                  <div class="risk-severity-item-title">&#128308; Warehouse / Space Risk</div>
+                  <div class="risk-severity-item-copy">Full order may exceed available storage space (mock)</div>
+                  <div class="risk-severity-action">Action: Coordinate with Planning / Warehouse to reschedule or split production.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="risk-decision-card">
+            <div class="risk-severity-group">
+              <div class="risk-severity-title">Needs Attention</div>
+              <div class="risk-severity-items">
+                <div class="risk-severity-item">
+                  <div class="risk-severity-item-title">&#128993; Material Readiness</div>
+                  <div class="risk-severity-item-copy">Potential shortage risk (mock)</div>
+                  <div class="risk-severity-action">Action: Review material availability</div>
+                </div>
+                <div class="risk-severity-item">
+                  <div class="risk-severity-item-title">&#128993; Shipping Readiness</div>
+                  <div class="risk-severity-item-copy">Item 002 has no shipping batch (mock)</div>
+                  <div class="risk-severity-action">Action: Assign shipping schedule</div>
+                </div>
+                <div class="risk-severity-item">
+                  <div class="risk-severity-item-title">&#128993; Special Requirement</div>
+                  <div class="risk-severity-item-copy">Waiver required in Item 001 (mock)</div>
+                  <div class="risk-severity-action">Action: Confirm waiver approval</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="risk-decision-card">
+            <div class="risk-severity-group">
+              <div class="risk-severity-title">Normal / OK</div>
+              <div class="risk-severity-items">
+                <div class="risk-severity-item">
+                  <div class="risk-severity-item-title">&#128994; Production Readiness</div>
+                  <div class="risk-severity-item-copy">Capacity looks available (mock)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="risk-decision-card">
+          <div class="risk-decision-head">
+            <div class="risk-decision-section-title">Risk Follow-Up / Where to Check</div>
+            <div class="risk-decision-section-copy">Plain text investigation guidance only.</div>
+          </div>
+          <div class="risk-followup-grid">
+            <div class="risk-followup-item">
+              <div class="risk-followup-title">Material Risk</div>
+              <div class="risk-followup-line"><strong>Go to:</strong> Short Material List (Purchasing / PMC)</div>
+              <div class="risk-followup-line"><strong>Reason:</strong> Check missing material and supplier promise</div>
+            </div>
+            <div class="risk-followup-item">
+              <div class="risk-followup-title">Shipping Risk</div>
+              <div class="risk-followup-line"><strong>Go to:</strong> Shipping Detail / Order Items (Shipping Coordinator)</div>
+              <div class="risk-followup-line"><strong>Reason:</strong> Check shipping batch, date, and ship-to</div>
+            </div>
+            <div class="risk-followup-item">
+              <div class="risk-followup-title">Space Risk</div>
+              <div class="risk-followup-line"><strong>Go to:</strong> Shipping Detail / Production Plan (Planning / Warehouse)</div>
+              <div class="risk-followup-line"><strong>Reason:</strong> Consider split shipment or staged production</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
