@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.54
+Mini-MES Handoff v2.55
 
-Updated after 2026-04-29 handoff-only insertion for W2 Factory Simulation Governance v1.2
+Updated after 2026-04-29 handoff-only insertion for Trial Charter v1.2
 Date: 2026-04-29
 
 1. Frozen mainline snapshot
@@ -118,6 +118,8 @@ Frozen Record - Shared UI Baseline / Sales Order Mock-Stage Branch Split (Local 
 Frozen Record - Blueprint-Aligned Ultra-Light Trial Governance Baseline v1.0
 
 Frozen Record - W2 Factory Simulation Governance v1.2
+
+Frozen Record - Trial Charter v1.2
 
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
@@ -13210,6 +13212,8 @@ Blueprint-Aligned Ultra-Light Trial Governance Baseline v1.0 is now PASS WITH WA
 
 W2 Factory Simulation Governance v1.2 is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; trial stack now includes Trial Charter v1.1 (execution), Blueprint-Aligned Ultra-Light Trial Governance v1.0 (boundary), and W2 Factory Simulation Governance v1.2 (pre-live hard gate); W2 v1.2 absorbs and supersedes W2 v1.0, W2 v1.0 is retained for historical reference only, W2 v1.1 is inactive / superseded, W2 v1.2 is the sole active W2 Pre-Live Factory Simulation Gate, and the core rule is No W2 PASS = No Real Trial.
 
+Trial Charter v1.2 is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Trial Charter v1.2 is the sole active Trial Execution Governance Card, prior Trial Charter drafts / earlier variants are retained as historical only, the trial stack is now fully synchronized as Blueprint Boundary v1.0, W2 Factory Simulation v1.2, and Trial Charter v1.2, and the controlled Trial sequence is: Blueprint Boundary PASS -> W2 PASS -> Trial Charter Execution -> Real Trial.
+
 Frozen Record - Shared UI Baseline / Sales Order Mock-Stage Branch Split (Local vs Overseas)
 
 Status: PASS / FROZEN WITH FINAL REVIEW NOTES
@@ -13525,3 +13529,170 @@ Final-review warning notes, non-blocking only
 1. "Complete Simulation" = all five W2-1 scenarios executed at least once
 2. Time budget = sign-in to sign-out full cycle
 3. Failure root-cause + correction plan recommended within 3 working days
+
+Frozen Record - Trial Charter v1.2
+
+Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+Authority layer: Handoff-only frozen Trial Execution Governance record
+
+Boundary
+
+This card is Trial Execution Governance Only.
+
+This card does not authorize:
+
+* Blueprint promotion
+* production deployment
+* runtime production activation
+* Trial success by default
+* scope expansion without governance
+
+Core Rule
+
+No Blueprint Boundary PASS + No W2 PASS = No Real Trial.
+
+Version Governance
+
+* Trial Charter v1.2 is the sole active Trial Execution Governance Card.
+* Prior Trial Charter drafts / earlier variants are retained as historical only.
+* Older Trial Charter variants must not be treated as the sole active execution governance after v1.2.
+
+Trial stack now fully synchronized:
+
+* Blueprint Boundary v1.0
+* W2 Factory Simulation v1.2
+* Trial Charter v1.2
+
+Controlled Trial sequence:
+
+Blueprint Boundary PASS -> W2 PASS -> Trial Charter Execution -> Real Trial.
+
+T1 Trial Entry Gate
+
+Real Trial may begin only after:
+
+* Blueprint Boundary v1.0 has passed for the relevant scope.
+* W2 Factory Simulation Governance v1.2 has passed for the relevant scope.
+* Trial Charter v1.2 execution scope is explicitly recorded.
+* trial owner / responsible reviewer is identified.
+* trial start window and expected decision window are recorded.
+
+No Blueprint Boundary PASS + No W2 PASS = No Real Trial.
+
+T2 Trial Scope Rule
+
+Trial scope must stay single-line, plug / remove / replug, and blueprint-aligned.
+Trial scope must identify the exact module, flow, operator action, exception path, or controlled artifact under trial.
+Trial scope must not expand by convenience, operator habit, customer pressure, or implementation ease.
+Any additional trial item requires its own Blueprint Boundary check, W2 gate where applicable, and Trial Charter execution recording before it may enter Real Trial.
+
+T3 Minimum Trial Success Criteria
+
+A Trial may be considered successful only if all minimum criteria below are met:
+
+* the trial stayed inside the recorded scope
+* no hidden bypass became the normal path
+* required runtime logs were captured
+* operators could complete the intended action without unreasonable burden
+* blocking / failure handling followed governed paths
+* no weak Trial output was silently promoted into Blueprint truth
+* no production deployment or runtime production activation occurred by implication
+* trial result was reviewed within the required decision window
+
+Trial success is not automatic.
+Trial success requires explicit review and recorded decision.
+
+T4 Trial Fail / Stop Rule
+
+Trial must fail, stop, or pause when:
+
+* scope expands beyond the recorded charter
+* required runtime logging is missing
+* operator execution creates predictable bypass pressure
+* a blocking condition has no governed handling
+* weak Trial output is treated as Blueprint / production / legal truth
+* W2 assumptions are contradicted by real trial execution
+* safety, quality, shipment, inventory, or legal-truth boundary risk appears
+
+Trial stop / pause does not erase the Trial log.
+The stopped or failed state must remain reviewable.
+
+T5 Trial Runtime Logging
+
+Runtime logging is mandatory during Real Trial.
+Minimum runtime log must capture:
+
+* trial item / scope reference
+* date / time
+* responsible role or actor
+* event or action attempted
+* result
+* block / fail / exception if any
+* workaround used if any
+* follow-up owner where unresolved
+* evidence / trace reference where available
+
+Runtime Logging landing location still requires downstream implementation definition.
+Until the landing location is defined, Trial Charter v1.2 freezes the logging obligation only and does not authorize an implementation path.
+
+T6 Trial Decision Windows
+
+Each Trial item must have a decision window before Real Trial starts.
+The decision window must state when the item will be reviewed for:
+
+* continue
+* pause
+* stop / fail
+* remove
+* replug
+* promote through separate governance
+
+Trial items may not run indefinitely by silence.
+If no decision is recorded by the window, the item becomes unresolved and must be escalated to the trial governance owner / responsible reviewer.
+
+T7 Emergency Stop / Pause Authority
+
+Emergency stop / pause authority must be explicit before Real Trial starts.
+Minimum emergency stop / pause authority may include:
+
+* trial owner
+* plant / production supervisor
+* quality responsible person
+* warehouse / store responsible person for inventory-impacting flows
+* Ruichen for governance boundary dispute or unresolved escalation
+
+Emergency stop / pause may be triggered by safety risk, quality risk, shipment risk, inventory truth risk, legal-truth risk, hidden bypass, missing log, or uncontrolled scope expansion.
+Emergency stop / pause does not approve a workaround by itself.
+Any continuation after emergency pause must be reviewed and recorded.
+
+T8 Relationship to Existing Governance
+
+Trial Charter v1.2 does not replace Blueprint Boundary v1.0.
+Trial Charter v1.2 does not replace W2 Factory Simulation Governance v1.2.
+Trial Charter v1.2 operates only after Blueprint Boundary PASS and W2 PASS.
+Trial Charter v1.2 is execution governance for Real Trial only.
+Blueprint Boundary v1.0 remains blueprint boundary governance.
+W2 Factory Simulation Governance v1.2 remains the pre-live hard gate.
+Existing frozen Step47 baselines and upstream truth-surface protections remain unchanged.
+
+Fixed Prohibitions
+
+This card forbids:
+
+* treating Trial Charter v1.2 as Blueprint promotion
+* treating Trial Charter v1.2 as production deployment
+* treating Trial Charter v1.2 as runtime production activation
+* treating Trial start as Trial success
+* starting Real Trial without Blueprint Boundary PASS
+* starting Real Trial without W2 PASS
+* scope expansion without governance
+* silent promotion from Trial output to Blueprint truth
+* silent promotion from Trial output to production truth
+* ignoring missing runtime logs
+* using older Trial Charter variants as the active execution governance after v1.2
+
+Final-review warning notes, non-blocking only
+
+1. Runtime Logging landing location still requires downstream implementation definition
+2. CONDITIONAL "isolated local failure" minimum determination still requires downstream definition
+3. FAIL Root Cause Review submission recommended within 3 working days
