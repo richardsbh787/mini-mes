@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.55
+Mini-MES Handoff v2.56
 
-Updated after 2026-04-29 handoff-only insertion for Trial Charter v1.2
+Updated after 2026-04-29 handoff-only insertion for Material Risk Classification v1.1
 Date: 2026-04-29
 
 1. Frozen mainline snapshot
@@ -120,6 +120,8 @@ Frozen Record - Blueprint-Aligned Ultra-Light Trial Governance Baseline v1.0
 Frozen Record - W2 Factory Simulation Governance v1.2
 
 Frozen Record - Trial Charter v1.2
+
+Frozen Record - Material Risk Classification v1.1
 
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
@@ -13214,6 +13216,8 @@ W2 Factory Simulation Governance v1.2 is now PASS WITH WARNINGS / FROZEN WITH FI
 
 Trial Charter v1.2 is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Trial Charter v1.2 is the sole active Trial Execution Governance Card, prior Trial Charter drafts / earlier variants are retained as historical only, the trial stack is now fully synchronized as Blueprint Boundary v1.0, W2 Factory Simulation v1.2, and Trial Charter v1.2, and the controlled Trial sequence is: Blueprint Boundary PASS -> W2 PASS -> Trial Charter Execution -> Real Trial.
 
+Material Risk Classification v1.1 is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Material Risk Classification v1.1 is the sole active Risk Severity Governance baseline, prior drafts are retained as historical only, the risk layer is now explicitly positioned as SML -> Material Risk -> Waiver -> Work Order Release, PLAN / Trial decision stack now includes Risk Severity layer for operational threat grading, and the core rule is Risk = Severity Input / Risk != Final Release Decision.
+
 Frozen Record - Shared UI Baseline / Sales Order Mock-Stage Branch Split (Local vs Overseas)
 
 Status: PASS / FROZEN WITH FINAL REVIEW NOTES
@@ -13696,3 +13700,188 @@ Final-review warning notes, non-blocking only
 1. Runtime Logging landing location still requires downstream implementation definition
 2. CONDITIONAL "isolated local failure" minimum determination still requires downstream definition
 3. FAIL Root Cause Review submission recommended within 3 working days
+
+Frozen Record - Material Risk Classification v1.1
+
+Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+Authority layer: Handoff-only frozen Risk Severity Governance baseline
+
+Boundary
+
+This card is Risk Severity Governance Only.
+
+This card does not:
+
+* replace Waiver
+* replace Release Decision
+* replace SML
+* auto-authorize production
+* auto-stop production by itself
+
+Core Rule
+
+Risk = Severity Input.
+Risk != Final Release Decision.
+
+Version Governance
+
+* Material Risk Classification v1.1 is the sole active Risk Severity Governance baseline.
+* Prior drafts are retained as historical only.
+* Prior Material Risk Classification drafts must not be treated as the active risk-severity baseline after v1.1.
+
+Layer Position
+
+The risk layer is explicitly positioned as:
+
+SML -> Material Risk -> Waiver -> Work Order Release
+
+Meaning:
+
+* SML identifies shortage / material readiness evidence.
+* Material Risk classifies severity of operational threat.
+* Waiver governs controlled temporary exception / deviation where needed.
+* Work Order Release remains the downstream release decision layer.
+
+PLAN / Trial decision stack now includes Risk Severity layer for operational threat grading.
+
+Risk Classification Evidence Rule
+
+Risk classification must be based on explicit evidence, not mood, convenience, or title-based pressure.
+Minimum evidence may include:
+
+* shortage quantity / shortage ratio
+* affected item / process / work order / shipment
+* need date / production date / shipment date
+* ETA or supplier promise
+* substitute availability
+* inventory balance / receiving status
+* customer or shipment urgency
+* quality / specification impact
+* known recovery path or lack of recovery path
+
+If evidence is insufficient, the classification must remain provisional or blocked for clarification.
+
+R1 Definition
+
+R1 = Low / Monitor.
+
+Use R1 when material impact exists but current evidence shows the operation can continue without immediate release threat, shipment threat, quality threat, or required exception handling.
+
+R1 examples:
+
+* small shortage with confirmed credible ETA before need date
+* alternate stock already available and no specification risk
+* non-critical item not affecting the current release window
+
+R2 Definition
+
+R2 = Medium / Action Required.
+
+Use R2 when the material condition may threaten production continuity, shipment timing, or controlled execution unless active follow-up occurs.
+
+R2 should trigger active follow-up, visibility, and review before downstream release reliance.
+R2 is not by itself a Waiver.
+R2 is not by itself a Work Order Release decision.
+
+R2 quantified Trial guidance
+
+During Trial, R2 should be considered when one or more of the following conditions appears:
+
+* shortage affects a current or next planned production window
+* shortage quantity is material enough to affect planned output or shipment commitment
+* ETA is after the internal need date but before the final shipment / release point
+* ETA credibility is uncertain but recoverable follow-up exists
+* substitute material may be possible but requires confirmation
+* shortage requires planner / purchasing / warehouse coordination before release reliance
+
+R2 OR-condition logic still requires downstream tightening / minimum trigger clarification.
+ETA credibility minimum evaluation standard still requires downstream implementation definition.
+
+R3 Definition
+
+R3 = High / Blocking Threat.
+
+Use R3 when material condition creates a direct threat to production release, shipment release, quality conformance, or controlled execution and no acceptable recovery path is currently confirmed.
+
+R3 examples:
+
+* no material available for a required operation with no credible ETA
+* ETA after committed release / shipment need with no approved workaround
+* substitute needed but not approved
+* shortage would force uncontrolled deviation, hidden bypass, or unapproved production continuation
+* material issue threatens customer shipment, safety, quality, or legal / evidence boundary
+
+R3 downgrade governance
+
+R3 may not be downgraded casually.
+Downgrade from R3 to R2 or R1 requires recorded evidence of changed condition, such as confirmed receipt, credible ETA, approved substitute, approved Waiver path, or corrected demand / need-date evidence.
+Downgrade must record:
+
+* prior classification
+* new classification
+* evidence for downgrade
+* responsible reviewer
+* date / time
+* remaining follow-up if any
+
+Common Reference Cases Requirement
+
+Common Reference Cases must exist as guidance examples for R1 / R2 / R3 classification.
+Reference cases are guidance aids only.
+They do not replace evidence.
+They do not auto-classify every situation.
+Unmatched cases must be judged from evidence and recorded clearly.
+
+Common Reference Cases update / maintenance governance still requires downstream definition.
+
+Trial Rule
+
+During Trial, Material Risk Classification v1.1 may be used only as risk severity input for PLAN / Trial decisions.
+Trial use must not silently convert risk classification into Waiver approval, Work Order Release approval, shipment release, production authorization, or Blueprint promotion.
+Trial observations may feed later review, but the Trial layer must preserve Risk / Waiver / Release separation.
+
+Audit / Sampling Rule
+
+Risk classifications must remain reviewable.
+Sampling review should check:
+
+* classification evidence exists
+* R1 / R2 / R3 meaning was applied consistently
+* R3 downgrade evidence is present where downgrade occurred
+* R2 follow-up did not disappear silently
+* Risk was not treated as final Release Decision
+* Waiver and Work Order Release boundaries remained separate
+
+Relationship to Work Order Release
+
+Material Risk Classification informs Work Order Release.
+It does not decide Work Order Release by itself.
+
+Work Order Release must still apply its own governed release criteria.
+R1 may support release confidence but does not auto-release.
+R2 requires active follow-up / review before release reliance.
+R3 is a blocking threat input unless separately resolved, downgraded with evidence, or handled through an approved governed path.
+
+Risk = Severity Input.
+Risk != Final Release Decision.
+
+Fixed Prohibitions
+
+This card forbids:
+
+* collapsing Risk / Waiver / Release into one layer
+* treating Risk as Waiver
+* treating Risk as final Release Decision
+* treating SML as replaced by Risk Classification
+* treating R1 as automatic release approval
+* treating R2 as automatic Waiver requirement or release approval
+* treating R3 as automatic production stop without review of governed release / exception path
+* downgrading R3 without recorded evidence
+* using Trial risk observations as production authorization
+* using risk classification to bypass existing frozen governance
+
+Final-review warning notes, non-blocking only
+
+1. R2 OR-condition logic still requires downstream tightening / minimum trigger clarification
+2. ETA credibility minimum evaluation standard still requires downstream implementation definition
+3. Common Reference Cases update / maintenance governance still requires downstream definition
