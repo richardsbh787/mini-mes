@@ -1,7 +1,7 @@
-Mini-MES Handoff v2.52
+Mini-MES Handoff v2.53
 
-Updated after 2026-04-17 handoff-only insertion for Frozen Record - Shared UI Baseline / Sales Order Mock-Stage Branch Split (Local vs Overseas)
-Date: 2026-04-17
+Updated after 2026-04-29 handoff-only insertion for Blueprint-Aligned Ultra-Light Trial Governance Baseline v1.0
+Date: 2026-04-29
 
 1. Frozen mainline snapshot
 
@@ -114,6 +114,8 @@ Frozen Record - Step47 PhaseA / Correction Reason Actual Candidate Artifact Body
 Frozen Record - Step47 / Early October Mini-MES Trial-Run Main Spine (ORDER-to-SHIP) with ECN / Waiver Cross-Cutting Control Gates
 
 Frozen Record - Shared UI Baseline / Sales Order Mock-Stage Branch Split (Local vs Overseas)
+
+Frozen Record - Blueprint-Aligned Ultra-Light Trial Governance Baseline v1.0
 
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
@@ -13202,6 +13204,8 @@ Final review notes to preserve
 
 Shared UI Baseline / Sales Order Mock-Stage Branch Split (Local vs Overseas) is now PASS / FROZEN WITH FINAL REVIEW NOTES; the Sales Order mock page is frozen to exactly two approved mock-stage branches, `Local Sales Order` and `Overseas Sales Order`, both branches must retain the same shared primary page skeleton, the split does not open runtime configurability or schema/page-generator behavior, Part 2 must remain semantically separated between local-delivery/coordination versus shipment/export/container/customs meaning, a single-page hide/show interpretation does not satisfy this split at mock-stage governance level, detailed Part 2 field sets remain intentionally unfrozen for later separate Local / Overseas field-definition cards, no third branch is admitted by interpretation, and this record does not authorize backend, API, DB, permission, production-use, or customer-specific layout expansion.
 
+Blueprint-Aligned Ultra-Light Trial Governance Baseline v1.0 is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; trial governance is now explicitly split into Trial Charter v1.1 = execution governance and Blueprint-Aligned Ultra-Light Trial Governance v1.0 = blueprint boundary governance, W1 blueprint anchor is mandatory, W2 plug / remove / replug discipline is mandatory, W3 trial output boundary is mandatory, W4 TRIAL_TEMP marking is mandatory, W5 exit rule is mandatory, missing anchor blocks Trial, missing log is a violation, Trial cannot silently become Blueprint, and this record does not authorize trial launch, UI implementation, production deployment, Blueprint promotion, or runtime activation.
+
 Frozen Record - Shared UI Baseline / Sales Order Mock-Stage Branch Split (Local vs Overseas)
 
 Status: PASS / FROZEN WITH FINAL REVIEW NOTES
@@ -13267,3 +13271,118 @@ Final Review Note
 
 The Part 2 detailed field sets remain intentionally unfrozen here.
 If Local and Overseas Part 2 content is later detailed, each branch should receive its own field-definition card to avoid semantic drift.
+
+Frozen Record - Blueprint-Aligned Ultra-Light Trial Governance Baseline v1.0
+
+Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+Authority layer: Handoff-only frozen governance / boundary record
+
+Relationship to Existing Charters
+
+This card is governance / boundary only.
+It does not rewrite Trial Charter v1.1 body.
+Trial governance is now explicitly split into:
+
+* Trial Charter v1.1 = execution governance
+* Blueprint-Aligned Ultra-Light Trial Governance v1.0 = blueprint boundary governance
+
+Trial Charter v1.1 governs how the trial is executed.
+Blueprint-Aligned Ultra-Light Trial Governance v1.0 governs how trial scope stays anchored to the Blueprint and prevents trial artifacts from silently becoming Blueprint truth.
+
+W1 Blueprint Anchor Mandatory
+
+Every Trial item must have a minimum Blueprint anchor before it may enter Trial.
+The anchor must state which Blueprint module, flow, object, rule, or boundary the Trial item is testing or supporting.
+Missing anchor blocks Trial.
+No Trial item may proceed as a free-floating convenience feature, temporary page, local workaround, or operator habit without an explicit Blueprint anchor.
+
+Final-review-note warning W1:
+
+* blueprint_anchor minimum form still requires downstream implementation definition
+
+W2 Plug / Remove / Replug Discipline
+
+Trial items must be treated as plug / remove / replug objects.
+Each Trial item must remain removable without damaging Blueprint truth.
+Each Trial item must remain re-pluggable only after explicit review confirms its continued fit.
+Trial attachment to a module does not mean permanent module admission.
+Trial removal must not erase required Trial logs, evidence, exception notes, or decision traces.
+
+W3 Trial Output Boundary
+
+Trial outputs are learning / evidence / observation outputs only.
+Trial output is not Blueprint truth.
+Trial output is not production truth.
+Trial output is not legal evidence unless a separate frozen card explicitly admits it as such.
+Trial output may support later review, but it cannot silently upgrade itself into a Blueprint rule, production release rule, master-data rule, operator obligation, or frozen workflow.
+
+Trial cannot silently become Blueprint.
+Any Trial-to-Blueprint Promote path requires a separate minimum governance card, explicit review, and explicit freeze / approval before promotion.
+
+Final-review-note warning:
+
+* Trial-to-Blueprint Promote minimum governance card still requires downstream definition
+
+W4 TRIAL_TEMP Mandatory
+
+Any temporary Trial artifact, field, route, screen, workflow, note, storage, option, control, workaround, or record must be explicitly marked as TRIAL_TEMP unless a separate frozen record has admitted it as stable Blueprint content.
+TRIAL_TEMP marks weak temporary trial status.
+TRIAL_TEMP must not be hidden from review.
+TRIAL_TEMP must not be disguised as permanent Blueprint, legal truth, production truth, or released workflow.
+
+Missing TRIAL_TEMP marking on temporary Trial content is a governance violation.
+
+Final-review-note warning:
+
+* TRIAL_TEMP scan / enforcement path still requires downstream implementation definition
+
+W5 Mandatory Exit Rule
+
+Every Trial item must have an exit decision.
+The exit decision must be one of:
+
+* remove
+* replug for another Trial cycle
+* promote through a separate Trial-to-Blueprint governance card
+* hold as unresolved with explicit owner, reason, and next review timing
+
+The Trial cycle end or 30-day rule applies: exit review must occur at Trial cycle end or within 30 days, whichever comes earlier.
+No Trial item may remain indefinitely active by silence.
+
+Fixed Prohibitions
+
+This governance card does not authorize:
+
+* Trial launch by itself
+* UI implementation
+* production deployment
+* Blueprint promotion
+* runtime activation
+
+It is also forbidden to:
+
+* run a Trial item without Blueprint anchor
+* treat Trial Charter v1.1 as permission to bypass Blueprint boundary governance
+* treat TRIAL_TEMP as equal to normal controlled mode
+* treat Trial evidence as legal truth without separate admission
+* convert Trial output into Blueprint by usage, habit, time elapsed, or operator dependency
+* delete Trial evidence or logs merely because a Trial item is removed
+* use Trial to bypass existing frozen Step47 baselines or any other frozen upstream truth surface
+
+Mandatory Boundary Statements
+
+* This card is governance / boundary only.
+* This card does not alter Trial Charter v1.1 body.
+* This card does not alter Step47 baselines.
+* This card does not rewrite prior frozen cards.
+* Trial Charter v1.1 remains execution governance.
+* Blueprint-Aligned Ultra-Light Trial Governance v1.0 is blueprint boundary governance.
+* Missing anchor blocks Trial.
+* Missing log = violation.
+* Trial cannot silently become Blueprint.
+
+Final-review-note warnings, non-blocking only
+
+* W1 blueprint_anchor minimum form still requires downstream implementation definition
+* TRIAL_TEMP scan / enforcement path still requires downstream implementation definition
+* Trial-to-Blueprint Promote minimum governance card still requires downstream definition
