@@ -635,15 +635,19 @@ td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line
 }
 .sales-search-shell{display:grid;gap:12px;width:100%;max-width:100%;min-width:0;margin:0 auto;box-sizing:border-box;overflow-x:visible}
 .sales-search-shell *{box-sizing:border-box}
-.sales-search-card{display:grid;gap:10px;width:100%;max-width:100%;min-width:0;padding:12px 14px;border:1px solid #ccdce7;border-radius:14px;background:linear-gradient(180deg,#eef5fa 0%,#e4eef5 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
 .sales-search-note{font-size:12px;font-weight:700;line-height:1.4;color:var(--blue)}
-.sales-search-filter-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;min-width:0}
-.sales-search-filter{display:grid;gap:5px;min-width:0}
-.sales-search-filter label{font-size:12px;font-weight:700;line-height:1.35;color:var(--title);overflow-wrap:anywhere}
-.sales-search-filter input{width:100%;max-width:100%;min-width:0;height:34px;padding:7px 9px;border:1px solid #cfdde7;border-radius:9px;background:#f8fbfd;color:#76889a;font-size:13px}
+.sales-search-filter{display:flex;align-items:center;gap:4px;min-width:0}
+.sales-search-filter label{font-size:11px;font-weight:800;line-height:1.25;color:var(--title);white-space:nowrap}
+.sales-search-filter input{width:118px;max-width:100%;min-width:76px;height:26px;padding:3px 7px;border:1px solid #cfdde7;border-radius:8px;background:#f8fbfd;color:#76889a;font-size:11px}
 .sales-search-filter input::placeholder{color:#a9b7c3;font-weight:400;opacity:1}
 .sales-search-filter input.selected-search-value{font-weight:700;color:#244866}
 .sales-search-filter input:disabled{opacity:1;cursor:default}
+.sales-order-search-compact-toolbar .readiness-compact-left,
+.sales-order-create-compact-toolbar .readiness-compact-left{flex:0 0 auto;flex-wrap:nowrap;white-space:nowrap}
+.sales-order-create-compact-toolbar{overflow-x:auto;overflow-y:visible;scrollbar-width:none}
+.sales-order-create-compact-toolbar::-webkit-scrollbar{display:none}
+.sales-order-create-compact-toolbar .readiness-compact-left{gap:5px}
+.sales-order-create-compact-toolbar .readiness-compact-right{flex:0 0 auto}
 .sales-search-table-wrap{width:100%;max-width:100%;min-width:0;overflow-x:visible;border:1px solid #ccdce7;border-radius:14px;background:#fdfefe;box-shadow:inset 0 1px 0 rgba(255,255,255,.86)}
 .sales-search-table{width:100%;max-width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed}
 .sales-search-table th,.sales-search-table td{padding:7px 7px;border-bottom:1px solid #e0e9f0;border-right:1px solid #edf2f5;font-size:12px;line-height:1.3;text-align:left;vertical-align:top;white-space:normal;overflow-wrap:anywhere;word-break:normal;color:var(--text)}
@@ -665,7 +669,7 @@ td{padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top;line
 .sales-search-action-row .sales-search-restricted-action{opacity:.6;cursor:not-allowed;color:#7d8994;background:#eef2f5;border-color:#d3dde6}
 .sales-search-restricted-note{font-weight:700;color:#7d8994}
 @media (max-width:1100px){
-  .sales-search-filter-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .sales-search-filter input{width:100px}
 }
 @media (max-width:1100px){
   .risk-header-grid,.risk-status-grid,.risk-breakdown-grid{grid-template-columns:1fr}
@@ -836,13 +840,16 @@ body[data-flow-action="create"] .route-field-shell .route-segment{min-width:68px
 .order-items-card-grid{grid-template-columns:repeat(2,minmax(260px,1fr));gap:12px 18px}
 .order-items-card-grid--full{grid-template-columns:1fr}
 .order-items-card-grid .create-row.order-items-card-grid--full{grid-column:1 / -1}
-.order-items-control-bar{display:flex;justify-content:flex-start}
-.order-items-add-item{height:32px;padding:0 12px;border-radius:9px;font-size:12px}
-.order-items-item-block{display:grid;gap:12px;padding:12px;border:1px solid #dbe5ec;border-radius:16px;background:linear-gradient(180deg,#fdfefe 0%,#f8fbfd 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.92)}
-.order-items-item-block > .order-items-card{background:linear-gradient(180deg,#eef5fa 0%,#e4eef5 100%);border-color:#ccdce7}
-.order-items-item-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:2px 2px 4px;border-bottom:1px solid #e6edf2}
-.order-items-item-title{font-size:17px;font-weight:700;color:var(--title)}
-.order-items-remove-item{height:30px;padding:0 10px;border-radius:8px;font-size:11px;color:#8e6262;background:#f8eeee;border-color:#e0c9c9}
+.order-items-control-bar{display:none}
+.order-items-add-item{height:28px;padding:0 10px;border-radius:8px;font-size:11px}
+.order-items-item-block{display:grid;gap:10px;padding:0;border:none;border-radius:0;background:transparent;box-shadow:none}
+.order-items-item-block > .order-items-card{border-color:#d7e3eb;background:#f8fbfd;box-shadow:none}
+.order-items-item-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:4px 0 8px;border-bottom:1px solid #e1e9ef;background:transparent}
+.order-items-item-title{font-size:16px;font-weight:700;line-height:1.25;color:var(--title)}
+.order-items-item-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex:0 0 auto}
+.order-items-danger-area{display:grid;justify-items:end;gap:4px;padding:8px 0 0;border-top:1px solid #eef2f5}
+.order-items-danger-note{font-size:11px;line-height:1.35;color:#8e6262}
+.order-items-remove-item{height:28px;padding:0 10px;border-radius:8px;font-size:11px;color:#8e6262;background:#f8eeee;border-color:#e0c9c9}
 .order-items-remove-item:hover{background:#f4e6e6;border-color:#d6bdbd}
 .order-items-customer-snapshot{display:grid;gap:7px;padding:10px 12px;border:1px solid #d3dde6;border-radius:12px;background:linear-gradient(180deg,#f4f7f9 0%,#eef3f6 100%);color:var(--title);box-shadow:inset 0 1px 0 rgba(255,255,255,.86)}
 .order-items-customer-snapshot-row{display:grid;grid-template-columns:128px minmax(0,1fr);gap:10px;min-width:0;font-size:13px;line-height:1.4}
@@ -1246,7 +1253,7 @@ body[data-master-stage="true"] .sticky-shell{display:none}
   width:100%;
   max-width:100%;
   min-width:0;
-  min-height:100%;
+  min-height:0;
   box-sizing:border-box;
 }
 .master-stage.sales-order-stage .master-stage-work-scroll .create-order-shell,
@@ -1271,15 +1278,34 @@ body[data-master-stage="true"] .sticky-shell{display:none}
   min-width:0;
   box-sizing:border-box;
 }
+.master-stage.sales-order-stage .master-stage-work-scroll .create-order-shell .create-sheet,
+.master-stage.sales-order-stage .master-stage-work-scroll .commercial-create-shell .create-sheet,
+.master-stage.sales-order-stage .master-stage-work-scroll .order-items-create-shell .create-sheet,
+.master-stage.sales-order-stage .master-stage-work-scroll .shipping-detail-create-shell .create-sheet{
+  border-color:transparent;
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
+}
+.master-stage.sales-order-stage .master-stage-work-scroll .create-order-shell .create-sheet-inner,
+.master-stage.sales-order-stage .master-stage-work-scroll .commercial-create-shell .create-sheet-inner,
+.master-stage.sales-order-stage .master-stage-work-scroll .order-items-create-shell .create-sheet-inner,
+.master-stage.sales-order-stage .master-stage-work-scroll .shipping-detail-create-shell .create-sheet-inner{
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  padding:0;
+  box-sizing:border-box;
+}
 .master-stage.sales-order-stage .master-stage-work-scroll .commercial-create-shell::after{
   content:"";
-  display:block;
+  display:none;
   width:100%;
   height:14px;
 }
 .master-stage.sales-order-stage .master-stage-work-scroll .create-order-shell::after{
   content:"";
-  display:block;
+  display:none;
   width:100%;
   height:14px;
 }
@@ -2067,15 +2093,6 @@ function renderReadinessBoardCompactToolbar(){
 function renderSalesOrderSearchListSurface(){
   return '<div class="section section-scroll">'+
     '<div class="sales-search-shell">'+
-      '<div class="sales-search-card">'+
-        '<div class="sales-search-note">Mock filters &mdash; filtering applies only to visible mock data</div>'+
-        '<div class="sales-search-filter-grid">'+
-          '<div class="sales-search-filter"><label for="sales-search-so">SO No</label><input id="sales-search-so" class="selected-search-value" type="text" value="SO-20260425-018" placeholder="Search SO No" data-sales-search-filter="so"></div>'+
-          '<div class="sales-search-filter"><label for="sales-search-company">Company Code</label><input id="sales-search-company" type="text" placeholder="Search Company Code" data-sales-search-filter="company"></div>'+
-          '<div class="sales-search-filter"><label for="sales-search-year">Year</label><input id="sales-search-year" type="text" placeholder="Year" data-sales-search-filter="year"></div>'+
-          '<div class="sales-search-filter"><label for="sales-search-month">Month</label><input id="sales-search-month" type="text" placeholder="Month" data-sales-search-filter="month"></div>'+
-        '</div>'+
-      '</div>'+
       '<div class="sales-search-next-actions">'+
         '<div class="sales-search-selected-context">Selected: SO-20260425-018 <span>· Demo Customer Sdn Bhd</span></div>'+
         '<div class="sales-search-action-row">'+
@@ -2108,6 +2125,33 @@ function renderSalesOrderSearchListSurface(){
       '</div>'+
       '<div class="sales-search-empty" data-sales-search-empty>No matching orders (mock)</div>'+
     '</div>'+
+  '</div>';
+}
+function renderSalesOrderSearchCompactToolbar(){
+  return '<div class="readiness-compact-toolbar sales-order-search-compact-toolbar" aria-label="Sales Order Search compact action and filter toolbar">'+
+    '<div class="readiness-compact-left">'+
+      '<button type="button" class="sales-order-action-tab master-work-action readiness-compact-action" data-stage-action="create" data-action="create"><span class="master-work-icon" aria-hidden="true"></span><span class="master-work-label"><span class="master-work-title">Create / Add</span></span></button>'+
+      '<button type="button" class="sales-order-action-tab master-work-action active readiness-compact-action" data-stage-action="search" data-action="search"><span class="master-work-icon" aria-hidden="true"></span><span class="master-work-label"><span class="master-work-title">Search / Find</span></span></button>'+
+      '<button type="button" class="sales-order-submodule-tab active readiness-compact-tab" data-stage-workspace-item="search-order">Search Order</button>'+
+    '</div>'+
+    '<div class="readiness-compact-right">'+
+      '<span class="readiness-mock-note">Mock filter only / No real filtering in this static trial</span>'+
+      '<div class="sales-search-filter"><label for="sales-search-so">SO No:</label><input id="sales-search-so" class="selected-search-value" type="text" value="SO-20260425-018" placeholder="Search SO No" data-sales-search-filter="so"></div>'+
+      '<div class="sales-search-filter"><label for="sales-search-company">Company Code:</label><input id="sales-search-company" type="text" placeholder="Company Code" data-sales-search-filter="company"></div>'+
+      '<div class="sales-search-filter"><label for="sales-search-year">Year:</label><input id="sales-search-year" type="text" placeholder="Year" data-sales-search-filter="year"></div>'+
+      '<div class="sales-search-filter"><label for="sales-search-month">Month:</label><input id="sales-search-month" type="text" placeholder="Month" data-sales-search-filter="month"></div>'+
+    '</div>'+
+  '</div>';
+}
+function renderSalesOrderCreateCompactToolbar(selectedItemId){
+  const items=getWorkspaceItems('sales-orders');
+  return '<div class="readiness-compact-toolbar sales-order-create-compact-toolbar" aria-label="Sales Order Create compact action and sub-module toolbar">'+
+    '<div class="readiness-compact-left">'+
+      '<button type="button" class="sales-order-action-tab master-work-action active readiness-compact-action" data-stage-action="create" data-action="create"><span class="master-work-icon" aria-hidden="true"></span><span class="master-work-label"><span class="master-work-title">Create / Add</span></span></button>'+
+      '<button type="button" class="sales-order-action-tab master-work-action readiness-compact-action" data-stage-action="search" data-action="search"><span class="master-work-icon" aria-hidden="true"></span><span class="master-work-label"><span class="master-work-title">Search / Find</span></span></button>'+
+      items.map(item=>'<button type="button" class="sales-order-submodule-tab readiness-compact-tab'+(item.id===selectedItemId?' active':'')+'" data-stage-workspace-item="'+item.id+'">'+item.label+'</button>').join('')+
+    '</div>'+
+    '<div class="readiness-compact-right">'+renderSalesOrderCreateControls(selectedItemId)+'</div>'+
   '</div>';
 }
 function normalizeSalesSearchFilterValue(value){
@@ -2545,7 +2589,7 @@ function renderOrderItemsItemBlock(index,itemDefaults,scheduleRows,itemKey){
   const key=itemKey||('order-items-item-'+(index+1));
   const itemLabel=formatOrderItemLabel(index);
   return '<div class="order-items-item-block" data-order-items-item-block="true" data-order-items-item-key="'+escapeHtml(key)+'">'+
-    '<div class="order-items-item-head"><div class="order-items-item-title" data-order-items-item-title="true">'+itemLabel+'</div><button type="button" class="btn order-items-remove-item" data-order-items-remove-item="true">Remove Item</button></div>'+
+    '<div class="order-items-item-head"><div class="order-items-item-title" data-order-items-item-title="true">'+itemLabel+'</div><div class="order-items-item-actions"><button type="button" class="btn emphasis order-items-add-item" data-order-items-add-item="true">+ Add Order Item</button></div></div>'+
     '<div class="order-items-card"><div class="order-items-card-head"><div class="order-items-card-title">Order Item Basics</div><div class="order-items-card-copy">Mock-stage item header only. Editing here is visual and does not persist or calculate anything.</div></div><div class="order-items-card-grid">'+
       '<div class="create-row"><label class="create-label" for="'+key+'-item-no">Order Item No.</label><div class="create-field-wrap"><input id="'+key+'-item-no" class="input-line" type="text" value="'+itemLabel+'" data-order-items-item-no="true" /></div></div>'+
       '<div class="create-row"><label class="create-label" for="'+key+'-type">Order Item Type</label><div class="create-field-wrap"><select id="'+key+'-type" class="select-line">'+renderSelectOptions(['New Build','Repeat Build','Accessory Bundle','Sample','Insert Order','Top Urgent'],defaults.type)+'</select></div></div>'+
@@ -2567,6 +2611,7 @@ function renderOrderItemsItemBlock(index,itemDefaults,scheduleRows,itemKey){
     '<div class="order-items-card order-items-waiver-card"><div class="order-items-card-head"><div class="order-items-card-title">Waiver / Special Requirement</div><div class="order-items-card-copy">Order-item waiver details are captured here for order-entry visibility only. Later production changes must be recorded in Waiver / Material Change Records. Approval evidence is entered for mock traceability only. This does not create an approval workflow or messaging integration.</div></div><div class="order-items-waiver-list" data-order-items-waiver-list="true">'+
       renderOrderItemsWaiverRow(0,{},key)+
     '</div><div class="order-items-waiver-actions"><button type="button" class="btn emphasis order-items-add-waiver" data-order-items-add-waiver="true">+ Add Waiver Requirement</button></div></div>'+
+    '<div class="order-items-danger-area"><button type="button" class="btn order-items-remove-item" data-order-items-remove-item="true">Remove Item...</button><div class="order-items-danger-note">Removal requires confirmation in real system.</div></div>'+
   '</div>';
 }
 function renumberOrderItemsBlocks(root){
@@ -2667,7 +2712,6 @@ function renderOrderItemsCreateSurface(){
       '</div>'+
     '</div>'+
     '<div class="create-sheet"><div class="create-sheet-inner"><div class="order-items-create-stack">'+
-      '<div class="order-items-control-bar"><button type="button" class="btn emphasis order-items-add-item" data-order-items-add-item="true">+ Add Order Item</button></div>'+
       '<div class="order-items-create-items" data-order-items-list="true">'+
         renderOrderItemsItemBlock(0,ORDER_ITEMS_DEFAULT_ITEM,getOrderItemsDefaultScheduleRows(),'order-items-item-1')+
       '</div>'+
@@ -3121,9 +3165,14 @@ function renderGenericWorkspaceStage(moduleId){
       '</div>';
     }
     if(actionMeta&&selectedItem){
+      const salesOrderTopControls=(currentAction==='search'&&selectedItem.id==='search-order')
+        ? renderSalesOrderSearchCompactToolbar()
+        : currentAction==='create'
+          ? renderSalesOrderCreateCompactToolbar(selectedItem.id)
+        : salesOrderActionTabs+salesOrderTabs;
       mainContent='<div class="master-stage-panel master-stage-content-panel">'+
         '<div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Center Panel</div><div class="master-stage-panel-title">Sales &amp; Orders -- '+actionMeta.label+' -- '+selectedItem.label+'</div></div>'+
-        '<div class="master-stage-panel-body">'+salesOrderActionTabs+salesOrderTabs+'<div class="master-stage-work-scroll">'+renderSalesOrderContentPanelBody(selectedItem,actionMeta,moduleMeta)+'</div></div>'+
+        '<div class="master-stage-panel-body">'+salesOrderTopControls+'<div class="master-stage-work-scroll">'+renderSalesOrderContentPanelBody(selectedItem,actionMeta,moduleMeta)+'</div></div>'+
       '</div>';
     }
     content.innerHTML='<div class="master-stage-shell sales-order-workspace">'+
@@ -3594,6 +3643,12 @@ function syncModuleEntry(){
   if(currentModule==='sales-orders'){
     if(!['create','search'].includes(currentAction)){
       currentAction='search';
+    }
+    if(currentAction==='create'){
+      const createItems=getWorkspaceItems('sales-orders').map(item=>item.id);
+      if(!createItems.includes(currentWorkspaceArea)){
+        currentWorkspaceArea='summary';
+      }
     }
     if(currentAction==='search'){
       currentWorkspaceArea='search-order';
