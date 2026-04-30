@@ -992,6 +992,41 @@ body[data-flow-action="create"] .route-field-shell .route-segment{min-width:68px
 .line-overview-detail-line{display:grid;grid-template-columns:132px minmax(0,1fr);gap:8px;font-size:12px;line-height:1.35;color:var(--text)}
 .line-overview-detail-line strong{color:var(--blue);font-weight:800}
 .line-overview-note{font-size:12px;line-height:1.45;color:var(--muted)}
+.readiness-board-shell{display:grid;gap:10px;width:100%;max-width:100%;min-width:0;box-sizing:border-box}
+.readiness-board-shell *{box-sizing:border-box}
+.readiness-compact-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:38px;padding:5px 8px;border:1px solid #d8e5ed;border-radius:10px;background:#f8fbfd;box-shadow:inset 0 1px 0 rgba(255,255,255,.88)}
+.readiness-compact-left,.readiness-compact-right{display:flex;align-items:center;gap:6px;min-width:0;flex-wrap:wrap}
+.readiness-compact-left{flex:0 1 auto}
+.readiness-compact-right{justify-content:flex-end;flex:1 1 auto}
+.readiness-compact-action{min-height:26px;padding:4px 9px;border-radius:8px;font-size:11px}
+.readiness-compact-tab{min-height:26px;padding:4px 9px;border-radius:8px;font-size:11px}
+.readiness-filter-field{display:flex;align-items:center;gap:4px;min-width:0}
+.readiness-filter-field label{font-size:11px;font-weight:800;color:var(--title)}
+.readiness-filter-field select{width:auto;min-width:84px;height:26px;padding:3px 7px;border:1px solid #cfdde7;border-radius:8px;background:#fbfdfe;color:#244866;font-size:11px}
+.readiness-mock-note{font-size:11px;font-weight:800;line-height:1.25;color:var(--blue)}
+.readiness-main-layout{display:grid;grid-template-columns:minmax(0,4fr) minmax(220px,1.2fr);gap:10px;align-items:start;width:100%;min-width:0}
+.readiness-grid-wrap{width:100%;max-width:100%;min-width:0;overflow:auto;border:1px solid #ccdce7;border-radius:12px;background:#fdfefe;box-shadow:inset 0 1px 0 rgba(255,255,255,.86)}
+.readiness-grid{width:100%;min-width:1040px;border-collapse:separate;border-spacing:0;table-layout:fixed}
+.readiness-grid th,.readiness-grid td{padding:7px;border-bottom:1px solid #e0e9f0;border-right:1px solid #edf2f5;font-size:12px;line-height:1.3;text-align:left;vertical-align:top;color:var(--text);background:#fdfefe}
+.readiness-grid th{background:#e8f1f7;color:var(--title);font-weight:800}
+.readiness-grid th:first-child{width:112px}
+.readiness-grid th:last-child,.readiness-grid td:last-child{border-right:none}
+.readiness-grid tbody tr:last-child td{border-bottom:none}
+.readiness-line{font-weight:800;color:var(--title)}
+.readiness-block{display:grid;gap:4px;min-height:96px;padding:8px;border:1px solid #d8e5ed;border-radius:10px;background:#f8fbfd;box-shadow:inset 0 1px 0 rgba(255,255,255,.88)}
+.readiness-block.run{border-color:#d8e5ed;background:#f8fbfd}
+.readiness-block.gap{border-color:#dec9ca;background:#f8eeee}
+.readiness-block.holiday{align-content:center;text-align:center;border-color:#d8e5ed;background:#f1f5f8}
+.readiness-block-title{font-size:12px;font-weight:900;line-height:1.25;color:var(--title)}
+.readiness-block-line{font-size:11px;font-weight:700;line-height:1.3;color:var(--text)}
+.readiness-block-risk{font-size:11px;font-weight:800;line-height:1.25;color:#6f8191}
+.readiness-panel{display:grid;gap:8px;align-content:start;min-height:100%;padding:10px;border:1px solid #ccdce7;border-radius:12px;background:#f8fbfd;box-shadow:inset 0 1px 0 rgba(255,255,255,.88)}
+.readiness-panel-title{font-size:13px;font-weight:900;color:var(--title)}
+.readiness-panel-line{display:grid;gap:2px;font-size:12px;line-height:1.35;color:var(--text)}
+.readiness-panel-line strong{font-weight:900;color:var(--blue)}
+.readiness-warning{padding:8px;border:1px solid #dec9ca;border-radius:9px;background:#f8eeee;color:#8b5d64;font-size:12px;font-weight:800;line-height:1.35}
+.readiness-footer{display:flex;align-items:center;min-height:22px;padding:2px 8px;border:1px solid #ccdce7;border-radius:8px;background:#f8fbfd;font-size:11px;line-height:1.2;color:var(--text)}
+.readiness-footer strong{color:var(--title)}
 .master-stage.sales-order-stage .master-stage-work-scroll .create-order-shell .input-line,
 .master-stage.sales-order-stage .master-stage-work-scroll .create-order-shell .select-line,
 .master-stage.sales-order-stage .master-stage-work-scroll .create-order-shell .textarea-line,
@@ -1371,6 +1406,7 @@ const MODULE_WORKSPACE_CONFIG={
     selectorCopy:'Then choose which planning area to work on.',
     items:[
       {id:'line-overview',label:'LINE OVERVIEW',description:'Line-level 9-column planning overview table with compact expand details.'},
+      {id:'readiness-board',label:'READINESS BOARD',description:'2-line day-level readiness board showing runnable gaps and blocked candidate advisory.'},
       {id:'planning-board',label:'Planning Board',description:'Main planning-entry and review surface.'},
       {id:'material-alignment',label:'Material Alignment',description:'Material readiness and plan-fit review surface.'},
       {id:'capacity-check',label:'Capacity Check',description:'Capacity load and exception-review surface.'}
@@ -1795,9 +1831,9 @@ function getWorkspaceItems(moduleId){
   if(moduleId==='planning'){
     const planningItems=getWorkspaceConfig(moduleId).items||[];
     if(currentAction==='search'){
-      return planningItems.filter(item=>item.id==='line-overview');
+      return planningItems.filter(item=>['line-overview','readiness-board'].includes(item.id));
     }
-    return planningItems.filter(item=>item.id!=='line-overview');
+    return planningItems.filter(item=>!['line-overview','readiness-board'].includes(item.id));
   }
   return getWorkspaceConfig(moduleId).items||[];
 }
@@ -1964,6 +2000,60 @@ function renderLineOverviewSurface(){
         '<div class="line-overview-detail-line"><strong>Action note</strong><span>Run Line 2 first if Line 1 material remains short. Supervisor review required in real flow later.</span></div>'+
         '<div class="line-overview-detail-line"><strong>Mock limit</strong><span>Static UI only; no approval, validation, scheduling engine, or storage write.</span></div>'+
       '</div></details>'+
+    '</div>'+
+  '</div>';
+}
+function renderReadinessBoardSurface(){
+  return '<div class="readiness-board-shell">'+
+    '<div class="readiness-main-layout">'+
+      '<div class="readiness-grid-wrap" aria-label="Planning Readiness Board static trial grid">'+
+        '<table class="readiness-grid">'+
+          '<thead><tr><th>Line</th><th>Today / 30 Apr</th><th>1 May<br><span>Public Holiday</span></th><th>4 May</th><th>5 May</th><th>6 May</th></tr></thead>'+
+          '<tbody>'+
+            '<tr>'+
+              '<td class="readiness-line">Line 1</td>'+
+              '<td><div class="readiness-block gap"><div class="readiness-block-title">PLANNING GAP</div><div class="readiness-block-line">Assign runnable WO</div><div class="readiness-block-risk">Blocked candidate kept out of grid</div></div></td>'+
+              '<td><div class="readiness-block holiday"><div class="readiness-block-title">PUBLIC HOLIDAY</div><div class="readiness-block-line">No Production</div></div></td>'+
+              '<td><div class="readiness-block gap"><div class="readiness-block-title">PLANNING GAP</div><div class="readiness-block-line">Assign runnable WO</div><div class="readiness-block-risk">Use replacement candidate if confirmed</div></div></td>'+
+              '<td><div class="readiness-block gap"><div class="readiness-block-title">PLANNING GAP</div><div class="readiness-block-line">Assign runnable WO</div><div class="readiness-block-risk">Manual replacement required</div></div></td>'+
+              '<td><div class="readiness-block gap"><div class="readiness-block-title">PLANNING GAP</div><div class="readiness-block-line">Assign runnable WO</div><div class="readiness-block-risk">Open slot for runnable work</div></div></td>'+
+            '</tr>'+
+            '<tr>'+
+              '<td class="readiness-line">Line 2</td>'+
+              '<td><div class="readiness-block run"><div class="readiness-block-title">25.5h total / HC 10 pax</div><div class="readiness-block-line">Process: Assembly+Packing</div><div class="readiness-block-line">WO-2518 / 400 pcs</div><div class="readiness-block-line">KM-450-REV / X-Corp</div><div class="readiness-block-line">Plan Qty: 400 / 400</div><div class="readiness-block-line">BTG: 0</div><div class="readiness-block-line">Day 1 / 3</div></div></td>'+
+              '<td><div class="readiness-block holiday"><div class="readiness-block-title">PUBLIC HOLIDAY</div><div class="readiness-block-line">No Production</div></div></td>'+
+              '<td><div class="readiness-block run"><div class="readiness-block-title">25.5h total / HC 10 pax</div><div class="readiness-block-line">Process: Assembly+Packing</div><div class="readiness-block-line">WO-2518 / 400 pcs</div><div class="readiness-block-line">KM-450-REV / X-Corp</div><div class="readiness-block-line">Plan Qty: 400 / 400</div><div class="readiness-block-line">BTG: 0</div><div class="readiness-block-line">Day 2 / 3</div></div></td>'+
+              '<td><div class="readiness-block run"><div class="readiness-block-title">25.5h total / HC 10 pax</div><div class="readiness-block-line">Process: Assembly+Packing</div><div class="readiness-block-line">WO-2518 / 400 pcs</div><div class="readiness-block-line">KM-450-REV / X-Corp</div><div class="readiness-block-line">Plan Qty: 400 / 400</div><div class="readiness-block-line">BTG: 0</div><div class="readiness-block-line">Day 3 / 3</div></div></td>'+
+              '<td><div class="readiness-block gap"><div class="readiness-block-title">PLANNING GAP</div><div class="readiness-block-line">Assign runnable WO</div><div class="readiness-block-risk">WO-2518 completed previous working day</div></div></td>'+
+            '</tr>'+
+          '</tbody>'+
+        '</table>'+
+      '</div>'+
+      '<div class="readiness-panel" aria-label="Cannot plan replacement advisory">'+
+        '<div class="readiness-panel-title">CANNOT PLAN / REPLACEMENT ADVISORY</div>'+
+        '<div class="readiness-panel-line"><strong>Blocked WO:</strong><span>WO-2514 / 600 pcs<br>AL-220-CMP / ABB-881</span></div>'+
+        '<div class="readiness-panel-line"><strong>Cannot Plan Reason:</strong><span>Material / QC / approval not fully cleared.</span></div>'+
+        '<div class="readiness-panel-line"><strong>Replacement Candidate:</strong><span>WO-2519 / XJ-900-STD / 28.0h total</span></div>'+
+        '<div class="readiness-panel-line"><strong>Required Action:</strong><span>Replace this slot with runnable WO.</span></div>'+
+        '<div class="readiness-panel-line"><strong>Follow-up Owner:</strong><span>Wang (Procurement) / Li (Line Lead)</span></div>'+
+        '<div class="readiness-warning">Read-only static advisory only. No auto-planning, auto-release, auto-move, or auto-replacement is implied.</div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="readiness-footer"><strong>Trial OT reference only / OT policy configurable by customer</strong></div>'+
+  '</div>';
+}
+function renderReadinessBoardCompactToolbar(){
+  return '<div class="readiness-compact-toolbar" aria-label="READINESS BOARD compact action and filter toolbar">'+
+    '<div class="readiness-compact-left">'+
+      '<button type="button" class="sales-order-action-tab master-work-action active readiness-compact-action" data-stage-action="search" data-action="search"><span class="master-work-icon" aria-hidden="true"></span><span class="master-work-label"><span class="master-work-title">Search / Find</span></span></button>'+
+      '<button type="button" class="sales-order-submodule-tab readiness-compact-tab" data-stage-workspace-item="line-overview">LINE OVERVIEW</button>'+
+      '<button type="button" class="sales-order-submodule-tab active readiness-compact-tab" data-stage-workspace-item="readiness-board">READINESS BOARD</button>'+
+    '</div>'+
+    '<div class="readiness-compact-right">'+
+      '<span class="readiness-mock-note">Mock filter only / No real filtering in this static trial</span>'+
+      '<div class="readiness-filter-field"><label for="readiness-line">Line:</label><select id="readiness-line"><option>All</option><option>Line 1</option><option>Line 2</option></select></div>'+
+      '<div class="readiness-filter-field"><label for="readiness-status">Status:</label><select id="readiness-status"><option>All</option><option>RUN OK</option><option>PLANNING GAP</option><option>PUBLIC HOLIDAY</option></select></div>'+
+      '<div class="readiness-filter-field"><label for="readiness-view">View:</label><select id="readiness-view"><option>5-Day</option></select></div>'+
     '</div>'+
   '</div>';
 }
@@ -3074,6 +3164,11 @@ function renderGenericWorkspaceStage(moduleId){
         '<div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Center Panel</div><div class="master-stage-panel-title">Planning &amp; Scheduling -- '+actionMeta.label+' -- LINE OVERVIEW</div></div>'+
         '<div class="master-stage-panel-body">'+planningActionTabs+planningSurfaceTabs+'<div class="master-stage-work-scroll">'+renderLineOverviewSurface()+'</div></div>'+
       '</div>';
+    }else if(actionMeta&&selectedItem&&selectedItem.id==='readiness-board'){
+      mainContent='<div class="master-stage-panel master-stage-content-panel">'+
+        '<div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Center Panel</div><div class="master-stage-panel-title">Planning &amp; Scheduling -- '+actionMeta.label+' -- READINESS BOARD</div></div>'+
+        '<div class="master-stage-panel-body">'+renderReadinessBoardCompactToolbar()+'<div class="master-stage-work-scroll">'+renderReadinessBoardSurface()+'</div></div>'+
+      '</div>';
     }else if(actionMeta&&selectedItem){
       mainContent='<div class="master-stage-panel master-stage-content-panel">'+
         '<div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Center Panel</div><div class="master-stage-panel-title">Planning &amp; Scheduling -- '+actionMeta.label+' -- '+selectedItem.label+'</div></div>'+
@@ -3499,8 +3594,10 @@ function syncModuleEntry(){
   }
   if(currentModule==='planning'){
     if(currentAction==='search'){
-      currentWorkspaceArea='line-overview';
-    }else if(currentWorkspaceArea==='line-overview'){
+      if(!['line-overview','readiness-board'].includes(currentWorkspaceArea)){
+        currentWorkspaceArea='line-overview';
+      }
+    }else if(['line-overview','readiness-board'].includes(currentWorkspaceArea)){
       currentWorkspaceArea='';
     }
   }
@@ -3541,8 +3638,8 @@ function applyInitialStateFromQuery(){
       currentWorkspaceArea=sectionParam;
     }
   }
-  if(currentModule==='planning'&&currentAction==='search'&&sectionParam==='line-overview'){
-    currentWorkspaceArea='line-overview';
+  if(currentModule==='planning'&&currentAction==='search'&&['line-overview','readiness-board'].includes(sectionParam)){
+    currentWorkspaceArea=sectionParam;
   }
   if(typeSelect&&(routeParam==='Local'||routeParam==='Overseas')){
     typeSelect.value=routeParam;
