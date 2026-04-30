@@ -953,6 +953,23 @@ body[data-flow-action="create"] .route-field-shell .route-segment{min-width:68px
 .shipping-detail-form-grid .input-line,.shipping-detail-form-grid .select-line{min-height:38px}
 .shipping-detail-form-grid .textarea-line{min-height:92px}
 .shipping-detail-form-grid .create-row.shipping-detail-row-span{grid-column:1 / -1}
+.master-stage.sales-order-stage .master-stage-work-scroll .create-order-shell .input-line,
+.master-stage.sales-order-stage .master-stage-work-scroll .create-order-shell .select-line,
+.master-stage.sales-order-stage .master-stage-work-scroll .create-order-shell .textarea-line,
+.master-stage.sales-order-stage .master-stage-work-scroll .create-order-shell .read-only-input,
+.master-stage.sales-order-stage .master-stage-work-scroll .create-order-shell .mock-dropdown-toggle,
+.master-stage.sales-order-stage .master-stage-work-scroll .commercial-create-shell .input-line,
+.master-stage.sales-order-stage .master-stage-work-scroll .commercial-create-shell .select-line,
+.master-stage.sales-order-stage .master-stage-work-scroll .commercial-create-shell .textarea-line,
+.master-stage.sales-order-stage .master-stage-work-scroll .order-items-create-shell .input-line,
+.master-stage.sales-order-stage .master-stage-work-scroll .order-items-create-shell .select-line,
+.master-stage.sales-order-stage .master-stage-work-scroll .order-items-create-shell .textarea-line,
+.master-stage.sales-order-stage .master-stage-work-scroll .shipping-detail-create-shell .input-line,
+.master-stage.sales-order-stage .master-stage-work-scroll .shipping-detail-create-shell .select-line,
+.master-stage.sales-order-stage .master-stage-work-scroll .shipping-detail-create-shell .textarea-line,
+.master-stage.sales-order-stage .master-stage-work-scroll .sales-search-shell .sales-search-filter input{background-color:#fbfdfe}
+.master-stage.sales-order-stage .master-stage-work-scroll .create-order-shell .input-line:hover,
+.master-stage.sales-order-stage .master-stage-work-scroll .create-order-shell .mock-dropdown-toggle:hover{background-color:#f7fbfd}
 body[data-flow-action="create"] #save-button{background:#eef4f7;border-color:#d9e4eb;color:#6f8598;box-shadow:inset 0 1px 0 rgba(255,255,255,.82)}
 body[data-flow-action="create"] #save-button:hover{background:#e8f0f5;border-color:#cfdee8;color:#5f7689}
 body[data-flow-action="create"] #back-button{color:#7b8ea0}
@@ -1056,6 +1073,11 @@ body[data-master-stage="true"] .sticky-shell{display:none}
 .master-stage-panel{min-width:0;max-width:100%}
 .master-stage-content-panel{min-height:640px;min-width:0;max-width:100%;overflow:hidden}
 .master-stage.sales-order-stage .master-stage-content-panel{display:flex;flex-direction:column;min-height:calc(100vh - 34px);height:calc(100vh - 34px)}
+.master-stage.sales-order-stage .master-stage-content-panel:has(.create-order-shell),
+.master-stage.sales-order-stage .master-stage-content-panel:has(.commercial-create-shell),
+.master-stage.sales-order-stage .master-stage-content-panel:has(.order-items-create-shell),
+.master-stage.sales-order-stage .master-stage-content-panel:has(.shipping-detail-create-shell),
+.master-stage.sales-order-stage .master-stage-content-panel:has(.sales-search-shell){min-height:calc(100vh - 16px);height:calc(100vh - 16px);border-color:transparent;border-radius:0;background:transparent;box-shadow:none}
 .master-stage-content-panel .master-stage-panel-body{display:block;width:100%;max-width:100%;min-width:0;min-height:0;overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 162px);scrollbar-gutter:stable both-edges;scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track)}
 .master-stage-content-panel .master-stage-panel-body::-webkit-scrollbar{width:10px;height:10px}
 .master-stage-content-panel .master-stage-panel-body::-webkit-scrollbar-track{background:var(--scroll-track);border-radius:999px}
@@ -1063,6 +1085,11 @@ body[data-master-stage="true"] .sticky-shell{display:none}
 .master-stage-content-panel .master-stage-panel-body::-webkit-scrollbar-thumb:hover{background:var(--scroll-thumb-hover)}
 .master-stage.sales-order-stage .master-stage-content-panel .master-stage-panel-body{display:flex;flex-direction:column;flex:1 1 auto;min-height:0;overflow:visible;scrollbar-gutter:auto;scrollbar-width:none}
 .master-stage.sales-order-stage .master-stage-content-panel .master-stage-panel-body::-webkit-scrollbar{display:none}
+.master-stage.sales-order-stage .master-stage-content-panel:has(.create-order-shell) .master-stage-panel-body,
+.master-stage.sales-order-stage .master-stage-content-panel:has(.commercial-create-shell) .master-stage-panel-body,
+.master-stage.sales-order-stage .master-stage-content-panel:has(.order-items-create-shell) .master-stage-panel-body,
+.master-stage.sales-order-stage .master-stage-content-panel:has(.shipping-detail-create-shell) .master-stage-panel-body,
+.master-stage.sales-order-stage .master-stage-content-panel:has(.sales-search-shell) .master-stage-panel-body{max-height:none}
 .master-stage-work-scroll{display:block;width:100%;max-width:100%;min-width:0;overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 184px);padding:0 0 40px;scrollbar-gutter:stable both-edges;scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track)}
 .master-stage.sales-order-stage .master-stage-work-scroll{display:flex;flex-direction:column;flex:1 1 auto;min-height:0;max-height:none;padding:0 0 14px;box-sizing:border-box}
 .master-stage-work-scroll::-webkit-scrollbar{width:10px;height:10px}
@@ -1100,6 +1127,29 @@ body[data-master-stage="true"] .sticky-shell{display:none}
   max-width:100%;
   min-width:0;
   box-sizing:border-box;
+}
+.master-stage.sales-order-stage .master-stage-work-scroll > .section:has(.create-order-shell),
+.master-stage.sales-order-stage .master-stage-work-scroll > .section-scroll:has(.create-order-shell),
+.master-stage.sales-order-stage .master-stage-work-scroll .section:has(.create-order-shell),
+.master-stage.sales-order-stage .master-stage-work-scroll .section-scroll:has(.create-order-shell),
+.master-stage.sales-order-stage .master-stage-work-scroll > .section:has(.commercial-create-shell),
+.master-stage.sales-order-stage .master-stage-work-scroll > .section-scroll:has(.commercial-create-shell),
+.master-stage.sales-order-stage .master-stage-work-scroll .section:has(.commercial-create-shell),
+.master-stage.sales-order-stage .master-stage-work-scroll .section-scroll:has(.commercial-create-shell),
+.master-stage.sales-order-stage .master-stage-work-scroll > .section:has(.order-items-create-shell),
+.master-stage.sales-order-stage .master-stage-work-scroll > .section-scroll:has(.order-items-create-shell),
+.master-stage.sales-order-stage .master-stage-work-scroll .section:has(.order-items-create-shell),
+.master-stage.sales-order-stage .master-stage-work-scroll .section-scroll:has(.order-items-create-shell),
+.master-stage.sales-order-stage .master-stage-work-scroll > .section:has(.shipping-detail-create-shell),
+.master-stage.sales-order-stage .master-stage-work-scroll > .section-scroll:has(.shipping-detail-create-shell),
+.master-stage.sales-order-stage .master-stage-work-scroll .section:has(.shipping-detail-create-shell),
+.master-stage.sales-order-stage .master-stage-work-scroll .section-scroll:has(.shipping-detail-create-shell),
+.master-stage.sales-order-stage .master-stage-work-scroll > .section:has(.sales-search-shell),
+.master-stage.sales-order-stage .master-stage-work-scroll > .section-scroll:has(.sales-search-shell),
+.master-stage.sales-order-stage .master-stage-work-scroll .section:has(.sales-search-shell),
+.master-stage.sales-order-stage .master-stage-work-scroll .section-scroll:has(.sales-search-shell){
+  flex:0 0 auto;
+  min-height:0;
 }
 .master-stage.sales-order-stage .master-stage-work-scroll > .section:has(.commercial-create-shell),
 .master-stage.sales-order-stage .master-stage-work-scroll > .section-scroll:has(.commercial-create-shell),
