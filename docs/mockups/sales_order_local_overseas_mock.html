@@ -1898,14 +1898,14 @@ function renderSalesOrderSearchPlaceholder(selectedItem){
 }
 function renderLineOverviewSurface(){
   const rows=[
-    ['P1','Line 1','Assembly','NBR-SL150W-B03','500','Short','Hold / Chase','2','High','Solar Street Light 150W'],
-    ['P2','Line 2','Assembly','NBR-SL100W-A01','800','Ready','Run','4','Watch','Solar Street Light 100W'],
-    ['P3','Line 3','Pre-Stage','NBR-ACC-KIT04','900','Partial','Split Run','3','Watch','Accessory Kit Type 04'],
-    ['P4','Line 4','Final Test','NBR-US200W-C10','320','Ready','Run','5','Low','Urban Street Light 200W'],
-    ['P5','Line 5','Packing','NBR-US120W-D06','460','Check','Wait Slot','1','High','Urban Street Light 120W'],
-    ['P6','Line 6','Assembly','NBR-US-POLE09','260','Ready','Run','6','Low','Pole Assembly Series 09']
+    ['P1 - Start Today','Line 1','Assembly','NBR-SL150W-B03','500','Short','HOLD - MATERIAL','0','CRITICAL - cannot start today','Solar Street Light 150W'],
+    ['P2 - Start Tomorrow','Line 5','Packing','NBR-US120W-D06','460','Check','CHECK BEFORE RUN','1','RISK - packing slot tight','Urban Street Light 120W'],
+    ['P2 - Start Tomorrow','Line 3','Pre-Stage','NBR-ACC-KIT04','900','Partial','CHECK BEFORE RUN','2','WATCH - partial kit staging','Accessory Kit Type 04'],
+    ['P2 - Start Tomorrow','Line 2','Assembly','NBR-SL100W-A01','800','Ready','RUN OK','1','WATCH - ETA close','Solar Street Light 100W'],
+    ['P3 - Watch','Line 6','Assembly','NBR-US-POLE09','260','Ready','HOLD - APPROVAL','2','RISK - confirmation pending','Pole Assembly Series 09'],
+    ['P4 - Watch','Line 4','Final Test','NBR-US200W-C10','320','Ready','RUN OK','3','LOW - ready buffer','Urban Street Light 200W']
   ];
-  const riskClass=value=>value==='High'?' high':(value==='Watch'?' watch':'');
+  const riskClass=value=>value.indexOf('CRITICAL')===0||value.indexOf('RISK')===0?' high':(value.indexOf('WATCH')===0?' watch':'');
   return '<div class="line-overview-shell">'+
     '<div class="line-overview-filter" aria-label="LINE OVERVIEW mock filters">'+
       '<div class="sales-search-note">Mock filters &mdash; filtering applies only to visible mock data</div>'+
@@ -1918,7 +1918,7 @@ function renderLineOverviewSurface(){
       '</div>'+
     '</div>'+
     '<div class="line-overview-selected-band">'+
-      '<div class="line-overview-selected-context">Selected: Line 1 <span>&middot; Assembly &middot; P1 &middot; NBR-SL150W-B03</span></div>'+
+      '<div class="line-overview-selected-context">Selected: Line 1 <span>&middot; Assembly &middot; P1 - Start Today &middot; HOLD - MATERIAL &middot; Owner: Planner Chen</span></div>'+
       '<div class="line-overview-static-actions">'+
         '<button type="button" class="btn secondary">View Record</button>'+
         '<button type="button" class="btn secondary">Edit Record</button>'+
@@ -1929,7 +1929,7 @@ function renderLineOverviewSurface(){
     '</div>'+
     '<div class="line-overview-table-wrap" aria-label="LINE OVERVIEW 9-column planning table">'+
       '<table class="line-overview-table">'+
-        '<thead><tr><th>Priority</th><th>Line</th><th>Process</th><th>Model</th><th>Qty</th><th>MatStatus</th><th>RunDecision</th><th>DaysLeft</th><th>QuickRisk</th></tr></thead>'+
+        '<thead><tr><th>Priority</th><th>Line</th><th>Process</th><th>Model</th><th>Qty</th><th>MatStatus</th><th>RunDecision</th><th>DAYS TO START</th><th>QuickRisk</th></tr></thead>'+
         '<tbody>'+rows.map((row,index)=>'<tr'+(index===0?' class="line-overview-selected-row"':'')+'>'+
           '<td class="line-overview-priority">'+escapeHtml(row[0])+(index===0?'<span class="line-overview-selected-mark">Selected line for demo</span>':'')+'</td>'+
           '<td>'+escapeHtml(row[1])+'</td>'+
@@ -1945,10 +1945,17 @@ function renderLineOverviewSurface(){
     '</div>'+
     '<div class="line-overview-expand-grid">'+
       '<details class="line-overview-expand" open><summary>Expand A — Identity / Order / Model / Material Readiness</summary><div class="line-overview-expand-body">'+
-        '<div class="line-overview-detail-line"><strong>Selected line</strong><span>Line 1 · Assembly · P1</span></div>'+
+        '<div class="line-overview-detail-line"><strong>Selected line</strong><span>Line 1 · Assembly · P1 - Start Today</span></div>'+
         '<div class="line-overview-detail-line"><strong>Work Order No</strong><span>WO-20260421-L1A</span></div>'+
         '<div class="line-overview-detail-line"><strong>Descriptions</strong><span>Repeat build mock / line-level planning reference</span></div>'+
         '<div class="line-overview-detail-line"><strong>Customer Model No</strong><span>Customer model reference for selected planning row</span></div>'+
+        '<div class="line-overview-detail-line"><strong>Planned Start Date / Time</strong><span>30 Apr 2026 14:00</span></div>'+
+        '<div class="line-overview-detail-line"><strong>Material ETA</strong><span>30 Apr 2026 16:30, after planned start</span></div>'+
+        '<div class="line-overview-detail-line"><strong>Missing Material</strong><span>Label Set short 400 pcs; Driver balance confirmation pending</span></div>'+
+        '<div class="line-overview-detail-line"><strong>Last Check Time</strong><span>30 Apr 2026 10:40</span></div>'+
+        '<div class="line-overview-detail-line"><strong>Decision Reason</strong><span>Cannot start today because key label material is short before line release.</span></div>'+
+        '<div class="line-overview-detail-line"><strong>Next Action</strong><span>Planner to chase material ETA and confirm whether Line 2 should run first.</span></div>'+
+        '<div class="line-overview-detail-line"><strong>Owner / Follow-up PIC</strong><span>Planner Chen / Store Lead Lim</span></div>'+
         '<div class="line-overview-detail-line"><strong>Material</strong><span>Label Set short 400 pcs; Driver balance ETA under chase</span></div>'+
       '</div></details>'+
       '<details class="line-overview-expand"><summary>Expand B — Follow-up / Risk / Action Notes</summary><div class="line-overview-expand-body">'+
