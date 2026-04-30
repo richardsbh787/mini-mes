@@ -953,6 +953,45 @@ body[data-flow-action="create"] .route-field-shell .route-segment{min-width:68px
 .shipping-detail-form-grid .input-line,.shipping-detail-form-grid .select-line{min-height:38px}
 .shipping-detail-form-grid .textarea-line{min-height:92px}
 .shipping-detail-form-grid .create-row.shipping-detail-row-span{grid-column:1 / -1}
+.master-stage-shell.workspace-standard:has(.line-overview-shell){grid-template-columns:150px 190px minmax(0,1fr);gap:10px}
+.master-stage-content-panel:has(.line-overview-shell){min-height:calc(100vh - 16px);height:calc(100vh - 16px);border-color:transparent;border-radius:0;background:transparent;box-shadow:none}
+.master-stage-content-panel:has(.line-overview-shell) .master-stage-panel-body{display:flex;flex-direction:column;min-height:0;max-height:none;overflow:visible}
+.master-stage-content-panel:has(.line-overview-shell) .master-stage-work-scroll{display:flex;flex-direction:column;flex:1 1 auto;min-height:0;max-height:none;padding:0 0 14px;overflow:auto;scrollbar-gutter:stable;scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track)}
+.line-overview-shell{display:grid;gap:12px;width:100%;max-width:100%;min-width:0;box-sizing:border-box;overflow-x:visible}
+.line-overview-shell *{box-sizing:border-box}
+.line-overview-filter{display:grid;gap:10px;width:100%;max-width:100%;min-width:0;padding:12px 14px;border:1px solid #ccdce7;border-radius:14px;background:linear-gradient(180deg,#eef5fa 0%,#e4eef5 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+.line-overview-filter-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;min-width:0;align-items:end}
+.line-overview-filter-field{display:grid;gap:5px;min-width:0}
+.line-overview-filter-field label{font-size:12px;font-weight:700;line-height:1.35;color:var(--title);overflow-wrap:anywhere}
+.line-overview-filter-field input,.line-overview-filter-field select{width:100%;max-width:100%;min-width:0;height:34px;padding:7px 9px;border:1px solid #cfdde7;border-radius:9px;background:#fbfdfe;color:#244866;font-size:13px}
+.line-overview-filter-field input::placeholder{color:#a9b7c3;font-weight:400;opacity:1}
+.line-overview-selected-band{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:52px;padding:7px 10px;border:1px solid #ccdce7;border-radius:10px;background:#f8fbfd;box-shadow:inset 0 1px 0 rgba(255,255,255,.88)}
+.line-overview-selected-context{flex:1 1 230px;min-width:180px;font-size:12px;font-weight:700;line-height:1.35;color:var(--title);overflow-wrap:anywhere}
+.line-overview-selected-context span{font-weight:600;color:var(--muted)}
+.line-overview-static-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.line-overview-static-action{min-height:28px;height:auto;padding:5px 9px;font-size:12px;opacity:.6;cursor:not-allowed;color:#7d8994;background:#eef2f5;border-color:#d3dde6}
+.line-overview-table-wrap{width:100%;max-width:100%;min-width:0;overflow-x:visible;border:1px solid #ccdce7;border-radius:14px;background:#fdfefe;box-shadow:inset 0 1px 0 rgba(255,255,255,.86)}
+.line-overview-table{width:100%;max-width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed}
+.line-overview-table th,.line-overview-table td{padding:7px 7px;border-bottom:1px solid #e0e9f0;border-right:1px solid #edf2f5;font-size:12px;line-height:1.3;text-align:left;vertical-align:top;color:var(--text);white-space:normal;overflow-wrap:anywhere;word-break:normal}
+.line-overview-table th{background:#e8f1f7;color:var(--title);font-weight:700;cursor:default;user-select:text}
+.line-overview-table th:last-child,.line-overview-table td:last-child{border-right:none}
+.line-overview-table tbody tr:last-child td{border-bottom:none}
+.line-overview-table tbody tr:nth-child(even) td{background:#f8fbfd}
+.line-overview-table tbody tr.line-overview-selected-row td{background:#eef5fa;border-top:1px solid #c6d7e3;border-bottom:1px solid #c6d7e3}
+.line-overview-selected-mark{display:block;margin-top:3px;font-size:11px;font-weight:700;color:var(--blue);line-height:1.25}
+.line-overview-priority{font-weight:800;color:var(--title)}
+.line-overview-model-no{display:block;font-weight:600;color:var(--text);line-height:1.25}
+.line-overview-model-name{display:block;margin-top:2px;font-size:11px;font-weight:600;line-height:1.25;color:var(--muted)}
+.line-overview-risk{display:inline-flex;align-items:center;justify-content:center;min-height:22px;padding:3px 8px;border:1px solid #d7e4ed;border-radius:999px;background:#eef5f9;color:#5f7589;font-size:10px;font-weight:800}
+.line-overview-risk.high{border-color:#dcc7ca;background:#f1e5e6;color:#8b5d64}
+.line-overview-risk.watch{border-color:#d7e2e8;background:#eef5f8;color:#698094}
+.line-overview-expand-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.line-overview-expand{border:1px solid #ccdce7;border-radius:10px;background:#f8fbfd;box-shadow:inset 0 1px 0 rgba(255,255,255,.88);overflow:hidden}
+.line-overview-expand summary{padding:9px 10px;cursor:pointer;font-size:12px;font-weight:700;color:var(--title);background:#e8f1f7;border-bottom:1px solid #d8e5ed}
+.line-overview-expand-body{display:grid;gap:6px;padding:10px 12px}
+.line-overview-detail-line{display:grid;grid-template-columns:132px minmax(0,1fr);gap:8px;font-size:12px;line-height:1.35;color:var(--text)}
+.line-overview-detail-line strong{color:var(--blue);font-weight:800}
+.line-overview-note{font-size:12px;line-height:1.45;color:var(--muted)}
 .master-stage.sales-order-stage .master-stage-work-scroll .create-order-shell .input-line,
 .master-stage.sales-order-stage .master-stage-work-scroll .create-order-shell .select-line,
 .master-stage.sales-order-stage .master-stage-work-scroll .create-order-shell .textarea-line,
@@ -976,7 +1015,9 @@ body[data-flow-action="create"] #back-button{color:#7b8ea0}
 body[data-master-stage="true"] .sticky-shell{display:none}
 .master-stage{max-width:none;margin:0;padding:12px 0 22px 10px}
 .master-stage.sales-order-stage{max-width:none;margin:0;padding:8px 0 14px 10px}
+.master-stage.planning-stage{max-width:none;margin:0;padding:8px 0 14px 10px}
 .master-stage.sales-order-stage .master-stage-header{display:none}
+.master-stage.planning-stage .master-stage-header{display:none}
 .master-stage.sales-order-stage .create-form-head{display:none}
 .master-stage-header{display:grid;gap:2px;margin-bottom:10px}
 .master-stage.sales-order-stage .master-stage-header{gap:2px;margin-bottom:8px}
@@ -995,8 +1036,8 @@ body[data-master-stage="true"] .sticky-shell{display:none}
 .master-stage-note{font-size:12px;color:var(--muted);line-height:1.55}
 .master-stage .section{padding-top:0}
 .master-stage-shell{display:grid;gap:16px;align-items:start}
-.master-stage-shell.sales-order-workspace,.master-stage-shell.workspace-standard{grid-template-columns:164px 188px minmax(0,1fr)}
-.master-stage-shell.sales-order-workspace{grid-template-columns:minmax(0,1fr);gap:10px}
+.master-stage-shell.sales-order-workspace,.master-stage-shell.planning-workspace,.master-stage-shell.workspace-standard{grid-template-columns:164px 188px minmax(0,1fr)}
+.master-stage-shell.sales-order-workspace,.master-stage-shell.planning-workspace{grid-template-columns:minmax(0,1fr);gap:10px}
 .master-stage-column{display:grid;gap:12px;min-width:0}
 .sales-order-rail-shell{display:grid;grid-template-columns:224px minmax(0,1fr);gap:14px;align-items:start;min-width:0}
 .sales-order-secondary-nav{display:grid;gap:10px;padding:10px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,#fcfdfe 0%,#f5f8fa 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.88),0 2px 6px rgba(67,89,112,.04)}
@@ -1073,18 +1114,22 @@ body[data-master-stage="true"] .sticky-shell{display:none}
 .master-stage-panel{min-width:0;max-width:100%}
 .master-stage-content-panel{min-height:640px;min-width:0;max-width:100%;overflow:hidden}
 .master-stage.sales-order-stage .master-stage-content-panel{display:flex;flex-direction:column;min-height:calc(100vh - 34px);height:calc(100vh - 34px)}
+.master-stage.planning-stage .master-stage-content-panel{display:flex;flex-direction:column;min-height:calc(100vh - 34px);height:calc(100vh - 34px)}
 .master-stage.sales-order-stage .master-stage-content-panel:has(.create-order-shell),
 .master-stage.sales-order-stage .master-stage-content-panel:has(.commercial-create-shell),
 .master-stage.sales-order-stage .master-stage-content-panel:has(.order-items-create-shell),
 .master-stage.sales-order-stage .master-stage-content-panel:has(.shipping-detail-create-shell),
 .master-stage.sales-order-stage .master-stage-content-panel:has(.sales-search-shell){min-height:calc(100vh - 16px);height:calc(100vh - 16px);border-color:transparent;border-radius:0;background:transparent;box-shadow:none}
+.master-stage.planning-stage .master-stage-content-panel{min-height:calc(100vh - 16px);height:calc(100vh - 16px);border-color:transparent;border-radius:0;background:transparent;box-shadow:none}
 .master-stage-content-panel .master-stage-panel-body{display:block;width:100%;max-width:100%;min-width:0;min-height:0;overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 162px);scrollbar-gutter:stable both-edges;scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track)}
 .master-stage-content-panel .master-stage-panel-body::-webkit-scrollbar{width:10px;height:10px}
 .master-stage-content-panel .master-stage-panel-body::-webkit-scrollbar-track{background:var(--scroll-track);border-radius:999px}
 .master-stage-content-panel .master-stage-panel-body::-webkit-scrollbar-thumb{background:var(--scroll-thumb);border-radius:999px;border:2px solid var(--scroll-track)}
 .master-stage-content-panel .master-stage-panel-body::-webkit-scrollbar-thumb:hover{background:var(--scroll-thumb-hover)}
 .master-stage.sales-order-stage .master-stage-content-panel .master-stage-panel-body{display:flex;flex-direction:column;flex:1 1 auto;min-height:0;overflow:visible;scrollbar-gutter:auto;scrollbar-width:none}
+.master-stage.planning-stage .master-stage-content-panel .master-stage-panel-body{display:flex;flex-direction:column;flex:1 1 auto;min-height:0;overflow:visible;scrollbar-gutter:auto;scrollbar-width:none}
 .master-stage.sales-order-stage .master-stage-content-panel .master-stage-panel-body::-webkit-scrollbar{display:none}
+.master-stage.planning-stage .master-stage-content-panel .master-stage-panel-body::-webkit-scrollbar{display:none}
 .master-stage.sales-order-stage .master-stage-content-panel:has(.create-order-shell) .master-stage-panel-body,
 .master-stage.sales-order-stage .master-stage-content-panel:has(.commercial-create-shell) .master-stage-panel-body,
 .master-stage.sales-order-stage .master-stage-content-panel:has(.order-items-create-shell) .master-stage-panel-body,
@@ -1092,6 +1137,7 @@ body[data-master-stage="true"] .sticky-shell{display:none}
 .master-stage.sales-order-stage .master-stage-content-panel:has(.sales-search-shell) .master-stage-panel-body{max-height:none}
 .master-stage-work-scroll{display:block;width:100%;max-width:100%;min-width:0;overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 184px);padding:0 0 40px;scrollbar-gutter:stable both-edges;scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track)}
 .master-stage.sales-order-stage .master-stage-work-scroll{display:flex;flex-direction:column;flex:1 1 auto;min-height:0;max-height:none;padding:0 0 14px;box-sizing:border-box}
+.master-stage.planning-stage .master-stage-work-scroll{display:flex;flex-direction:column;flex:1 1 auto;min-height:0;max-height:none;padding:0 0 14px;box-sizing:border-box}
 .master-stage-work-scroll::-webkit-scrollbar{width:10px;height:10px}
 .master-stage-work-scroll::-webkit-scrollbar-track{background:var(--scroll-track);border-radius:999px}
 .master-stage-work-scroll::-webkit-scrollbar-thumb{background:var(--scroll-thumb);border-radius:999px;border:2px solid var(--scroll-track)}
@@ -1324,6 +1370,7 @@ const MODULE_WORKSPACE_CONFIG={
     selectorTitle:'Choose Planning Surface',
     selectorCopy:'Then choose which planning area to work on.',
     items:[
+      {id:'line-overview',label:'LINE OVERVIEW',description:'Line-level 9-column planning overview table with compact expand details.'},
       {id:'planning-board',label:'Planning Board',description:'Main planning-entry and review surface.'},
       {id:'material-alignment',label:'Material Alignment',description:'Material readiness and plan-fit review surface.'},
       {id:'capacity-check',label:'Capacity Check',description:'Capacity load and exception-review surface.'}
@@ -1745,6 +1792,13 @@ function getWorkspaceItems(moduleId){
       return [{id:'search-order',label:'Search Order',description:'Find and select an existing order.'}];
     }
   }
+  if(moduleId==='planning'){
+    const planningItems=getWorkspaceConfig(moduleId).items||[];
+    if(currentAction==='search'){
+      return planningItems.filter(item=>item.id==='line-overview');
+    }
+    return planningItems.filter(item=>item.id!=='line-overview');
+  }
   return getWorkspaceConfig(moduleId).items||[];
 }
 function getSelectedWorkspaceItemId(moduleId){
@@ -1841,6 +1895,70 @@ function renderSalesOrderCreatePlaceholder(selectedItem){
 }
 function renderSalesOrderSearchPlaceholder(selectedItem){
   return '<div class="master-stage-placeholder"><strong>Search / Find is not opened yet for '+escapeHtml(selectedItem.label)+'.</strong> This placeholder stays isolated on purpose, so Search / Find does not reuse any Create / Add or normal table renderer in the current mock stage.</div>';
+}
+function renderLineOverviewSurface(){
+  const rows=[
+    ['P1','Line 1','Assembly','NBR-SL150W-B03','500','Short','Hold / Chase','2','High','Solar Street Light 150W'],
+    ['P2','Line 2','Assembly','NBR-SL100W-A01','800','Ready','Run','4','Watch','Solar Street Light 100W'],
+    ['P3','Line 3','Pre-Stage','NBR-ACC-KIT04','900','Partial','Split Run','3','Watch','Accessory Kit Type 04'],
+    ['P4','Line 4','Final Test','NBR-US200W-C10','320','Ready','Run','5','Low','Urban Street Light 200W'],
+    ['P5','Line 5','Packing','NBR-US120W-D06','460','Check','Wait Slot','1','High','Urban Street Light 120W'],
+    ['P6','Line 6','Assembly','NBR-US-POLE09','260','Ready','Run','6','Low','Pole Assembly Series 09']
+  ];
+  const riskClass=value=>value==='High'?' high':(value==='Watch'?' watch':'');
+  return '<div class="line-overview-shell">'+
+    '<div class="line-overview-filter" aria-label="LINE OVERVIEW mock filters">'+
+      '<div class="sales-search-note">Mock filters &mdash; filtering applies only to visible mock data</div>'+
+      '<div class="line-overview-filter-row">'+
+        '<div class="line-overview-filter-field"><label for="line-overview-line">Line</label><select id="line-overview-line"><option>All Lines</option><option>Line 1</option><option>Line 2</option><option>Line 3</option></select></div>'+
+        '<div class="line-overview-filter-field"><label for="line-overview-shop">Shop</label><select id="line-overview-shop"><option>All Shops</option><option>Assembly</option><option>Pre-Stage</option><option>Packing</option></select></div>'+
+        '<div class="line-overview-filter-field"><label for="line-overview-model">Model</label><select id="line-overview-model"><option>All Models</option><option>NBR-SL150W-B03</option><option>NBR-SL100W-A01</option><option>NBR-ACC-KIT04</option><option>NBR-US200W-C10</option><option>NBR-US120W-D06</option><option>NBR-US-POLE09</option></select></div>'+
+        '<div class="line-overview-filter-field"><label for="line-overview-status">MatStatus</label><select id="line-overview-status"><option>All</option><option>Ready</option><option>Short</option><option>Partial</option></select></div>'+
+        '<div class="line-overview-filter-field"><label for="line-overview-risk">QuickRisk</label><select id="line-overview-risk"><option>All</option><option>High</option><option>Watch</option><option>Low</option></select></div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="line-overview-selected-band">'+
+      '<div class="line-overview-selected-context">Selected: Line 1 <span>&middot; Assembly &middot; P1 &middot; NBR-SL150W-B03</span></div>'+
+      '<div class="line-overview-static-actions">'+
+        '<button type="button" class="btn secondary">View Record</button>'+
+        '<button type="button" class="btn secondary">Edit Record</button>'+
+        '<button type="button" class="btn secondary">Review / Approve</button>'+
+        '<button type="button" class="btn secondary">Request Change</button>'+
+        '<button type="button" class="btn secondary line-overview-static-action" disabled>Delete / Void / Cancel</button>'+
+      '</div>'+
+    '</div>'+
+    '<div class="line-overview-table-wrap" aria-label="LINE OVERVIEW 9-column planning table">'+
+      '<table class="line-overview-table">'+
+        '<thead><tr><th>Priority</th><th>Line</th><th>Process</th><th>Model</th><th>Qty</th><th>MatStatus</th><th>RunDecision</th><th>DaysLeft</th><th>QuickRisk</th></tr></thead>'+
+        '<tbody>'+rows.map((row,index)=>'<tr'+(index===0?' class="line-overview-selected-row"':'')+'>'+
+          '<td class="line-overview-priority">'+escapeHtml(row[0])+(index===0?'<span class="line-overview-selected-mark">Selected line for demo</span>':'')+'</td>'+
+          '<td>'+escapeHtml(row[1])+'</td>'+
+          '<td>'+escapeHtml(row[2])+'</td>'+
+          '<td><span class="line-overview-model-no">'+escapeHtml(row[3])+'</span><span class="line-overview-model-name">'+escapeHtml(row[9])+'</span></td>'+
+          '<td>'+escapeHtml(row[4])+'</td>'+
+          '<td>'+escapeHtml(row[5])+'</td>'+
+          '<td>'+escapeHtml(row[6])+'</td>'+
+          '<td>'+escapeHtml(row[7])+'</td>'+
+          '<td><span class="line-overview-risk'+riskClass(row[8])+'">'+escapeHtml(row[8])+'</span></td>'+
+        '</tr>').join('')+'</tbody>'+
+      '</table>'+
+    '</div>'+
+    '<div class="line-overview-expand-grid">'+
+      '<details class="line-overview-expand" open><summary>Expand A — Identity / Order / Model / Material Readiness</summary><div class="line-overview-expand-body">'+
+        '<div class="line-overview-detail-line"><strong>Selected line</strong><span>Line 1 · Assembly · P1</span></div>'+
+        '<div class="line-overview-detail-line"><strong>Work Order No</strong><span>WO-20260421-L1A</span></div>'+
+        '<div class="line-overview-detail-line"><strong>Descriptions</strong><span>Repeat build mock / line-level planning reference</span></div>'+
+        '<div class="line-overview-detail-line"><strong>Customer Model No</strong><span>Customer model reference for selected planning row</span></div>'+
+        '<div class="line-overview-detail-line"><strong>Material</strong><span>Label Set short 400 pcs; Driver balance ETA under chase</span></div>'+
+      '</div></details>'+
+      '<details class="line-overview-expand"><summary>Expand B — Follow-up / Risk / Action Notes</summary><div class="line-overview-expand-body">'+
+        '<div class="line-overview-detail-line"><strong>Follow-up</strong><span>Planner to confirm staged release before next shift planning lock.</span></div>'+
+        '<div class="line-overview-detail-line"><strong>Risk</strong><span>High risk if label receipt slips past pre-stage date.</span></div>'+
+        '<div class="line-overview-detail-line"><strong>Action note</strong><span>Run Line 2 first if Line 1 material remains short. Supervisor review required in real flow later.</span></div>'+
+        '<div class="line-overview-detail-line"><strong>Mock limit</strong><span>Static UI only; no approval, validation, scheduling engine, or storage write.</span></div>'+
+      '</div></details>'+
+    '</div>'+
+  '</div>';
 }
 function renderSalesOrderSearchListSurface(){
   return '<div class="section section-scroll">'+
@@ -2819,6 +2937,7 @@ function renderGenericWorkspaceStage(moduleId){
   const content=document.getElementById('master-stage-content');
   if(!stage||!headerTitle||!headerCopy||!content)return;
   stage.classList.toggle('sales-order-stage',moduleId==='sales-orders');
+  stage.classList.toggle('planning-stage',moduleId==='planning');
   const moduleMeta=MODULE_CONFIG[moduleId];
   const workspaceConfig=getWorkspaceConfig(moduleId);
   const actionMeta=ACTION_CONFIG[currentAction]||null;
@@ -2851,6 +2970,11 @@ function renderGenericWorkspaceStage(moduleId){
       mainContent='<div class="master-stage-panel master-stage-content-panel">'+
         '<div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Center Panel</div><div class="master-stage-panel-title">'+selectedItem.label+'</div><div class="master-stage-panel-copy">'+actionMeta.label+' is now paired with the real Sales Order sub-module '+selectedItem.label+'.</div></div>'+
         '<div class="master-stage-panel-body"><div class="master-stage-work-scroll">'+renderSalesOrderContentPanelBody(selectedItem,actionMeta,moduleMeta)+'</div></div>'+
+      '</div>';
+    } else if(moduleId==='planning'&&selectedItem.id==='line-overview'){
+      mainContent='<div class="master-stage-panel master-stage-content-panel">'+
+        '<div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Center Panel</div><div class="master-stage-panel-title">Planning · LINE OVERVIEW</div><div class="master-stage-panel-copy">Static line-level planning overview mock. No scheduling engine or production workflow is connected.</div></div>'+
+        '<div class="master-stage-panel-body"><div class="master-stage-work-scroll">'+renderLineOverviewSurface()+'</div></div>'+
       '</div>';
     } else {
       mainContent='<div class="master-stage-panel master-stage-content-panel">'+
@@ -2913,6 +3037,45 @@ function renderGenericWorkspaceStage(moduleId){
       syncSummaryWarning();
       syncRouteField();
     }
+    stage.classList.remove('hidden');
+    return;
+  }
+  if(moduleId==='planning'){
+    headerTitle.textContent='';
+    headerCopy.textContent='';
+    const planningActionTabs='<div class="sales-order-action-tabs">'+Object.entries(ACTION_CONFIG)
+      .filter(([actionId])=>['create','search'].includes(actionId))
+      .map(([actionId,meta])=>'<button type="button" class="sales-order-action-tab master-work-action'+(actionId===currentAction?' active':'')+(actionId==='delete'?' restricted':'')+'" data-stage-action="'+actionId+'" data-action="'+actionId+'"><span class="master-work-icon" aria-hidden="true"></span><span class="master-work-label"><span class="master-work-title">'+meta.label+'</span></span></button>')
+      .join('')+'</div>';
+    const planningSurfaceTabs=(actionMeta
+      ? '<div class="sales-order-submodule-row"><div class="sales-order-submodule-tabs">'+getWorkspaceItems(moduleId)
+          .map(item=>'<button type="button" class="sales-order-submodule-tab'+(item.id===getSelectedWorkspaceItemId(moduleId)?' active':'')+'" data-stage-workspace-item="'+item.id+'">'+item.label+'</button>')
+          .join('')+'</div></div>'
+      : '');
+    mainContent='<div class="master-stage-panel master-stage-content-panel">'+
+      '<div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Center Panel</div><div class="master-stage-panel-title">Planning &amp; Scheduling</div></div>'+
+      '<div class="master-stage-panel-body">'+planningActionTabs+'<div class="sales-order-submodule-empty"><div class="master-stage-placeholder"><strong>Choose an action first.</strong> Then choose one Planning surface tab to open the matching workspace in this center panel.</div></div></div>'+
+    '</div>';
+    if(actionMeta&&!selectedItem){
+      mainContent='<div class="master-stage-panel master-stage-content-panel">'+
+        '<div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Center Panel</div><div class="master-stage-panel-title">Planning &amp; Scheduling -- '+actionMeta.label+' -- '+workspaceConfig.selectorTitle+'</div></div>'+
+        '<div class="master-stage-panel-body">'+planningActionTabs+planningSurfaceTabs+'<div class="sales-order-submodule-empty"><div class="master-stage-placeholder"><strong>'+actionMeta.label+' is selected.</strong> Choose one tab above to open the correct Planning surface in this center panel.</div></div></div>'+
+      '</div>';
+    }
+    if(actionMeta&&selectedItem&&selectedItem.id==='line-overview'){
+      mainContent='<div class="master-stage-panel master-stage-content-panel">'+
+        '<div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Center Panel</div><div class="master-stage-panel-title">Planning &amp; Scheduling -- '+actionMeta.label+' -- LINE OVERVIEW</div></div>'+
+        '<div class="master-stage-panel-body">'+planningActionTabs+planningSurfaceTabs+'<div class="master-stage-work-scroll">'+renderLineOverviewSurface()+'</div></div>'+
+      '</div>';
+    }else if(actionMeta&&selectedItem){
+      mainContent='<div class="master-stage-panel master-stage-content-panel">'+
+        '<div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Center Panel</div><div class="master-stage-panel-title">Planning &amp; Scheduling -- '+actionMeta.label+' -- '+selectedItem.label+'</div></div>'+
+        '<div class="master-stage-panel-body">'+planningActionTabs+planningSurfaceTabs+'<div class="sales-order-submodule-empty"><div class="master-stage-placeholder"><strong>Mock work surface:</strong> '+actionMeta.label+' is now focused on '+selectedItem.label+'. This remains a static Planning mock placeholder with no scheduling engine, workflow, validation, routing, database, or storage logic.</div></div></div>'+
+      '</div>';
+    }
+    content.innerHTML='<div class="master-stage-shell planning-workspace">'+
+      '<div class="master-stage-column">'+mainContent+'</div>'+
+    '</div>';
     stage.classList.remove('hidden');
     return;
   }
@@ -3327,6 +3490,13 @@ function syncModuleEntry(){
       currentWorkspaceArea='search-order';
     }
   }
+  if(currentModule==='planning'){
+    if(currentAction==='search'){
+      currentWorkspaceArea='line-overview';
+    }else if(currentWorkspaceArea==='line-overview'){
+      currentWorkspaceArea='';
+    }
+  }
 
   if(currentModule==='reports-master-data'){
     renderMasterStage();
@@ -3363,6 +3533,9 @@ function applyInitialStateFromQuery(){
     if(currentModule==='sales-orders'){
       currentWorkspaceArea=sectionParam;
     }
+  }
+  if(currentModule==='planning'&&currentAction==='search'&&sectionParam==='line-overview'){
+    currentWorkspaceArea='line-overview';
   }
   if(typeSelect&&(routeParam==='Local'||routeParam==='Overseas')){
     typeSelect.value=routeParam;
@@ -3604,6 +3777,9 @@ function setupMasterStageInteractions(){
     const actionButton=event.target.closest('[data-stage-action]');
     if(actionButton){
       currentAction=actionButton.getAttribute('data-stage-action')||'';
+      if(currentModule==='planning'){
+        currentWorkspaceArea=currentAction==='search'?'line-overview':'';
+      }
       syncModuleEntry();
       return;
     }
