@@ -131,6 +131,8 @@ Frozen Record - Work Order Release Decision UI Baseline v1.1
 
 Frozen Record - Line Schedule / Schedule Grid UI Baseline v1.1
 
+Frozen Record - Planning & Scheduling Master List Schemas v1
+
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
 
@@ -13233,6 +13235,8 @@ SML UI / Workflow Baseline v1.1 is now PASS WITH WARNINGS / FROZEN WITH FINAL RE
 Work Order Release Decision UI Baseline v1.1 is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Work Order Release Decision UI Baseline v1.1 is the sole active Release Decision UI Governance baseline, prior drafts are retained as historical only, the decision stack is now positioned as Order / Material -> SML -> Material Risk -> Waiver -> Work Order Release Decision, PLAN / Trial final operational control stack now includes Release Decision signal layer (Can Run / Need Decision / Hold), and the core rule is Release Decision = Final Operational Signal / Release Decision != SML / Risk / Waiver.
 
 Line Schedule / Schedule Grid UI Baseline v1.1 is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES; Line Schedule / Schedule Grid UI Baseline v1.1 is the sole active Schedule Grid UI Governance baseline, prior drafts are retained as historical only, the PLAN visual stack is now positioned as Order / Material -> SML -> Material Risk -> Waiver -> Work Order Release -> Line Schedule Grid, PLAN / Trial scheduling command stack now includes Schedule Grid operational map layer (Line x Day x Order x Status x Blocking x Conflict), and the core rule is Schedule Grid = Operational Schedule + Status + Blocking Visibility Surface / Schedule Grid != Capacity Logic / Release Logic.
+
+Planning & Scheduling Master List Schemas v1 is frozen as the official trial schema baseline. Official document path: `docs/blueprints/planning_scheduling_master_list_schemas_v1.md`. Core locked meaning: Create / Add is the only official Planning Schedule Entry input path; Search / Find pages are read-only views or explicitly marked what-if workspaces; no Planning page may invent, duplicate, rename, or hide fields outside the frozen schema; ST / UPH / HC are Engineering / IE Master Data references that Planning reads but does not own or maintain; Material Ready for Production Start requires physical availability, IQC pass or formal exemption, release for production, Store Kitting, and Line Receive confirmation; Capacity / Load Check is advisory only and cannot auto-block, auto-release, auto-move-line, or auto-approve OT; Pending Stock-In List cannot execute Stock In or override QA / Warehouse status; Production Schedule Grid remains read-only; this freeze does not authorize backend implementation, database migration, ERP integration, production execution, inventory update, WO release, WO close, or Step 47 Phase B.
 
 Frozen Record - Shared UI Baseline / Sales Order Mock-Stage Branch Split (Local vs Overseas)
 
