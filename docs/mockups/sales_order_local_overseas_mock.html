@@ -1430,7 +1430,7 @@ const MODULE_WORKSPACE_CONFIG={
     selectorCopy:'Then choose which planning area to work on.',
     items:[
       {id:'line-overview',label:'LINE OVERVIEW',description:'Line-level 9-column planning overview table with compact expand details.'},
-      {id:'readiness-board',label:'READINESS BOARD',description:'2-line day-level readiness board showing runnable gaps and blocked candidate advisory.'},
+      {id:'readiness-board',label:'Production Schedule Grid',description:'2-line day-level production schedule grid showing runnable gaps and blocked candidate advisory.'},
       {id:'planning-board',label:'Planning Board',description:'Main planning-entry and review surface.'},
       {id:'material-alignment',label:'Material Alignment',description:'Material readiness and plan-fit review surface.'},
       {id:'capacity-check',label:'Capacity Check',description:'Capacity load and exception-review surface.'}
@@ -2023,7 +2023,7 @@ function renderLineOverviewCompactToolbar(){
       '<div class="readiness-compact-left">'+
         '<button type="button" class="sales-order-action-tab master-work-action active readiness-compact-action" data-stage-action="search" data-action="search"><span class="master-work-icon" aria-hidden="true"></span><span class="master-work-label"><span class="master-work-title">Search / Find</span></span></button>'+
         '<button type="button" class="sales-order-submodule-tab active readiness-compact-tab" data-stage-workspace-item="line-overview">LINE OVERVIEW</button>'+
-        '<button type="button" class="sales-order-submodule-tab readiness-compact-tab" data-stage-workspace-item="readiness-board">READINESS BOARD</button>'+
+        '<button type="button" class="sales-order-submodule-tab readiness-compact-tab" data-stage-workspace-item="readiness-board">Production Schedule Grid</button>'+
       '</div>'+
       '<div class="readiness-compact-right"><span class="readiness-mock-note">Mock filter only / No real filtering in this static trial</span></div>'+
     '</div>'+
@@ -2039,7 +2039,7 @@ function renderLineOverviewCompactToolbar(){
 function renderReadinessBoardSurface(){
   return '<div class="readiness-board-shell">'+
     '<div class="readiness-main-layout">'+
-      '<div class="readiness-grid-wrap" aria-label="Planning Readiness Board static trial grid">'+
+      '<div class="readiness-grid-wrap" aria-label="Planning Production Schedule Grid static trial grid">'+
         '<table class="readiness-grid">'+
           '<thead><tr><th>Line</th><th>Today / 30 Apr</th><th>1 May<br><span>Public Holiday</span></th><th>4 May</th><th>5 May</th><th>6 May</th></tr></thead>'+
           '<tbody>'+
@@ -2076,11 +2076,11 @@ function renderReadinessBoardSurface(){
   '</div>';
 }
 function renderReadinessBoardCompactToolbar(){
-  return '<div class="readiness-compact-toolbar" aria-label="READINESS BOARD compact action and filter toolbar">'+
+  return '<div class="readiness-compact-toolbar" aria-label="Production Schedule Grid compact action and filter toolbar">'+
     '<div class="readiness-compact-left">'+
       '<button type="button" class="sales-order-action-tab master-work-action active readiness-compact-action" data-stage-action="search" data-action="search"><span class="master-work-icon" aria-hidden="true"></span><span class="master-work-label"><span class="master-work-title">Search / Find</span></span></button>'+
       '<button type="button" class="sales-order-submodule-tab readiness-compact-tab" data-stage-workspace-item="line-overview">LINE OVERVIEW</button>'+
-      '<button type="button" class="sales-order-submodule-tab active readiness-compact-tab" data-stage-workspace-item="readiness-board">READINESS BOARD</button>'+
+      '<button type="button" class="sales-order-submodule-tab active readiness-compact-tab" data-stage-workspace-item="readiness-board">Production Schedule Grid</button>'+
     '</div>'+
     '<div class="readiness-compact-right">'+
       '<span class="readiness-mock-note">Mock filter only / No real filtering in this static trial</span>'+
@@ -3222,7 +3222,7 @@ function renderGenericWorkspaceStage(moduleId){
       '</div>';
     }else if(actionMeta&&selectedItem&&selectedItem.id==='readiness-board'){
       mainContent='<div class="master-stage-panel master-stage-content-panel">'+
-        '<div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Center Panel</div><div class="master-stage-panel-title">Planning &amp; Scheduling -- '+actionMeta.label+' -- READINESS BOARD</div></div>'+
+        '<div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Center Panel</div><div class="master-stage-panel-title">Planning &amp; Scheduling -- '+actionMeta.label+' -- Production Schedule Grid</div></div>'+
         '<div class="master-stage-panel-body">'+renderReadinessBoardCompactToolbar()+'<div class="master-stage-work-scroll">'+renderReadinessBoardSurface()+'</div></div>'+
       '</div>';
     }else if(actionMeta&&selectedItem){
