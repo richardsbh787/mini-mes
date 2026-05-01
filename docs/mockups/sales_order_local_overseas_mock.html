@@ -34,15 +34,18 @@ body{margin:0;background:linear-gradient(180deg,#fefefe 0%,var(--bg) 180px,#f8f8
 .page{width:100%;max-width:none;margin:0;background:transparent;min-height:100vh;padding:0}
 .layout-shell{display:grid;grid-template-columns:var(--sidebar-width) minmax(0,1fr);gap:0;align-items:start;min-height:100vh;height:100vh;overflow:hidden}
 .side-nav{position:sticky;top:0;height:100vh;min-height:100vh;display:flex;flex-direction:column;border-right:1px solid var(--line);border-top:none;border-left:none;border-bottom:none;border-radius:0;background:rgba(251,253,254,.94);box-shadow:none;overflow:hidden}
-.side-nav-head{display:none;padding:14px 10px 10px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fcfdfe 0%,#f7f9fb 100%);text-align:center}
-.side-nav-kicker{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--title);line-height:1.15}
-.side-nav-title{margin-top:4px;font-size:10px;font-weight:600;line-height:1.3;color:var(--muted)}
+.side-nav-head{display:none}
+.side-nav-kicker{font-size:14px;font-weight:800;letter-spacing:.01em;color:var(--title);line-height:1.1;white-space:nowrap}
+.side-nav-title{display:none}
 .side-nav-body{flex:1;min-height:0;padding:8px 8px 12px;overflow-y:auto;scrollbar-gutter:stable;scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track)}
 .side-nav-body::-webkit-scrollbar{width:10px}
 .side-nav-body::-webkit-scrollbar-track{background:var(--scroll-track);border-radius:999px}
 .side-nav-body::-webkit-scrollbar-thumb{background:var(--scroll-thumb);border-radius:999px;border:2px solid var(--scroll-track)}
 .side-nav-body::-webkit-scrollbar-thumb:hover{background:var(--scroll-thumb-hover)}
 .side-nav-group{margin-top:4px}
+.side-nav-brand-label{display:grid;gap:2px;padding:2px 4px 8px;text-align:center}
+.side-nav-brand-title{font-size:14px;font-weight:800;letter-spacing:.01em;line-height:1.1;color:var(--title);white-space:nowrap}
+.side-nav-brand-section{font-size:9px;font-weight:700;letter-spacing:.14em;line-height:1.2;text-transform:uppercase;color:var(--muted-soft)}
 .side-nav-group + .side-nav-group{margin-top:12px;padding-top:12px;border-top:1px solid var(--soft-border)}
 .side-nav-label{padding:0 4px 6px;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-soft);text-align:center}
 .side-nav-item{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:6px;width:100%;margin:0;border:1px solid transparent;border-radius:10px;background:transparent;color:var(--muted);font-size:13px;font-weight:600;text-align:center;padding:8px 6px;cursor:pointer;min-height:62px}
@@ -966,11 +969,6 @@ body[data-flow-action="create"] .route-field-shell .route-segment{min-width:68px
 .master-stage-content-panel:has(.line-overview-shell) .master-stage-work-scroll{display:flex;flex-direction:column;flex:1 1 auto;min-height:0;max-height:none;padding:0 0 14px;overflow:auto;scrollbar-gutter:stable;scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track)}
 .line-overview-shell{display:grid;gap:12px;width:100%;max-width:100%;min-width:0;box-sizing:border-box;overflow-x:visible}
 .line-overview-shell *{box-sizing:border-box}
-.line-overview-selected-band{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:52px;padding:7px 10px;border:1px solid #ccdce7;border-radius:10px;background:#f8fbfd;box-shadow:inset 0 1px 0 rgba(255,255,255,.88)}
-.line-overview-selected-context{flex:1 1 230px;min-width:180px;font-size:12px;font-weight:700;line-height:1.35;color:var(--title);overflow-wrap:anywhere}
-.line-overview-selected-context span{font-weight:600;color:var(--muted)}
-.line-overview-static-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.line-overview-static-action{min-height:28px;height:auto;padding:5px 9px;font-size:12px;opacity:.6;cursor:not-allowed;color:#7d8994;background:#eef2f5;border-color:#d3dde6}
 .line-overview-table-wrap{width:100%;max-width:100%;min-width:0;overflow-x:visible;border:1px solid #ccdce7;border-radius:14px;background:#fdfefe;box-shadow:inset 0 1px 0 rgba(255,255,255,.86)}
 .line-overview-table{width:100%;max-width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed}
 .line-overview-table th,.line-overview-table td{padding:7px 7px;border-bottom:1px solid #e0e9f0;border-right:1px solid #edf2f5;font-size:12px;line-height:1.3;text-align:left;vertical-align:top;color:var(--text);white-space:normal;overflow-wrap:anywhere;word-break:normal}
@@ -986,12 +984,6 @@ body[data-flow-action="create"] .route-field-shell .route-segment{min-width:68px
 .line-overview-risk{display:inline-flex;align-items:center;justify-content:center;min-height:22px;padding:3px 8px;border:1px solid #d7e4ed;border-radius:999px;background:#eef5f9;color:#5f7589;font-size:10px;font-weight:800}
 .line-overview-risk.high{border-color:#dcc7ca;background:#f1e5e6;color:#8b5d64}
 .line-overview-risk.watch{border-color:#d7e2e8;background:#eef5f8;color:#698094}
-.line-overview-expand-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.line-overview-expand{border:1px solid #ccdce7;border-radius:10px;background:#f8fbfd;box-shadow:inset 0 1px 0 rgba(255,255,255,.88);overflow:hidden}
-.line-overview-expand summary{padding:9px 10px;cursor:pointer;font-size:12px;font-weight:700;color:var(--title);background:#e8f1f7;border-bottom:1px solid #d8e5ed}
-.line-overview-expand-body{display:grid;gap:6px;padding:10px 12px}
-.line-overview-detail-line{display:grid;grid-template-columns:132px minmax(0,1fr);gap:8px;font-size:12px;line-height:1.35;color:var(--text)}
-.line-overview-detail-line strong{color:var(--blue);font-weight:800}
 .line-overview-note{font-size:12px;line-height:1.45;color:var(--muted)}
 .readiness-board-shell{display:grid;gap:10px;width:100%;max-width:100%;min-width:0;box-sizing:border-box}
 .readiness-board-shell *{box-sizing:border-box}
@@ -1001,6 +993,13 @@ body[data-flow-action="create"] .route-field-shell .route-segment{min-width:68px
 .readiness-compact-right{justify-content:flex-end;flex:1 1 auto}
 .readiness-compact-action{min-height:26px;padding:4px 9px;border-radius:8px;font-size:11px}
 .readiness-compact-tab{min-height:26px;padding:4px 9px;border-radius:8px;font-size:11px}
+.planning-read-top{display:grid;gap:5px;flex:0 0 auto;min-height:max-content;margin-bottom:6px;padding:0 0 6px;border:0;background:transparent;box-shadow:none;overflow:visible}
+.planning-read-tabs,.planning-read-filters{display:flex;align-items:center;gap:6px;min-width:0}
+.planning-read-tabs{justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+.planning-read-tabs::-webkit-scrollbar{display:none}
+.planning-read-filters{justify-content:flex-start;flex-wrap:wrap}
+.planning-read-tabs .readiness-compact-action,.planning-read-tabs .readiness-compact-tab{flex:0 0 auto;white-space:nowrap}
+.planning-read-note{padding:0 2px;color:#6f8191;font-size:11px;font-weight:800;line-height:1.25}
 .line-overview-compact-toolbar{display:grid;gap:6px;flex:0 0 auto;min-height:max-content;margin-bottom:8px;overflow:visible}
 .line-overview-compact-toolbar .readiness-compact-left{flex:0 0 auto;flex-wrap:nowrap;white-space:nowrap}
 .line-overview-compact-toolbar .readiness-compact-right{flex:0 1 auto}
@@ -1009,7 +1008,6 @@ body[data-flow-action="create"] .route-field-shell .route-segment{min-width:68px
 .readiness-filter-field label{font-size:11px;font-weight:800;color:var(--title)}
 .readiness-filter-field select{width:auto;min-width:84px;height:26px;padding:3px 7px;border:1px solid #cfdde7;border-radius:8px;background:#fbfdfe;color:#244866;font-size:11px}
 .readiness-mock-note{font-size:11px;font-weight:800;line-height:1.25;color:var(--blue)}
-.readiness-main-layout{display:grid;grid-template-columns:minmax(0,4fr) minmax(220px,1.2fr);gap:10px;align-items:start;width:100%;min-width:0}
 .readiness-grid-wrap{width:100%;max-width:100%;min-width:0;overflow:auto;border:1px solid #ccdce7;border-radius:12px;background:#fdfefe;box-shadow:inset 0 1px 0 rgba(255,255,255,.86)}
 .readiness-grid{width:100%;min-width:1040px;border-collapse:separate;border-spacing:0;table-layout:fixed}
 .readiness-grid th,.readiness-grid td{padding:7px;border-bottom:1px solid #e0e9f0;border-right:1px solid #edf2f5;font-size:12px;line-height:1.3;text-align:left;vertical-align:top;color:var(--text);background:#fdfefe}
@@ -1025,13 +1023,7 @@ body[data-flow-action="create"] .route-field-shell .route-segment{min-width:68px
 .readiness-block-title{font-size:12px;font-weight:900;line-height:1.25;color:var(--title)}
 .readiness-block-line{font-size:11px;font-weight:700;line-height:1.3;color:var(--text)}
 .readiness-block-risk{font-size:11px;font-weight:800;line-height:1.25;color:#6f8191}
-.readiness-panel{display:grid;gap:8px;align-content:start;min-height:100%;padding:10px;border:1px solid #ccdce7;border-radius:12px;background:#f8fbfd;box-shadow:inset 0 1px 0 rgba(255,255,255,.88)}
-.readiness-panel-title{font-size:13px;font-weight:900;color:var(--title)}
-.readiness-panel-line{display:grid;gap:2px;font-size:12px;line-height:1.35;color:var(--text)}
-.readiness-panel-line strong{font-weight:900;color:var(--blue)}
 .readiness-warning{padding:8px;border:1px solid #dec9ca;border-radius:9px;background:#f8eeee;color:#8b5d64;font-size:12px;font-weight:800;line-height:1.35}
-.readiness-footer{display:flex;align-items:center;min-height:22px;padding:2px 8px;border:1px solid #ccdce7;border-radius:8px;background:#f8fbfd;font-size:11px;line-height:1.2;color:var(--text)}
-.readiness-footer strong{color:var(--title)}
 .capacity-top-flat{display:grid;gap:5px;padding:0 0 6px;border:0;background:transparent;box-shadow:none}
 .capacity-top-tabs,.capacity-top-filters{display:flex;align-items:center;gap:6px;min-width:0;flex-wrap:wrap}
 .capacity-top-tabs{justify-content:flex-start}
@@ -1996,16 +1988,6 @@ function renderLineOverviewSurface(){
   ];
   const riskClass=value=>value.indexOf('CRITICAL')===0||value.indexOf('RISK')===0?' high':(value.indexOf('WATCH')===0?' watch':'');
   return '<div class="line-overview-shell">'+
-    '<div class="line-overview-selected-band">'+
-      '<div class="line-overview-selected-context">Selected: Line 1 <span>&middot; Assembly &middot; P1 - Start Today &middot; HOLD - MATERIAL &middot; Owner: Planner Chen</span></div>'+
-      '<div class="line-overview-static-actions">'+
-        '<button type="button" class="btn secondary">View Record</button>'+
-        '<button type="button" class="btn secondary">Edit Record</button>'+
-        '<button type="button" class="btn secondary">Review / Approve</button>'+
-        '<button type="button" class="btn secondary">Request Change</button>'+
-        '<button type="button" class="btn secondary line-overview-static-action" disabled>Delete / Void / Cancel</button>'+
-      '</div>'+
-    '</div>'+
     '<div class="line-overview-table-wrap" aria-label="LINE OVERVIEW 9-column planning table">'+
       '<table class="line-overview-table">'+
         '<thead><tr><th>Priority</th><th>Line</th><th>Process</th><th>Model</th><th>Qty</th><th>MatStatus</th><th>RunDecision</th><th>DAYS TO START</th><th>QuickRisk</th></tr></thead>'+
@@ -2022,53 +2004,28 @@ function renderLineOverviewSurface(){
         '</tr>').join('')+'</tbody>'+
       '</table>'+
     '</div>'+
-    '<div class="line-overview-expand-grid">'+
-      '<details class="line-overview-expand" open><summary>Expand A — Identity / Order / Model / Material Readiness</summary><div class="line-overview-expand-body">'+
-        '<div class="line-overview-detail-line"><strong>Selected line</strong><span>Line 1 · Assembly · P1 - Start Today</span></div>'+
-        '<div class="line-overview-detail-line"><strong>Work Order No</strong><span>WO-20260421-L1A</span></div>'+
-        '<div class="line-overview-detail-line"><strong>Descriptions</strong><span>Repeat build mock / line-level planning reference</span></div>'+
-        '<div class="line-overview-detail-line"><strong>Customer Model No</strong><span>Customer model reference for selected planning row</span></div>'+
-        '<div class="line-overview-detail-line"><strong>Planned Start Date / Time</strong><span>30 Apr 2026 14:00</span></div>'+
-        '<div class="line-overview-detail-line"><strong>Material ETA</strong><span>30 Apr 2026 16:30, after planned start</span></div>'+
-        '<div class="line-overview-detail-line"><strong>Missing Material</strong><span>Label Set short 400 pcs; Driver balance confirmation pending</span></div>'+
-        '<div class="line-overview-detail-line"><strong>Last Check Time</strong><span>30 Apr 2026 10:40</span></div>'+
-        '<div class="line-overview-detail-line"><strong>Decision Reason</strong><span>Cannot start today because key label material is short before line release.</span></div>'+
-        '<div class="line-overview-detail-line"><strong>Next Action</strong><span>Planner to chase material ETA and confirm whether Line 2 should run first.</span></div>'+
-        '<div class="line-overview-detail-line"><strong>Owner / Follow-up PIC</strong><span>Planner Chen / Store Lead Lim</span></div>'+
-        '<div class="line-overview-detail-line"><strong>Material</strong><span>Label Set short 400 pcs; Driver balance ETA under chase</span></div>'+
-      '</div></details>'+
-      '<details class="line-overview-expand"><summary>Expand B — Follow-up / Risk / Action Notes</summary><div class="line-overview-expand-body">'+
-        '<div class="line-overview-detail-line"><strong>Follow-up</strong><span>Planner to confirm staged release before next shift planning lock.</span></div>'+
-        '<div class="line-overview-detail-line"><strong>Risk</strong><span>High risk if label receipt slips past pre-stage date.</span></div>'+
-        '<div class="line-overview-detail-line"><strong>Action note</strong><span>Run Line 2 first if Line 1 material remains short. Supervisor review required in real flow later.</span></div>'+
-        '<div class="line-overview-detail-line"><strong>Mock limit</strong><span>Static UI only; no approval, validation, scheduling engine, or storage write.</span></div>'+
-      '</div></details>'+
-    '</div>'+
   '</div>';
 }
 function renderLineOverviewCompactToolbar(){
-  return '<div class="line-overview-compact-toolbar" aria-label="LINE OVERVIEW compact action and filter toolbar">'+
-    '<div class="readiness-compact-toolbar">'+
-      '<div class="readiness-compact-left">'+
-        '<button type="button" class="sales-order-action-tab master-work-action active readiness-compact-action" data-stage-action="search" data-action="search"><span class="master-work-icon" aria-hidden="true"></span><span class="master-work-label"><span class="master-work-title">Search / Find</span></span></button>'+
-        '<button type="button" class="sales-order-submodule-tab active readiness-compact-tab" data-stage-workspace-item="line-overview">LINE OVERVIEW</button>'+
-        '<button type="button" class="sales-order-submodule-tab readiness-compact-tab" data-stage-workspace-item="readiness-board">Production Schedule Grid</button>'+
-        '<button type="button" class="sales-order-submodule-tab readiness-compact-tab" data-stage-workspace-item="capacity-load-check">Capacity / Load Check</button>'+
-      '</div>'+
-      '<div class="readiness-compact-right"><span class="readiness-mock-note">Mock filter only / No real filtering in this static trial</span></div>'+
+  return '<div class="planning-read-top" aria-label="LINE OVERVIEW compact action and filter toolbar">'+
+    '<div class="planning-read-tabs">'+
+      '<button type="button" class="sales-order-action-tab master-work-action active readiness-compact-action" data-stage-action="search" data-action="search"><span class="master-work-icon" aria-hidden="true"></span><span class="master-work-label"><span class="master-work-title">Search / Find</span></span></button>'+
+      '<button type="button" class="sales-order-submodule-tab active readiness-compact-tab" data-stage-workspace-item="line-overview">LINE OVERVIEW</button>'+
+      '<button type="button" class="sales-order-submodule-tab readiness-compact-tab" data-stage-workspace-item="readiness-board">Production Schedule Grid</button>'+
+      '<button type="button" class="sales-order-submodule-tab readiness-compact-tab" data-stage-workspace-item="capacity-load-check">Capacity / Load Check</button>'+
     '</div>'+
-    '<div class="readiness-compact-toolbar line-overview-filter-row-compact">'+
+    '<div class="planning-read-filters">'+
       '<div class="readiness-filter-field"><label for="line-overview-line">Line:</label><select id="line-overview-line"><option>All Lines</option><option>Line 1</option><option>Line 2</option><option>Line 3</option></select></div>'+
       '<div class="readiness-filter-field"><label for="line-overview-shop">Shop:</label><select id="line-overview-shop"><option>All Shops</option><option>Assembly</option><option>Pre-Stage</option><option>Packing</option></select></div>'+
       '<div class="readiness-filter-field"><label for="line-overview-model">Model:</label><select id="line-overview-model"><option>All Models</option><option>NBR-SL150W-B03</option><option>NBR-SL100W-A01</option><option>NBR-ACC-KIT04</option><option>NBR-US200W-C10</option><option>NBR-US120W-D06</option><option>NBR-US-POLE09</option></select></div>'+
       '<div class="readiness-filter-field"><label for="line-overview-status">MatStatus:</label><select id="line-overview-status"><option>All</option><option>Ready</option><option>Short</option><option>Partial</option></select></div>'+
       '<div class="readiness-filter-field"><label for="line-overview-risk">QuickRisk:</label><select id="line-overview-risk"><option>All</option><option>High</option><option>Watch</option><option>Low</option></select></div>'+
     '</div>'+
+    '<div class="planning-read-note">Mock filter only / No real filtering in this static trial</div>'+
   '</div>';
 }
 function renderReadinessBoardSurface(){
   return '<div class="readiness-board-shell">'+
-    '<div class="readiness-main-layout">'+
       '<div class="readiness-grid-wrap" aria-label="Planning Production Schedule Grid static trial grid">'+
         '<table class="readiness-grid">'+
           '<thead><tr><th>Line</th><th>Today / 30 Apr</th><th>1 May<br><span>Public Holiday</span></th><th>4 May</th><th>5 May</th><th>6 May</th></tr></thead>'+
@@ -2092,51 +2049,40 @@ function renderReadinessBoardSurface(){
           '</tbody>'+
         '</table>'+
       '</div>'+
-      '<div class="readiness-panel" aria-label="Cannot plan replacement advisory">'+
-        '<div class="readiness-panel-title">CANNOT PLAN / REPLACEMENT ADVISORY</div>'+
-        '<div class="readiness-panel-line"><strong>Blocked WO:</strong><span>WO-2514 / 600 pcs<br>AL-220-CMP / ABB-881</span></div>'+
-        '<div class="readiness-panel-line"><strong>Cannot Plan Reason:</strong><span>Material / QC / approval not fully cleared.</span></div>'+
-        '<div class="readiness-panel-line"><strong>Replacement Candidate:</strong><span>WO-2519 / XJ-900-STD / 28.0h total</span></div>'+
-        '<div class="readiness-panel-line"><strong>Required Action:</strong><span>Replace this slot with runnable WO.</span></div>'+
-        '<div class="readiness-panel-line"><strong>Follow-up Owner:</strong><span>Wang (Procurement) / Li (Line Lead)</span></div>'+
-        '<div class="readiness-warning">Read-only static advisory only. No auto-planning, auto-release, auto-move, or auto-replacement is implied.</div>'+
-      '</div>'+
-    '</div>'+
-    '<div class="readiness-footer"><strong>Trial OT reference only / OT policy configurable by customer</strong></div>'+
   '</div>';
 }
 function renderReadinessBoardCompactToolbar(){
-  return '<div class="readiness-compact-toolbar" aria-label="Production Schedule Grid compact action and filter toolbar">'+
-    '<div class="readiness-compact-left">'+
+  return '<div class="planning-read-top" aria-label="Production Schedule Grid compact action and filter toolbar">'+
+    '<div class="planning-read-tabs">'+
       '<button type="button" class="sales-order-action-tab master-work-action active readiness-compact-action" data-stage-action="search" data-action="search"><span class="master-work-icon" aria-hidden="true"></span><span class="master-work-label"><span class="master-work-title">Search / Find</span></span></button>'+
       '<button type="button" class="sales-order-submodule-tab readiness-compact-tab" data-stage-workspace-item="line-overview">LINE OVERVIEW</button>'+
       '<button type="button" class="sales-order-submodule-tab active readiness-compact-tab" data-stage-workspace-item="readiness-board">Production Schedule Grid</button>'+
       '<button type="button" class="sales-order-submodule-tab readiness-compact-tab" data-stage-workspace-item="capacity-load-check">Capacity / Load Check</button>'+
     '</div>'+
-    '<div class="readiness-compact-right">'+
-      '<span class="readiness-mock-note">Mock filter only / No real filtering in this static trial</span>'+
+    '<div class="planning-read-filters">'+
       '<div class="readiness-filter-field"><label for="readiness-line">Line:</label><select id="readiness-line"><option>All</option><option>Line 1</option><option>Line 2</option></select></div>'+
       '<div class="readiness-filter-field"><label for="readiness-status">Status:</label><select id="readiness-status"><option>All</option><option>RUN OK</option><option>PLANNING GAP</option><option>PUBLIC HOLIDAY</option></select></div>'+
       '<div class="readiness-filter-field"><label for="readiness-view">View:</label><select id="readiness-view"><option>5-Day</option></select></div>'+
     '</div>'+
+    '<div class="planning-read-note">Mock filter only / No real filtering in this static trial</div>'+
   '</div>';
 }
 function renderCapacityLoadCheckCompactToolbar(){
-  return '<div class="capacity-top-flat" aria-label="Capacity Load Check flat action and filter toolbar">'+
-    '<div class="capacity-top-tabs">'+
+  return '<div class="planning-read-top" aria-label="Capacity Load Check flat action and filter toolbar">'+
+    '<div class="planning-read-tabs">'+
       '<button type="button" class="sales-order-action-tab master-work-action active readiness-compact-action" data-stage-action="search" data-action="search"><span class="master-work-icon" aria-hidden="true"></span><span class="master-work-label"><span class="master-work-title">Search / Find</span></span></button>'+
       '<button type="button" class="sales-order-submodule-tab readiness-compact-tab" data-stage-workspace-item="line-overview">LINE OVERVIEW</button>'+
       '<button type="button" class="sales-order-submodule-tab readiness-compact-tab" data-stage-workspace-item="readiness-board">Production Schedule Grid</button>'+
       '<button type="button" class="sales-order-submodule-tab active readiness-compact-tab" data-stage-workspace-item="capacity-load-check">Capacity / Load Check</button>'+
-      '<span class="readiness-mock-note">Mock filter only / No real filtering in this static trial</span>'+
     '</div>'+
-    '<div class="capacity-top-filters">'+
+    '<div class="planning-read-filters">'+
       '<div class="readiness-filter-field"><label for="capacity-plan-date">Plan Date:</label><select id="capacity-plan-date"><option>30 Apr 2026</option><option>4 May 2026</option><option>5 May 2026</option></select></div>'+
       '<div class="readiness-filter-field"><label for="capacity-line">Line Filter:</label><select id="capacity-line"><option>All Lines</option><option>Line 1</option><option>Line 2</option></select></div>'+
       '<div class="readiness-filter-field"><label for="capacity-priority">Priority Level:</label><select id="capacity-priority"><option>All</option><option>P1</option><option>P2</option><option>P3</option></select></div>'+
       '<div class="readiness-filter-field"><label for="capacity-impact">Impact to Plan:</label><select id="capacity-impact"><option>All</option><option>No Impact</option><option>Watch Only</option><option>Capacity Reduced</option><option>Cannot Run</option></select></div>'+
       '<div class="readiness-filter-field"><label for="capacity-risk">Quick Risk Filter:</label><select id="capacity-risk"><option>All</option><option>Normal</option><option>Capacity Watch</option><option>Cannot Run</option></select></div>'+
     '</div>'+
+    '<div class="planning-read-note">Mock filter only / No real filtering in this static trial</div>'+
   '</div>';
 }
 function renderCapacityLoadCheckSurface(){
@@ -4691,12 +4637,11 @@ window.addEventListener('DOMContentLoaded',()=>{
   <div class="layout-shell">
     <aside class="side-nav" aria-label="Sales Order workspace navigation">
       <div class="side-nav-head">
-        <div class="side-nav-kicker">MFR Works</div>
-        <div class="side-nav-title">Factory Control, Made Practical</div>
+        <div class="side-nav-kicker">Mini-Flow</div>
       </div>
       <div class="side-nav-body">
         <div class="side-nav-group">
-          <div class="side-nav-label">Core Modules</div>
+          <div class="side-nav-brand-label"><div class="side-nav-brand-title">Mini-Flow</div><div class="side-nav-brand-section">Core Modules</div></div>
           <button type="button" class="side-nav-item" data-module="inventory-warehouse"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M2.5 6.5h11v6h-11z"></path><path d="M4.5 3.5h7v3h-7z"></path><path d="M5.5 9.5h1"></path><path d="M9 9.5h1"></path></svg></span><span class="side-nav-item-label">Inventory &amp; Warehouse</span></button>
           <button type="button" class="side-nav-item" data-module="sales-orders"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M4 2.5h6l2 2v9H4z"></path><path d="M10 2.5v2h2"></path><path d="M6 7h4"></path><path d="M6 10h4"></path></svg></span><span class="side-nav-item-label">Sales Order Management</span></button>
           <button type="button" class="side-nav-item" data-module="procurement"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 4.5h10l-1 5H5z"></path><path d="M3 4.5 2.5 3H1.5"></path><circle cx="6.5" cy="12.5" r="1"></circle><circle cx="11" cy="12.5" r="1"></circle></svg></span><span class="side-nav-item-label">Procurement &amp; Purchasing</span></button>
