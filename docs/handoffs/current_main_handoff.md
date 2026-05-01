@@ -1,7 +1,7 @@
-Mini-MES Handoff v2.60
+Mini-MES Handoff v2.61
 
-Updated after 2026-04-29 handoff-only insertion for Line Schedule / Schedule Grid UI Baseline v1.1
-Date: 2026-04-29
+Updated after 2026-05-01 handoff-only insertion for Planning Decision Matrix Boundary Freeze
+Date: 2026-05-01
 
 1. Frozen mainline snapshot
 
@@ -140,6 +140,8 @@ Frozen Record - Dropdown Master List v1
 Frozen Record - Dropdown Master List v1.1 / DCR-2026-001-SUGGESTED-ACTION
 
 Frozen Record - Module Plug-and-Play Validation Principles v1
+
+Frozen Record - Planning & Scheduling / Planner Decision Matrix Boundary Freeze
 
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
@@ -13253,6 +13255,186 @@ Dropdown Master List v1 is frozen as the official trial dropdown dictionary for 
 Dropdown Master List has been updated from v1 to v1.1 through approved Dropdown Change Request DCR-2026-001-SUGGESTED-ACTION. Official document path: `docs/blueprints/dropdown_master_list_v1.md`. Core locked meaning: `suggested_action` is now an approved Planning & Scheduling dropdown under Capacity / Load / Constraint; `suggested_action` is advisory-only and non-executable; it cannot approve OT, move line, move date, change plan_status, release WO, trigger production, update inventory, execute Stock-In, close WO, or override Store / QA / Repair / Warehouse / Production / Engineering truth; Capacity / Load Check may reference this dropdown only after this update; this update does not authorize HTML change, UI mock change, backend implementation, database migration, workflow engine, approval engine, production execution, inventory update, ERP integration, commercial package freeze, or Step 47 Phase B.
 
 Module Plug-and-Play Validation Principles v1 is frozen as a trial architecture validation baseline after Lao Xiao secondary review PASS WITH WARNINGS and required Section 8 review-authority correction. Official document path: `docs/blueprints/module_plug_and_play_validation_principles_v1.md`. Parent references: `docs/blueprints/planning_scheduling_master_list_schemas_v1.md`, `docs/blueprints/planning_scheduling_capacity_constraint_repair_reject_addendum_v1_1.md`, and `docs/blueprints/dropdown_master_list_v1.md`. Core locked meaning: Mini-MES trial must validate module plug-and-play capability: modules can be hidden, restored, reordered, enabled/disabled, and combined into future package structures without breaking core workflows; plug-and-play does not override frozen governance, schema, dropdown, handoff, legal truth, or module-boundary disciplines; cross-module references are read-only / reference-only by default; missing or disabled module data must display as Reference Unavailable / N/A and must not be treated as Passed, Ready, Approved, or Completed; future Planning & Scheduling Task Cards must include Module Dependency Declaration; Module Dependency Declaration must be reviewed and approved by Qingchen before the corresponding Task Card can be frozen or passed to Codex; this freeze does not authorize backend implementation, config files, feature flag engine, permission system, UI mock refactor, production execution, inventory update, WO release, WO close, ERP integration, commercial package freeze, or Step 47 Phase B.
+
+Planning & Scheduling / Planner Decision Matrix Boundary Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES. It freezes Decision Matrix as the 4th Search / Find read view, advisory-only and non-executable, with W1-W3 required before implementation spec; implementation authorization remains unopened.
+
+## Frozen Record — Planning & Scheduling / Planner Decision Matrix Boundary Freeze
+
+Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+
+Gate:
+
+- Lao Xiao secondary review: PASS / no mandatory correction.
+- Qinran final review: PASS WITH WARNINGS.
+- Ruichen Gate: APPROVED.
+- Implementation authorization: NOT OPENED.
+
+Scope:
+
+Planner Decision Matrix is frozen as the 4th Planning & Scheduling -> Search / Find read view.
+
+It is:
+
+- advisory-only
+- read-side only
+- not a Sub Module
+- not an execution page
+- not an approval page
+- not a workflow trigger
+- not a backend write surface
+- not a dropdown governance freeze
+
+It summarizes the existing Planning read views:
+
+- LINE OVERVIEW: which line / WO is most risky
+- Capacity / Load Check: whether the planned WO can run before line start and why not
+- Production Schedule Grid: where the WO is placed and where runnable work may fit
+- Planner Decision Matrix: what Planner should check or decide next
+
+The Matrix does not replace the three existing read views.
+
+Main table fields:
+
+1. WO No.
+2. Scenario / Risk Type
+3. Priority
+4. Current Slot
+5. Material / Readiness
+6. Capacity Load %
+7. Grid Signal
+8. Planner Decision
+9. Next Check / Formal Path
+
+Trial sample coverage:
+
+- Smooth
+- Urgent
+- SML Shortage
+- Over Capacity
+- IQC Hold
+- Store Kitting Delay
+- Repair Pending
+- Holiday / No Production
+
+Frozen boundaries:
+
+Planner Decision Matrix must not:
+
+- auto Keep Plan
+- auto Hold Plan
+- auto Split Batch
+- auto Move Date
+- auto Move Line
+- approve OT
+- release WO
+- close WO
+- update schedule baseline
+- update plan status
+- update WO status
+- update material status
+- update Store / QA / Repair / Production truth
+- create approval record
+- trigger workflow
+- write backend data
+- use localStorage
+- silently create new dropdown governance
+- create official Plan Change Draft by itself
+
+Planner Decision is advisory label only.
+
+Next Check / Formal Path is a reminder only and not an executed action.
+
+Any formal planning action must still go through the proper future path, such as:
+
+- Daily Plan Confirmation
+- Plan Change Reason Log
+- Plan Change Draft
+- Supervisor approval path if required
+
+Data-source discipline:
+
+The Matrix must read the same source set as the existing Planning read views.
+
+It must not independently invent values that disagree with LINE OVERVIEW, Capacity / Load Check, or Production Schedule Grid.
+
+Relevant source references include:
+
+- schedule_entry
+- wo_reference
+- sales_order / order_item reference
+- st_reference
+- capacity / load reference
+- constraint reference
+- material readiness reference
+- store kitting / line receive reference
+- production schedule grid signal
+- line overview risk signal
+
+Plug-and-play / degraded mode:
+
+If optional module data is unavailable, the Matrix must display one of:
+
+- Reference Unavailable
+- N/A
+- Optional Module Not Enabled
+- Reference Only — Source Module Not Active
+
+Unavailable optional module data must not be shown or interpreted as:
+
+- Ready
+- Passed
+- Approved
+- Completed
+
+Locked meaning examples:
+
+- QA unavailable is not QA passed.
+- Store unavailable is not Kitting completed.
+- Repair unavailable is not Repair returned.
+- Warehouse unavailable is not Stock-In completed.
+
+Final review warnings:
+
+W1 — Planner Decision advisory label samples must be listed before implementation spec.
+
+They remain sample labels only and do not freeze a new dropdown group. If future formal dropdown governance is needed, it must go through DCR.
+
+W2 — Grid Signal source and freshness must be clarified before implementation spec.
+
+If Production Schedule Grid data may be stale, the UI must not mislead Planner into treating stale grid signal as current truth.
+
+W3 — Next Check / Formal Path content format must be clarified before implementation spec.
+
+This field must not become uncontrolled free text that creates ambiguous or non-auditable planning instructions.
+
+Factory usability meaning:
+
+Planner should not need to open three views for every WO during the planning meeting.
+
+Planner Decision Matrix compresses the risk signal, load/readiness reason, grid slot signal, suggested advisory label, and next formal path into one table row per WO.
+
+It helps Planner decide what to check next, but it does not execute any plan change.
+
+Formal changes such as split batch, move date, move line, WO release, or production start must still go through the formal governed path.
+
+Explicit non-scope:
+
+This freeze does not authorize:
+
+- HTML mock implementation
+- backend implementation
+- database migration
+- workflow engine
+- approval engine
+- localStorage
+- schema/service/test edits
+- production execution
+- WO release
+- WO close
+- inventory update
+- QA / Store / Repair / Production truth update
+- Dropdown Master List update
+- DCR execution
 
 Frozen Record - Shared UI Baseline / Sales Order Mock-Stage Branch Split (Local vs Overseas)
 
