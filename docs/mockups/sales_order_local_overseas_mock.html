@@ -1032,6 +1032,34 @@ body[data-flow-action="create"] .route-field-shell .route-segment{min-width:68px
 .readiness-warning{padding:8px;border:1px solid #dec9ca;border-radius:9px;background:#f8eeee;color:#8b5d64;font-size:12px;font-weight:800;line-height:1.35}
 .readiness-footer{display:flex;align-items:center;min-height:22px;padding:2px 8px;border:1px solid #ccdce7;border-radius:8px;background:#f8fbfd;font-size:11px;line-height:1.2;color:var(--text)}
 .readiness-footer strong{color:var(--title)}
+.capacity-top-flat{display:grid;gap:5px;padding:0 0 6px;border:0;background:transparent;box-shadow:none}
+.capacity-top-tabs,.capacity-top-filters{display:flex;align-items:center;gap:6px;min-width:0;flex-wrap:wrap}
+.capacity-top-tabs{justify-content:flex-start}
+.capacity-top-filters{justify-content:flex-start}
+.capacity-top-flat .readiness-mock-note{margin-left:auto}
+.capacity-check-shell{display:flex;flex-direction:column;gap:8px;min-height:0;padding:0}
+.capacity-note-line{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.capacity-check-note{padding:0 2px;color:#6f8191;font-size:11px;font-weight:800;line-height:1.25}
+.capacity-priority-legend{padding:0 2px;color:#52697d;font-size:11px;font-weight:900;line-height:1.25}
+.capacity-main-panel{display:grid;gap:6px;min-width:0;padding:0;background:transparent}
+.capacity-table-wrap{min-width:0;overflow:auto;border:1px solid #ccdce7;border-radius:12px;background:#fbfdfe;box-shadow:inset 0 1px 0 rgba(255,255,255,.88)}
+.capacity-table{width:100%;min-width:1040px;border-collapse:separate;border-spacing:0;font-size:12px;color:var(--text)}
+.capacity-table th{position:sticky;top:0;z-index:1;padding:8px 7px;border-bottom:1px solid #d8e5ed;background:#eef5f9;color:#38566f;font-size:11px;font-weight:900;line-height:1.25;text-align:left}
+.capacity-table td{padding:8px 7px;border-bottom:1px solid #e5edf3;background:#fbfdfe;font-weight:700;line-height:1.3;vertical-align:top}
+.capacity-table tr:last-child td{border-bottom:none}
+.capacity-row.selected td{background:#f2f7fb}
+.capacity-row.watch td{border-bottom-color:#eadcc4}
+.capacity-row.blocked td{background:#f9eeee}
+.capacity-row.reduced td{background:#f8f3e8}
+.capacity-model-cell{display:grid;gap:2px;min-width:180px}
+.capacity-model-line{font-size:11px;line-height:1.25;color:#5e7488;font-weight:600}
+.capacity-model-line.customer{color:#405d74;font-weight:750}
+.capacity-model-line.model{color:#526d82;font-weight:650}
+.capacity-model-line.family,.capacity-model-line.description{color:#7a8fa0;font-weight:600}
+.capacity-action-pill{display:inline-flex;align-items:center;min-height:22px;padding:2px 8px;border:1px solid #cddbe6;border-radius:999px;background:#f8fbfd;color:#38566f;font-size:11px;font-weight:900;white-space:nowrap}
+.capacity-row.watch .capacity-action-pill{border-color:#e5c887;background:#fff7df;color:#806523}
+.capacity-row.blocked .capacity-action-pill{border-color:#e1c4c8;background:#f8eeee;color:#8b5d64}
+.capacity-row.reduced .capacity-action-pill{border-color:#ded2b8;background:#f8f3e8;color:#735f2f}
 .master-stage.sales-order-stage .master-stage-work-scroll .create-order-shell .input-line,
 .master-stage.sales-order-stage .master-stage-work-scroll .create-order-shell .select-line,
 .master-stage.sales-order-stage .master-stage-work-scroll .create-order-shell .textarea-line,
@@ -1431,6 +1459,7 @@ const MODULE_WORKSPACE_CONFIG={
     items:[
       {id:'line-overview',label:'LINE OVERVIEW',description:'Line-level 9-column planning overview table with compact expand details.'},
       {id:'readiness-board',label:'Production Schedule Grid',description:'2-line day-level production schedule grid showing runnable gaps and blocked candidate advisory.'},
+      {id:'capacity-load-check',label:'Capacity / Load Check',description:'Pre-line-start advisory capacity check for planned WO line/date fit.'},
       {id:'planning-board',label:'Planning Board',description:'Main planning-entry and review surface.'},
       {id:'material-alignment',label:'Material Alignment',description:'Material readiness and plan-fit review surface.'},
       {id:'capacity-check',label:'Capacity Check',description:'Capacity load and exception-review surface.'}
@@ -1855,9 +1884,9 @@ function getWorkspaceItems(moduleId){
   if(moduleId==='planning'){
     const planningItems=getWorkspaceConfig(moduleId).items||[];
     if(currentAction==='search'){
-      return planningItems.filter(item=>['line-overview','readiness-board'].includes(item.id));
+      return planningItems.filter(item=>['line-overview','readiness-board','capacity-load-check'].includes(item.id));
     }
-    return planningItems.filter(item=>!['line-overview','readiness-board'].includes(item.id));
+    return planningItems.filter(item=>!['line-overview','readiness-board','capacity-load-check'].includes(item.id));
   }
   return getWorkspaceConfig(moduleId).items||[];
 }
@@ -2024,6 +2053,7 @@ function renderLineOverviewCompactToolbar(){
         '<button type="button" class="sales-order-action-tab master-work-action active readiness-compact-action" data-stage-action="search" data-action="search"><span class="master-work-icon" aria-hidden="true"></span><span class="master-work-label"><span class="master-work-title">Search / Find</span></span></button>'+
         '<button type="button" class="sales-order-submodule-tab active readiness-compact-tab" data-stage-workspace-item="line-overview">LINE OVERVIEW</button>'+
         '<button type="button" class="sales-order-submodule-tab readiness-compact-tab" data-stage-workspace-item="readiness-board">Production Schedule Grid</button>'+
+        '<button type="button" class="sales-order-submodule-tab readiness-compact-tab" data-stage-workspace-item="capacity-load-check">Capacity / Load Check</button>'+
       '</div>'+
       '<div class="readiness-compact-right"><span class="readiness-mock-note">Mock filter only / No real filtering in this static trial</span></div>'+
     '</div>'+
@@ -2081,12 +2111,61 @@ function renderReadinessBoardCompactToolbar(){
       '<button type="button" class="sales-order-action-tab master-work-action active readiness-compact-action" data-stage-action="search" data-action="search"><span class="master-work-icon" aria-hidden="true"></span><span class="master-work-label"><span class="master-work-title">Search / Find</span></span></button>'+
       '<button type="button" class="sales-order-submodule-tab readiness-compact-tab" data-stage-workspace-item="line-overview">LINE OVERVIEW</button>'+
       '<button type="button" class="sales-order-submodule-tab active readiness-compact-tab" data-stage-workspace-item="readiness-board">Production Schedule Grid</button>'+
+      '<button type="button" class="sales-order-submodule-tab readiness-compact-tab" data-stage-workspace-item="capacity-load-check">Capacity / Load Check</button>'+
     '</div>'+
     '<div class="readiness-compact-right">'+
       '<span class="readiness-mock-note">Mock filter only / No real filtering in this static trial</span>'+
       '<div class="readiness-filter-field"><label for="readiness-line">Line:</label><select id="readiness-line"><option>All</option><option>Line 1</option><option>Line 2</option></select></div>'+
       '<div class="readiness-filter-field"><label for="readiness-status">Status:</label><select id="readiness-status"><option>All</option><option>RUN OK</option><option>PLANNING GAP</option><option>PUBLIC HOLIDAY</option></select></div>'+
       '<div class="readiness-filter-field"><label for="readiness-view">View:</label><select id="readiness-view"><option>5-Day</option></select></div>'+
+    '</div>'+
+  '</div>';
+}
+function renderCapacityLoadCheckCompactToolbar(){
+  return '<div class="capacity-top-flat" aria-label="Capacity Load Check flat action and filter toolbar">'+
+    '<div class="capacity-top-tabs">'+
+      '<button type="button" class="sales-order-action-tab master-work-action active readiness-compact-action" data-stage-action="search" data-action="search"><span class="master-work-icon" aria-hidden="true"></span><span class="master-work-label"><span class="master-work-title">Search / Find</span></span></button>'+
+      '<button type="button" class="sales-order-submodule-tab readiness-compact-tab" data-stage-workspace-item="line-overview">LINE OVERVIEW</button>'+
+      '<button type="button" class="sales-order-submodule-tab readiness-compact-tab" data-stage-workspace-item="readiness-board">Production Schedule Grid</button>'+
+      '<button type="button" class="sales-order-submodule-tab active readiness-compact-tab" data-stage-workspace-item="capacity-load-check">Capacity / Load Check</button>'+
+      '<span class="readiness-mock-note">Mock filter only / No real filtering in this static trial</span>'+
+    '</div>'+
+    '<div class="capacity-top-filters">'+
+      '<div class="readiness-filter-field"><label for="capacity-plan-date">Plan Date:</label><select id="capacity-plan-date"><option>30 Apr 2026</option><option>4 May 2026</option><option>5 May 2026</option></select></div>'+
+      '<div class="readiness-filter-field"><label for="capacity-line">Line Filter:</label><select id="capacity-line"><option>All Lines</option><option>Line 1</option><option>Line 2</option></select></div>'+
+      '<div class="readiness-filter-field"><label for="capacity-priority">Priority Level:</label><select id="capacity-priority"><option>All</option><option>P1</option><option>P2</option><option>P3</option></select></div>'+
+      '<div class="readiness-filter-field"><label for="capacity-impact">Impact to Plan:</label><select id="capacity-impact"><option>All</option><option>No Impact</option><option>Watch Only</option><option>Capacity Reduced</option><option>Cannot Run</option></select></div>'+
+      '<div class="readiness-filter-field"><label for="capacity-risk">Quick Risk Filter:</label><select id="capacity-risk"><option>All</option><option>Normal</option><option>Capacity Watch</option><option>Cannot Run</option></select></div>'+
+    '</div>'+
+  '</div>';
+}
+function renderCapacityLoadCheckSurface(){
+  const rows=[
+    ['30 Apr 2026','Line 2 / Day Slot','WO-2518',['X-Corp','NMA-2352-A10V','SLK-150/180/210W','SLK-150-FPN6 150W 3000K'],'400 pcs','P2','10 / 10','16 / 16','82%','No Impact','Keep Plan','normal'],
+    ['30 Apr 2026','Line 1 / AM Slot','WO-2521',['Demo Customer','NMA-2892-010I','SLM-120/150W','SLM-150-FPN7 150W 3000K'],'600 pcs','P1','14 / 11','18 / 14','106%','Watch Only','Review Manpower','watch'],
+    ['4 May 2026','Line 1 / Day Slot','WO-2514',['ABB','NMA-2352-A10V','SLK-150/180/210W','SLK-150-FPN6 150W 3000K'],'600 pcs','P1','14 / 8','18 / 10','132%','Cannot Run','Hold Plan','blocked'],
+    ['5 May 2026','Line 2 / PM Slot','WO-2525',['Metro Build','NMA-2892-010I','SLM-120/150W','SLM-150-FPN7 150W 3000K'],'300 pcs','P3','8 / 8','12 / 10','95%','Capacity Reduced','Split Batch','reduced']
+  ];
+  const renderCapacityCell=(cell,cellIndex)=>{
+    if(cellIndex===3&&Array.isArray(cell)){
+      return '<div class="capacity-model-cell"><div class="capacity-model-line customer">'+escapeHtml(cell[0])+'</div><div class="capacity-model-line model">'+escapeHtml(cell[1])+'</div><div class="capacity-model-line family">'+escapeHtml(cell[2])+'</div><div class="capacity-model-line description">'+escapeHtml(cell[3])+'</div></div>';
+    }
+    if(cellIndex===10){
+      return '<span class="capacity-action-pill">'+escapeHtml(cell)+'</span>';
+    }
+    return escapeHtml(cell);
+  };
+  return '<div class="capacity-check-shell">'+
+    '<div class="capacity-main-panel">'+
+      '<div class="capacity-note-line"><span class="capacity-check-note">Pre-line-start planning capacity check. Static read-side advisory only.</span><span class="capacity-priority-legend">Priority: P0 Urgent / P1 High / P2 Normal / P3 Flexible</span></div>'+
+      '<div class="capacity-table-wrap" aria-label="Capacity Load Check static table">'+
+        '<table class="capacity-table">'+
+          '<thead><tr><th>Plan Date</th><th>Line / Slot</th><th>WO No.</th><th>Customer / Model</th><th>Planned Qty</th><th>Priority Level</th><th>HC Std / Actual</th><th>UPH Std / Adjusted</th><th>Capacity Load %</th><th>Impact to Plan</th><th>Suggested Action</th></tr></thead>'+
+          '<tbody>'+rows.map((row,index)=>'<tr class="capacity-row '+row[11]+(index===1?' selected':'')+'">'+
+            row.slice(0,11).map((cell,cellIndex)=>'<td>'+renderCapacityCell(cell,cellIndex)+'</td>').join('')+
+          '</tr>').join('')+'</tbody>'+
+        '</table>'+
+      '</div>'+
     '</div>'+
   '</div>';
 }
@@ -3225,6 +3304,11 @@ function renderGenericWorkspaceStage(moduleId){
         '<div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Center Panel</div><div class="master-stage-panel-title">Planning &amp; Scheduling -- '+actionMeta.label+' -- Production Schedule Grid</div></div>'+
         '<div class="master-stage-panel-body">'+renderReadinessBoardCompactToolbar()+'<div class="master-stage-work-scroll">'+renderReadinessBoardSurface()+'</div></div>'+
       '</div>';
+    }else if(actionMeta&&selectedItem&&selectedItem.id==='capacity-load-check'){
+      mainContent='<div class="master-stage-panel master-stage-content-panel">'+
+        '<div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Center Panel</div><div class="master-stage-panel-title">Planning &amp; Scheduling -- '+actionMeta.label+' -- Capacity / Load Check</div></div>'+
+        '<div class="master-stage-panel-body">'+renderCapacityLoadCheckCompactToolbar()+'<div class="master-stage-work-scroll">'+renderCapacityLoadCheckSurface()+'</div></div>'+
+      '</div>';
     }else if(actionMeta&&selectedItem){
       mainContent='<div class="master-stage-panel master-stage-content-panel">'+
         '<div class="master-stage-panel-header"><div class="master-stage-panel-kicker">Center Panel</div><div class="master-stage-panel-title">Planning &amp; Scheduling -- '+actionMeta.label+' -- '+selectedItem.label+'</div></div>'+
@@ -3656,10 +3740,10 @@ function syncModuleEntry(){
   }
   if(currentModule==='planning'){
     if(currentAction==='search'){
-      if(!['line-overview','readiness-board'].includes(currentWorkspaceArea)){
+      if(!['line-overview','readiness-board','capacity-load-check'].includes(currentWorkspaceArea)){
         currentWorkspaceArea='line-overview';
       }
-    }else if(['line-overview','readiness-board'].includes(currentWorkspaceArea)){
+    }else if(['line-overview','readiness-board','capacity-load-check'].includes(currentWorkspaceArea)){
       currentWorkspaceArea='';
     }
   }
@@ -3700,7 +3784,7 @@ function applyInitialStateFromQuery(){
       currentWorkspaceArea=sectionParam;
     }
   }
-  if(currentModule==='planning'&&currentAction==='search'&&['line-overview','readiness-board'].includes(sectionParam)){
+  if(currentModule==='planning'&&currentAction==='search'&&['line-overview','readiness-board','capacity-load-check'].includes(sectionParam)){
     currentWorkspaceArea=sectionParam;
   }
   if(typeSelect&&(routeParam==='Local'||routeParam==='Overseas')){
