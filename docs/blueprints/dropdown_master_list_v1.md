@@ -1,4 +1,4 @@
-# Dropdown Master List v1
+# Dropdown Master List v1.1
 
 Status: FROZEN TRIAL BASELINE / Factory Dropdown Dictionary
 
@@ -62,7 +62,7 @@ The following separation is frozen:
 
 planning_display_label cannot drive plan_status logic or trigger automation.
 
-## 3. Dropdown Groups v1
+## 3. Dropdown Groups v1.1
 
 ### 3.1 plan_status
 
@@ -309,7 +309,53 @@ Boundary:
 
 impact_level supports display priority. It cannot auto-stop production or auto-change the schedule.
 
-### 3.16 repair_status
+### 3.16 suggested_action
+
+Classification: Advisory / Read-Side Recommendation.
+
+Type:
+
+- Advisory / Read-Side Recommendation
+- Non-Executable
+
+Allowed values:
+
+- Keep Plan | KEEP_PLAN
+- Split Batch | SPLIT_BATCH
+- Use OT | USE_OT
+- Move Line | MOVE_LINE
+- Move Date | MOVE_DATE
+- Review Manpower | REVIEW_MANPOWER
+- Hold Plan | HOLD_PLAN
+
+Boundary:
+
+`suggested_action` is advisory only.
+
+It does not:
+
+- approve OT
+- automatically move line
+- automatically move date
+- change plan_status
+- release WO
+- trigger production execution
+- change inventory
+- execute Stock-In
+- close WO
+- override Store, QA, Repair, Warehouse, Production, or Engineering truth
+
+Formal plan adjustment must still go through the proper future path:
+
+- Plan Change Reason Log
+- Daily Plan Confirmation
+- Create/Add Draft Edit
+
+For v1 trial mock, "Create Plan Change Draft (Future Path)" may be displayed only as a non-executable placeholder.
+
+Hardcoding `suggested_action` values directly in HTML / JS / components remains forbidden.
+
+### 3.17 repair_status
 
 Classification: Reference dropdown.
 
@@ -327,7 +373,7 @@ Boundary:
 
 repair_status is owned by Repair Station / relevant repair governance. Planning reads it only.
 
-### 3.17 repair_reason
+### 3.18 repair_reason
 
 Classification: Reference dropdown.
 
@@ -346,7 +392,7 @@ Boundary:
 
 repair_reason helps Planning understand schedule impact. It does not manage repair work.
 
-### 3.18 source_stage
+### 3.19 source_stage
 
 Classification: Reference dropdown.
 
@@ -363,7 +409,7 @@ Boundary:
 
 source_stage identifies where reject/scrap impact originated. Planning reads it only.
 
-### 3.19 reject_or_scrap_reason
+### 3.20 reject_or_scrap_reason
 
 Classification: Reference dropdown.
 
@@ -383,7 +429,7 @@ Boundary:
 
 reject_or_scrap_reason does not approve reject, scrap, or replacement. Planning only sees whether rejected or scrapped material affects schedule readiness.
 
-### 3.20 planning_version
+### 3.21 planning_version
 
 Classification: Reference dropdown.
 
@@ -398,7 +444,12 @@ planning_version labels trial planning versions. It does not imply production ap
 
 ## 4. Version & Deprecation Policy
 
-Dropdown Master List v1 is the frozen trial baseline.
+Dropdown Master List v1.1 is the frozen trial baseline.
+
+v1.1 update record:
+
+- DCR-2026-001-SUGGESTED-ACTION added `suggested_action` as an advisory-only dropdown for Planning & Scheduling -> Search / Find -> Capacity / Load Check.
+- `suggested_action` is non-executable and cannot approve OT, move line, move date, change plan_status, release WO, trigger production, update inventory, execute Stock-In, close WO, or override Store / QA / Repair / Warehouse / Production / Engineering truth.
 
 Version rules:
 
@@ -424,7 +475,7 @@ If the dropdown source is not yet implemented, the mock may display static value
 
 ## Frozen Boundary
 
-Dropdown Master List v1 is frozen as the official trial dropdown dictionary for Planning & Scheduling.
+Dropdown Master List v1.1 is frozen as the official trial dropdown dictionary for Planning & Scheduling.
 
 This freeze does not authorize:
 
