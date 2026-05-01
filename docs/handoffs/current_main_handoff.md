@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.61
+Mini-MES Handoff v2.62
 
-Updated after 2026-05-01 handoff-only insertion for Planning Decision Matrix Boundary Freeze
+Updated after 2026-05-01 handoff-only insertion for W2 Grid Signal Source and Freshness Rule
 Date: 2026-05-01
 
 1. Frozen mainline snapshot
@@ -142,6 +142,8 @@ Frozen Record - Dropdown Master List v1.1 / DCR-2026-001-SUGGESTED-ACTION
 Frozen Record - Module Plug-and-Play Validation Principles v1
 
 Frozen Record - Planning & Scheduling / Planner Decision Matrix Boundary Freeze
+
+Frozen Record - W2 / Planner Decision Matrix Grid Signal Source and Freshness Rule
 
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
@@ -13258,6 +13260,8 @@ Module Plug-and-Play Validation Principles v1 is frozen as a trial architecture 
 
 Planning & Scheduling / Planner Decision Matrix Boundary Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES. It freezes Decision Matrix as the 4th Search / Find read view, advisory-only and non-executable, with W1-W3 required before implementation spec; implementation authorization remains unopened.
 
+W2 / Planner Decision Matrix Grid Signal Source and Freshness Rule is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES. It freezes read-only source/freshness discipline for Grid Signal and keeps implementation authorization unopened; W1-W3 final review notes must be resolved before implementation spec.
+
 ## Frozen Record — Planning & Scheduling / Planner Decision Matrix Boundary Freeze
 
 Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
@@ -13429,6 +13433,222 @@ This freeze does not authorize:
 - localStorage
 - schema/service/test edits
 - production execution
+- WO release
+- WO close
+- inventory update
+- QA / Store / Repair / Production truth update
+- Dropdown Master List update
+- DCR execution
+
+## Frozen Record — W2 / Planner Decision Matrix Grid Signal Source and Freshness Rule
+
+Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+
+Gate:
+
+- Qingchen review: PASS.
+- Lao Xiao secondary review: PASS / no mandatory correction.
+- Qinran final review: PASS WITH WARNINGS.
+- Ruichen Gate: APPROVED.
+- Implementation authorization: NOT OPENED.
+
+Scope:
+
+This record freezes the pre-implementation boundary supplement for the `Grid Signal` field inside the Planning & Scheduling / Planner Decision Matrix read view.
+
+It is:
+
+- read-side only
+- advisory-only
+- non-executable
+- non-state-changing
+- not a workflow trigger
+- not an approval trigger
+- not a backend write surface
+- not a dropdown governance freeze
+- not UI implementation authorization
+
+Purpose:
+
+The rule prevents Planner from treating stale or unavailable Grid Signal data as current slot truth.
+
+Grid Signal source rule:
+
+Grid Signal must come from the same underlying source references used by Production Schedule Grid, including:
+
+- schedule_entry
+- slot reference
+
+Production Schedule Grid is the cross-check view.
+
+Decision Matrix must not read or depend on another UI view's visual rendering as source truth.
+
+Decision Matrix must not independently calculate, predict, or invent Grid Signal.
+
+1:1 mapping rule:
+
+Grid Signal must map strictly to the same:
+
+- WO No.
+- Date
+- Line
+- Slot
+
+It must not mix values across rows, dates, lines, or slots.
+
+Conflict handling:
+
+If Decision Matrix signal and the Production Schedule Grid source reference disagree, the source reference behind Production Schedule Grid prevails and the signal must be treated as requiring confirmation.
+
+Unavailable-source rule:
+
+If the source is unavailable, missing, disabled, or no corresponding slot record exists, display one of:
+
+- Reference Unavailable
+- N/A
+- Needs Refresh
+- Stale — Refresh Needed
+
+Unavailable source must never be treated as Slot OK.
+
+Sample Grid Signal labels:
+
+These labels are sample display labels only and do not freeze a new dropdown group.
+
+- Slot OK
+- Slot OK but tight
+- Slot overloaded
+- Empty Slot Available
+- Slot occupied but cannot run
+- No production day
+- Reference Unavailable
+- Stale — Refresh Needed
+
+Freshness categories:
+
+1. Current
+
+Grid Signal may be treated as current only when it is consistent with the latest accessible schedule_entry / slot reference and is traceable to a source time or source snapshot.
+
+Minimum traceability examples include:
+
+- source_snapshot_at
+- last_checked_at
+- schedule_snapshot_ref
+
+If no source time or source snapshot can be confirmed, the signal must not be shown as Current.
+
+2. Stale — Refresh Needed
+
+This means the signal may no longer reflect the latest planning situation.
+
+Examples:
+
+- Planner stayed on Decision Matrix too long without reloading.
+- Production Schedule Grid source changed but Decision Matrix did not refresh.
+- Material, capacity, or line availability changed but the Grid Signal snapshot did not update.
+- Session timeout or stale background snapshot.
+
+Planner must not rely on stale signal as current slot availability.
+
+Planner must return to Production Schedule Grid or the relevant source reference to verify.
+
+3. Reference Unavailable / N/A
+
+This means the source is unavailable, disconnected, disabled, or the WO has no matching slot record.
+
+It does not mean the slot is available.
+
+Refresh rule:
+
+Refresh or reload may update the read-only display only.
+
+Refresh or reload must not:
+
+- write source data
+- change schedule baseline
+- move WO
+- split batch
+- change date
+- change line
+- create Plan Change Draft
+- trigger workflow
+- trigger approval
+- execute any planning action
+
+Forbidden actions:
+
+Grid Signal and freshness state must not:
+
+- write schedule_entry baseline
+- update WO status
+- update slot occupation
+- auto move WO
+- auto split batch
+- auto change date
+- auto change line
+- auto create Plan Change Draft
+- auto release WO
+- auto approve OT
+- trigger workflow
+- trigger notification
+- trigger approval flow
+- automatically derive or lock Planner Decision
+- override Production Schedule Grid source truth
+
+Relationship with W1-A Visual Signal Rule:
+
+W1-A icons remain visual aids only.
+
+Examples:
+
+- ✅ Slot OK
+- ⚠️ Slot OK but tight
+- ❌ Slot overloaded
+- ⚠️ Stale — Refresh Needed
+- ℹ️ Reference Unavailable
+
+Freshness text label takes priority over icon.
+
+Icons must not replace source truth, source freshness, approval, workflow, or execution state.
+
+Final review notes:
+
+W1 — Stale trigger threshold is not frozen in this card.
+
+Before implementation spec, the responsible owner for defining stale threshold must be identified.
+
+W2 — Current source snapshot minimum implementation form is not frozen in this card.
+
+Before implementation spec, the chosen trace field must be confirmed, such as `source_snapshot_at`, `last_checked_at`, or `schedule_snapshot_ref`, to avoid inconsistent audit traceability.
+
+W3 — Stale recovery navigation path is not frozen in this card.
+
+Before UI spec, the minimum navigation support for returning from Decision Matrix to Production Schedule Grid must be clarified so Planner can actually verify stale signals.
+
+Factory usability meaning:
+
+Planner may see `Slot OK` in Decision Matrix, but if the signal is old and Production Schedule Grid has changed, Planner may make a wrong planning decision.
+
+This W2 rule forces the Grid Signal to carry source and freshness discipline.
+
+If the signal is stale, Planner must verify it at the source view.
+
+The system only reminds. It does not execute schedule changes.
+
+Explicit non-scope:
+
+This freeze does not authorize:
+
+- HTML mock implementation
+- UI implementation
+- backend implementation
+- database migration
+- workflow engine
+- approval engine
+- localStorage
+- schema/service/test edits
+- schedule baseline updates
 - WO release
 - WO close
 - inventory update
