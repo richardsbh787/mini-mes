@@ -15,195 +15,175 @@ Before continuing Mini-MES work, Qingchen must read this summary first to avoid 
 ## Current Active Repository Context
 
 Repository: mini-mes
+
 Current UI mock file in active use:
 
 docs/mockups/sales_order_local_overseas_mock.html
 
 Important: This mock file currently contains both Sales Order Management mock work and Planning & Scheduling mock work.
 
-Do not touch unrelated dirty files unless Ruichen explicitly selects them.
-
-Known unrelated dirty files still present after latest confirmed push:
+Known unrelated dirty files still present and must not be staged, committed, restored, reset, or pushed unless Ruichen explicitly selects them:
 
 - tests/test_step47_fg_receive.py
 - app/schemas/step46a_inventory_truth_semantic.py
 - app/services/step46a_inventory_truth_semantic.py
 - tests/test_step46a_inventory_truth_semantic.py
 
-These must not be staged, committed, restored, reset, or pushed during UI mock work unless explicitly instructed.
-
----
-
-## Latest Confirmed Push
-
-Latest confirmed pushed commit:
-
-35f76063c7b6a459f00008d4bbba106b42b0b730
-
-GitHub commit URL:
-
-https://github.com/richardsbh787/mini-mes/commit/35f76063c7b6a459f00008d4bbba106b42b0b730
-
-Exact file included:
-
-docs/mockups/sales_order_local_overseas_mock.html
-
-Summary of pushed change:
-
-Sales Order Management mock refinements were committed and pushed:
-- compact Search/Create toolbars
-- Create/Add opens directly to Order Summary
-- flattened Sales Order workspace wrappers
-- lighter Order Items layout
-- separated Remove Item... danger action with helper text
-- no unrelated dirty files were staged or pushed
-- no PR was opened
-
-Do not reopen or rework this pushed Sales Order Management refinement unless Ruichen explicitly asks.
-
 ---
 
 ## Sales Order Management Current Status
 
-Sales Order Management is currently acceptable enough to leave and move on.
+Sales Order Management mock refinement is complete enough and should not be reopened unless Ruichen explicitly asks.
 
-Important locked practical decision:
+Latest confirmed pushed Sales Order Management mock refinement:
 
-Remove Item / delete-style danger action must not sit beside Save, Undo, or Add in a way that causes accidental clicking.
+- Commit: 35f76063c7b6a459f00008d4bbba106b42b0b730
+- URL: https://github.com/richardsbh787/mini-mes/commit/35f76063c7b6a459f00008d4bbba106b42b0b730
+- File: docs/mockups/sales_order_local_overseas_mock.html
 
-Current design direction:
-- + Add Order Item is a safe normal action
-- Remove Item... is separated as a danger action
-- helper text states that removal requires confirmation in a real system
-- no real delete logic, backend, persistence, confirmation modal, or validation was added
+Summary of pushed Sales Order Management state:
+
+- compact Search / Create toolbars
+- Create / Add opens directly to Order Summary
+- Search / Find remains clickable from Create / Add and routes back to Search Order
+- flattened Sales Order workspace wrappers
+- lighter Order Items layout
+- + Add Order Item remains a safe normal action
+- Remove Item... is separated as a danger action with helper text
+- no backend, persistence, confirmation modal, validation, or delete workflow was added
 
 Do not over-polish Sales Order Management now.
 
 ---
 
-## Active Work Has Returned To Planning & Scheduling
+## Active Direction: Planning & Scheduling
 
-After the Sales Order Management push, Ruichen confirmed:
+Current active direction is Planning & Scheduling.
 
-“继续回到 Planning & Scheduling”
+Next development target:
 
-Current Planning & Scheduling surfaces visible in the mock:
+Planning & Scheduling → Search / Find → Capacity / Load Check
 
-1. LINE OVERVIEW
-2. READINESS BOARD
+Do not jump into Planning Create / Add or the Production module before the Capacity / Load Check task package is confirmed.
 
-Important business interpretation confirmed:
-
-LINE OVERVIEW and READINESS BOARD are not two separate business analyses.
-
-They are two views of the same planning readiness analysis:
-
-- LINE OVERVIEW = line/item list view for supervisor search, selection, and drill-down
-- READINESS BOARD = calendar/slot view for seeing whether runnable work can be placed across dates and lines
-
-Therefore do not add duplicate logic, duplicate KPIs, or extra explanation that makes the customer feel Mini-MES is “adding water”.
-
-The design must feel simple, serious, and necessary.
+Before any HTML change, prepare a single-page task package for Qwen / Qianwen review first. Do not call Codex for a big UI change directly.
 
 ---
 
-## Planning & Scheduling Current State
+## Existing Planning Pages
 
-LINE OVERVIEW already exists and has been pushed previously.
+LINE OVERVIEW remains completed.
 
-Known pushed Planning-related commits from recent work include:
+READINESS BOARD was renamed to Production Schedule Grid.
 
-- LINE OVERVIEW / Planning Search-Find work was pushed previously.
-- READINESS BOARD mock was pushed previously.
-- LINE OVERVIEW compact toolbar refinement was pushed previously.
+- Rename commit: e52e8f7f4b77eae1ee01d6a4baa007eaa7c5ee2e
+- Production Schedule Grid is the same existing schedule grid view, not a new third page.
+- LINE OVERVIEW remains the other Planning Search / Find view.
 
-Do not assume Planning needs the same content rebuilt again.
+Current practical meaning:
 
-Before asking Codex to edit Planning, Qingchen must first decide whether there is a real acceptance gap.
+- LINE OVERVIEW answers: which line / order is risky?
+- Production Schedule Grid answers: where can runnable work be placed?
 
-Current screen observation:
+They are two views of the same planning readiness problem, not two separate business analyses.
 
-READINESS BOARD already shows:
-- Search / Find toolbar
-- LINE OVERVIEW tab
-- READINESS BOARD tab
-- Line filter
-- Status filter
-- 5-Day view filter
-- date grid
-- Line 1 / Line 2 rows
-- Planning Gap cells
-- Public Holiday cells
-- runnable WO cell examples
-- Cannot Plan / Replacement Advisory panel
-- read-only static advisory note
-- OT policy reference note marked as configurable by customer
-
-LINE OVERVIEW already shows:
-- Search / Find toolbar
-- LINE OVERVIEW tab
-- READINESS BOARD tab
-- filters
-- selected line band
-- planning table
-- Expand A / Expand B areas
-
-Do not request edits that simply repeat this same structure.
+Do not add duplicate logic, duplicate KPIs, or extra explanation that makes the customer feel Mini-MES is adding water.
 
 ---
 
-## Current Product Principle
+## Frozen Planning Schema / Architecture Baselines Now Active
 
-Ruichen’s latest direction:
+Planning & Scheduling Master List Schemas v1
 
-Avoid “画蛇添足”.
+- File: docs/blueprints/planning_scheduling_master_list_schemas_v1.md
+- Commit: 942a47462f52c662860bc6feb63e1a2d890399eb
 
-Planning & Scheduling mock must not look like random extra features were added to make Mini-MES appear bigger.
+Planning Capacity Constraint / Repair / Reject Impact Addendum v1.1
 
-The customer should feel:
-- LINE OVERVIEW answers “which line/order is risky?”
-- READINESS BOARD answers “where can we put runnable work?”
-- both are needed, but they come from the same planning readiness thinking
+- File: docs/blueprints/planning_scheduling_capacity_constraint_repair_reject_addendum_v1_1.md
+- Commit: a73cc1aa62083e57697e7c0de7ceb4f876c9c9b6
 
-Keep mock-stage language simple and practical.
+Dropdown Master List v1
+
+- File: docs/blueprints/dropdown_master_list_v1.md
+- Commit: 6ea543c77007122fe83ad6b10bff4345cc3f0ca0
+
+Module Plug-and-Play Validation Principles v1
+
+- File: docs/blueprints/module_plug_and_play_validation_principles_v1.md
+- Commit: 02c3775909ae54d9b65515c938a8bf9fe24580c8
 
 ---
 
-## Next Correct Step
+## Trial Objective — Module Plug-and-Play Validation
 
-Next step should NOT be another automatic Codex modification.
+Mini-MES trial must validate that modules can be hidden, restored, reordered, enabled/disabled, and combined into future package structures without breaking core workflows.
 
-Next step should be a short Qingchen review:
+Plug-and-play does not override frozen governance, schema, dropdown, handoff, legal truth, or module-boundary disciplines.
 
-Check whether Planning & Scheduling LINE OVERVIEW + READINESS BOARD already passes current trial-mock acceptance.
+Cross-module references are read-only / reference-only by default.
 
-Acceptance focus:
+Missing or disabled module data must display as Reference Unavailable / N/A and must not be treated as Passed, Ready, Approved, or Completed.
 
-1. Is it clear that LINE OVERVIEW and READINESS BOARD are two views of the same planning readiness problem?
-2. Can a supervisor understand in under 10 seconds:
-   - which line has a planning gap
-   - which WO is blocked
-   - whether a replacement candidate exists
-   - what action is required
-3. Is there any duplicated or confusing wording that makes the UI feel overbuilt?
-4. Are all disclaimers still mock-stage only?
-5. Is there any real logic, backend, persistence, workflow engine, or auto-planning implied? There should not be.
-6. Are Planning changes limited to the target HTML file only if another edit is needed?
+Future Planning & Scheduling Task Cards must include Module Dependency Declaration.
 
-Only if one of these acceptance points fails should Codex be asked to modify the HTML.
+Module Dependency Declaration must be reviewed and approved by Qingchen before the corresponding Task Card can be frozen or passed to Codex.
+
+---
+
+## Planning Task Card Rule
+
+Every future Planning & Scheduling Task Card must include:
+
+- Schema Alignment
+- Dropdown Master List Alignment
+- Module Dependency Declaration
+- Factory Usability Check / 工厂可用性小验证
+- 📋 業務邏輯確認 / 對應工廠現場場景
+
+This rule is active for the next Capacity / Load Check package.
+
+---
+
+## Capacity / Load Check Next-Step Reminder
+
+Capacity / Load Check must align to:
+
+- Master List Schemas v1
+- Capacity Constraint / Repair / Reject Addendum v1.1
+- Dropdown Master List v1
+- Module Plug-and-Play Validation Principles v1
+
+Capacity / Load Check must stay advisory/read-side unless a later governed record explicitly opens stronger behavior.
+
+It must not imply:
+
+- backend implementation
+- database migration
+- auto-planning
+- auto-release
+- auto-move-line
+- auto-approve OT
+- production execution
+- inventory update
+- WO release
+- WO close
+- Step 47 Phase B
+
+Before Codex changes any HTML, Qingchen should prepare a one-page task package for Qwen / Qianwen review.
 
 ---
 
 ## Codex Discipline If Work Continues
 
-If Codex is used next, the first instruction must be read-only:
+If Codex is used next, the first instruction should be read-only:
 
-1. Read AGENTS.md
-2. Read docs/handoffs/current_main_handoff.md if governance context is needed
-3. Read latest Today Summary under docs/handoffs/daily_summaries/ for context only
-4. Run git status --short
-5. Run git diff --stat
-6. Confirm the current target file before editing
+1. Read AGENTS.md.
+2. Read docs/handoffs/current_main_handoff.md if governance context is needed.
+3. Read latest Today Summary under docs/handoffs/daily_summaries/ for context only.
+4. Run git status --short.
+5. Run git diff --stat.
+6. Confirm the current target file before editing.
 
 Codex must not treat Today Summary as a change request.
 
@@ -219,12 +199,10 @@ docs/mockups/sales_order_local_overseas_mock.html
 
 Do not rush to modify.
 
-First judge whether the visible Planning & Scheduling mock already satisfies the agreed intent.
-
-If it already passes, say so clearly and move to the next planning page or next module decision.
+Planning & Scheduling should move next through a small reviewed Capacity / Load Check task package, not a large direct UI edit.
 
 Do not create extra UI just because there is space.
-Do not duplicate LINE OVERVIEW and READINESS BOARD.
+Do not duplicate LINE OVERVIEW and Production Schedule Grid.
 Do not over-explain inside the customer-facing mock.
 
 TS is Qingchen’s medicine, not Codex’s order.
