@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.64
+Mini-MES Handoff v2.65
 
-Updated after 2026-05-02 handoff-only insertion for W1 and W1-A Planner Decision Labels and Visual Signal Rule
+Updated after 2026-05-02 handoff-only insertion for Planner Decision Matrix HTML Mock Implementation Boundary
 Date: 2026-05-02
 
 1. Frozen mainline snapshot
@@ -148,6 +148,8 @@ Frozen Record - W1 + W1-A / Planner Decision Matrix Advisory Label Samples and V
 Frozen Record - W2 / Planner Decision Matrix Grid Signal Source and Freshness Rule
 
 Frozen Record - W3 / Planner Decision Matrix Next Check and Formal Path Format Rule
+
+Implementation Authorization Record - Planning & Scheduling / Planner Decision Matrix HTML Mock Implementation Boundary
 
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
@@ -13270,6 +13272,8 @@ W2 / Planner Decision Matrix Grid Signal Source and Freshness Rule is now PASS W
 
 W3 / Planner Decision Matrix Next Check and Formal Path Format Rule is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES. It freezes read-only formatting for Next Check / Formal Path, keeps implementation authorization unopened, and carries W3-W1/W3-W2 as operative warnings before implementation spec.
 
+Planner Decision Matrix HTML Mock Implementation Boundary is now PASS WITH WARNINGS / IMPLEMENTATION AUTHORIZED — STATIC HTML MOCK ONLY. Authorization is limited to `docs/mockups/sales_order_local_overseas_mock.html`; IC-W1 and IC-W2 must be carried into the Codex implementation instruction.
+
 ## Frozen Record — Planning & Scheduling / Planner Decision Matrix Boundary Freeze
 
 Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
@@ -14089,6 +14093,242 @@ This freeze does not authorize:
 - QA / Store / Repair / Production truth update
 - Dropdown Master List update
 - DCR execution
+
+## Implementation Authorization Record — Planning & Scheduling / Planner Decision Matrix HTML Mock Implementation Boundary
+
+Status: PASS WITH WARNINGS / IMPLEMENTATION AUTHORIZED — STATIC HTML MOCK ONLY
+
+Gate:
+
+- Qingchen review: PASS.
+- Lao Xiao secondary review: PASS.
+- Qinran final review: PASS WITH WARNINGS.
+- Ruichen Gate: APPROVED.
+- Implementation authorization: OPENED ONLY FOR STATIC HTML MOCK.
+
+Authorized scope:
+
+Codex may implement a static HTML mock for:
+
+`Planning & Scheduling → Search / Find → Planner Decision Matrix`
+
+Authorized target file only:
+
+`docs/mockups/sales_order_local_overseas_mock.html`
+
+No other file is authorized.
+
+Purpose:
+
+The Planner Decision Matrix mock is intended to add the fourth Planning Search / Find read view pill.
+
+It summarizes WO planning risks, material readiness reference, capacity load, Grid Signal freshness, Planner Decision advisory label, and Next Check / Formal Path in one flat table.
+
+It is for Planner trial review only.
+
+It is not production logic, not backend logic, not workflow logic, not approval logic, and not source truth.
+
+Required page structure:
+
+The future HTML mock must use flat layout only:
+
+- Title
+- View Pill Row
+- Filter Row
+- Lightweight Note
+- Full-width Decision Matrix Table
+
+The future HTML mock must not add:
+
+- right panel
+- bottom detail panel
+- advisory side panel
+- expandable detail drawer
+- modal
+- workflow action bar
+- extra execution panel
+
+Required Planning view pills:
+
+The following Planning Search / Find read view pills must remain visible together:
+
+- LINE OVERVIEW
+- Production Schedule Grid
+- Capacity / Load Check
+- Planner Decision Matrix
+
+Selecting Planner Decision Matrix must not cause the other Planning view pills to disappear.
+
+Required table columns:
+
+The future mock must use the 9 core columns:
+
+1. WO No.
+2. Scenario / Risk Type
+3. Priority
+4. Current Slot
+5. Material / Readiness
+6. Capacity Load %
+7. Grid Signal
+8. Planner Decision
+9. Next Check / Formal Path
+
+Required frozen boundary carry-through:
+
+The future implementation must comply with:
+
+- Planner Decision Matrix main boundary
+- W1 + W1-A / Planner Decision advisory label samples and visual signal rule
+- W2 / Grid Signal source and freshness rule
+- W3 / Next Check and Formal Path format rule
+
+Planner Decision label rule:
+
+The formal Planner Decision label must come from the W1 label list only:
+
+- Keep Plan
+- Keep Plan + Watch
+- Hold Plan
+- Split Batch
+- Move Date
+- Move Line
+- Review Manpower
+- Review Store
+- Check QA / IQC
+- Check Repair Return
+- Escalate Supervisor
+
+Old sample display wording must not be used as the formal Planner Decision label:
+
+- RUN OK
+- HOLD – MATERIAL
+- CHECK BEFORE RUN
+- NEED PLANNER DECISION
+
+Visual signal rule:
+
+The icons ✅ / ⚠️ / ❌ / ℹ️ may be used only as read-only visual aids.
+
+They must not represent source truth, approval state, execution state, workflow state, or write state.
+
+Grid Signal / Freshness rule:
+
+Grid Signal must include freshness text, not icon-only display.
+
+Minimum mock wording examples include:
+
+- Current — source_snapshot_at 08:30
+- Stale — Refresh Needed
+- Reference Unavailable
+- N/A
+
+The mock may use `source_snapshot_at` as static trace wording only.
+
+This does not create a schema, field, database column, or backend model.
+
+Trial Material Readiness rule:
+
+Since the current trial starts from Planning and skips full Purchasing / Store / IQC module flows, trial material readiness must be marked as:
+
+`Declared Material Readiness / Manual Reference Only`
+
+The future mock must not display trial material readiness as:
+
+- Purchase Confirmed
+- Store Ready
+- IQC Passed
+
+unless those source modules are actually active and provide source truth in a later authorized phase.
+
+Next Check / Formal Path rule:
+
+Next Check / Formal Path must use the W3 format:
+
+`[Next Check Owner] — [Check Item] / [Formal Path]`
+
+Free text such as “ask warehouse”, “boss decide”, “should be okay”, “already approved”, or “already released” is forbidden.
+
+Operative warning IC-W1:
+
+`Split Batch / Review Manpower` must not become a new formal compound label.
+
+W1 label list contains `Split Batch` and `Review Manpower` as separate labels.
+
+If the Over Capacity sample needs both meanings, the future mock must display it as:
+
+- a main label plus secondary note, or
+- a two-line display,
+
+without creating a new governance label.
+
+Operative warning IC-W2:
+
+`Reference Unavailable / N/A` must not be used for information that exists but has not been checked.
+
+When information exists but is not yet confirmed, the future mock must use one of:
+
+- Pending Check
+- Manual Reference Only
+- Needs Confirmation
+
+Hard boundaries:
+
+The future implementation must not:
+
+- edit handoff
+- edit AGENTS.md
+- edit backend
+- edit database
+- edit schema
+- edit service
+- edit tests
+- add localStorage
+- add API call
+- add workflow
+- add approval action
+- add notification
+- add real validation
+- add persistence
+- add hidden business logic
+- add row-level execution click
+- add auto schedule change
+- add dropdown governance
+- create Plan Change Draft
+- write Plan Change Reason Log
+- release WO
+- hold WO
+- close WO
+- change date
+- move line
+- split batch
+
+Acceptance summary for future implementation:
+
+The future Codex HTML mock implementation must be accepted only if:
+
+- only `docs/mockups/sales_order_local_overseas_mock.html` changes
+- Planner Decision Matrix appears as the fourth Planning Search / Find read view
+- all four Planning read view pills remain visible together
+- the layout remains flat and space-efficient
+- no side panel or bottom panel is added
+- the 9 core columns are present
+- W1 labels are used correctly
+- W1-A icons remain read-only visual aids
+- W2 Grid Signal freshness text is visible
+- W3 Next Check / Formal Path format is followed
+- trial material readiness is clearly marked as declared / manual reference
+- IC-W1 and IC-W2 are satisfied
+- no backend, workflow, approval, localStorage, schema, service, test, AGENTS, or handoff changes are made during the future HTML implementation step
+
+Factory usability meaning:
+
+This authorization opens only the static mock page needed for Ruichen to test the Planner Decision Matrix visually before handing it to Planner or line-side users.
+
+The page is a planning meeting read table.
+
+It helps Planner scan WO risk and next path quickly.
+
+It does not execute any planning action.
 
 Frozen Record - Shared UI Baseline / Sales Order Mock-Stage Branch Split (Local vs Overseas)
 
