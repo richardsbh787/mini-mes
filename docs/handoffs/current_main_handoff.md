@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.70
+Mini-MES Handoff v2.71
 
-Updated after 2026-05-02 handoff-only insertion for Rapid Feasibility Check UI Mock Implementation Spec Preparation
+Updated after 2026-05-02 handoff-only insertion for Rapid Feasibility Check UI Mock Implementation Spec v0.1
 Date: 2026-05-02
 
 1. Frozen mainline snapshot
@@ -160,6 +160,8 @@ Frozen Record - Planning & Scheduling / Rapid Feasibility Check
 Frozen Record - Planning & Scheduling / Rapid Feasibility Check UI Mock Boundary
 
 Frozen Record - Planning & Scheduling / Rapid Feasibility Check UI Mock Implementation Spec Preparation
+
+Frozen Record - Planning & Scheduling / Rapid Feasibility Check UI Mock Implementation Spec v0.1
 
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
@@ -13292,6 +13294,8 @@ Planning & Scheduling / Rapid Feasibility Check UI Mock Boundary is now PASS WIT
 
 Planning & Scheduling / Rapid Feasibility Check UI Mock Implementation Spec Preparation is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES. It freezes preparation boundaries for a later non-executable Implementation Spec, requires the spec to preserve the six result classes and decision-first UI rules, carries RFC-SPEC-W1/RFC-SPEC-W2, and keeps implementation authorization NOT OPENED.
 
+Planning & Scheduling / Rapid Feasibility Check UI Mock Implementation Spec v0.1 is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES. It freezes the non-executable UI mock implementation spec as the main input basis for a later HTML Mock Instruction, locks the page structure, six result classes, display boundaries, RFC-SPEC-A1/A2/A3/W3, and keeps implementation authorization NOT OPENED.
+
 Planner Decision Matrix HTML Mock Implementation Boundary is now PASS WITH WARNINGS / IMPLEMENTATION AUTHORIZED — STATIC HTML MOCK ONLY. Authorization is limited to `docs/mockups/sales_order_local_overseas_mock.html`; IC-W1 and IC-W2 must be carried into the Codex implementation instruction.
 
 ## Frozen Record — Planning & Scheduling / Planner Decision Matrix Boundary Freeze
@@ -15075,6 +15079,148 @@ This preparation record keeps the later Implementation Spec narrow and reviewabl
 The later spec may define structure and rules, but it must remain non-executable and must not become a hidden Codex implementation instruction.
 
 No UI, HTML, backend, workflow, approval, database, schema, service, test, or business action opens from this card.
+
+## Frozen Record — Planning & Scheduling / Rapid Feasibility Check UI Mock Implementation Spec v0.1
+
+Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+
+Implementation Authorization: NOT OPENED
+
+Gate:
+
+- Qingchen review: PASS.
+- Lao Xiao secondary review: PASS.
+- Qinran final review: PASS WITH WARNINGS.
+- Ruichen Gate: APPROVED.
+- Implementation authorization: NOT OPENED.
+
+Scope:
+
+This Spec is frozen as the main input basis for the later HTML Mock Instruction.
+
+This Spec does not authorize Codex.
+
+This Spec does not authorize HTML / UI mock implementation.
+
+This Spec does not authorize backend, database, workflow, approval, route, localStorage, schema, service, or test changes.
+
+This Spec does not authorize any business write.
+
+This Spec contains no executable code snippets.
+
+This Spec only defines the Rapid Feasibility Check UI mock page presentation rules, display rules, forbidden items, acceptance criteria, and mock-only boundaries.
+
+Minimum required structure frozen in the Spec:
+
+1. Page structure description
+2. Display rules for each of the six result classes
+3. Forbidden items list
+4. Acceptance criteria
+
+Frozen page structure:
+
+1. Top Input Summary
+2. Decision Result Card
+3. Fast Answer Line
+4. Key Evidence Strip
+5. Supporting Checks
+6. Detail Table
+7. Manual / Declared Warning
+
+Frozen six result classes:
+
+1. Can Accept
+2. Accept with Condition
+3. Partial Accept
+4. Cannot Commit Now
+5. Need Supervisor Decision
+6. Conflict Detected — Need Urgent Order Conflict Board
+
+Frozen key boundaries:
+
+The UI must remain decision-first, not data-dump-first.
+
+Decision Result Card must be the most prominent first-screen area.
+
+Detail Table must be collapsed by default, with maximum 5 rows and maximum 3 columns per row.
+
+Fast Answer Line must remain advisory-only and must not be written as a customer commitment.
+
+Top Input Summary must remain static sample data during trial / mock stage.
+
+Manual / Declared material readiness must be clearly marked and must not be presented as Purchase truth, Store truth, or IQC truth.
+
+Need Supervisor Decision applies only to supervisor discretion inside one urgent order.
+
+Multiple urgent orders competing for the same resource must trigger Conflict Detected.
+
+Conflict Detected must not be downgraded into Need Supervisor Decision.
+
+Urgent Order Conflict Board must not be mixed into this Spec's implementation scope and remains a later independent card.
+
+Final review notes:
+
+RFC-SPEC-A1:
+
+The later HTML mock should visually weaken the Fast Answer Line, for example by using grey text, smaller text, secondary-tag treatment, or light hint styling, so it is not mistaken for a formal customer commitment.
+
+RFC-SPEC-A2:
+
+Manual / Declared marking should be placed close to the Material Readiness item in the Key Evidence Strip.
+
+Do not create a complex extra section just to display the marking.
+
+RFC-SPEC-A3:
+
+The later HTML mock may use lightweight column-width guidance for the Detail Table to avoid squeezing information across three columns.
+
+This guidance must not expand into a complex schedule table or full detail table.
+
+RFC-SPEC-W3:
+
+The later HTML Mock Authorization Card must clearly state that this Spec is the main input basis.
+
+If Codex instructions need supplemental details, those supplements must not conflict with this frozen Spec boundary.
+
+If any conflict occurs, this frozen Spec boundary prevails.
+
+Codex must not reinterpret or override the frozen Spec.
+
+Explicit non-scope:
+
+This freeze does not authorize:
+
+- Codex implementation
+- HTML implementation
+- UI mock implementation
+- backend implementation
+- database change
+- workflow
+- approval
+- route config
+- localStorage
+- schema change
+- service change
+- test change
+- any business write
+- production execution
+- WO creation
+- WO release
+- WO hold
+- split batch execution
+- date move
+- line move
+- OT approval
+- customer commitment
+- implementation of Urgent Order Conflict Board
+
+Factory usability meaning:
+
+This v0.1 Spec freezes the future Rapid Feasibility Check mock as a narrow decision-first page.
+
+The future page must show the answer before detail, keep manual readiness visibly weaker than source truth, and preserve Conflict Detected as the hard stop when urgent orders compete for the same resource.
+
+The Spec is an input basis only; it is not Codex authorization and does not open any HTML, UI mock, backend, workflow, approval, database, schema, service, test, or business write path.
 
 Frozen Record - Shared UI Baseline / Sales Order Mock-Stage Branch Split (Local vs Overseas)
 
