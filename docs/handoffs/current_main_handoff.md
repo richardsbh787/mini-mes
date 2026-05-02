@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.66
+Mini-MES Handoff v2.67
 
-Updated after 2026-05-02 handoff-only insertion for Planner Decision Matrix Primary View & Supporting Checks Boundary
+Updated after 2026-05-02 handoff-only insertion for Supporting Checks Read-only Link Correction
 Date: 2026-05-02
 
 1. Frozen mainline snapshot
@@ -152,6 +152,8 @@ Frozen Record - W3 / Planner Decision Matrix Next Check and Formal Path Format R
 Implementation Authorization Record - Planning & Scheduling / Planner Decision Matrix HTML Mock Implementation Boundary
 
 Frozen Record - Planning & Scheduling / Planner Decision Matrix Primary View & Supporting Checks Boundary
+
+Frozen Record - Planning & Scheduling / Supporting Checks Read-only Link Correction
 
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
@@ -13276,6 +13278,8 @@ W3 / Planner Decision Matrix Next Check and Formal Path Format Rule is now PASS 
 
 Planning & Scheduling / Planner Decision Matrix Primary View & Supporting Checks Boundary is now PASS WITH WARNINGS / IMPLEMENTATION AUTHORIZED (Static HTML Mock Only). It makes Planner Decision Matrix the primary Search / Find read view, downgrades LINE OVERVIEW / Production Schedule Grid / Capacity / Load Check to default-visible Supporting Checks, and keeps future implementation limited to the static HTML mock file.
 
+Planning & Scheduling / Supporting Checks Read-only Link Correction is now PASS WITH WARNINGS / IMPLEMENTATION AUTHORIZED — STATIC HTML MOCK ONLY. It allows the visually secondary Supporting Checks entries to become clickable read-only support links for existing static mock views only, with SC-Link-W1 controlling reuse of existing mock behavior and forbidding new routes, workflow, backend calls, or writes.
+
 Planner Decision Matrix HTML Mock Implementation Boundary is now PASS WITH WARNINGS / IMPLEMENTATION AUTHORIZED — STATIC HTML MOCK ONLY. Authorization is limited to `docs/mockups/sales_order_local_overseas_mock.html`; IC-W1 and IC-W2 must be carried into the Codex implementation instruction.
 
 ## Frozen Record — Planning & Scheduling / Planner Decision Matrix Boundary Freeze
@@ -14475,6 +14479,118 @@ This freeze does not authorize:
 - real routing
 - real production use
 - PR opening
+
+## Frozen Record — Planning & Scheduling / Supporting Checks Read-only Link Correction
+
+Status: PASS WITH WARNINGS / IMPLEMENTATION AUTHORIZED — STATIC HTML MOCK ONLY
+
+Gate:
+
+- Qingchen review: PASS.
+- Lao Xiao secondary review: PASS.
+- Qinran final review: PASS WITH WARNINGS.
+- Ruichen Gate: APPROVED.
+- Implementation authorization: OPENED ONLY FOR STATIC HTML MOCK.
+
+Scope:
+
+This record freezes the Supporting Checks read-only link correction for the Planning & Scheduling / Planner Decision Matrix static HTML mock.
+
+Future implementation target file only:
+
+`docs/mockups/sales_order_local_overseas_mock.html`
+
+No other file is authorized.
+
+Core rule:
+
+Planner Decision Matrix remains the primary Planning Search / Find read view.
+
+Supporting Checks remain visually secondary and must not become primary pills or primary buttons.
+
+The Supporting Checks entries are:
+
+- Line Overview
+- Production Schedule Grid
+- Capacity / Load Check
+
+These entries may now become clickable read-only support links.
+
+Their purpose is only to help Planner inspect existing static mock views when an exception needs further checking.
+
+This does not authorize:
+
+- execution
+- approval
+- workflow
+- backend route
+- real navigation system
+- data write
+- WO release
+- WO hold
+- schedule change
+- line move
+- date move
+- split batch execution
+
+Implementation authorization is limited to static HTML mock only.
+
+Operative warning:
+
+SC-Link-W1:
+
+Supporting Checks click behavior must remain inside static mock read-only behavior.
+
+Future Codex implementation must:
+
+- Prefer reusing the existing static HTML mock view-switching pattern if already present.
+- Use an in-page anchor or existing target id if suitable.
+- If an existing data attribute / existing handler is reused, it must only connect to the already-existing mock handler.
+- Must not add a new JavaScript dynamic replacement function.
+- Must not create real routes.
+- Must not create `nav_config`.
+- Must not create `feature_flags`.
+- Must not create permission logic.
+- Must not trigger workflow, approval, notification, backend call, database write, or business action.
+
+Hard boundaries:
+
+Future implementation must not:
+
+- modify `AGENTS.md`
+- modify handoff again during HTML implementation
+- modify backend files
+- modify schema files
+- modify service files
+- modify tests
+- modify database files
+- add localStorage
+- add API calls
+- add workflow
+- add approval
+- add notification
+- add validation logic
+- add persistence
+- add hidden business logic
+- add row-level execution click
+- create Plan Change Draft
+- write Plan Change Reason Log
+- release WO
+- hold WO
+- close WO
+- change date
+- move line
+- split batch
+
+Factory usability meaning:
+
+Planner Decision Matrix stays the morning-review primary read view.
+
+Supporting Checks may be clicked only as static read-only references when Planner needs to inspect the existing Line Overview, Production Schedule Grid, or Capacity / Load Check mock surfaces.
+
+The click is a mock reading convenience only.
+
+It does not execute, approve, route, write, release, hold, move, reschedule, or split anything.
 
 Frozen Record - Shared UI Baseline / Sales Order Mock-Stage Branch Split (Local vs Overseas)
 
