@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.67
+Mini-MES Handoff v2.68
 
-Updated after 2026-05-02 handoff-only insertion for Supporting Checks Read-only Link Correction
+Updated after 2026-05-02 handoff-only insertion for Rapid Feasibility Check
 Date: 2026-05-02
 
 1. Frozen mainline snapshot
@@ -154,6 +154,8 @@ Implementation Authorization Record - Planning & Scheduling / Planner Decision M
 Frozen Record - Planning & Scheduling / Planner Decision Matrix Primary View & Supporting Checks Boundary
 
 Frozen Record - Planning & Scheduling / Supporting Checks Read-only Link Correction
+
+Frozen Record - Planning & Scheduling / Rapid Feasibility Check
 
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
@@ -13280,6 +13282,8 @@ Planning & Scheduling / Planner Decision Matrix Primary View & Supporting Checks
 
 Planning & Scheduling / Supporting Checks Read-only Link Correction is now PASS WITH WARNINGS / IMPLEMENTATION AUTHORIZED — STATIC HTML MOCK ONLY. It allows the visually secondary Supporting Checks entries to become clickable read-only support links for existing static mock views only, with SC-Link-W1 controlling reuse of existing mock behavior and forbidding new routes, workflow, backend calls, or writes.
 
+Planning & Scheduling / Rapid Feasibility Check is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES. It freezes the fast urgent-order feasibility decision layer, locks Conflict Detected as the only output for indivisible-resource urgent-order conflicts, and keeps implementation authorization NOT OPENED.
+
 Planner Decision Matrix HTML Mock Implementation Boundary is now PASS WITH WARNINGS / IMPLEMENTATION AUTHORIZED — STATIC HTML MOCK ONLY. Authorization is limited to `docs/mockups/sales_order_local_overseas_mock.html`; IC-W1 and IC-W2 must be carried into the Codex implementation instruction.
 
 ## Frozen Record — Planning & Scheduling / Planner Decision Matrix Boundary Freeze
@@ -14591,6 +14595,187 @@ Supporting Checks may be clicked only as static read-only references when Planne
 The click is a mock reading convenience only.
 
 It does not execute, approve, route, write, release, hold, move, reschedule, or split anything.
+
+## Frozen Record — Planning & Scheduling / Rapid Feasibility Check
+
+Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+
+Implementation authorization: NOT OPENED
+
+Gate:
+
+- Qingchen review: PASS.
+- Lao Xiao secondary review: PASS.
+- Qinran final review: PASS WITH WARNINGS.
+- Ruichen Gate: APPROVED.
+- Implementation authorization: NOT OPENED.
+
+Scope:
+
+This record freezes the Planning & Scheduling / Rapid Feasibility Check boundary as a decision-support layer for urgent orders / new WO requests.
+
+Rapid Feasibility Check is the fast feasibility decision layer for urgent orders / new WO requests.
+
+It answers quickly:
+
+- Can this order be accepted?
+- What is the earliest possible slot?
+- What is blocking it?
+- Which existing WO may be affected?
+- Does it need supervisor decision?
+
+Core boundary:
+
+Rapid Feasibility Check is not formal scheduling.
+
+It is not WO Release.
+
+It is not production release.
+
+It does not automatically change:
+
+- plan status
+- WO status
+- schedule baseline
+- customer commitment
+- material truth
+- any operational record
+
+It must be decision-first, not data-dump-first.
+
+Normal advisory outputs:
+
+Rapid Feasibility Check supports normal advisory outputs only when there is no hard conflict:
+
+- Can Accept
+- Accept with Condition
+- Partial Accept
+- Cannot Commit Now
+- Need Supervisor Decision
+
+Trial material readiness rule:
+
+Trial-stage Material Readiness may be Manual / Declared only.
+
+It must not be presented as:
+
+- Purchase source truth
+- Store source truth
+- IQC source truth
+
+First-level check:
+
+Schedule Capacity Snapshot is the first-level check.
+
+It must cover:
+
+- available slot
+- line load
+- full schedule
+- OT possibility
+- split batch
+- alternate line
+- later slot
+- affected WO
+
+Conflict Output Lock:
+
+When two or more urgent orders compete for the same indivisible resource, Rapid Feasibility Check must not output any normal result.
+
+Indivisible resources include, but are not limited to:
+
+- same only available line slot
+- same date / same slot
+- same critical material
+- same manpower pool
+- same OT window
+- resource window that would displace an existing urgent WO
+
+In that case, the only allowed final output is:
+
+`Conflict Detected — Need Urgent Order Conflict Board`
+
+When Conflict Detected is triggered, the system must not output:
+
+- Can Accept
+- Accept with Condition
+- Partial Accept
+- Cannot Commit Now
+- Need Supervisor Decision as final result
+- customer-committable Earliest Possible Slot
+- customer-committable Suggested Customer Reply
+
+Only conflict evidence may be displayed.
+
+This card does not implement Urgent Order Conflict Board.
+
+It only defines the trigger and output lock.
+
+Operative warnings:
+
+RFC-W1:
+
+Need Supervisor Decision applies only to a single urgent order with internal supervisor discretion, such as OT authorization or priority override.
+
+If multiple urgent orders compete for the same resource, Conflict Detected must take priority.
+
+Need Supervisor Decision must not be used as an escape path to bypass Conflict Output Lock.
+
+RFC-W2:
+
+Before any future Implementation Spec, Partial Accept must define minimum output fields:
+
+- acceptable quantity / batch
+- balance handling direction
+
+Codex must not invent split logic.
+
+RFC-W3:
+
+Before any future Implementation Spec, Conflict Detected must define minimum conflict evidence fields, such as:
+
+- conflicting urgent order numbers
+- contested resource type
+- affected WO number
+
+The UI must not show only `Conflict Detected` without evidence.
+
+Explicit non-scope:
+
+This freeze does not authorize:
+
+- HTML implementation
+- UI mock implementation
+- backend implementation
+- database change
+- workflow
+- approval
+- notification
+- route config
+- localStorage
+- schema change
+- service change
+- test change
+- AGENTS change
+- automatic WO creation
+- automatic WO release
+- automatic WO hold
+- automatic split batch
+- automatic date move
+- automatic line move
+- automatic OT approval
+- automatic customer commitment
+- implementation of Urgent Order Conflict Board
+
+Factory usability meaning:
+
+Rapid Feasibility Check is a fast planning answer surface for urgent requests.
+
+It should help Planner answer whether the order can be accepted, what slot might be possible, what blocks it, what WO is affected, and whether supervisor decision is needed.
+
+If urgent orders compete for the same indivisible resource, the screen must stop normal feasibility answers and show conflict evidence only.
+
+No production action is executed by this card.
 
 Frozen Record - Shared UI Baseline / Sales Order Mock-Stage Branch Split (Local vs Overseas)
 
