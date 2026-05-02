@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.69
+Mini-MES Handoff v2.70
 
-Updated after 2026-05-02 handoff-only insertion for Rapid Feasibility Check UI Mock Boundary
+Updated after 2026-05-02 handoff-only insertion for Rapid Feasibility Check UI Mock Implementation Spec Preparation
 Date: 2026-05-02
 
 1. Frozen mainline snapshot
@@ -158,6 +158,8 @@ Frozen Record - Planning & Scheduling / Supporting Checks Read-only Link Correct
 Frozen Record - Planning & Scheduling / Rapid Feasibility Check
 
 Frozen Record - Planning & Scheduling / Rapid Feasibility Check UI Mock Boundary
+
+Frozen Record - Planning & Scheduling / Rapid Feasibility Check UI Mock Implementation Spec Preparation
 
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
@@ -13288,6 +13290,8 @@ Planning & Scheduling / Rapid Feasibility Check is now PASS WITH WARNINGS / FROZ
 
 Planning & Scheduling / Rapid Feasibility Check UI Mock Boundary is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES. It freezes the decision-first UI mock boundary, requires Decision Result Card priority and exactly six result classes, carries RFC-UI-W1/RFC-UI-W2 into later Implementation Spec, and keeps implementation authorization NOT OPENED.
 
+Planning & Scheduling / Rapid Feasibility Check UI Mock Implementation Spec Preparation is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES. It freezes preparation boundaries for a later non-executable Implementation Spec, requires the spec to preserve the six result classes and decision-first UI rules, carries RFC-SPEC-W1/RFC-SPEC-W2, and keeps implementation authorization NOT OPENED.
+
 Planner Decision Matrix HTML Mock Implementation Boundary is now PASS WITH WARNINGS / IMPLEMENTATION AUTHORIZED — STATIC HTML MOCK ONLY. Authorization is limited to `docs/mockups/sales_order_local_overseas_mock.html`; IC-W1 and IC-W2 must be carried into the Codex implementation instruction.
 
 ## Frozen Record — Planning & Scheduling / Planner Decision Matrix Boundary Freeze
@@ -14927,6 +14931,150 @@ The first screen must show the result, the directional fast answer, and only eno
 More detail may exist only behind a collapsed detail table with strict size limits.
 
 This freeze keeps the future mock narrow, readable, and non-executable.
+
+## Frozen Record — Planning & Scheduling / Rapid Feasibility Check UI Mock Implementation Spec Preparation
+
+Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+
+Implementation Authorization: NOT OPENED
+
+Gate:
+
+- Qingchen review: PASS.
+- Lao Xiao secondary review: PASS.
+- Qinran final review: PASS WITH WARNINGS.
+- Ruichen Gate: APPROVED.
+- Implementation authorization: NOT OPENED.
+
+Scope:
+
+This card freezes only the preparation boundary for the later Implementation Spec.
+
+This card is not the Implementation Spec itself.
+
+This card does not authorize Codex.
+
+This card does not authorize HTML / UI mock implementation.
+
+This card does not authorize backend, database, workflow, approval, route, localStorage, schema, service, or test changes.
+
+Preparation boundary:
+
+The later Rapid Feasibility Check spec must remain decision-first, not data-dump-first.
+
+The first screen must prioritize the Decision Result Card.
+
+The result classes must remain exactly six, with no seventh class:
+
+- Can Accept
+- Accept with Condition
+- Partial Accept
+- Cannot Commit Now
+- Need Supervisor Decision
+- Conflict Detected — Need Urgent Order Conflict Board
+
+Fast Answer Line:
+
+Fast Answer Line must remain advisory-only.
+
+It must not be written as a customer commitment.
+
+Top Input Summary:
+
+Top Input Summary must remain static sample data during trial / mock stage.
+
+Detail Table:
+
+Detail Table must be collapsed by default.
+
+Detail Table is limited to:
+
+- maximum 5 rows
+- maximum 3 columns per row
+
+Manual / Declared material readiness:
+
+Manual / Declared material readiness must be clearly marked.
+
+It must not be presented as:
+
+- Purchase truth
+- Store truth
+- IQC truth
+
+Result discipline:
+
+Need Supervisor Decision applies only to supervisor discretion inside one urgent order.
+
+Multiple urgent orders competing for the same resource must trigger Conflict Detected.
+
+Urgent Order Conflict Board is not included in this card and remains a later independent card.
+
+Final review notes:
+
+RFC-SPEC-W1:
+
+The later Rapid Feasibility Check UI Mock Implementation Spec must not include executable code snippets.
+
+It must not include directly executable HTML, JavaScript, backend, database, schema, service, or test code.
+
+The Implementation Spec may only describe:
+
+- page structure
+- static sample fields
+- display rules
+- forbidden items
+- acceptance criteria
+- mock-only boundaries
+
+The actual HTML mock instruction must wait for a separate authorized Codex Task Card.
+
+RFC-SPEC-W2:
+
+The later Implementation Spec must include at least these four sections:
+
+1. Page structure description
+2. Display rules for each of the six result classes
+3. Forbidden items list
+4. Acceptance criteria
+
+If any of these four sections is missing, it must not be handed to Codex.
+
+Explicit non-scope:
+
+This freeze does not authorize:
+
+- Codex implementation
+- HTML implementation
+- UI mock implementation
+- backend implementation
+- database change
+- workflow
+- approval
+- route config
+- localStorage
+- schema change
+- service change
+- test change
+- any business write
+- production execution
+- WO creation
+- WO release
+- WO hold
+- split batch execution
+- date move
+- line move
+- OT approval
+- customer commitment
+- implementation of Urgent Order Conflict Board
+
+Factory usability meaning:
+
+This preparation record keeps the later Implementation Spec narrow and reviewable.
+
+The later spec may define structure and rules, but it must remain non-executable and must not become a hidden Codex implementation instruction.
+
+No UI, HTML, backend, workflow, approval, database, schema, service, test, or business action opens from this card.
 
 Frozen Record - Shared UI Baseline / Sales Order Mock-Stage Branch Split (Local vs Overseas)
 
