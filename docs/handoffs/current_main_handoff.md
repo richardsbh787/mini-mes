@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.65
+Mini-MES Handoff v2.66
 
-Updated after 2026-05-02 handoff-only insertion for Planner Decision Matrix HTML Mock Implementation Boundary
+Updated after 2026-05-02 handoff-only insertion for Planner Decision Matrix Primary View & Supporting Checks Boundary
 Date: 2026-05-02
 
 1. Frozen mainline snapshot
@@ -150,6 +150,8 @@ Frozen Record - W2 / Planner Decision Matrix Grid Signal Source and Freshness Ru
 Frozen Record - W3 / Planner Decision Matrix Next Check and Formal Path Format Rule
 
 Implementation Authorization Record - Planning & Scheduling / Planner Decision Matrix HTML Mock Implementation Boundary
+
+Frozen Record - Planning & Scheduling / Planner Decision Matrix Primary View & Supporting Checks Boundary
 
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
@@ -13272,6 +13274,8 @@ W2 / Planner Decision Matrix Grid Signal Source and Freshness Rule is now PASS W
 
 W3 / Planner Decision Matrix Next Check and Formal Path Format Rule is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES. It freezes read-only formatting for Next Check / Formal Path, keeps implementation authorization unopened, and carries W3-W1/W3-W2 as operative warnings before implementation spec.
 
+Planning & Scheduling / Planner Decision Matrix Primary View & Supporting Checks Boundary is now PASS WITH WARNINGS / IMPLEMENTATION AUTHORIZED (Static HTML Mock Only). It makes Planner Decision Matrix the primary Search / Find read view, downgrades LINE OVERVIEW / Production Schedule Grid / Capacity / Load Check to default-visible Supporting Checks, and keeps future implementation limited to the static HTML mock file.
+
 Planner Decision Matrix HTML Mock Implementation Boundary is now PASS WITH WARNINGS / IMPLEMENTATION AUTHORIZED — STATIC HTML MOCK ONLY. Authorization is limited to `docs/mockups/sales_order_local_overseas_mock.html`; IC-W1 and IC-W2 must be carried into the Codex implementation instruction.
 
 ## Frozen Record — Planning & Scheduling / Planner Decision Matrix Boundary Freeze
@@ -14329,6 +14333,148 @@ The page is a planning meeting read table.
 It helps Planner scan WO risk and next path quickly.
 
 It does not execute any planning action.
+
+## Frozen Record — Planning & Scheduling / Planner Decision Matrix Primary View & Supporting Checks Boundary
+
+Status: PASS WITH WARNINGS / IMPLEMENTATION AUTHORIZED (Static HTML Mock Only)
+
+Gate:
+
+- Qingchen review: PASS.
+- Lao Xiao secondary review: PASS.
+- Qinran final review: PASS WITH WARNINGS.
+- Ruichen Gate: APPROVED.
+- Implementation authorization: OPENED ONLY FOR STATIC HTML MOCK.
+
+Scope:
+
+This record freezes the Planning & Scheduling / Planner Decision Matrix primary view and supporting checks boundary for the static HTML mock.
+
+It applies only to the future static mock implementation target:
+
+`docs/mockups/sales_order_local_overseas_mock.html`
+
+No other file is authorized.
+
+Core rule:
+
+Planner Decision Matrix is now the primary Planning & Scheduling -> Search / Find read view for Planner morning review.
+
+LINE OVERVIEW, Production Schedule Grid, and Capacity / Load Check are downgraded to Supporting Checks.
+
+Supporting Checks are assistive investigation entries only.
+
+Supporting Checks:
+
+The Supporting Checks are:
+
+- LINE OVERVIEW
+- Production Schedule Grid
+- Capacity / Load Check
+
+They must not be deleted.
+
+Existing mock content must remain available.
+
+They must be visually secondary to Planner Decision Matrix.
+
+They must be default visible near the Planner Decision Matrix area.
+
+They must use the prefix:
+
+`Supporting Checks:`
+
+This prefix is required so users understand these entries are assistive, not equal primary views.
+
+Supporting Checks must not use the same visual style as:
+
+- `+ Create / Add`
+- `Search / Find`
+- primary `Planner Decision Matrix` view control
+
+Static HTML mock boundary:
+
+In the static HTML mock, Supporting Checks are display-only placeholder entries.
+
+They must not implement:
+
+- real navigation
+- dynamic replacement
+- drawer
+- modal
+- popover
+- workflow
+- backend routing
+- approval
+- database behavior
+- localStorage
+- real routing configuration
+
+Main action layer:
+
+`+ Create / Add` and `Search / Find` remain the Planning main action layer.
+
+Planner Decision Matrix is the default read view under `Search / Find`.
+
+Supporting Checks are used only when Planner wants to investigate an exception more deeply.
+
+Carry-forward frozen boundaries:
+
+All previously frozen Planner Decision Matrix boundaries remain active and unchanged, including:
+
+- Planner Decision Matrix main boundary
+- W1 + W1-A / Planner Decision advisory label samples and visual signal rule
+- W2 / Grid Signal source and freshness rule
+- W3 / Next Check and Formal Path format rule
+- Planner Decision Matrix HTML Mock Implementation Boundary
+
+Operative warnings:
+
+PDM-SC-W1:
+
+Supporting Checks entries must be default visible.
+
+They must not be hidden behind a trigger, collapsed area, drawer, modal, or click-to-show area.
+
+PDM-SC-W2:
+
+Search / Find is the Planning main action entry.
+
+Planner Decision Matrix is the default Search / Find read view.
+
+LINE OVERVIEW, Production Schedule Grid, and Capacity / Load Check are Supporting Checks only and must not appear equal to the primary Planner Decision Matrix view.
+
+Future implementation authorization limit:
+
+Implementation authorization is limited to static HTML mock only and only to:
+
+`docs/mockups/sales_order_local_overseas_mock.html`
+
+This record does not authorize any other file or layer.
+
+Explicit non-scope:
+
+This freeze does not authorize:
+
+- editing handoff during future HTML implementation
+- editing AGENTS.md
+- app file changes
+- tests
+- schemas
+- services
+- database files
+- blueprint files
+- daily summary files
+- nav_config
+- feature_flags
+- backend permission logic
+- workflow logic
+- approval logic
+- localStorage
+- database behavior
+- real routing
+- real production use
+- PR opening
 
 Frozen Record - Shared UI Baseline / Sales Order Mock-Stage Branch Split (Local vs Overseas)
 
