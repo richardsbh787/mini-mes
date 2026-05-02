@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.68
+Mini-MES Handoff v2.69
 
-Updated after 2026-05-02 handoff-only insertion for Rapid Feasibility Check
+Updated after 2026-05-02 handoff-only insertion for Rapid Feasibility Check UI Mock Boundary
 Date: 2026-05-02
 
 1. Frozen mainline snapshot
@@ -156,6 +156,8 @@ Frozen Record - Planning & Scheduling / Planner Decision Matrix Primary View & S
 Frozen Record - Planning & Scheduling / Supporting Checks Read-only Link Correction
 
 Frozen Record - Planning & Scheduling / Rapid Feasibility Check
+
+Frozen Record - Planning & Scheduling / Rapid Feasibility Check UI Mock Boundary
 
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
@@ -13284,6 +13286,8 @@ Planning & Scheduling / Supporting Checks Read-only Link Correction is now PASS 
 
 Planning & Scheduling / Rapid Feasibility Check is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES. It freezes the fast urgent-order feasibility decision layer, locks Conflict Detected as the only output for indivisible-resource urgent-order conflicts, and keeps implementation authorization NOT OPENED.
 
+Planning & Scheduling / Rapid Feasibility Check UI Mock Boundary is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES. It freezes the decision-first UI mock boundary, requires Decision Result Card priority and exactly six result classes, carries RFC-UI-W1/RFC-UI-W2 into later Implementation Spec, and keeps implementation authorization NOT OPENED.
+
 Planner Decision Matrix HTML Mock Implementation Boundary is now PASS WITH WARNINGS / IMPLEMENTATION AUTHORIZED — STATIC HTML MOCK ONLY. Authorization is limited to `docs/mockups/sales_order_local_overseas_mock.html`; IC-W1 and IC-W2 must be carried into the Codex implementation instruction.
 
 ## Frozen Record — Planning & Scheduling / Planner Decision Matrix Boundary Freeze
@@ -14776,6 +14780,153 @@ It should help Planner answer whether the order can be accepted, what slot might
 If urgent orders compete for the same indivisible resource, the screen must stop normal feasibility answers and show conflict evidence only.
 
 No production action is executed by this card.
+
+## Frozen Record — Planning & Scheduling / Rapid Feasibility Check UI Mock Boundary
+
+Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+
+Implementation Authorization: NOT OPENED
+
+Gate:
+
+- Qingchen review: PASS.
+- Lao Xiao secondary review: PASS.
+- Qinran final review: PASS WITH WARNINGS.
+- Ruichen Gate: APPROVED.
+- Implementation authorization: NOT OPENED.
+
+Scope:
+
+This record freezes the UI mock boundary for Planning & Scheduling / Rapid Feasibility Check.
+
+This is governance / UI mock boundary only.
+
+It does not authorize HTML implementation, UI mock implementation, Codex implementation, backend work, business writes, or runtime behavior.
+
+Core UI boundary:
+
+Rapid Feasibility Check UI must be decision-first, not data-dump-first.
+
+The first screen must prioritize the Decision Result Card.
+
+The UI boundary supports exactly six result classes:
+
+- Can Accept
+- Accept with Condition
+- Partial Accept
+- Cannot Commit Now
+- Need Supervisor Decision
+- Conflict Detected — Need Urgent Order Conflict Board
+
+Fast Answer Line:
+
+Fast Answer Line is advisory / directional only.
+
+It is not a confirmed delivery commitment.
+
+Key Evidence Strip:
+
+Key Evidence Strip must show only the minimum key evidence.
+
+It must not turn the first screen into a data dump.
+
+Supporting Checks:
+
+Supporting Checks may only reuse the existing secondary link pattern.
+
+Supporting Checks must not:
+
+- create a second entrance system
+- become a main button
+- become equal to the main action layer
+
+Detail Table:
+
+Detail Table must be collapsed by default.
+
+Detail Table is limited to:
+
+- maximum 5 rows
+- maximum 3 columns per row
+
+Manual material readiness:
+
+Manual Material Readiness must be clearly marked as Manual / Declared.
+
+It must not be presented as:
+
+- Purchase truth
+- Store truth
+- IQC truth
+
+Result discipline:
+
+Need Supervisor Decision applies only to supervisor discretion inside one urgent order.
+
+If multiple urgent orders compete for the same resource, the result must become Conflict Detected.
+
+Conflict Detected must show minimum evidence.
+
+Conflict Detected must not provide a customer-committable reply.
+
+Final review notes for later Implementation Spec:
+
+RFC-UI-W1:
+
+Fast Answer Line must carry an explicit advisory-only marker, for example:
+
+`Direction only — not a confirmed delivery commitment`
+
+Or it must use visually weakened treatment to show that it is not a formal customer commitment.
+
+Codex must not use overly affirmative wording that Sales could directly treat as a customer promise.
+
+RFC-UI-W2:
+
+Top Input Summary must remain static sample data during the trial / mock stage.
+
+Do not implement real form input.
+
+Do not auto-pull data from other modules.
+
+Do not add input logic or interaction logic.
+
+Explicit non-scope:
+
+This card does not authorize:
+
+- HTML implementation
+- UI mock implementation
+- Codex implementation
+- backend implementation
+- database change
+- workflow
+- approval
+- route config
+- localStorage
+- schema change
+- service change
+- test change
+- any business write
+- production execution
+- WO creation
+- WO release
+- WO hold
+- split batch execution
+- date move
+- line move
+- OT approval
+- customer commitment
+
+Factory usability meaning:
+
+The future Rapid Feasibility Check UI should answer first and explain second.
+
+The first screen must show the result, the directional fast answer, and only enough evidence for Planner to understand the basis.
+
+More detail may exist only behind a collapsed detail table with strict size limits.
+
+This freeze keeps the future mock narrow, readable, and non-executable.
 
 Frozen Record - Shared UI Baseline / Sales Order Mock-Stage Branch Split (Local vs Overseas)
 
