@@ -1,6 +1,6 @@
-Mini-MES Handoff v2.63
+Mini-MES Handoff v2.64
 
-Updated after 2026-05-02 handoff-only insertion for W3 Next Check and Formal Path Format Rule
+Updated after 2026-05-02 handoff-only insertion for W1 and W1-A Planner Decision Labels and Visual Signal Rule
 Date: 2026-05-02
 
 1. Frozen mainline snapshot
@@ -142,6 +142,8 @@ Frozen Record - Dropdown Master List v1.1 / DCR-2026-001-SUGGESTED-ACTION
 Frozen Record - Module Plug-and-Play Validation Principles v1
 
 Frozen Record - Planning & Scheduling / Planner Decision Matrix Boundary Freeze
+
+Frozen Record - W1 + W1-A / Planner Decision Matrix Advisory Label Samples and Visual Signal Rule
 
 Frozen Record - W2 / Planner Decision Matrix Grid Signal Source and Freshness Rule
 
@@ -13262,6 +13264,8 @@ Module Plug-and-Play Validation Principles v1 is frozen as a trial architecture 
 
 Planning & Scheduling / Planner Decision Matrix Boundary Freeze is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES. It freezes Decision Matrix as the 4th Search / Find read view, advisory-only and non-executable, with W1-W3 required before implementation spec; implementation authorization remains unopened.
 
+W1 + W1-A / Planner Decision Matrix Advisory Label Samples and Visual Signal Rule is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES. It freezes advisory label sample boundaries and read-only visual signal rules, keeps implementation authorization unopened, and carries W1-W1/W1-W2/W1-A-W1 as operative warnings before implementation spec.
+
 W2 / Planner Decision Matrix Grid Signal Source and Freshness Rule is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES. It freezes read-only source/freshness discipline for Grid Signal and keeps implementation authorization unopened; W1-W3 final review notes must be resolved before implementation spec.
 
 W3 / Planner Decision Matrix Next Check and Formal Path Format Rule is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES. It freezes read-only formatting for Next Check / Formal Path, keeps implementation authorization unopened, and carries W3-W1/W3-W2 as operative warnings before implementation spec.
@@ -13437,6 +13441,196 @@ This freeze does not authorize:
 - localStorage
 - schema/service/test edits
 - production execution
+- WO release
+- WO close
+- inventory update
+- QA / Store / Repair / Production truth update
+- Dropdown Master List update
+- DCR execution
+
+## Frozen Record — W1 + W1-A / Planner Decision Matrix Advisory Label Samples and Visual Signal Rule
+
+Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+
+Gate:
+
+- Qingchen review: PASS.
+- Lao Xiao secondary review: PASS / no mandatory correction.
+- Qinran final review: PASS WITH WARNINGS.
+- Ruichen Gate: APPROVED.
+- Implementation authorization: NOT OPENED.
+
+Scope:
+
+This record freezes the pre-implementation boundary supplement for:
+
+1. `Planner Decision` advisory label samples.
+2. Planner Decision Matrix visual signal rule using ✅ / ⚠️ / ❌ / ℹ️.
+
+It is:
+
+- read-side only
+- advisory-only
+- non-executable
+- non-state-changing
+- not a workflow trigger
+- not an approval trigger
+- not a backend write surface
+- not a dropdown governance freeze
+- not UI implementation authorization
+
+Purpose:
+
+W1 prevents the `Planner Decision` field from being freely invented by later UI mock or implementation work.
+
+W1-A allows lightweight visual signals in Planner Decision Matrix, but only as read-only visual aids.
+
+Planner Decision labels and visual icons must not be treated as execution state, approval state, workflow state, or source truth.
+
+W1 — Planner Decision advisory label samples:
+
+These labels are sample advisory text only.
+
+They do not freeze a new dropdown group.
+
+They must not become action buttons, approval options, workflow triggers, or write actions.
+
+Sample labels:
+
+| Planner Decision Label | Factory meaning | Must not do | Suggested Formal Path |
+|---|---|---|---|
+| Keep Plan | Conditions currently allow the original plan to continue | Must not auto-complete Daily Plan Confirmation | Daily Plan Confirmation |
+| Keep Plan + Watch | Keep the plan for now, but confirm again before line start | Must not auto-release WO | Daily Plan Confirmation + Pre-line-start check |
+| Hold Plan | Temporarily stop this WO from entering the line | Must not auto-change plan_status or cancel WO | Plan Change Reason Log / Supervisor review |
+| Split Batch | Suggest splitting the WO into batches | Must not auto-split WO or generate new WO | Plan Change Draft |
+| Move Date | Suggest changing the production date | Must not auto-update schedule_entry date | Plan Change Draft |
+| Move Line | Suggest moving to another line | Must not auto-move line or override capacity | Plan Change Draft + Capacity re-check |
+| Review Manpower | Confirm manpower, shift, or OT support first | Must not auto-approve OT | Supervisor / Planning confirmation path |
+| Review Store | Confirm kitting, line receive, or material movement first | Must not auto-update kitting_status | Check Store / Kitting recovery status |
+| Check QA / IQC | Confirm IQC / QA release first | Must not treat IQC Hold as passed | Check QA / IQC owner for update |
+| Check Repair Return | Confirm repair return quantity or time first | Must not treat Repair Pending as Returned | Check Repair PIC / Plan Change Draft if needed |
+| Escalate Supervisor | Risk exceeds Planner decision boundary | Must not auto-approve any plan change | Supervisor approval path / Cross-department sync |
+
+Dropdown boundary:
+
+If these labels are ever required as formal dropdown values, that must go through DCR and Dropdown Master List governance.
+
+Formalization must include Planning Lead and relevant domain owner review, with Qingchen / Ruichen review where required.
+
+W1-A — Visual Signal Rule:
+
+Allowed visual icons:
+
+| Icon | Planning meaning | Factory language | Boundary |
+|---|---|---|---|
+| ✅ | OK / Fit / Covered / Ready | Can plan / can run / covered | Only shows normal source state; does not mean execution confirmation |
+| ⚠️ | Risk / Needs human check | Risk exists, human check needed | Must not auto Hold / Move / Split |
+| ❌ | Blocked / Cannot run / Must handle | Cannot plan / cannot run / must handle | Must not auto Cancel / Hold / Change Plan |
+| ℹ️ | Reference / Need details | Note exists / details needed | Does not mean approval record or formal explanation exists |
+
+Allowed visual signal columns:
+
+Icons may only be used inside Planner Decision Matrix judgment columns, including:
+
+- Material Readiness
+- Capacity Fit
+- Waiver / SML
+- Due Risk
+- Grid Signal
+- auxiliary status before Planner Decision
+
+`Waiver / SML` means Waiver coverage status / Short Material List status.
+
+SML means Short Material List / 缺料清单.
+
+Sample matrix:
+
+| Planning Object | Material Readiness | Capacity Fit | Waiver / SML | Due Risk | Planner Decision |
+|---|---|---|---|---|---|
+| SO-001 / Item A | ✅ Ready | ✅ Fit | ✅ Covered | ✅ Safe | RUN OK |
+| SO-002 / Item B | ⚠️ Short | ✅ Fit | ✅ Covered | ⚠️ 2 days left | CHECK BEFORE RUN |
+| SO-003 / Item C | ❌ Critical Short | ✅ Fit | ❌ Open SML | ❌ Start Today | HOLD – MATERIAL |
+| SO-004 / Item D | ✅ Ready | ⚠️ Near Capacity | ✅ Covered | ⚠️ Tight | NEED PLANNER DECISION |
+
+Misinterpretation controls:
+
+- ✅ Covered does not mean waiver was automatically approved.
+- ✅ Ready does not mean WO may be automatically released.
+- ⚠️ Short does not mean the system automatically holds the plan.
+- ❌ Open SML does not mean the system automatically cancels the WO.
+- ❌ Cannot Run does not mean the system has changed the schedule.
+- ℹ️ Need Details does not mean an approval record already exists.
+
+Forbidden actions:
+
+Planner Decision labels and visual signals must not:
+
+- write database data
+- modify plan_status
+- modify WO status
+- modify schedule_entry baseline
+- modify Material / QA / Store / Repair / Production truth
+- trigger workflow
+- trigger approval
+- trigger notification
+- auto-create Plan Change Draft
+- auto-release WO
+- auto-approve OT
+- replace source module truth
+- bind click events
+- open panels
+- become dropdown controls
+- become form inputs
+- become official routing configuration
+
+Relationship with W2:
+
+Grid Signal freshness / stale discipline is handled by the separately frozen W2 record.
+
+W1-A icons must follow the currently displayed source data.
+
+Icons themselves must never reverse-write into business state or module boundaries.
+
+Final review notes:
+
+W1-W1 — `Keep Plan + Watch / Pre-line-start check` minimum ownership is not frozen in this card.
+
+Before implementation spec, the responsible actor and minimum record form for pre-line-start check must be defined, even if the trial-stage record is only Planner self-check or external sheet.
+
+W1-W2 — `Escalate Supervisor` response record location is not frozen in this card.
+
+Before implementation spec, supervisor decision / response must have a minimum written record location, even if the trial-stage record is manual or external.
+
+W1-A-W1 — Sample Matrix display wording must be normalized against W1 label list.
+
+`RUN OK`, `HOLD – MATERIAL`, `CHECK BEFORE RUN`, and `NEED PLANNER DECISION` are display-style examples only.
+
+Formal advisory label wording must follow the W1 label list unless separately approved.
+
+Factory usability meaning:
+
+Planner needs two layers during the planning meeting:
+
+1. visual signal: can run, risky, blocked, or needs details
+2. advisory label: what the Planner should check or consider next
+
+Both layers are read-only guidance.
+
+They help Planner read the table faster, but they do not execute, approve, write status, release WO, hold WO, split batch, move line, change date, or replace formal planning paths.
+
+Explicit non-scope:
+
+This freeze does not authorize:
+
+- HTML mock implementation
+- UI implementation
+- backend implementation
+- database migration
+- workflow engine
+- approval engine
+- localStorage
+- schema/service/test edits
+- schedule baseline updates
 - WO release
 - WO close
 - inventory update
