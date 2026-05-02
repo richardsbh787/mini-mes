@@ -1,7 +1,7 @@
-Mini-MES Handoff v2.62
+Mini-MES Handoff v2.63
 
-Updated after 2026-05-01 handoff-only insertion for W2 Grid Signal Source and Freshness Rule
-Date: 2026-05-01
+Updated after 2026-05-02 handoff-only insertion for W3 Next Check and Formal Path Format Rule
+Date: 2026-05-02
 
 1. Frozen mainline snapshot
 
@@ -144,6 +144,8 @@ Frozen Record - Module Plug-and-Play Validation Principles v1
 Frozen Record - Planning & Scheduling / Planner Decision Matrix Boundary Freeze
 
 Frozen Record - W2 / Planner Decision Matrix Grid Signal Source and Freshness Rule
+
+Frozen Record - W3 / Planner Decision Matrix Next Check and Formal Path Format Rule
 
 Step 40A is no longer design-only.
 It has passed main review, Qinran final review, commit, and push.
@@ -13262,6 +13264,8 @@ Planning & Scheduling / Planner Decision Matrix Boundary Freeze is now PASS WITH
 
 W2 / Planner Decision Matrix Grid Signal Source and Freshness Rule is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES. It freezes read-only source/freshness discipline for Grid Signal and keeps implementation authorization unopened; W1-W3 final review notes must be resolved before implementation spec.
 
+W3 / Planner Decision Matrix Next Check and Formal Path Format Rule is now PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES. It freezes read-only formatting for Next Check / Formal Path, keeps implementation authorization unopened, and carries W3-W1/W3-W2 as operative warnings before implementation spec.
+
 ## Frozen Record — Planning & Scheduling / Planner Decision Matrix Boundary Freeze
 
 Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
@@ -13635,6 +13639,242 @@ This W2 rule forces the Grid Signal to carry source and freshness discipline.
 If the signal is stale, Planner must verify it at the source view.
 
 The system only reminds. It does not execute schedule changes.
+
+Explicit non-scope:
+
+This freeze does not authorize:
+
+- HTML mock implementation
+- UI implementation
+- backend implementation
+- database migration
+- workflow engine
+- approval engine
+- localStorage
+- schema/service/test edits
+- schedule baseline updates
+- WO release
+- WO close
+- inventory update
+- QA / Store / Repair / Production truth update
+- Dropdown Master List update
+- DCR execution
+
+## Frozen Record — W3 / Planner Decision Matrix Next Check and Formal Path Format Rule
+
+Status: PASS WITH WARNINGS / FROZEN WITH FINAL REVIEW NOTES
+
+Gate:
+
+- Qingchen review: PASS.
+- Lao Xiao secondary review: PASS / no mandatory correction.
+- Qinran final review: PASS WITH WARNINGS.
+- Ruichen Gate: APPROVED.
+- Implementation authorization: NOT OPENED.
+
+Scope:
+
+This record freezes the pre-implementation boundary supplement for the `Next Check / Formal Path` field inside the Planning & Scheduling / Planner Decision Matrix read view.
+
+It is:
+
+- read-side only
+- advisory-only
+- non-executable
+- non-state-changing
+- not a workflow trigger
+- not an approval trigger
+- not a backend write surface
+- not a dropdown governance freeze
+- not UI implementation authorization
+
+Purpose:
+
+The rule prevents uncontrolled free-text planning instructions in the Decision Matrix.
+
+`Next Check / Formal Path` must tell Planner:
+
+- who to check with
+- what to check
+- which formal path may be needed
+
+It must not be written as vague or unauditable text such as:
+
+- ask warehouse
+- wait and see
+- boss decide
+- should be okay
+- already approved
+- already released
+- system handled it
+
+Fixed format:
+
+`[Next Check Owner] — [Check Item] / [Formal Path]`
+
+Examples:
+
+- `Store — confirm kitting recovery / Daily Plan Confirmation if recovered`
+- `QA / IQC — confirm release status / Plan Change Reason Log`
+- `Planner — review available slot / Plan Change Draft if reschedule needed`
+- `Supervisor — decide priority conflict / Supervisor Review Path`
+
+UI may display the same meaning in one line or two lines, but the semantic format must remain:
+
+- Next Check: owner plus check item
+- Formal Path: proper governed path reminder
+
+Sample owner labels:
+
+These labels are sample display labels only and do not freeze a new dropdown group.
+
+- Planner
+- Store / Warehouse
+- Purchasing
+- QA / IQC
+- Repair PIC
+- Line Supervisor
+- Engineering / Maintenance
+- Supervisor / Manager
+- Customer Service / Sales
+
+Sample check items:
+
+These are sample text values only and do not freeze a new dropdown group.
+
+- confirm kitting recovery
+- confirm incoming ETA
+- confirm IQC / QA release
+- confirm repair return qty
+- confirm manpower before start
+- confirm line availability
+- confirm equipment / jig readiness
+- review available slot
+- review priority conflict
+- confirm due date impact
+
+Sample formal paths:
+
+These are sample display paths only and do not execute actions.
+
+- Daily Plan Confirmation
+- Plan Change Reason Log
+- Plan Change Draft
+- Supervisor Review Path
+- Cross-department Sync
+- Reference Unavailable / N/A
+
+Formal path boundary:
+
+Formal Path is a reminder only.
+
+It must not:
+
+- release WO
+- hold WO
+- close WO
+- change date
+- move line
+- split batch
+- update schedule baseline
+- update plan_status
+- update WO status
+- create approval record
+- trigger workflow
+- write backend data
+
+Trial Mode / Declared Material Readiness rule:
+
+Current trial planning may start from Planning and may temporarily skip complete Purchasing / Store / IQC module flows.
+
+If Material Readiness is manually entered or externally referenced during trial, it must be marked as:
+
+`Declared Material Readiness / Manual Reference Only`
+
+Allowed trial wording examples:
+
+- `Planner — verify declared material readiness / Daily Plan Confirmation if verified`
+- `Store — verbal check kitting status / Manual reference only`
+- `Purchasing — check ETA from Excel / Manual reference only`
+
+Forbidden trial wording unless the source module is actually active and provides source truth:
+
+- Purchase Confirmed
+- Store Ready
+- IQC Passed
+
+Forbidden actions:
+
+`Next Check / Formal Path` must not:
+
+- become an action button
+- become an approval button
+- become an execution link
+- become any clickable control that triggers workflow or write action
+- freeze a new dropdown
+- freeze a new routing configuration
+- auto create Plan Change Draft
+- auto write Plan Change Reason Log
+- auto release WO
+- auto hold WO
+- auto close WO
+- auto change date
+- auto move line
+- auto split batch
+- auto update plan_status
+- auto update WO status
+- auto update schedule baseline
+- override Store / Purchase / QA / IQC / Repair / Production truth
+- use free text to express final execution conclusions such as approved, released, completed, or system handled
+
+Read-only navigation note:
+
+Read-only navigation links are not opened by this card.
+
+If future UI needs read-only navigation from Decision Matrix to a source view, it must be defined separately under DCR or an approved navigation-governance path.
+
+It must not be expanded inside the current W3 scope.
+
+Sample scenario matrix:
+
+| Scenario | Planner Decision | Next Check / Formal Path |
+|---|---|---|
+| Smooth | Keep Plan | Planner — final pre-start confirmation / Daily Plan Confirmation |
+| Urgent | Keep Plan + Watch | Line Supervisor — confirm manpower before start / Daily Plan Confirmation |
+| SML Shortage | Hold Plan | Store / Purchasing — confirm shortage recovery / Plan Change Reason Log |
+| Over Capacity | Split Batch / Review Manpower | Planner + Line Supervisor — review available slot and manpower / Plan Change Draft |
+| IQC Hold | Hold Plan | QA / IQC — confirm release status / Plan Change Reason Log |
+| Store Kitting Delay | Review Store | Store — confirm kitting recovery time / Daily Plan Confirmation if recovered |
+| Repair Pending | Split Batch | Repair PIC — confirm repair return qty / Plan Change Draft if needed |
+| Holiday / No Production | Move Date | Planner — review next production slot / Plan Change Draft |
+
+Final review notes:
+
+W3-W1 — Read-only navigation links are not opened by this card.
+
+Before implementation spec, any read-only navigation link definition must go through a separate DCR or approved navigation-governance path. It must not be expanded inside the current W3 scope.
+
+W3-W2 — `Reference Unavailable / N/A` usage must be controlled.
+
+It may only be used when the corresponding module is explicitly not enabled, unavailable, or has no source reference.
+
+It must not be used when information exists but has not yet been checked or confirmed.
+
+Factory usability meaning:
+
+Planner should not write vague notes like “ask warehouse” or “boss decide” in the final column.
+
+The column must say:
+
+`who — check what / which formal path`
+
+Example:
+
+`Store / Purchasing — confirm shortage recovery / Plan Change Reason Log`
+
+This tells the factory team the next check and possible formal path.
+
+It does not mean the system has held the WO, changed the schedule, or received approval.
 
 Explicit non-scope:
 
